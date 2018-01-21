@@ -3,6 +3,9 @@
     <div class="content">
       <router-view/>
     </div>
+    <div class="footerOccupied">
+
+    </div>
     <footer class="footerTap">
       <router-link to="/homePage">
         <img src="../static/img/shouye.png">
@@ -11,6 +14,7 @@
         <img src="../static/img/wode.png">
       </router-link>
     </footer>
+
   </div>
 </template>
 
@@ -29,6 +33,9 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .footerOccupied
+    width (1080/$rem)
+    height (146/$rem)
   .footerTap
     position fixed
     bottom 0

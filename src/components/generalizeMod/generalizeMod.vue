@@ -32,6 +32,7 @@
   .generalizeModList
     overflow hidden
     li
+      position relative
       box-sizing border-box
       border 1px solid #f4f4f4
       height (226 /$rem)
@@ -41,10 +42,17 @@
         background-image url("./img/fan.png")
         background-repeat no-repeat
         background-position top right
+        background-size (80/$rem)
       a
         text-align center
+        position absolute
+        top 0
+        left 0
+        height 100%
+        width 100%
         img
           display block
+          width (100/$rem)
           margin (36 /$rem) (84 /$rem) (20 /$rem)
         span
           display block
