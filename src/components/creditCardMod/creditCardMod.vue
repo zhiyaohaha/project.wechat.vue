@@ -36,6 +36,10 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .creditCardModList
     li
+      background-image url("./img/fan.png")
+      background-repeat no-repeat
+      background-position top right
+      background-size (80/$rem)
       position relative
       box-sizing border-box
       border 1px solid #f4f4f4
@@ -65,5 +69,4 @@
           background-image url("./img/lijishenqing.png")
           background-repeat no-repeat
           background-size 100%
-
 </style>

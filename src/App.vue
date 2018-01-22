@@ -4,14 +4,13 @@
       <router-view/>
     </div>
     <div class="footerOccupied">
-
     </div>
     <footer class="footerTap">
       <router-link to="/homePage">
-        <img src="../static/img/shouye.png">
+        <img src="../static/img/homeImg/shouye.png">
       </router-link>
       <router-link to="/myPage">
-        <img src="../static/img/wode.png">
+        <img src="../static/img/homeImg/wode.png">
       </router-link>
     </footer>
 

@@ -40,58 +40,58 @@
       return {
         loanModDatas:[
           {
-            imgUrl:"../../static/img/daikuanchanpin.png",
+            imgUrl:"../../static/img/homeImg/daikuanchanpin.png",
             title:"贷款产品"
           },
           {
-            imgUrl:"../../static/img/kuaisudaikuan.png",
+            imgUrl:"../../static/img/homeImg/kuaisudaikuan.png",
             title:"快速贷款"
           },
         ],
         generalizeModDatas:[
           {
-            imgUrl:"../../static/img/tuiguang.png",
+            imgUrl:"../../static/img/homeImg/tuiguang.png",
             title:"我要推广"
           },
           {
-            imgUrl:"../../static/img/haibao.png",
+            imgUrl:"../../static/img/homeImg/haibao.png",
             title:"推广海报"
           },
           {
-            imgUrl:"../../static/img/sucai.png",
+            imgUrl:"../../static/img/homeImg/sucai.png",
             title:"推广素材"
           },
           {
-            imgUrl:"../../static/img/jilu.png",
+            imgUrl:"../../static/img/homeImg/jilu.png",
             title:"推广记录"
           }
         ],
         visaDatas:[
           {
-            imgUrl:"../../static/img/xinyongka.png",
+            imgUrl:"../../static/img/homeImg/xinyongka.png",
             title:"办信用卡"
           },
           {
-            imgUrl:"../../static/img/jindu.png",
+            imgUrl:"../../static/img/homeImg/jindu.png",
             title:"办卡进度"
           },
           {
-            imgUrl:"../../static/img/gonglie.png",
+            imgUrl:"../../static/img/homeImg/gonglie.png",
             title:"攻略专区"
           },
           {
-            imgUrl:"../../static/img/daihuan.png",
+            imgUrl:"../../static/img/homeImg/daihuan.png",
             title:"信用卡代还"
           }
         ],
         creditCardModDatas:[
           {
-            imgUrl:"../../static/img/kapian.png",
+            imgUrl:"../../static/img/homeImg/kapian.png",
             title:"信用卡名称",
             limit:"10000-100000元"
           },
           {
-            imgUrl:"../../static/img/kapian.png",
+            imgUrl:"../../static/img/homeImg/kapian.png",
             title:"信用卡名称",
             limit:"10000-100000元"
           }

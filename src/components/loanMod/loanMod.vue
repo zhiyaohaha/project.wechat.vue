@@ -2,10 +2,10 @@
   <div>
     <ul class="loanModList">
       <li v-for="(loanMod,index) in loanModDatas" :key="index">
-        <a href="javaScript:;">
+        <router-link to="/loanPage">
           <img :src="loanMod.imgUrl">
           <span>{{loanMod.title}}</span>
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>

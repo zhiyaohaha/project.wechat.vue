@@ -25,10 +25,11 @@
   .headline
     width 100%
     height (120 /$rem)
-    line-height (120 /$rem)
     span
       float left
       font-family "Microsoft YaHei"
+      font-weight bold
+      line-height (120 /$rem)
       font-size (42 /$rem)
       color #333
       margin-left (30 /$rem)
