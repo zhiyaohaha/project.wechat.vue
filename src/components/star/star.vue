@@ -41,15 +41,15 @@
 <style lang="stylus" rel="stylesheet/stylus">
   .stars
     display inline
+    position relative
+    top -1
     .star
-      display inline-block
+      float right
       background-repeat no-repeat
       background-size 100% 100%
-      width (39/$rem)
-      height (36/$rem)
+      width (35/$rem)
+      height (30/$rem)
       margin-right (7/$rem)
-      &:last-child
-        margin-right 0
       &.on
         background-image url("./img/hongwuxaing.png")
       &.off

@@ -28,7 +28,6 @@
   </div>
 </template>
 <script>
-  import split from "../../components/split/split.vue"
   import headline from "../../components/headline/headline.vue"
   import loanMod from "../../components/loanMod/loanMod.vue"
   import generalizeMod from "../../components/generalizeMod/generalizeMod.vue"
@@ -38,69 +37,71 @@
   export default {
     data () {
       return {
-        loanModDatas:[
+        loanModDatas: [
           {
-            imgUrl:"../../static/img/homeImg/daikuanchanpin.png",
-            title:"贷款产品"
+            imgUrl: "../../static/img/homeImg/daikuanchanpin.png",
+            title: "贷款产品",
+            aUrl:"/product"
           },
           {
-            imgUrl:"../../static/img/homeImg/kuaisudaikuan.png",
-            title:"快速贷款"
+            imgUrl: "../../static/img/homeImg/kuaisudaikuan.png",
+            title: "快速贷款",
+            aUrl:"/loanPage"
           },
         ],
-        generalizeModDatas:[
+        generalizeModDatas: [
           {
-            imgUrl:"../../static/img/homeImg/tuiguang.png",
-            title:"我要推广"
+            imgUrl: "../../static/img/homeImg/tuiguang.png",
+            title: "我要推广"
           },
           {
-            imgUrl:"../../static/img/homeImg/haibao.png",
-            title:"推广海报"
+            imgUrl: "../../static/img/homeImg/haibao.png",
+            title: "推广海报"
           },
           {
-            imgUrl:"../../static/img/homeImg/sucai.png",
-            title:"推广素材"
+            imgUrl: "../../static/img/homeImg/sucai.png",
+            title: "推广素材"
           },
           {
-            imgUrl:"../../static/img/homeImg/jilu.png",
-            title:"推广记录"
+            imgUrl: "../../static/img/homeImg/jilu.png",
+            title: "推广记录"
           }
         ],
-        visaDatas:[
+        visaDatas: [
           {
-            imgUrl:"../../static/img/homeImg/xinyongka.png",
-            title:"办信用卡"
+            imgUrl: "../../static/img/homeImg/xinyongka.png",
+            title: "办信用卡"
           },
           {
-            imgUrl:"../../static/img/homeImg/jindu.png",
-            title:"办卡进度"
+            imgUrl: "../../static/img/homeImg/jindu.png",
+            title: "办卡进度"
           },
           {
-            imgUrl:"../../static/img/homeImg/gonglie.png",
-            title:"攻略专区"
+            imgUrl: "../../static/img/homeImg/gonglie.png",
+            title: "攻略专区"
           },
           {
-            imgUrl:"../../static/img/homeImg/daihuan.png",
-            title:"信用卡代还"
+            imgUrl: "../../static/img/homeImg/daihuan.png",
+            title: "信用卡代还"
           }
         ],
-        creditCardModDatas:[
+        creditCardModDatas: [
           {
-            imgUrl:"../../static/img/homeImg/kapian.png",
-            title:"信用卡名称",
-            limit:"10000-100000元"
+            imgUrl: "../../static/img/homeImg/kapian.png",
+            title: "信用卡名称",
+            limit: "10000-100000元"
           },
           {
-            imgUrl:"../../static/img/homeImg/kapian.png",
-            title:"信用卡名称",
-            limit:"10000-100000元"
+            imgUrl: "../../static/img/homeImg/kapian.png",
+            title: "信用卡名称",
+            limit: "10000-100000元"
           }
         ],
       }
     },
 
     components: {
-        split,headline,loanMod,generalizeMod,recommendMod,footline,creditCardMod
+      headline, loanMod, generalizeMod, recommendMod, footline, creditCardMod
     },
 
     computed: {},
@@ -116,5 +117,5 @@
     img
       display block
       width 100%
-      height (500/$rem)
+      height (500 /$rem)
 </style>

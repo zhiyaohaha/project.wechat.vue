@@ -32,7 +32,7 @@
             <span class="asSecondLine">一天审核，闪电到款，当天到账</span>
             <div class="detailsWrap">
               <div class="detailsList">
-                <span class="details">成功率：<star :score="5"/></span>
+                <span class="details">成功率：<span class="price"><star :score="5"/></span></span>
                 <span class="details secondLine">额度：<span class="price">10000-10万元</span></span>
               </div>
               <div class="detailsRight">
@@ -87,7 +87,6 @@
           left (30 /$rem)
           img
             width (150 /$rem)
-
         .recommendModDescribe
           position absolute
           top (54 /$rem)
@@ -102,7 +101,7 @@
               color #333
             &.asSecondLine
               display block
-              margin-top (30 /$rem)
+              margin-top 0.444444rem
               font-size (36 /$rem)
               color #bbb
           .detailsWrap

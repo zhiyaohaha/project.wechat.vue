@@ -3,9 +3,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import split from './components/split/split.vue'
 import '../static/css/reset.styl'
 import '../static/js/adaptive'
-
+Vue.component('split', split)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
