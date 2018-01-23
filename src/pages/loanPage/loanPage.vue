@@ -43,13 +43,13 @@
         <li>
           <span class="description">身份证件号：</span>
           <input type="text"
-                 placeholder="请输入您的身份证件号"
+                 placeholder="请输入您的身份证号"
                  name="IDnumber">
         </li>
         <li>
           <span class="description">手机号：</span>
           <input type="text"
-                 placeholder="请输入您的手机号"
+                 placeholder="请填写您的手机号"
                  name="cell-phoneNum">
         </li>
         <li>
@@ -57,8 +57,8 @@
           <input type="text"
                  placeholder="请输入验证码"
                  name="authCode">
+          <span class="sendMsg">获取验证码</span>
         </li>
-        <span class="sendMsg">获取验证码</span>
       </ul>
       <div class="propertyCase">
         <span>资产情况</span>
@@ -129,7 +129,6 @@
     .iconLogo
       float left
       margin-left (30 /$rem)
-
   .loanContent
     img
       width (1080 /$rem)
@@ -163,6 +162,7 @@
           outline: none
           border: none
           text-align right
+          margin-right (30/$rem)
         input:
         :-moz-placeholder
           text-align right
@@ -187,18 +187,25 @@
         select:
         :-ms-expand
           display: none
-      .sendMsg
-        float right
-        margin-top (24 /$rem)
-        font-size (36 /$rem)
-        color #00abf2
+        .sendMsg
+          display block
+          margin-top (17/$rem)
+          width (290/$rem)
+          height (86/$rem)
+          color #ffffff
+          font-size (36/$rem)
+          background-image url("./img/yuanjiao_1.png")
+          background-repeat no-repeat
+          background-size 100%
+          text-align center
+          line-height (86/$rem)
+          float right
     .propertyCase
       width (1030 /$rem)
       margin (120 /$rem) (30 /$rem) (75 /$rem)
       span
         font-size (42 /$rem)
         color #333333
-
   .simulationSubmit
     position fixed
     bottom 0

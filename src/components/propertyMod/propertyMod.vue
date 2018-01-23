@@ -18,7 +18,7 @@
     props:["propertyModDatas"],
     data () {
       return {
-        pitchOnIndex:0,
+        pitchOnIndex:null,
       }
     },
 
