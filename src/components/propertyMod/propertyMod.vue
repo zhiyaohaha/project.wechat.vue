@@ -52,7 +52,7 @@
         width (300/$rem)
         height (100/$rem)
         float left
-        margin (40/$rem) (40/$rem) (40/$rem) 0
+        margin (20/$rem) (40/$rem) (20/$rem) 0
         background url("./img/huiseda.png") no-repeat scroll right center transparent
         border-radius (20/$rem)
         text-align center
