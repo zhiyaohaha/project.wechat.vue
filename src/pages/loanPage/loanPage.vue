@@ -113,7 +113,26 @@
 
     },
 
-    methods: {}
+    methods: {
+      loseFocus(reg, flag, num){
+        if(!reg.test(flag)){
+          if(num == 1){
+            this.codeColor = true
+          }else{
+            this.errorColor = true
+          }
+        }
+      },
+      goodInput(reg, flag, num){
+        if(reg.test(flag)){
+          if(num == 1){
+            this.codeColor = false
+          }else{
+            this.errorColor = false
+          }
+        }
+      }
+    }
   }
 
 </script>

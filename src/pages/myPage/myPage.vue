@@ -10,15 +10,17 @@
       <ul class="cellphoneList">
         <li>
           <span class="description">手机号：</span>
-          <input type="text"
-                 placeholder="请填写你的手机号"
-                 name="money">
+          <input type="text" v-model="cellphoneNum" @blur="loseFocus(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)"
+                 @input="goodInput(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)"
+                 :placeholder="phoneTooltip" :class="{errorColor}"
+                 name="cellphoneNum">
         </li>
         <li>
-          <span class="description">手机号：</span>
-          <input type="text"
-                 placeholder="请填写你的手机号"
-                 name="money">
+          <span class="description">验证码：</span>
+          <input type="text" v-model="authCode" @blur="loseFocus(/^\d{4}$/,authCode,1)"
+                 @input="goodInput(/^\d{4}$/,authCode,1)"
+                 :placeholder="codeTooltip" :class="{errorColor:codeColor}"
+                 name="authCode">
           <span class="sendMsg">获取验证码</span>
         </li>
       </ul>
@@ -35,23 +37,55 @@
   </div>
 </template>
 <script>
+  import { MessageBox } from "mint-ui"
   export default {
     data () {
       return {
-        imgIsShow:true
+        imgIsShow: true,
+        cellphoneNum: '',
+        authCode: '',
+        codeTooltip: "请输入验证码",
+        phoneTooltip: "请填写你的手机号",
+        errorColor: false,
+        codeColor:false
       }
     },
     components: {},
     computed: {},
-    mounted(){},
+    mounted(){
+      MessageBox({
+       title: '提交失败',
+       message: '短信验证码错误',
+       showCancelButton: false
+       })
+    },
     methods: {
       notarize(){
         this.imgIsShow = !this.imgIsShow
+      },
+      loseFocus(reg, flag, num){
+        if(!reg.test(flag)){
+          if(num == 1){
+            this.codeColor = true
+          }else{
+            this.errorColor = true
+          }
+        }
+      },
+      goodInput(reg, flag, num){
+        if(reg.test(flag)){
+          if(num == 1){
+            this.codeColor = false
+          }else{
+            this.errorColor = false
+          }
+        }
       }
     }
   }
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  /*头部*/
   .myHeader
     width (1080 /$rem)
     height (130 /$rem)
@@ -63,9 +97,11 @@
     .iconLogo
       float left
       margin-left (30 /$rem)
+
+  /*内容区*/
   .myContent
     img
-      width (1080/$rem)
+      width (1080 /$rem)
     .cellphoneList
       margin: 0 (30 /$rem)
       li
@@ -87,7 +123,9 @@
           outline: none
           border: none
           text-align right
-          margin-right (30/$rem)
+          margin-right (30 /$rem)
+          &.errorColor
+            color #c2181f
         input:
         :-moz-placeholder
           text-align right
@@ -101,47 +139,67 @@
           color #bbbbbb
         .sendMsg
           display block
-          margin-top (17/$rem)
-          width (290/$rem)
-          height (86/$rem)
+          margin-top (17 /$rem)
+          width (290 /$rem)
+          height (86 /$rem)
           color #ffffff
-          font-size (36/$rem)
+          font-size (36 /$rem)
           background-image url("./img/huoquyanzhengma.png")
           background-repeat no-repeat
           background-size 100%
           text-align center
-          line-height (86/$rem)
+          line-height (86 /$rem)
           float right
     .protocol
       box-sizing border-box
-      height (155/$rem)
-      width (1080/$rem)
+      height (155 /$rem)
+      width (1080 /$rem)
       text-align center
-      line-height (155/$rem)
+      line-height (155 /$rem)
       img
         display inline-block
-        width (35/$rem)
+        width (35 /$rem)
       span
-        font-size (36/$rem)
+        font-size (36 /$rem)
         color #333333
     .approve
-      width (996/$rem)
-      height (146/$rem)
+      width (996 /$rem)
+      height (146 /$rem)
       background-image url("./img/lijirenzheng.png")
       background-repeat no-repeat
       background-size 100%
       margin 0 auto
+
   .myFooter
-    width (1080/$rem)
-    height (150/$rem)
+    width (1080 /$rem)
+    height (150 /$rem)
     background-color #fff
     position fixed
     bottom 0px
     left 0px
     z-index 11
-    line-height (150/$rem)
+    line-height (150 /$rem)
     text-align center
     span
-      font-size (36/$rem)
+      font-size (36 /$rem)
       color #bbbbbb
+
+  .mint-msgbox
+    height (450 /$rem)
+    font-size (46 /$rem)
+    border-radius (20 /$rem)
+    .mint-msgbox-header
+      padding: (40 /$rem) 0 0
+      .mint-msgbox-title
+        font-size (46 /$rem)
+    .mint-msgbox-content
+      padding: (94 /$rem) 20px (94 /$rem)
+    .mint-msgbox-btns
+      height (136 /$rem)
+      line-height (136 /$rem)
+      .mint-msgbox-confirm
+        font-size (46 /$rem)
+      .mint-msgbox-cancel
+        font-size (46 /$rem)
+        color #333
 </style>

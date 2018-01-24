@@ -6,6 +6,8 @@ import router from './router'
 import split from './components/split/split.vue'
 import '../static/css/reset.styl'
 import '../static/js/adaptive'
+import 'mint-ui/lib/style.css'
+
 Vue.component('split', split)
 /* eslint-disable no-new */
 new Vue({
