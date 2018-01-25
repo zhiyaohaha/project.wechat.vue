@@ -1,35 +1,37 @@
 <template>
   <div>
-    <header class="myHeader">
-      <span class="iconLogo" @click="$router.back()"><</span>
-      <span>手机认证</span>
-    </header>
-    <div class="myContent">
-      <img src="./img/banner.png">
-      <split/>
-      <ul class="cellphoneList">
-        <li>
-          <span class="description">手机号：</span>
-          <input type="text" v-model="cellphoneNum" @blur="loseFocus(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)"
-                 @input="goodInput(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)"
-                 :placeholder="phoneTooltip" :class="{errorColor}"
-                 name="cellphoneNum">
-        </li>
-        <li>
-          <span class="description">验证码：</span>
-          <input type="text" v-model="authCode" @blur="loseFocus(/^\d{4}$/,authCode,1)"
-                 @input="goodInput(/^\d{4}$/,authCode,1)"
-                 :placeholder="codeTooltip" :class="{errorColor:codeColor}"
-                 name="authCode">
-          <span class="sendMsg">获取验证码</span>
-        </li>
-      </ul>
-      <a href="javascript:;" class="protocol">
-        <img src="./img/xuanze.png" v-show="imgIsShow" @click="notarize">
-        <img src="./img/huisekuang.png" v-show="!imgIsShow" @click="notarize">
-        <span>我已阅读并同意《XXXXXX协议》</span>
-      </a>
-      <a href="javascript:;" class="approve"></a>
+    <div>
+      <header class="myHeader">
+        <span class="iconLogo" @click="$router.back()"><</span>
+        <span>手机认证</span>
+      </header>
+      <div class="myContent">
+        <img src="./img/banner.png">
+        <split/>
+        <ul class="cellphoneList">
+          <li>
+            <span class="description">手机号：</span>
+            <input type="text" v-model="cellphoneNum" @blur="loseFocus(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)"
+                   @input="goodInput(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)" maxlength="11"
+                   :placeholder="phoneTooltip" :class="{errorColor}"
+                   name="cellphoneNum">
+          </li>
+          <li>
+            <span class="description">验证码：</span>
+            <input type="text" v-model="authCode" @blur="loseFocus(/^\d{4}$/,authCode,1)"
+                   @input="goodInput(/^\d{4}$/,authCode,1)" maxlength="4"
+                   :placeholder="codeTooltip" :class="{errorColor:codeColor}"
+                   name="authCode">
+            <span class="sendMsg">获取验证码</span>
+          </li>
+        </ul>
+        <a href="javascript:;" class="protocol">
+          <img src="./img/xuanze.png" v-show="imgIsShow" @click="notarize">
+          <img src="./img/huisekuang.png" v-show="!imgIsShow" @click="notarize">
+          <span>我已阅读并同意《XXXXXX协议》</span>
+        </a>
+        <a href="javascript:;" class="approve"></a>
+      </div>
     </div>
     <footer class="myFooter">
       <span>申请贷款前请进新手机认证，仅需认证一次</span>
@@ -54,10 +56,10 @@
     computed: {},
     mounted(){
       MessageBox({
-       title: '提交失败',
-       message: '短信验证码错误',
-       showCancelButton: false
-       })
+        title: '提交失败',
+        message: '短信验证码错误',
+        showCancelButton: false
+      })
     },
     methods: {
       notarize(){
@@ -124,6 +126,7 @@
           border: none
           text-align right
           margin-right (30 /$rem)
+          width (500/$rem)
           &.errorColor
             color #c2181f
         input:
@@ -194,6 +197,8 @@
         font-size (46 /$rem)
     .mint-msgbox-content
       padding: (94 /$rem) 20px (94 /$rem)
+      .mint-msgbox-message
+        font-size (42/$rem)
     .mint-msgbox-btns
       height (136 /$rem)
       line-height (136 /$rem)
@@ -202,4 +207,5 @@
       .mint-msgbox-cancel
         font-size (46 /$rem)
         color #333
+
 </style>

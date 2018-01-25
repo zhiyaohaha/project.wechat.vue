@@ -1,30 +1,48 @@
 <template>
   <div>
-    <header class="loanHeader">
-      <span class="iconLogo" @click="$router.back()"><</span>
-      <span>申请贷款</span>
-    </header>
-    <div class="loanContent">
-      <img src="./img/banner.png">
-      <div class="loanTitle">
-        <span>立即申请贷款</span>
+    <div class="loanWrap" ref="loanWrap">
+      <header class="loanHeader">
+        <span class="iconLogo" @click="$router.back()"><</span>
+        <span>申请贷款</span>
+      </header>
+      <div class="loanContent">
+        <img src="./img/banner.png">
+        <div class="loanTitle">
+          <span>立即申请贷款</span>
+        </div>
+        <ul class="mform">
+          <li v-for="(mformData, index) in mformDatas" :key="index">
+            <span class="description">{{mformData.description}}</span>
+            <input type="text" v-model="mformData.model" :class="{errorColor:mformData.errorColor}"
+                   @blur="loseFocus(mformData.reg,mformData.model,index)"
+                   @input="goodInput(mformData.reg,mformData.model,index)"
+                   :placeholder="mformData.placeholder"
+                   :maxlength="mformData.maxlength"
+                   :name="mformData.name">
+            <span :class="{purposeList:mformData.purposeList}" v-if="!mformData.sendMsg" @click="pullDown(true)">
+            {{mformData.units}}
+          </span>
+            <span :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg"
+                  @click="sendMsg">{{mformData.units}}</span>
+          </li>
+        </ul>
+        <mt-popup v-model="shadeIsShow" position="bottom"  @change.stop.prevent="onValuesChange" class="maskLayer" showToolbar="true">
+          <div class="shadeIsShowHeader">
+          <span @click="pullDown(false)" class="cancel">
+            取消
+          </span>
+            <span @click="pullDown(true)" class="ascertain">
+            确定
+          </span>
+          </div>
+          <mt-picker :itemHeight="70" :slots="slots" class="shadeIsShowContent"></mt-picker>
+        </mt-popup>
+        <div class="propertyCase">
+          <span>资产情况</span>
+          <propertyMod :propertyModDatas="propertyModDatas"/>
+        </div>
+        <split :splitHeight="true"/>
       </div>
-      <ul class="mform">
-        <li v-for="(mformData, index) in mformDatas" :key="index">
-          <span class="description">{{mformData.description}}</span>
-          <input type="text" v-model="mformData.model" :class="{errorColor:mformData.errorColor}"
-                 @blur="loseFocus(mformData.reg,mformData.model,index)"
-                 @input="goodInput(mformData.reg,mformData.model,index)"
-                 :placeholder="mformData.placeholder"
-                 :name="mformData.name">
-          <span :class="{purposeList:mformData.purposeList,sendMsg:mformData.sendMsg}">{{mformData.units}}</span>
-        </li>
-      </ul>
-      <div class="propertyCase">
-        <span>资产情况</span>
-        <propertyMod :propertyModDatas="propertyModDatas"/>
-      </div>
-      <split :splitHeight="true"/>
     </div>
     <footer class="simulationSubmit">
       <a href="javascript:"></a>
@@ -65,11 +83,11 @@
             placeholder: "请输入贷款金额",
             name: "money",
             model: "",
-            purposeList: false,
+            purposeList: true,
             sendMsg: false,
-            units: "元",
+            units: "",
             reg: /^[1-9]\d*$/,
-            errorColor: false
+            errorColor: false,
           },
           {
             description: "贷款用途：",
@@ -113,7 +131,8 @@
             sendMsg: false,
             units: "",
             reg: /^\d{15}|\d{18}$/,
-            errorColor: false
+            errorColor: false,
+            maxlength: "18"
           },
           {
             description: "手机号：",
@@ -124,7 +143,8 @@
             sendMsg: false,
             units: "",
             reg: /^[1][3,4,5,7,8][0-9]{9}$/,
-            errorColor: false
+            errorColor: false,
+            maxlength: "11"
           },
           {
             description: "验证码：",
@@ -133,11 +153,23 @@
             model: "",
             purposeList: false,
             sendMsg: true,
-            units: "",
+            units: "获取验证码",
             reg: /^\d{4}$/,
-            errorColor: false
+            errorColor: false,
+            maxlength: "4"
           },
         ],
+        shadeIsShow: false,
+        slots: [
+          {
+            defaultIndex:1,
+            flex: 1,
+            className:"slots1",
+            values: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+            textAlign: 'center'
+          }
+        ],
+        Arr1:["1000元","1万元","10万元","60万元"]
       }
     },
 
@@ -159,6 +191,9 @@
           }
         }
       },
+      onValuesChange(picker, values) {
+
+      },
       goodInput(reg, flag, index){
         this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (reg.test(flag)) {
@@ -166,6 +201,14 @@
             this.mformDatas[index].errorColor = false
           }
         }
+      },
+      sendMsg(){
+
+      },
+      pullDown(flag){
+        console.log(flag)
+//        this.slots[0].values = this.Arr1
+        this.shadeIsShow = flag
       }
     }
   }
@@ -212,12 +255,12 @@
         .description
           float left
         input
-          margin-top
           font-size (42 /$rem)
           outline: none
           border: none
           text-align right
-          margin-right (30 /$rem)
+          margin-right (20 /$rem)
+          width (540 /$rem)
           &.errorColor
             color #c2181f
         input:
@@ -233,19 +276,20 @@
           color #bbbbbb
         .purposeList
           width (40 /$rem)
-          background: url("./img/fanhuiicon.png") no-repeat scroll right center transparent
+          background: url("./img/fanhuiicon.png") no-repeat right center
           background-size 100%
           padding-right: (40 /$rem)
         .sendMsg
-          display block
+          float right
           margin-top (17 /$rem)
           width (290 /$rem)
           height (86 /$rem)
-          background-image url("./img/huoquyanzhengma.png")
+          background-image url("./img/yuanjiao_1.png")
           background-repeat no-repeat
           background-size 100%
+          color #ffffff
+          line-height (86 /$rem)
           text-align center
-          float right
     .propertyCase
       width (1030 /$rem)
       margin (40 /$rem) (30 /$rem) (40 /$rem)
@@ -264,4 +308,30 @@
       background-image url("./img/shenqing.png")
       background-repeat no-repeat
       background-size 100%
+  .maskLayer
+    font-family "Microsoft YaHei UI"
+    box-sizing border-box
+    width (1080/$rem)
+    height (650/$rem)
+    .shadeIsShowHeader
+      font-size (42/$rem)
+      background-color #e8e8e8
+      height (120/$rem)
+      line-height (120/$rem)
+      .cancel
+        margin-left (50/$rem)
+        float left
+        color #bbb
+      .ascertain
+        margin-right (50/$rem)
+        float right
+        color #c2181f
+    .shadeIsShowContent
+      font-size (52/$rem)
+      .picker-slot
+        div
+          font-size (52/$rem)
+          color #ddd
+          &.picker-selected
+            color #333
 </style>

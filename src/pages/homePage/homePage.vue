@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="homePageWrap" ref="homePageWrap">
       <header class="homePageHeader">
         <img src="./img/banner.png">
       </header>
@@ -28,6 +28,7 @@
   </div>
 </template>
 <script>
+  import BScroll from "better-scroll"
   import headline from "../../components/headline/headline.vue"
   import loanMod from "../../components/loanMod/loanMod.vue"
   import generalizeMod from "../../components/generalizeMod/generalizeMod.vue"
@@ -41,12 +42,12 @@
           {
             imgUrl: "../../static/img/homeImg/daikuanchanpin.png",
             title: "贷款产品",
-            aUrl:"/product"
+            aUrl: "/product"
           },
           {
             imgUrl: "../../static/img/homeImg/kuaisudaikuan.png",
             title: "快速贷款",
-            aUrl:"/loanPage"
+            aUrl: "/loanPage"
           },
         ],
         generalizeModDatas: [
@@ -106,16 +107,21 @@
 
     computed: {},
 
-    mounted(){},
+    mounted(){
+      new BScroll(this.$refs.homePageWrap, {click: true})
+    },
 
     methods: {}
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .homePageHeader
-    img
-      display block
-      width 100%
-      height (500 /$rem)
+  .homePageWrap
+    width 100%
+    height 100%
+    .homePageHeader
+      img
+        display block
+        width 100%
+        height (500 /$rem)
 </style>

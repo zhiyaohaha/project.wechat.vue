@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <router-view/>
+      <router-view />
     </div>
     <div class="footerOccupied">
     </div>
@@ -13,7 +13,6 @@
         <img src="../static/img/homeImg/wode.png">
       </router-link>
     </footer>
-
   </div>
 </template>
 
@@ -26,7 +25,8 @@
     },
     components: {},
     computed: {},
-    mounted(){},
+    mounted(){
+    },
     methods: {}
   }
 
