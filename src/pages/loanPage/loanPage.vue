@@ -1,49 +1,57 @@
 <template>
   <div>
     <div class="loanWrap" ref="loanWrap">
-      <header class="loanHeader">
-        <span class="iconLogo" @click="$router.back()"><</span>
-        <span>申请贷款</span>
-      </header>
-      <div class="loanContent">
-        <img src="./img/banner.png">
-        <div class="loanTitle">
-          <span>立即申请贷款</span>
+      <div>
+        <header class="loanHeader">
+          <span class="iconLogo" @click="$router.back()"><</span>
+          <span>申请贷款</span>
+        </header>
+        <div class="loanContent">
+          <img src="./img/banner.png">
+          <div class="loanTitle">
+            <span>立即申请贷款</span>
+          </div>
+          <ul class="mform">
+            <li v-for="(mformData, index) in mformDatas" :key="index">
+              <span class="description">{{mformData.description}}</span>
+              <input type="text" v-model="mformData.model" :class="{errorColor:mformData.errorColor}"
+                     @blur="loseFocus(mformData.reg,mformData.model,index)"
+                     @input="goodInput(mformData.reg,mformData.model,index)"
+                     :placeholder="mformData.placeholder"
+                     :maxlength="mformData.maxlength"
+                     :name="mformData.name">
+              <span :class="{purposeList:mformData.purposeList}" v-if="!mformData.sendMsg && !mformData.units"
+                    @click="pullDown(true,index)">
+                {{mformData.units}}
+              </span>
+              <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
+                    @click="sendMsg(index)">
+                {{mformData.units}}
+              </a>
+            </li>
+          </ul>
+          <div class="propertyCase">
+            <span>资产情况</span>
+            <propertyMod :propertyModDatas="propertyModDatas"/>
+          </div>
+          <split :splitHeight="true"/>
         </div>
-        <ul class="mform">
-          <li v-for="(mformData, index) in mformDatas" :key="index">
-            <span class="description">{{mformData.description}}</span>
-            <input type="text" v-model="mformData.model" :class="{errorColor:mformData.errorColor}"
-                   @blur="loseFocus(mformData.reg,mformData.model,index)"
-                   @input="goodInput(mformData.reg,mformData.model,index)"
-                   :placeholder="mformData.placeholder"
-                   :maxlength="mformData.maxlength"
-                   :name="mformData.name">
-            <span :class="{purposeList:mformData.purposeList}" v-if="!mformData.sendMsg" @click="pullDown(true)">
-            {{mformData.units}}
-          </span>
-            <span :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg"
-                  @click="sendMsg">{{mformData.units}}</span>
-          </li>
-        </ul>
-        <mt-popup v-model="shadeIsShow" position="bottom"  @change.stop.prevent="onValuesChange" class="maskLayer" showToolbar="true">
-          <div class="shadeIsShowHeader">
+        <div class="footerOccupied"></div>
+      </div>
+    </div>
+    <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
+              showToolbar="true">
+      <div class="shadeIsShowHeader">
           <span @click="pullDown(false)" class="cancel">
             取消
           </span>
-            <span @click="pullDown(true)" class="ascertain">
+        <span @click="pullDown(false)" class="ascertain">
             确定
           </span>
-          </div>
-          <mt-picker :itemHeight="70" :slots="slots" class="shadeIsShowContent"></mt-picker>
-        </mt-popup>
-        <div class="propertyCase">
-          <span>资产情况</span>
-          <propertyMod :propertyModDatas="propertyModDatas"/>
-        </div>
-        <split :splitHeight="true"/>
       </div>
-    </div>
+      <mt-picker :itemHeight="70" :slots="slots" @change="onValuesChange"
+                 class="shadeIsShowContent"></mt-picker>
+    </mt-popup>
     <footer class="simulationSubmit">
       <a href="javascript:"></a>
     </footer>
@@ -52,6 +60,8 @@
 
 <script>
   import propertyMod from "../../components/propertyMod/propertyMod.vue"
+  import BScroll from "better-scroll"
+  import { MessageBox } from "mint-ui"
   export default {
     data () {
       return {
@@ -86,7 +96,7 @@
             purposeList: true,
             sendMsg: false,
             units: "",
-            reg: /^[1-9]\d*$/,
+            reg: /^[\u4E00-\u9FA5A-Za-z0-9_]+$/,
             errorColor: false,
           },
           {
@@ -108,7 +118,7 @@
             purposeList: true,
             sendMsg: false,
             units: "",
-            reg: /^\d{4}-\d{1,2}-\d{1,2}/,
+            reg: /^\d{4}-\d{1,2}/,
             errorColor: false
           },
           {
@@ -160,16 +170,19 @@
           },
         ],
         shadeIsShow: false,
+        mformDatasInd: 0,
         slots: [
           {
-            defaultIndex:1,
+            defaultIndex: 1,
             flex: 1,
-            className:"slots1",
-            values: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+            className: "slots1",
+            values: [],
             textAlign: 'center'
           }
         ],
-        Arr1:["1000元","1万元","10万元","60万元"]
+        moneyArr: ["1000元", "1万元", "10万元", "60万元"],
+        consumeArr: ["买车", "买房", "消费", "娱乐"],
+        deadlineArr: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06']
       }
     },
 
@@ -178,12 +191,21 @@
     },
 
     computed: {},
-
+// 滑动事件
     mounted(){
-
+      this.__boxheight(this.$refs.loanWrap); //执行函数
+      window.onresize = this.__boxheight(this.$refs.loanWrap); //窗口或框架被调整大小时执行
+      this.loanWrap = new BScroll(this.$refs.loanWrap, {click: true, momentum: true})
+      this.loanWrap.refresh()
     },
-
+    updated(){
+      this.__boxheight(this.$refs.loanWrap); //执行函数
+      window.onresize = this.__boxheight(this.$refs.loanWrap)
+      this.loanWrap = new BScroll(this.$refs.loanWrap, {click: true, momentum: true})
+      this.loanWrap.refresh()
+    },
     methods: {
+//      错误变色
       loseFocus(reg, flag, index){
         if (!reg.test(flag)) {
           for (let i = 0; i < this.mformDatas.length; i++) {
@@ -191,30 +213,113 @@
           }
         }
       },
+//      输入框值
       onValuesChange(picker, values) {
-
+        for (let i = 0; i < this.mformDatas.length; i++) {
+          this.mformDatas[this.mformDatasInd].model = picker.getValues()
+        }
       },
+//      输入正确变色
       goodInput(reg, flag, index){
-        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
+//        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (reg.test(flag)) {
           for (let i = 0; i < this.mformDatas.length; i++) {
             this.mformDatas[index].errorColor = false
           }
         }
       },
-      sendMsg(){
-
+//      验证码逻辑
+      sendMsg(index){
+        let mformData = this.mformDatas[5]
+        if (mformData.model && !mformData.errorColor) {
+          MessageBox({
+            title: '提示',
+            showInput:true,
+            message: '<img src="../../../static/img/homeImg/shouye.png" class="verificationImg" @click="changeLevel"> ',
+            showCancelButton: true,
+            inputType:"text",
+            inputValue:""
+          })
+        } else {
+          MessageBox({
+            title: '提示',
+            message: '请正确输入手机号',
+            showCancelButton: false
+          })
+        }
       },
-      pullDown(flag){
-        console.log(flag)
-//        this.slots[0].values = this.Arr1
+//      三角点击
+      pullDown(flag, index){
+        this.mformDatasInd = index
+        switch (index) {
+          case 0:
+            this.slots[0].values = this.moneyArr
+            break
+          case 1:
+            this.slots[0].values = this.consumeArr
+            break
+          case 2:
+            this.slots[0].values = this.deadlineArr
+            break
+          default:
+        }
         this.shadeIsShow = flag
+      },
+      changeLevel(){
+        console.log("点击了图片")
       }
     }
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .mint-msgbox
+    height (450 /$rem)
+    font-size (46 /$rem)
+    border-radius (20 /$rem)
+    .mint-msgbox-header
+      padding: (40 /$rem) 0 0
+      .mint-msgbox-title
+        font-size (46 /$rem)
+    .mint-msgbox-content
+      height (228/$rem)
+      text-align center
+      line-height (228/$rem)
+      .mint-msgbox-message
+        font-size (42 /$rem)
+        .verificationImg
+          float left
+          margin-top (64/$rem)
+          width (250/$rem)
+          height (100/$rem)
+          display inline-block
+          margin-left (190/$rem)
+      .mint-msgbox-input
+        position relative
+        margin-top (64/$rem)
+        box-sizing border-box
+        float left
+        display inline-block
+        margin-left (50/$rem)
+        width (200/$rem)
+        height (100/$rem)
+        &>input
+          height (100/$rem)
+          position absolute
+          top 0
+          left 0
+    .mint-msgbox-btns
+      height (136 /$rem)
+      line-height (136 /$rem)
+      .mint-msgbox-confirm
+        font-size (46 /$rem)
+      .mint-msgbox-cancel
+        font-size (46 /$rem)
+        color #333
+  .footerOccupied
+    width (1080 /$rem)
+    height (146 /$rem)
+
   .loanHeader
     width (1080 /$rem)
     height (130 /$rem)
@@ -261,6 +366,8 @@
           text-align right
           margin-right (20 /$rem)
           width (540 /$rem)
+          caret-color #000
+          color #333
           &.errorColor
             color #c2181f
         input:
@@ -308,29 +415,30 @@
       background-image url("./img/shenqing.png")
       background-repeat no-repeat
       background-size 100%
+
   .maskLayer
     font-family "Microsoft YaHei UI"
     box-sizing border-box
-    width (1080/$rem)
-    height (650/$rem)
+    width (1080 /$rem)
+    height (650 /$rem)
     .shadeIsShowHeader
-      font-size (42/$rem)
+      font-size (42 /$rem)
       background-color #e8e8e8
-      height (120/$rem)
-      line-height (120/$rem)
+      height (120 /$rem)
+      line-height (120 /$rem)
       .cancel
-        margin-left (50/$rem)
+        margin-left (50 /$rem)
         float left
         color #bbb
       .ascertain
-        margin-right (50/$rem)
+        margin-right (50 /$rem)
         float right
         color #c2181f
     .shadeIsShowContent
-      font-size (52/$rem)
+      font-size (52 /$rem)
       .picker-slot
         div
-          font-size (52/$rem)
+          font-size (52 /$rem)
           color #ddd
           &.picker-selected
             color #333

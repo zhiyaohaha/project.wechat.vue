@@ -1,34 +1,38 @@
 <template>
   <div>
     <div class="homePageWrap" ref="homePageWrap">
-      <header class="homePageHeader">
-        <img src="./img/banner.png">
-      </header>
-      <split/>
-      <div class="homePageContent">
-        <headline headlineTitle="贷款"/>
-        <loanMod :loanModDatas="loanModDatas"/>
+      <div>
+        <header class="homePageHeader">
+          <img src="./img/banner.png">
+        </header>
         <split/>
-        <headline headlineTitle="推广返佣"/>
-        <generalizeMod :generalizeModDatas="generalizeModDatas"/>
-        <split/>
-        <headline headlineTitle="信用卡"/>
-        <generalizeMod :generalizeModDatas="visaDatas"/>
-        <split/>
-        <headline headlineTitle="热门贷款推荐"/>
-        <recommendMod/>
-        <footline footlineTitle="全部热门贷款>>"/>
-        <split/>
-        <headline headlineTitle="热门信用卡推荐"/>
-        <creditCardMod :creditCardModDatas="creditCardModDatas"/>
-        <footline footlineTitle="全部热门卡片>>"/>
-        <split/>
+        <div class="homePageContent">
+          <headline headlineTitle="贷款"/>
+          <loanMod :loanModDatas="loanModDatas"/>
+          <split/>
+          <headline headlineTitle="推广返佣"/>
+          <generalizeMod :generalizeModDatas="generalizeModDatas"/>
+          <split/>
+          <headline headlineTitle="信用卡"/>
+          <generalizeMod :generalizeModDatas="visaDatas"/>
+          <split/>
+          <headline headlineTitle="热门贷款推荐"/>
+          <recommendMod/>
+          <footline footlineTitle="全部热门贷款>>"/>
+          <split/>
+          <headline headlineTitle="热门信用卡推荐"/>
+          <creditCardMod :creditCardModDatas="creditCardModDatas"/>
+          <footline footlineTitle="全部热门卡片>>"/>
+          <split/>
+        </div>
+        <div class="footerOccupied"></div>
       </div>
     </div>
   </div>
 </template>
 <script>
   import BScroll from "better-scroll"
+  import { MessageBox } from "mint-ui"
   import headline from "../../components/headline/headline.vue"
   import loanMod from "../../components/loanMod/loanMod.vue"
   import generalizeMod from "../../components/generalizeMod/generalizeMod.vue"
@@ -108,20 +112,25 @@
     computed: {},
 
     mounted(){
-      new BScroll(this.$refs.homePageWrap, {click: true})
+      this.__boxheight(this.$refs.homePageWrap); //执行函数
+      window.onresize =this.boxheight; //窗口或框架被调整大小时执行
+      this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true, momentum: true})
+      this.homePageWrap.refresh()
     },
 
-    methods: {}
+    methods: {
+
+    }
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .homePageWrap
-    width 100%
-    height 100%
-    .homePageHeader
-      img
-        display block
-        width 100%
-        height (500 /$rem)
+  .footerOccupied
+    width (1080 /$rem)
+    height (146 /$rem)
+  .homePageHeader
+    img
+      display block
+      width 100%
+      height (500 /$rem)
 </style>
