@@ -33,12 +33,13 @@
             <img src="./img/huisekuang.png" v-show="!imgIsShow" @click="notarize">
             <span>我已阅读并同意《XXXXXX协议》</span>
           </a>
-          <a href="javascript:;" class="approve"></a>
+          <a href="javascript:;" class="approve" @click="approve"></a>
         </div>
         <div class="footerOccupied"></div>
       </div>
     </div>
-    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
+    <verification v-show="verificationShow" :changeShow="changeShow" :time="time"
+                  :verificationCancel="verificationCancel"/>
     <footer class="myFooter" v-show="myFooterIsShow">
       <span>申请贷款前请进新手机认证，仅需认证一次</span>
     </footer>
@@ -46,6 +47,7 @@
 </template>
 <script>
   import { MessageBox } from "mint-ui"
+  import { mapState } from "vuex"
   import BScroll from "better-scroll"
   import verification from "../../components/verification/verification.vue"
   export default {
@@ -60,12 +62,15 @@
         codeColor: false,
         myFooterIsShow: true,
         verificationShow: false,
+        time: new Date().getTime(),
       }
     },
     components: {
       verification
     },
-    computed: {},
+    computed: {
+      ...mapState(["verification", "phoneNote"])
+    },
     mounted(){
       this.__boxheight(this.$refs.myWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
@@ -73,22 +78,70 @@
         this.myWrap = new BScroll(this.$refs.myWrap, {click: true, momentum: false})
         this.myWrap.refresh()
       })
-      MessageBox({
-        title: '提交失败',
-        message: '短信验证码错误',
-        showCancelButton: false
-      })
+      /*MessageBox({
+       title: '提交失败',
+       message: '短信验证码错误',
+       showCancelButton: false
+       })*/
     },
     updated(){
       this.__boxheight(this.$refs.myWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.myWrap);
     },
     methods: {
+      //      发送短信验证码请求
+      __phoneNote(){
+        if (this.verification.success) {
+          MessageBox({
+            title: '提示',
+            message: '短信验证码已发送，有效时间5分钟',
+            showCancelButton: false
+          })
+          clearInterval(this.timer1)
+        } else {
+          MessageBox({
+            title: '提交失败',
+            message: '图片验证码输入错误',
+            showCancelButton: false
+          })
+          clearInterval(this.timer1)
+        }
+      },
+//    申请逻辑
+      approve(){
+        let data = {
+          phone: this.cellphoneNum,
+          verifyCode: this.authCode,
+          firstLevelId: "",
+          thirdPlatFormBind: true,//第三方绑定接口
+          openId: "123456", //第三方OpenId
+          thirdLoginType: "",  //第三方登录代号
+          head: "",//第三方登录头像
+          nickName: "",//第三方登录昵称
+        }
+        this.$store.dispatch("postPhone", {data})
+        this.timer2 = setTimeout(() => {
+          if (this.phoneNote.success) {
+            clearInterval(this.timer2)
+          } else {
+            MessageBox({
+              title: '提交失败',
+              message: '短信验证码输入错误',
+              showCancelButton: false
+            })
+            clearInterval(this.timer2)
+          }
+        }, 500)
+
+      },
 //      验证码
       changeShow(){
         this.verificationShow = false
       },
-      verificationCancel(flag, validateCode){
+
+      //发送图片验证码请求
+      verificationCancel(flag, validateCode, time){
+        this.time = new Date().getTime()
         this.verificationShow = false
         if (flag) {
           let data = {
@@ -98,6 +151,9 @@
             needvalidateCode: true
           }
           this.$store.dispatch("postSendMsg", {data})
+          this.timer1 = setTimeout(() => {
+            this.__phoneNote()
+          }, 500)
         }
       },
 //      选中切换

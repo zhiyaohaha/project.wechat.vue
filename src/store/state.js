@@ -1,5 +1,6 @@
 export default {
   appRouteIsShow:true,
   verification:null,
-  openID:null
+  openID:null,
+  phoneNote:null
 }

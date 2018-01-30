@@ -22,10 +22,9 @@
 
 <script>
   export default {
-    props: ["changeShow","verificationCancel"],
+    props: ["changeShow","verificationCancel","time"],
     data () {
       return {
-        time: new Date().getTime(),
         validateCode:""
       }
     },
@@ -45,7 +44,7 @@
     methods: {
       clickMap(){
         this.time = new Date().getTime()
-      }
+      },
     }
   }
 
@@ -90,7 +89,6 @@
           float left
           outline: none
           margin-left (45/$rem)
-          border: none
           border 2px solid #bbb
           font-size (36/$rem)
           height (87.5/$rem)

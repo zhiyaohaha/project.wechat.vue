@@ -33,7 +33,7 @@
       <router-link to="/homePage">
         <img src="../../../static/img/homeImg/shouye.png">
       </router-link>
-      <router-link to="/myPage">
+      <router-link to="/phoneApprove">
         <img src="../../../static/img/homeImg/wode.png">
       </router-link>
     </footer>
@@ -48,6 +48,7 @@
   import recommendMod from "../../components/recommendMod/recommendMod.vue"
   import footline from "../../components/footline/footline.vue"
   import creditCardMod from "../../components/creditCardMod/creditCardMod.vue"
+  import md5 from 'js-md5'
   export default {
     data () {
       return {
@@ -126,7 +127,11 @@
       window.onresize =this.boxheight; //窗口或框架被调整大小时执行
       this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true, momentum: true})
       this.homePageWrap.refresh()
-      this.$store.dispatch("getOpenid",{})
+      let data = {
+        openId:"123456",
+        thirdLoginType:"ThirdPlatForm.WeChat"
+      }
+      this.$store.dispatch("getOpenid",{data})
     },
     methods: {
 

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 const homePage = () => import('../pages/homePage/homePage.vue')
-const myPage = () => import('../pages/myPage/myPage.vue')
+const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
 const loanPage = () => import('../pages/loanPage/loanPage.vue')
 Vue.use(Router)
 
@@ -17,8 +17,8 @@ export default new Router({
       meta: {keepAlive: true, isTop: true}
     },
     {
-      path: '/myPage',
-      component: myPage,
+      path: '/phoneApprove',
+      component: phoneApprove,
       meta: {keepAlive: true, isTop: true}
     },
     {

@@ -1,10 +1,15 @@
 export default {
+  GET_OPENID(state,{result}){
+    console.log(result)
+    state.openID = result
+  },
   POST_SENDMSG(state,{result}){
     console.log(result)
     state.verification = result
   },
-  GET_OPENID(state,{result}){
+
+  POST_PHONE(state,{result}){
     console.log(result)
-    state.openID = result
+    state.phoneNote = result
   },
 }

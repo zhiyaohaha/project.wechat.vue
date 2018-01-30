@@ -28,10 +28,3 @@ export const postAuth = function(param) {
   _param.sign = md5(str + timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp");
   return Qs.stringify(_param)
 }
-export const getAuth = function (param) {
-  let _param = ""
-  let timestamp = (new Date().getTime()).toString().substr(0, 10)
-  let str = param
-  let sign = param ? md5(str + timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp") :md5(timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp")
-  return _param ? str + '&timestamp=' + timestamp + '&sign=' + sign : 'timestamp=' + timestamp + '&sign=' + sign;
-}

@@ -1,19 +1,29 @@
 import {
   postSendMsg,
-  getOpenid
+  getOpenid,
+  postPhone
 } from '../api'
+let apiPrefix = 'http://192.168.6.66:8001'
 export default {
-  postSendMsg({commit}, {data}) {
+  async postSendMsg({commit}, {data}) {
     // debugger
-    let apiPrefix = 'http://192.168.6.66:8001/api/SMS/SendVerifyCode'
-    const result = postSendMsg(apiPrefix, data, "post")
-    commit('POST_SENDMSG', {result})
+    let url = apiPrefix + '/api/SMS/SendVerifyCode'
+    const result = await postSendMsg(url, data)
+    if(result) {
+      commit('POST_SENDMSG', {result})
+    }
   },
-  getOpenid({commit}, {data}) {
+  async getOpenid({commit}, {data}) {
     // debugger
-    let apiPrefix = 'http://192.168.6.66:8001/api/OfficialAccounts/ThridPlatFormLogin'
-    const result = getOpenid(apiPrefix, data)
+    let url = apiPrefix + '/api/OfficialAccounts/ThridPlatFormLogin'
+    const result = await getOpenid(url, data)
     commit('GET_OPENID', {result})
+  },
+  async postPhone({commit}, {data}) {
+    // debugger
+    let url = apiPrefix + '/api/OfficialAccounts/LoginByVerifyCode'
+    const result = await postPhone(url, data)
+    commit('POST_PHONE', {result})
   },
 }
 
