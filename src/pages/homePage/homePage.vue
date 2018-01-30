@@ -8,7 +8,7 @@
         <split/>
         <div class="homePageContent">
           <headline headlineTitle="贷款"/>
-          <loanMod :loanModDatas="loanModDatas"/>
+          <loanMod :loanModDatas="loanModDatas" />
           <split/>
           <headline headlineTitle="推广返佣"/>
           <generalizeMod :generalizeModDatas="generalizeModDatas"/>
@@ -25,9 +25,18 @@
           <footline footlineTitle="全部热门卡片>>"/>
           <split/>
         </div>
-        <div class="footerOccupied"></div>
+        <div class="footerOccupied">
+        </div>
       </div>
     </div>
+    <footer class="footerTap" v-if="$route.meta.keepAlive">
+      <router-link to="/homePage">
+        <img src="../../../static/img/homeImg/shouye.png">
+      </router-link>
+      <router-link to="/myPage">
+        <img src="../../../static/img/homeImg/wode.png">
+      </router-link>
+    </footer>
   </div>
 </template>
 <script>
@@ -112,12 +121,13 @@
     computed: {},
 
     mounted(){
+
       this.__boxheight(this.$refs.homePageWrap); //执行函数
       window.onresize =this.boxheight; //窗口或框架被调整大小时执行
       this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true, momentum: true})
       this.homePageWrap.refresh()
+      this.$store.dispatch("getOpenid",{})
     },
-
     methods: {
 
     }

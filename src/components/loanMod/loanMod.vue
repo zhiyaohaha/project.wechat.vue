@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="loanModList">
-      <li v-for="(loanMod,index) in loanModDatas" :key="index">
+      <li v-for="(loanMod,index) in loanModDatas" :key="index" @click="changeParameter()">
         <router-link :to="loanMod.aUrl">
           <img :src="loanMod.imgUrl">
           <span>{{loanMod.title}}</span>
@@ -26,7 +26,11 @@
 
     mounted(){},
 
-    methods: {}
+    methods: {
+      changeParameter(){
+
+      }
+    }
   }
 
 </script>

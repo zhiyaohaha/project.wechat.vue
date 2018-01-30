@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import homePage from '../pages/homePage/homePage.vue'
-import myPage from '../pages/myPage/myPage.vue'
-import loanPage from '../pages/loanPage/loanPage.vue'
-
+const homePage = () => import('../pages/homePage/homePage.vue')
+const myPage = () => import('../pages/myPage/myPage.vue')
+const loanPage = () => import('../pages/loanPage/loanPage.vue')
 Vue.use(Router)
 
 export default new Router({

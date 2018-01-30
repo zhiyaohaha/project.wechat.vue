@@ -1,16 +1,10 @@
 <template>
   <div>
     <div class="content">
-      <router-view />
+      <keep-alive>
+        <router-view />
+      </keep-alive>
     </div>
-    <footer class="footerTap">
-      <router-link to="/homePage">
-        <img src="../static/img/homeImg/shouye.png">
-      </router-link>
-      <router-link to="/myPage">
-        <img src="../static/img/homeImg/wode.png">
-      </router-link>
-    </footer>
   </div>
 </template>
 
@@ -24,8 +18,11 @@
     components: {},
     computed: {},
     mounted(){
+
     },
-    methods: {}
+    methods: {
+
+    }
   }
 
 </script>

@@ -2,10 +2,10 @@
   <div>
     <div ref="myWrap">
       <div>
-        <header class="myHeader">
+        <!--<header class="myHeader">
           <span class="iconLogo" @click="$router.back()"><</span>
           <span>手机认证</span>
-        </header>
+        </header>-->
         <div class="myContent">
           <img src="./img/banner.png">
           <split/>
@@ -14,6 +14,7 @@
               <span class="description">手机号：</span>
               <input type="text" v-model="cellphoneNum" @blur="loseFocus(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)"
                      @input="goodInput(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)" maxlength="11"
+                     @focus="isFooter"
                      :placeholder="phoneTooltip" :class="{errorColor}"
                      name="cellphoneNum">
             </li>
@@ -22,8 +23,9 @@
               <input type="text" v-model="authCode" @blur="loseFocus(/^\d{4}$/,authCode,1)"
                      @input="goodInput(/^\d{4}$/,authCode,1)" maxlength="4"
                      :placeholder="codeTooltip" :class="{errorColor:codeColor}"
+                     @focus="isFooter"
                      name="authCode">
-              <span class="sendMsg">获取验证码</span>
+              <span class="sendMsg" @click="sendMsg">获取验证码</span>
             </li>
           </ul>
           <a href="javascript:;" class="protocol">
@@ -36,7 +38,8 @@
         <div class="footerOccupied"></div>
       </div>
     </div>
-    <footer class="myFooter">
+    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
+    <footer class="myFooter" v-show="myFooterIsShow">
       <span>申请贷款前请进新手机认证，仅需认证一次</span>
     </footer>
   </div>
@@ -44,6 +47,7 @@
 <script>
   import { MessageBox } from "mint-ui"
   import BScroll from "better-scroll"
+  import verification from "../../components/verification/verification.vue"
   export default {
     data () {
       return {
@@ -53,14 +57,22 @@
         codeTooltip: "请输入验证码",
         phoneTooltip: "请填写你的手机号",
         errorColor: false,
-        codeColor: false
+        codeColor: false,
+        myFooterIsShow: true,
+        verificationShow: false,
       }
     },
-    components: {},
+    components: {
+      verification
+    },
     computed: {},
     mounted(){
       this.__boxheight(this.$refs.myWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
+      this.$nextTick(() => {
+        this.myWrap = new BScroll(this.$refs.myWrap, {click: true, momentum: false})
+        this.myWrap.refresh()
+      })
       MessageBox({
         title: '提交失败',
         message: '短信验证码错误',
@@ -70,13 +82,31 @@
     updated(){
       this.__boxheight(this.$refs.myWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.myWrap);
-      new BScroll(this.$refs.myWrap, {click: true, momentum: false})
     },
     methods: {
+//      验证码
+      changeShow(){
+        this.verificationShow = false
+      },
+      verificationCancel(flag, validateCode){
+        this.verificationShow = false
+        if (flag) {
+          let data = {
+            code: 'LoginRegistVerifyCode',
+            mobilePhone: this.cellphoneNum,
+            validateCode: validateCode,
+            needvalidateCode: true
+          }
+          this.$store.dispatch("postSendMsg", {data})
+        }
+      },
+//      选中切换
       notarize(){
         this.imgIsShow = !this.imgIsShow
       },
+//      错误变红
       loseFocus(reg, flag, num){
+        this.myFooterIsShow = true
         if (!reg.test(flag)) {
           if (num == 1) {
             this.codeColor = true
@@ -85,6 +115,10 @@
           }
         }
       },
+      isFooter(){
+        this.myFooterIsShow = false
+      },
+//      正确变色
       goodInput(reg, flag, num){
         if (reg.test(flag)) {
           if (num == 1) {
@@ -93,7 +127,19 @@
             this.errorColor = false
           }
         }
-      }
+      },
+//      验证码逻辑
+      sendMsg(){
+        if (this.cellphoneNum && !this.errorColor) {
+          this.verificationShow = true
+        } else {
+          MessageBox({
+            title: '提示',
+            message: '请正确输入手机号',
+            showCancelButton: false
+          })
+        }
+      },
     }
   }
 </script>
@@ -211,7 +257,9 @@
       .mint-msgbox-title
         font-size (46 /$rem)
     .mint-msgbox-content
-      padding: (94 /$rem) 20px (94 /$rem)
+      height (228 /$rem)
+      text-align center
+      line-height (228 /$rem)
       .mint-msgbox-message
         font-size (42 /$rem)
     .mint-msgbox-btns

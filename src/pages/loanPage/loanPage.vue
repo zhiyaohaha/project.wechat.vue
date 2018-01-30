@@ -2,10 +2,10 @@
   <div>
     <div class="loanWrap" ref="loanWrap">
       <div>
-        <header class="loanHeader">
+        <!--<header class="loanHeader">
           <span class="iconLogo" @click="$router.back()"><</span>
           <span>申请贷款</span>
-        </header>
+        </header>-->
         <div class="loanContent">
           <img src="./img/banner.png">
           <div class="loanTitle">
@@ -17,6 +17,7 @@
               <input type="text" v-model="mformData.model" :class="{errorColor:mformData.errorColor}"
                      @blur="loseFocus(mformData.reg,mformData.model,index)"
                      @input="goodInput(mformData.reg,mformData.model,index)"
+                     @focus="isFooter"
                      :placeholder="mformData.placeholder"
                      :maxlength="mformData.maxlength"
                      :name="mformData.name">
@@ -25,7 +26,7 @@
                 {{mformData.units}}
               </span>
               <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
-                    @click="sendMsg(index)">
+                 @click="sendMsg()">
                 {{mformData.units}}
               </a>
             </li>
@@ -36,7 +37,8 @@
           </div>
           <split :splitHeight="true"/>
         </div>
-        <div class="footerOccupied"></div>
+        <div class="footerOccupied">
+        </div>
       </div>
     </div>
     <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
@@ -52,7 +54,8 @@
       <mt-picker :itemHeight="70" :slots="slots" @change="onValuesChange"
                  class="shadeIsShowContent"></mt-picker>
     </mt-popup>
-    <footer class="simulationSubmit">
+    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
+    <footer class="simulationSubmit" v-show="simulationSubmitIsShow">
       <a href="javascript:"></a>
     </footer>
   </div>
@@ -60,6 +63,7 @@
 
 <script>
   import propertyMod from "../../components/propertyMod/propertyMod.vue"
+  import verification from "../../components/verification/verification.vue"
   import BScroll from "better-scroll"
   import { MessageBox } from "mint-ui"
   export default {
@@ -182,34 +186,50 @@
         ],
         moneyArr: ["1000元", "1万元", "10万元", "60万元"],
         consumeArr: ["买车", "买房", "消费", "娱乐"],
-        deadlineArr: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06']
+        deadlineArr: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+        simulationSubmitIsShow:true,
+        verificationShow:false
       }
     },
 
     components: {
-      propertyMod
+      propertyMod,verification
     },
 
-    computed: {},
+    computed: {
+
+    },
 // 滑动事件
     mounted(){
       this.__boxheight(this.$refs.loanWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.loanWrap); //窗口或框架被调整大小时执行
-      this.loanWrap = new BScroll(this.$refs.loanWrap, {click: true, momentum: true})
-      this.loanWrap.refresh()
+      this.$nextTick(() => {
+        this.loanWrap = new BScroll(this.$refs.loanWrap, {click: true, momentum: true})
+        this.loanWrap.refresh()
+        this.$route.meta.keepAlive = false
+      })
     },
     updated(){
       this.__boxheight(this.$refs.loanWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.loanWrap)
-      this.loanWrap = new BScroll(this.$refs.loanWrap, {click: true, momentum: true})
-      this.loanWrap.refresh()
+//      this.loanWrap = new BScroll(this.$refs.loanWrap, {click: true, momentum: true})
+//      this.loanWrap.refresh()
     },
     methods: {
+//      输入框焦点时底部消失
+      isFooter(){
+        this.simulationSubmitIsShow = false
+      },
 //      错误变色
       loseFocus(reg, flag, index){
+        this.simulationSubmitIsShow = true
         if (!reg.test(flag)) {
           for (let i = 0; i < this.mformDatas.length; i++) {
             this.mformDatas[index].errorColor = true
+          }
+        }else {
+          for (let i = 0; i < this.mformDatas.length; i++) {
+            this.mformDatas[index].errorColor = false
           }
         }
       },
@@ -229,17 +249,10 @@
         }
       },
 //      验证码逻辑
-      sendMsg(index){
+      sendMsg(){
         let mformData = this.mformDatas[5]
         if (mformData.model && !mformData.errorColor) {
-          MessageBox({
-            title: '提示',
-            showInput:true,
-            message: '<img src="../../../static/img/homeImg/shouye.png" class="verificationImg" @click="changeLevel"> ',
-            showCancelButton: true,
-            inputType:"text",
-            inputValue:""
-          })
+          this.verificationShow = true
         } else {
           MessageBox({
             title: '提示',
@@ -265,14 +278,29 @@
         }
         this.shadeIsShow = flag
       },
-      changeLevel(){
-        console.log("点击了图片")
-      }
+//     图片验证码
+      changeShow(){
+        this.verificationShow = false
+      },
+      verificationCancel(flag){
+        this.verificationShow = false
+      },
     }
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .footerTap
+    position fixed
+    bottom 0
+    left 0
+    z-index 10
+    a
+      float left
+      img
+        display block
+        width (540/$rem)
+        height (146/$rem)
   .mint-msgbox
     height (450 /$rem)
     font-size (46 /$rem)
@@ -282,29 +310,22 @@
       .mint-msgbox-title
         font-size (46 /$rem)
     .mint-msgbox-content
-      height (228/$rem)
+      height (228 /$rem)
       text-align center
-      line-height (228/$rem)
+      line-height (228 /$rem)
       .mint-msgbox-message
         font-size (42 /$rem)
-        .verificationImg
-          float left
-          margin-top (64/$rem)
-          width (250/$rem)
-          height (100/$rem)
-          display inline-block
-          margin-left (190/$rem)
       .mint-msgbox-input
         position relative
-        margin-top (64/$rem)
+        margin-top (64 /$rem)
         box-sizing border-box
         float left
         display inline-block
-        margin-left (50/$rem)
-        width (200/$rem)
-        height (100/$rem)
-        &>input
-          height (100/$rem)
+        margin-left (50 /$rem)
+        width (200 /$rem)
+        height (100 /$rem)
+        & > input
+          height (100 /$rem)
           position absolute
           top 0
           left 0
@@ -316,6 +337,7 @@
       .mint-msgbox-cancel
         font-size (46 /$rem)
         color #333
+
   .footerOccupied
     width (1080 /$rem)
     height (146 /$rem)
