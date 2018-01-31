@@ -69,20 +69,25 @@
       verification
     },
     computed: {
-      ...mapState(["verification", "phoneNote"])
+      ...mapState(["verification", "phoneNote","openID"])
+    },
+    beforeMount(){
+
     },
     mounted(){
-      this.__boxheight(this.$refs.myWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
-      this.$nextTick(() => {
-        this.myWrap = new BScroll(this.$refs.myWrap, {click: true, momentum: false})
-        this.myWrap.refresh()
-      })
-      /*MessageBox({
-       title: '提交失败',
-       message: '短信验证码错误',
-       showCancelButton: false
-       })*/
+      if(this.openID){
+        if(this.openID.success){
+          console.log(111)
+          this.$router.replace('/myPage')
+        }else {
+          this.__boxheight(this.$refs.myWrap); //执行函数
+          window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
+          this.$nextTick(() => {
+            this.myWrap = new BScroll(this.$refs.myWrap, {click: true, momentum: false})
+            this.myWrap.refresh()
+          })
+        }
+      }
     },
     updated(){
       this.__boxheight(this.$refs.myWrap); //执行函数
@@ -115,20 +120,16 @@
           firstLevelId: "",
           thirdPlatFormBind: true,//第三方绑定接口
           openId: "123456", //第三方OpenId
-          thirdLoginType: "",  //第三方登录代号
+          thirdLoginType: "ThirdPlatForm.WeChat",  //第三方登录代号
           head: "",//第三方登录头像
           nickName: "",//第三方登录昵称
+          source:"OfficialAccounts"
         }
         this.$store.dispatch("postPhone", {data})
         this.timer2 = setTimeout(() => {
           if (this.phoneNote.success) {
             clearInterval(this.timer2)
-            MessageBox({
-              title: '提交失败',
-              message: '短信验证码输入成功，耐心等候页面跳转',
-              showCancelButton: false
-            })
-            clearInterval(this.timer2)
+            this.$router.replace('/myPage')
           } else {
             MessageBox({
               title: '提交失败',

@@ -8,17 +8,18 @@ import store from './store'
 import split from './components/split/split.vue'
 import {
   __boxheight,
-  postAuth
+  postAuth,
+  changeTitle
 } from '../static/js/viewportWidth.js'
 import '../static/css/reset.styl'
 import '../static/js/adaptive'
 import 'mint-ui/lib/style.css'
-
 Vue.component('split', split)
 Vue.component(Popup.name, Popup)
 Vue.component(Picker.name, Picker)
 Vue.prototype.__boxheight = __boxheight
-Vue.prototype.postAuth = postAuth
+Vue.prototype.__boxheight = __boxheight
+Vue.prototype.changeTitle = changeTitle
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -26,3 +27,4 @@ new Vue({
   router,
   store,
 })
+

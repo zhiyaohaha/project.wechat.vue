@@ -1,5 +1,8 @@
 <template>
   <div>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
     <div class="homePageWrap" ref="homePageWrap">
       <div>
         <header class="homePageHeader">
@@ -8,7 +11,7 @@
         <split/>
         <div class="homePageContent">
           <headline headlineTitle="贷款"/>
-          <loanMod :loanModDatas="loanModDatas" />
+          <loanMod :loanModDatas="loanModDatas"/>
           <split/>
           <headline headlineTitle="推广返佣"/>
           <generalizeMod :generalizeModDatas="generalizeModDatas"/>
@@ -29,26 +32,19 @@
         </div>
       </div>
     </div>
-    <footer class="footerTap" v-if="$route.meta.keepAlive">
-      <router-link to="/homePage">
-        <img src="../../../static/img/homeImg/shouye.png">
-      </router-link>
-      <router-link to="/phoneApprove">
-        <img src="../../../static/img/homeImg/wode.png">
-      </router-link>
-    </footer>
+
   </div>
 </template>
 <script>
   import BScroll from "better-scroll"
   import { MessageBox } from "mint-ui"
+  import { mapState } from "vuex"
   import headline from "../../components/headline/headline.vue"
   import loanMod from "../../components/loanMod/loanMod.vue"
   import generalizeMod from "../../components/generalizeMod/generalizeMod.vue"
   import recommendMod from "../../components/recommendMod/recommendMod.vue"
   import footline from "../../components/footline/footline.vue"
   import creditCardMod from "../../components/creditCardMod/creditCardMod.vue"
-  import md5 from 'js-md5'
   export default {
     data () {
       return {
@@ -56,12 +52,12 @@
           {
             imgUrl: "../../static/img/homeImg/daikuanchanpin.png",
             title: "贷款产品",
-            aUrl: "/product"
+            aUrl: "homePage/product"
           },
           {
             imgUrl: "../../static/img/homeImg/kuaisudaikuan.png",
             title: "快速贷款",
-            aUrl: "/loanPage"
+            aUrl: "homePage/loanPage"
           },
         ],
         generalizeModDatas: [
@@ -119,23 +115,27 @@
       headline, loanMod, generalizeMod, recommendMod, footline, creditCardMod
     },
 
-    computed: {},
+    computed: {
+      ...mapState(["openID"])
+    },
 
     mounted(){
-
-      this.__boxheight(this.$refs.homePageWrap); //执行函数
-      window.onresize =this.boxheight; //窗口或框架被调整大小时执行
-      this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true, momentum: true})
-      this.homePageWrap.refresh()
       let data = {
-        openId:"123456",
-        thirdLoginType:"ThirdPlatForm.WeChat"
+        openId: "123456",
+        thirdLoginType: "ThirdPlatForm.WeChat"
       }
-      this.$store.dispatch("getOpenid",{data})
+      this.$store.dispatch("getOpenid", {data})
+      this.__boxheight(this.$refs.homePageWrap); //执行函数
+      window.onresize = this.boxheight; //窗口或框架被调整大小时执行
+      this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,})
+      this.homePageWrap.refresh()
     },
-    methods: {
+    beforeUpdated(){
 
-    }
+    },
+    updated(){
+    },
+    methods: {}
   }
 
 </script>
@@ -143,6 +143,7 @@
   .footerOccupied
     width (1080 /$rem)
     height (146 /$rem)
+
   .homePageHeader
     img
       display block

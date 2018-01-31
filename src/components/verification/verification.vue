@@ -29,7 +29,9 @@
       }
     },
 
-    components: {},
+    components: {
+
+    },
 
     computed: {
       verification(){
