@@ -28,22 +28,11 @@
       ...mapState(["openID"])
     },
     mounted(){
-      /*this.$router.beforeEach((to, from, next) => {
-        /!* 路由发生变化修改页面title *!/
-        if (to.name) {
-          console.log(555)
-          document.title = to.name
-        }
-        next()
-      })*/
-      /*this.$router.beforeEach((to, from, next) => {
-        console.log(111)
-        if(to == "myPage"){
-          if(!this.openID.success){
-            this.$router.replace('/myPage/phoneApprove')
-          }
-        }
-      })*/
+      let data = {
+        openId: "123456",
+        thirdLoginType: "ThirdPlatForm.WeChat"
+      }
+      this.$store.dispatch("getOpenid", {data})
     },
     methods: {}
   }

@@ -1,31 +1,36 @@
 <template>
   <div>
-    <header class="myPageHeader">
-      <div class="headPortrait">
-        <img src="./img/touxiang.gif">
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
+    <div v-if="$route.meta.keepAlive">
+      <header class="myPageHeader">
+        <div class="headPortrait">
+          <img src="./img/touxiang.gif">
+        </div>
+        <div class="userDescription">
+          <span class="petName">微信昵称</span>
+          <span class="individual">个人代理</span>
+        </div>
+        <div class="brokerage">
+          <a href="javascript:;">我要赚佣金</a>
+        </div>
+      </header>
+      <split/>
+      <div class="myPageContent">
+        <div class="generalIncome">
+          <span class="describe">总收入</span>
+          <span class="price">XXXXX.XX元</span>
+        </div>
+        <div class="withdrawDeposit">
+          <span class="describe">可提现</span>
+          <span class="price">XXXXX.XX元</span>
+        </div>
       </div>
-      <div class="userDescription">
-        <span class="petName">微信昵称</span>
-        <span class="individual">个人代理</span>
-      </div>
-      <div class="brokerage">
-        <a href="javascript:;">我要赚佣金</a>
-      </div>
-    </header>
-    <split/>
-    <div class="myPageContent">
-      <div class="generalIncome">
-        <span class="describe">总收入</span>
-        <span class="price">XXXXX.XX元</span>
-      </div>
-      <div class="withdrawDeposit">
-        <span class="describe">可提现</span>
-        <span class="price">XXXXX.XX元</span>
-      </div>
+      <split/>
+      <myParticulars :myParticularsDatas="myParticularsDatas"/>
+      <div class="grayChunk"></div>
     </div>
-    <split/>
-    <myParticulars :myParticularsDatas="myParticularsDatas"/>
-    <div class="grayChunk"></div>
   </div>
 </template>
 
@@ -37,25 +42,33 @@
         myParticularsDatas:[
           {
             imgUrl:"../../../static/img/myImg/gonggao1.png",
-            title:"推广明细"
+            title:"推广明细",
+            url:"/myPage/generalizePage"
           },
           {
             imgUrl:"../../../static/img/myImg/gonggao2.png",
-            title:"订单明细"
+            title:"订单明细",
+            url:"/myPage/orderFormPage"
           },
           {
             imgUrl:"../../../static/img/myImg/gonggao3.png",
-            title:"返佣明细"
+            title:"返佣明细",
+            url:"/myPage/rebatePage"
           },
           {
             imgUrl:"../../../static/img/myImg/gonggao4.png",
-            title:"提现明细"
+            title:"提现明细",
+            url:"/myPage/depositPage"
+
           },
           {
             imgUrl:"../../../static/img/myImg/gonggao5.png",
-            title:"专属客服"
+            title:"专属客服",
+            url:"/myPage/servicePage"
           },
-          {},
+          {
+            url:"servicePage"
+          },
         ]
       }
     },

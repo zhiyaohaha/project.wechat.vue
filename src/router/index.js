@@ -1,9 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import myPage from '../pages/myPage/myPage.vue'
 const homePage = () => import('../pages/homePage/homePage.vue')
 const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
 const loanPage = () => import('../pages/loanPage/loanPage.vue')
+const myPage = () => import('../pages/myPage/myPage.vue')
+const generalizePage = () => import('../pages/generalizePage/generalizePage.vue')
+const orderFormPage = () => import('../pages/orderFormPage/orderFormPage.vue')
+const orderFormMyPage = () => import('../pages/orderFormMyPage/orderFormMyPage.vue')
+const orderFormStairPage = () => import('../pages/orderFormStairPage/orderFormStairPage.vue')
+const orderFormTwoPage = () => import('../pages/orderFormTwoPage/orderFormTwoPage.vue')
+const rebatePage = () => import('../pages/rebatePage/rebatePage.vue')
+const rebatePageMyPage = () => import('../pages/rebatePageMyPage/rebatePageMyPage.vue')
+const rebatePageStairPage = () => import('../pages/rebatePageStairPage/rebatePageStairPage.vue')
+const rebatePageTwoPage = () => import('../pages/rebatePageTwoPage/rebatePageTwoPage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -24,24 +33,76 @@ const router = new Router({
         {
           path: 'loanPage',
           component: loanPage,
-          meta: {keepAlive: false, isTop: true, title:"贷款产品"},
+          meta: {keepAlive: false, isTop: true, title: '贷款产品'},
         },
       ]
     },
     {
       path: '/phoneApprove',
       component: phoneApprove,
-      meta: {keepAlive: false, isTop: true, title:"手机认证"},
+      meta: {keepAlive: false, isTop: true, title: '手机认证'},
     },
     {
       path: '/myPage',
       component: myPage,
-      meta: {keepAlive: true, isTop: true, title:"我的"},
+      meta: {keepAlive: true, isTop: true, title: '我的'},
       children: [
         {
-          path: 'generalize',
-          component: loanPage,
-          meta: {keepAlive: false, isTop: true, title:"推广"},
+          path: 'generalizePage',
+          component: generalizePage,
+          meta: {keepAlive: false, isTop: true, title: '我的二级代理'},
+        },
+        {
+          path: 'orderFormPage',
+          component: orderFormPage,
+          meta: {keepAlive: false, isTop: true, title: '订单明细'},
+          children: [
+            {
+              path: '/',
+              redirect: "orderFormMyPage",
+            },
+            {
+              path: 'orderFormMyPage',
+              component: orderFormMyPage,
+              meta: {keepAlive: false, isTop: true, title: '订单明细'}
+            },
+            {
+              path: 'orderFormStairPage',
+              component: orderFormStairPage,
+              meta: {keepAlive: false, isTop: true, title: '订单明细'}
+            },
+            {
+              path: 'orderFormTwoPage',
+              component: orderFormTwoPage,
+              meta: {keepAlive: false, isTop: true, title: '订单明细'}
+            },
+          ]
+        },
+        {
+          path: 'rebatePage',
+          component: rebatePage,
+          meta: {keepAlive: false, isTop: true, title: '返佣明细'},
+          children: [
+            {
+              path: '/',
+              redirect: "rebatePageMyPage",
+            },
+            {
+              path: 'rebatePageMyPage',
+              component: rebatePageMyPage,
+              meta: {keepAlive: false, isTop: true, title: '返佣明细'}
+            },
+            {
+              path: 'rebatePageStairPage',
+              component: rebatePageStairPage,
+              meta: {keepAlive: false, isTop: true, title: '返佣明细'}
+            },
+            {
+              path: 'rebatePageTwoPage',
+              component: rebatePageTwoPage,
+              meta: {keepAlive: false, isTop: true, title: '返佣明细'}
+            },
+          ]
         },
       ]
     },

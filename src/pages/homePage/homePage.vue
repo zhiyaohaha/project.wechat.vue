@@ -120,11 +120,7 @@
     },
 
     mounted(){
-      let data = {
-        openId: "123456",
-        thirdLoginType: "ThirdPlatForm.WeChat"
-      }
-      this.$store.dispatch("getOpenid", {data})
+
       this.__boxheight(this.$refs.homePageWrap); //执行函数
       window.onresize = this.boxheight; //窗口或框架被调整大小时执行
       this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,})
