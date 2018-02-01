@@ -13,6 +13,9 @@ const rebatePage = () => import('../pages/rebatePage/rebatePage.vue')
 const rebatePageMyPage = () => import('../pages/rebatePageMyPage/rebatePageMyPage.vue')
 const rebatePageStairPage = () => import('../pages/rebatePageStairPage/rebatePageStairPage.vue')
 const rebatePageTwoPage = () => import('../pages/rebatePageTwoPage/rebatePageTwoPage.vue')
+const depositPage = () => import('../pages/depositPage/depositPage.vue')
+const creditCardPage = () => import('../pages/creditCardPage/creditCardPage.vue')
+const zhongXinCardPage = () => import('../pages/zhongXinCardPage/zhongXinCardPage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -34,6 +37,18 @@ const router = new Router({
           path: 'loanPage',
           component: loanPage,
           meta: {keepAlive: false, isTop: true, title: '贷款产品'},
+        },
+        {
+          path: 'creditCardPage',
+          component: creditCardPage,
+          meta: {keepAlive: false, isTop: true, title: '信用卡'},
+          children:[
+            {
+              path: 'zhongXinCard',
+              component: zhongXinCard,
+              meta: {keepAlive: false, isTop: false, title: '中信信用卡'},
+            }
+          ]
         },
       ]
     },
@@ -104,10 +119,16 @@ const router = new Router({
             },
           ]
         },
+        {
+          path: 'depositPage',
+          component: depositPage,
+          meta: {keepAlive: false, isTop: true, title: '提现明细'},
+        },
       ]
     },
   ]
 })
+
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
   if (to.meta.title) {

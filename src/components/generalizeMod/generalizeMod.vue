@@ -2,10 +2,10 @@
   <div>
     <ul class="generalizeModList">
       <li v-for="(generalizeModData, index) in generalizeModDatas" :key="index" :class="{'icon':index === 0}">
-        <a href="javascript:;">
+        <router-link :to="generalizeModData.url">
           <img :src="generalizeModData.imgUrl">
           <span>{{generalizeModData.title}}</span>
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>

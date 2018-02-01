@@ -3,7 +3,7 @@
     <keep-alive>
       <router-view/>
     </keep-alive>
-    <div class="homePageWrap" ref="homePageWrap">
+    <div class="homePageWrap" ref="homePageWrap" v-show="$route.meta.keepAlive">
       <div>
         <header class="homePageHeader">
           <img src="./img/banner.png">
@@ -52,48 +52,56 @@
           {
             imgUrl: "../../static/img/homeImg/daikuanchanpin.png",
             title: "贷款产品",
-            aUrl: "homePage/product"
+            aUrl: "/homePage/product"
           },
           {
             imgUrl: "../../static/img/homeImg/kuaisudaikuan.png",
             title: "快速贷款",
-            aUrl: "homePage/loanPage"
+            aUrl: "/homePage/loanPage"
           },
         ],
         generalizeModDatas: [
           {
             imgUrl: "../../static/img/homeImg/tuiguang.png",
-            title: "我要推广"
+            title: "我要推广",
+            url:"/homePage/generalizePage"
           },
           {
             imgUrl: "../../static/img/homeImg/haibao.png",
-            title: "推广海报"
+            title: "推广海报",
+            url:"/homePage/generalizePage"
           },
           {
             imgUrl: "../../static/img/homeImg/sucai.png",
-            title: "推广素材"
+            title: "推广素材",
+            url:"/homePage/generalizePage"
           },
           {
             imgUrl: "../../static/img/homeImg/jilu.png",
-            title: "推广记录"
+            title: "推广记录",
+            url:"/homePage/generalizePage"
           }
         ],
         visaDatas: [
           {
             imgUrl: "../../static/img/homeImg/xinyongka.png",
-            title: "办信用卡"
+            title: "办信用卡",
+            url:"/homePage/creditCardPage"
           },
           {
             imgUrl: "../../static/img/homeImg/jindu.png",
-            title: "办卡进度"
+            title: "办卡进度",
+            url:"/homePage/schedulePage"
           },
           {
             imgUrl: "../../static/img/homeImg/gonglie.png",
-            title: "攻略专区"
+            title: "攻略专区",
+            url:"/homePage/strategyPage"
           },
           {
             imgUrl: "../../static/img/homeImg/daihuan.png",
-            title: "信用卡代还"
+            title: "信用卡代还",
+            url:"/homePage/repaymentPage"
           }
         ],
         creditCardModDatas: [
@@ -122,7 +130,7 @@
     mounted(){
 
       this.__boxheight(this.$refs.homePageWrap); //执行函数
-      window.onresize = this.boxheight; //窗口或框架被调整大小时执行
+      window.onresize = this.__boxheight(this.$refs.homePageWrap); //窗口或框架被调整大小时执行
       this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,})
       this.homePageWrap.refresh()
     },
