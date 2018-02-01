@@ -44,8 +44,8 @@ const router = new Router({
           meta: {keepAlive: false, isTop: true, title: '信用卡'},
           children:[
             {
-              path: 'zhongXinCard',
-              component: zhongXinCard,
+              path: 'zhongXinCardPage',
+              component: zhongXinCardPage,
               meta: {keepAlive: false, isTop: false, title: '中信信用卡'},
             }
           ]

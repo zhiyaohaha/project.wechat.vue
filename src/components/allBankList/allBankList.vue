@@ -2,10 +2,10 @@
   <div>
     <ul class="allBankList">
       <li v-for="(allBankListData, index) in allBankListDatas" :key="index">
-        <a href="javascript:;">
+        <router-link :to="allBankListData.url">
           <img :src="allBankListData.imgUrl">
           <span>{{allBankListData.title}}</span>
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>

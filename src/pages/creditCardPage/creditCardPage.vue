@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div ref="creditWrap">
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
+    <div ref="creditWrap" v-show="$route.meta.isTop">
       <!--<header class="creditCardPageHeader">
         <div class="headerEach">
           <img src="../../../static/img/creditCardImg/applyforacard.png">
@@ -47,35 +50,42 @@
           {
             imgUrl: "../../../static/img/creditCardImg/citic.png",
             title: "中信银行",
-            url:""
+            url:"/homePage/creditCardPage/zhongXinCardPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/communications.png",
-            title: "交通银行"
+            title: "交通银行",
+            url:"/homePage/creditCardPage/zhongXinCardPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/guangfabank.png",
-            title: "广发银行"
+            title: "广发银行",
+            url:"/homePage/creditCardPage/zhongXinCardPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/industrialbank.png",
-            title: "兴业银行"
+            title: "兴业银行",
+            url:"/homePage/creditCardPage/zhongXinCardPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/pinganbank.png",
-            title: "平安银行"
+            title: "平安银行",
+            url:"/homePage/creditCardPage/zhongXinCardPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/pudongdevelopmentbank.png",
-            title: "浦发银行"
+            title: "浦发银行",
+            url:"/homePage/creditCardPage/zhongXinCardPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/generalbanks.png",
-            title: "光大银行"
+            title: "光大银行",
+            url:"/homePage/creditCardPage/zhongXinCardPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/merchantsbank.png",
-            title: "招商银行"
+            title: "招商银行",
+            url:"/homePage/creditCardPage/zhongXinCardPage"
           },
         ],
         recommendListDatas: [
@@ -83,31 +93,31 @@
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logShow: true
+            logImg:"../../../static/img/creditCardImg/degreeofheat.png"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logShow: false
+            logImg:""
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logShow: false
+            logImg:""
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logShow: false
+            logImg:""
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logShow: false
+            logImg:""
           },
         ]
       }

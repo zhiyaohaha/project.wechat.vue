@@ -11,7 +11,8 @@
           </div>
           <a href="javscript:;" class="button"></a>
         </div>
-        <div class="smallLog" v-if="recommendListData.logShow">
+        <div class="smallLog" v-if="recommendListData.logImg">
+          <img :src="recommendListData.logImg">
         </div>
       </li>
     </ul>
@@ -70,13 +71,12 @@
           background-repeat no-repeat
           background-size 100%
       .smallLog
-        background-image url("../../../static/img/creditCardImg/degreeofheat.png")
-        background-repeat no-repeat
-        background-size 100%
         position absolute
         right (60/$rem)
         top (60/$rem)
         width (86/$rem)
         height (86/$rem)
+        img
+          width 100%
 
 </style>
