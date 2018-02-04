@@ -3,6 +3,7 @@ import Router from 'vue-router'
 const homePage = () => import('../pages/homePage/homePage.vue')
 const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
 const loanPage = () => import('../pages/loanPage/loanPage.vue')
+const productPage = () => import('../pages/productPage/productPage.vue')
 const myPage = () => import('../pages/myPage/myPage.vue')
 const generalizePage = () => import('../pages/generalizePage/generalizePage.vue')
 const orderFormPage = () => import('../pages/orderFormPage/orderFormPage.vue')
@@ -16,6 +17,8 @@ const rebatePageTwoPage = () => import('../pages/rebatePageTwoPage/rebatePageTwo
 const depositPage = () => import('../pages/depositPage/depositPage.vue')
 const creditCardPage = () => import('../pages/creditCardPage/creditCardPage.vue')
 const zhongXinCardPage = () => import('../pages/zhongXinCardPage/zhongXinCardPage.vue')
+const CardDetailsPage = () => import('../pages/CardDetailsPage/CardDetailsPage.vue')
+const productDetailsPage = () => import('../pages/productDetailsPage/productDetailsPage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -39,6 +42,18 @@ const router = new Router({
           meta: {keepAlive: false, isTop: true, title: '贷款产品'},
         },
         {
+          path: 'productPage',
+          component: productPage,
+          meta: {keepAlive: false, isTop: true, title: '贷款产品'},
+          children:[
+            {
+              path: 'productDetailsPage',
+              component: productDetailsPage,
+              meta: {keepAlive: false, isTop: false, title: '产品详情'},
+            }
+          ]
+        },
+        {
           path: 'creditCardPage',
           component: creditCardPage,
           meta: {keepAlive: false, isTop: true, title: '信用卡'},
@@ -47,7 +62,13 @@ const router = new Router({
               path: 'zhongXinCardPage',
               component: zhongXinCardPage,
               meta: {keepAlive: false, isTop: false, title: '中信信用卡'},
-            }
+            },
+            {
+              path: 'CardDetailsPage',
+              component: CardDetailsPage,
+              meta: {keepAlive: false, isTop: false, title: '信用卡详情'},
+            },
+
           ]
         },
       ]

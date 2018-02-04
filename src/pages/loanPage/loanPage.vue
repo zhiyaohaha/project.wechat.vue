@@ -3,7 +3,7 @@
     <div class="loanWrap" ref="loanWrap">
       <div>
         <!--<header class="loanHeader">
-          <span class="iconLogo" @click="$router.back()"><</span>
+          <span class="iconLogo" @touchstart="$router.back()"><</span>
           <span>申请贷款</span>
         </header>-->
         <div class="loanContent">
@@ -22,11 +22,11 @@
                      :maxlength="mformData.maxlength"
                      :name="mformData.name">
               <span :class="{purposeList:mformData.purposeList}" v-if="!mformData.sendMsg && !mformData.units"
-                    @click="pullDown(true,index)">
+                    @touchstart ="pullDown(true,index)">
                 {{mformData.units}}
               </span>
               <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
-                 @click="sendMsg()">
+                 @touchstart="sendMsg()">
                 {{mformData.units}}
               </a>
             </li>
@@ -44,10 +44,10 @@
     <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
               showToolbar="true">
       <div class="shadeIsShowHeader">
-          <span @click="pullDown(false)" class="cancel">
+          <span @touchstart="pullDown(false)" class="cancel">
             取消
           </span>
-        <span @click="pullDown(false)" class="ascertain">
+        <span @touchstart="pullDown(false)" class="ascertain">
             确定
           </span>
       </div>
@@ -204,7 +204,7 @@
       this.__boxheight(this.$refs.loanWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.loanWrap); //窗口或框架被调整大小时执行
       this.$nextTick(() => {
-        this.loanWrap = new BScroll(this.$refs.loanWrap, {click: true, momentum: true})
+        this.loanWrap = new BScroll(this.$refs.loanWrap, {touchstart: true, momentum: true})
         this.loanWrap.refresh()
         this.$route.meta.keepAlive = false
       })
@@ -212,7 +212,7 @@
     updated(){
       this.__boxheight(this.$refs.loanWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.loanWrap)
-//      this.loanWrap = new BScroll(this.$refs.loanWrap, {click: true, momentum: true})
+//      this.loanWrap = new BScroll(this.$refs.loanWrap, {touchstart: true, momentum: true})
 //      this.loanWrap.refresh()
     },
     methods: {

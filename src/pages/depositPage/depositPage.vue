@@ -2,7 +2,7 @@
   <div>
     <header class="depositPageHeader">
       <div :class="{active:headerDatasIndex === index}"
-           v-for="(headerData, index) in headerDatas" :key="index" @click="changeColor(index)">
+           v-for="(headerData, index) in headerDatas" :key="index" @touchstart="changeColor(index)">
         {{headerData.title}}
       </div>
     </header>

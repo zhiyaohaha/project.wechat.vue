@@ -4,13 +4,17 @@
       <router-view/>
     </keep-alive>
     <div ref="creditWrap" v-show="$route.meta.isTop">
-      <!--<header class="creditCardPageHeader">
-        <div class="headerEach">
-          <img src="../../../static/img/creditCardImg/applyforacard.png">
-          <span>申请办卡</span>
-        </div>
-      </header>-->
       <div>
+        <header class="creditCardPageHeader">
+          <ul class="CardPageHeaderList">
+            <li v-for="(CardPageHeaderListDatas, index) in CardPageHeaderListDatas">
+              <a href="javascript:;">
+                <img :src="CardPageHeaderListDatas.imgUrl">
+                <span>{{CardPageHeaderListDatas.character}}</span>
+              </a>
+            </li>
+          </ul>
+        </header>
         <div class="allBank">
           <cardHeadLine :cardHeadLineData="cardHeadLineData1"/>
           <allBankList :allBankListDatas="allBankListDatas"/>
@@ -93,31 +97,54 @@
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logImg:"../../../static/img/creditCardImg/degreeofheat.png"
+            logImg:"../../../static/img/creditCardImg/degreeofheat.png",
+            url:"/homePage/creditCardPage/CardDetailsPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logImg:""
+            logImg:"",
+            url:"/homePage/creditCardPage/CardDetailsPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logImg:""
+            logImg:"",
+            url:"/homePage/creditCardPage/CardDetailsPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logImg:""
+            logImg:"",
+            url:"/homePage/creditCardPage/CardDetailsPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
             money: "75元",
-            logImg:""
+            logImg:"",
+            url:"/homePage/creditCardPage/CardDetailsPage"
+          },
+        ],
+        CardPageHeaderListDatas:[
+          {
+            imgUrl:"../../../static/img/creditCardImg/repayment.png",
+            character:"帮你还款"
+          },
+          {
+            imgUrl:"../../../static/img/creditCardImg/speedofprogress.png",
+            character:"进度查询"
+          },
+          {
+            imgUrl:"../../../static/img/creditCardImg/raiders.png",
+            character:"用卡攻略"
+          },
+          {
+            imgUrl:"../../../static/img/creditCardImg/bankingservices.png",
+            character:"银行服务"
           },
         ]
       }
@@ -141,29 +168,33 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  /*.creditCardPageHeader
+  .creditCardPageHeader
     width (1080/$rem)
     height (330/$rem)
-    background-color #292929
-    .headerEach
-      overflow hidden
-      img
-        width (118/$rem)
-        height (89/$rem)
-        margin (84/$rem) (74/$rem) (62/$rem) (72/$rem)
-      span
-        display block
+    background-color #00aeff
+    .CardPageHeaderList
+      height (330/$rem)
+      display -webkit-flex
+      display flex
+      justify-content: space-around
+      align-items: center;
+      li
+        text-align center
         font-size (36/$rem)
         color #ffffff
-        margin-left (58/$rem)
-        margin-bottom (66/$rem)*/
+        img
+          display inline-block
+          height (90/$rem)
+        span
+          color #ffffff
+          display block
+          margin-top (60/$rem)
   .allBank
     width (1080 /$rem)
     .allBankFooter
       box-sizing border-box
       height (156 /$rem)
       padding (76 /$rem) (444 /$rem) (52 /$rem)
-
       span
         float left
         font-size (30 /$rem)

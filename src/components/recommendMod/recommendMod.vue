@@ -2,7 +2,7 @@
   <div>
     <ul class="recommendMod">
       <li>
-        <a href="javascript:;">
+        <router-link to="/homePage/productPage/productDetailsPage">
           <div class="recommendModLogo">
             <img src="./img/jiuyi.png">
           </div>
@@ -20,10 +20,10 @@
               </div>
             </div>
           </div>
-        </a>
+        </router-link>
       </li>
       <li>
-        <a href="javascript:;">
+        <router-link to="/homePage/productPage/productDetailsPage">
           <div class="recommendModLogo">
             <img src="./img/xiaoyingkadai.png">
           </div>
@@ -41,7 +41,7 @@
               </div>
             </div>
           </div>
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -71,7 +71,7 @@
     li
       position relative
       box-sizing border-box
-      border 1px solid #f4f4f4
+      border-bottom 1px solid #f4f4f4
       width (1080 /$rem)
       height (346 /$rem)
       background-image url("./img/fan.png")
@@ -107,7 +107,6 @@
           .detailsWrap
             margin-top (50 /$rem)
             font-size (30 /$rem)
-            overflow hidden
             .secondLine
               display block
               margin-top (30 /$rem)

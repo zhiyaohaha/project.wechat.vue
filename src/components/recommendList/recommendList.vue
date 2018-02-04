@@ -2,18 +2,20 @@
   <div>
     <ul class="recommendList">
       <li v-for="(recommendListData, index) in recommendListDatas" :key="index">
-        <img :src="recommendListData.imgUrl">
-        <div class="describe">
-          <span class="up">{{recommendListData.bankName}}</span>
-          <div class="down">
-            <span>成功开卡可赚</span>
-            <span class="price">{{recommendListData.money}}</span>
+        <router-link :to="recommendListData.url">
+          <img :src="recommendListData.imgUrl">
+          <div class="describe">
+            <span class="up">{{recommendListData.bankName}}</span>
+            <div class="down">
+              <span>成功开卡可赚</span>
+              <span class="price">{{recommendListData.money}}</span>
+            </div>
+            <a href="javascript:;" class="button"></a>
           </div>
-          <a href="javscript:;" class="button"></a>
-        </div>
-        <div class="smallLog" v-if="recommendListData.logImg">
-          <img :src="recommendListData.logImg">
-        </div>
+          <div class="smallLog" v-if="recommendListData.logImg">
+            <img :src="recommendListData.logImg">
+          </div>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -47,6 +49,8 @@
       height (341/$rem)
       padding (60/$rem) (60/$rem) (60/$rem) (45/$rem)
       border-bottom 1px solid #cccccc
+      a
+        height 100%
       img
         float left
         width (352/$rem)

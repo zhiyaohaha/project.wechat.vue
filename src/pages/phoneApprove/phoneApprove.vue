@@ -3,7 +3,7 @@
     <div ref="myWrap">
       <div>
         <!--<header class="myHeader">
-          <span class="iconLogo" @click="$router.back()"><</span>
+          <span class="iconLogo" @touchstart="$router.back()"><</span>
           <span>手机认证</span>
         </header>-->
         <div class="myContent">
@@ -25,15 +25,15 @@
                      :placeholder="codeTooltip" :class="{errorColor:codeColor}"
                      @focus="isFooter"
                      name="authCode">
-              <span class="sendMsg" @click="sendMsg">获取验证码</span>
+              <span class="sendMsg" @touchstart="sendMsg">获取验证码</span>
             </li>
           </ul>
           <a href="javascript:;" class="protocol">
-            <img src="./img/xuanze.png" v-show="imgIsShow" @click="notarize">
-            <img src="./img/huisekuang.png" v-show="!imgIsShow" @click="notarize">
+            <img src="./img/xuanze.png" v-show="imgIsShow" @touchstart="notarize">
+            <img src="./img/huisekuang.png" v-show="!imgIsShow" @touchstart="notarize">
             <span>我已阅读并同意《XXXXXX协议》</span>
           </a>
-          <a href="javascript:;" class="approve" @click="approve"></a>
+          <a href="javascript:;" class="approve" @touchstart="approve"></a>
         </div>
         <div class="footerOccupied"></div>
       </div>
@@ -83,7 +83,7 @@
           this.__boxheight(this.$refs.myWrap); //执行函数
           window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
           this.$nextTick(() => {
-            this.myWrap = new BScroll(this.$refs.myWrap, {click: true, momentum: false})
+            this.myWrap = new BScroll(this.$refs.myWrap, {touchstart: true, momentum: false})
             this.myWrap.refresh()
           })
         }
@@ -152,7 +152,7 @@
         this.verificationShow = false
         if (flag) {
           let data = {
-            code: 'LoginRegistVerifyCode',
+            code: 'SMS_123738830',
             mobilePhone: this.cellphoneNum,
             validateCode: validateCode,
             needvalidateCode: true

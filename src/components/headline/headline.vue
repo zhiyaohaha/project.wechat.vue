@@ -25,6 +25,7 @@
   .headline
     width 100%
     height (120 /$rem)
+    border-bottom 1px solid #f4f4f4
     span
       float left
       font-family "Microsoft YaHei"

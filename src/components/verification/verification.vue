@@ -1,11 +1,11 @@
 <template>
-  <div class="verification" @click.stop="changeShow">
-    <div class="verificationContent" @click.stop>
+  <div class="verification" @touchstart.stop="changeShow">
+    <div class="verificationContent" @touchstart.stop>
       <div class="verificationTitle">
         请填写图片验证码
       </div>
       <div class="verificationMessage">
-        <div class="verificationImg" @click.stop="clickMap">
+        <div class="verificationImg" @touchstart.stop="touchstartMap">
           <img :src="verification">
         </div>
         <input type="text" placeholder="输入验证码"
@@ -13,8 +13,8 @@
                name="verification">
       </div>
       <div class="verificationFooter">
-        <div class="verificationFooterLeft" @click.stop="verificationCancel(false)">取消</div>
-        <div class="verificationFooterRight" @click.stop="verificationCancel(true,validateCode)">确定</div>
+        <div class="verificationFooterLeft" @touchstart.stop="verificationCancel(false)">取消</div>
+        <div class="verificationFooterRight" @touchstart.stop="verificationCancel(true,validateCode)">确定</div>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
     mounted(){},
 
     methods: {
-      clickMap(){
+      touchstartMap(){
         this.time = new Date().getTime()
       },
     }

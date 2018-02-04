@@ -1,8 +1,6 @@
 <template>
   <div>
-    <keep-alive>
-      <router-view/>
-    </keep-alive>
+    <router-view/>
     <div class="homePageWrap" ref="homePageWrap" v-show="$route.meta.keepAlive">
       <div>
         <header class="homePageHeader">
@@ -52,7 +50,7 @@
           {
             imgUrl: "../../static/img/homeImg/daikuanchanpin.png",
             title: "贷款产品",
-            aUrl: "/homePage/product"
+            aUrl: "/homePage/productPage"
           },
           {
             imgUrl: "../../static/img/homeImg/kuaisudaikuan.png",
@@ -64,58 +62,65 @@
           {
             imgUrl: "../../static/img/homeImg/tuiguang.png",
             title: "我要推广",
-            url:"/homePage/generalizePage"
+            url: "/homePage/generalizePage"
           },
           {
             imgUrl: "../../static/img/homeImg/haibao.png",
             title: "推广海报",
-            url:"/homePage/generalizePage"
+            url: "/homePage/generalizePage"
           },
           {
             imgUrl: "../../static/img/homeImg/sucai.png",
             title: "推广素材",
-            url:"/homePage/generalizePage"
+            url: "/homePage/generalizePage"
           },
           {
             imgUrl: "../../static/img/homeImg/jilu.png",
             title: "推广记录",
-            url:"/homePage/generalizePage"
+            url: "/homePage/generalizePage"
           }
         ],
         visaDatas: [
           {
             imgUrl: "../../static/img/homeImg/xinyongka.png",
             title: "办信用卡",
-            url:"/homePage/creditCardPage"
+            url: "/homePage/creditCardPage"
           },
           {
             imgUrl: "../../static/img/homeImg/jindu.png",
             title: "办卡进度",
-            url:"/homePage/schedulePage"
+            url: "/homePage/schedulePage"
           },
           {
             imgUrl: "../../static/img/homeImg/gonglie.png",
             title: "攻略专区",
-            url:"/homePage/strategyPage"
+            url: "/homePage/strategyPage"
           },
           {
             imgUrl: "../../static/img/homeImg/daihuan.png",
             title: "信用卡代还",
-            url:"/homePage/repaymentPage"
+            url: "/homePage/repaymentPage"
           }
         ],
         creditCardModDatas: [
           {
+            url: "/homePage/creditCardPage/CardDetailsPage",
             imgUrl: "../../static/img/homeImg/kapian.png",
             title: "信用卡名称",
             limit: "10000-100000元"
           },
           {
+            url: "/homePage/creditCardPage/CardDetailsPage",
             imgUrl: "../../static/img/homeImg/kapian.png",
             title: "信用卡名称",
             limit: "10000-100000元"
           }
         ],
+        recommendModDatas:[
+          {
+
+          }
+        ]
       }
     },
 
@@ -150,7 +155,6 @@
 
   .homePageHeader
     img
-      display block
       width 100%
       height (500 /$rem)
 </style>
