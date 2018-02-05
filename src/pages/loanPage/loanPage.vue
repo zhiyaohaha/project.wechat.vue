@@ -14,7 +14,7 @@
           <ul class="mform">
             <li v-for="(mformData, index) in mformDatas" :key="index">
               <span class="description">{{mformData.description}}</span>
-              <input type="text" v-model="mformData.model" :class="{errorColor:mformData.errorColor}"
+              <input type="text" v-model="mformData.model"
                      @blur="loseFocus(mformData.reg,mformData.model,index)"
                      @input="goodInput(mformData.reg,mformData.model,index)"
                      @focus="isFooter"
@@ -22,7 +22,7 @@
                      :maxlength="mformData.maxlength"
                      :name="mformData.name">
               <span :class="{purposeList:mformData.purposeList}" v-if="!mformData.sendMsg && !mformData.units"
-                    @touchstart ="pullDown(true,index)">
+                    @touchstart="pullDown(true,index)">
                 {{mformData.units}}
               </span>
               <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
@@ -65,7 +65,7 @@
   import propertyMod from "../../components/propertyMod/propertyMod.vue"
   import verification from "../../components/verification/verification.vue"
   import BScroll from "better-scroll"
-  import { MessageBox } from "mint-ui"
+  import { MessageBox,Toast} from "mint-ui"
   export default {
     data () {
       return {
@@ -100,7 +100,7 @@
             purposeList: true,
             sendMsg: false,
             units: "",
-            reg: /^[\u4E00-\u9FA5A-Za-z0-9_]+$/,
+            reg: /[\s\S]*/,
             errorColor: false,
           },
           {
@@ -111,7 +111,7 @@
             purposeList: true,
             sendMsg: false,
             units: "",
-            reg: /^[\u4e00-\u9fa5]{0,}$/,
+            reg: /[\s\S]*/,
             errorColor: false
           },
           {
@@ -122,7 +122,7 @@
             purposeList: true,
             sendMsg: false,
             units: "",
-            reg: /^\d{4}-\d{1,2}/,
+            reg: /[\s\S]*/,
             errorColor: false
           },
           {
@@ -144,7 +144,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^\d{15}|\d{18}$/,
+            reg: /^[0-9xX]{0,18}$/,
             errorColor: false,
             maxlength: "18"
           },
@@ -156,7 +156,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[1][3,4,5,7,8][0-9]{9}$/,
+            reg: /^[0-9]{0,11}$/,
             errorColor: false,
             maxlength: "11"
           },
@@ -168,7 +168,7 @@
             purposeList: false,
             sendMsg: true,
             units: "获取验证码",
-            reg: /^\d{4}$/,
+            reg: /^\d{0,4}$/,
             errorColor: false,
             maxlength: "4"
           },
@@ -187,13 +187,13 @@
         moneyArr: ["1000元", "1万元", "10万元", "60万元"],
         consumeArr: ["买车", "买房", "消费", "娱乐"],
         deadlineArr: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
-        simulationSubmitIsShow:true,
-        verificationShow:false
+        simulationSubmitIsShow: true,
+        verificationShow: false
       }
     },
 
     components: {
-      propertyMod,verification
+      propertyMod, verification
     },
 
     computed: {
@@ -223,28 +223,24 @@
 //      错误变色
       loseFocus(reg, flag, index){
         this.simulationSubmitIsShow = true
-        if (!reg.test(flag)) {
-          for (let i = 0; i < this.mformDatas.length; i++) {
-            this.mformDatas[index].errorColor = true
-          }
-        }else {
-          for (let i = 0; i < this.mformDatas.length; i++) {
-            this.mformDatas[index].errorColor = false
-          }
-        }
       },
 //      输入框值
       onValuesChange(picker, values) {
-        for (let i = 0; i < this.mformDatas.length; i++) {
-          this.mformDatas[this.mformDatasInd].model = picker.getValues()
-        }
+        this.mformDatas[this.mformDatasInd].model = picker.getValues()
       },
 //      输入正确变色
       goodInput(reg, flag, index){
 //        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
-        if (reg.test(flag)) {
-          for (let i = 0; i < this.mformDatas.length; i++) {
-            this.mformDatas[index].errorColor = false
+        if (index < 3) {
+          this.mformDatas[index].model = ""
+        }
+        if (!reg.test(flag)) {
+          Toast({
+            message:"格式错误",
+            className:"ToastStyle"
+          })
+          for(let i=0;i<this.mformDatas.length;i++){
+            this.mformDatas[index].model = ""
           }
         }
       },
@@ -290,6 +286,12 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .ToastStyle
+    width (200/$rem)
+    height (70/$rem)
+    font-size (40/$rem)
+    color #ffffff
+    background-color #8a8a8a
   .footerTap
     position fixed
     bottom 0
@@ -299,8 +301,9 @@
       float left
       img
         display block
-        width (540/$rem)
-        height (146/$rem)
+        width (540 /$rem)
+        height (146 /$rem)
+
   .mint-msgbox
     height (450 /$rem)
     font-size (46 /$rem)
@@ -390,8 +393,6 @@
           width (540 /$rem)
           caret-color #000
           color #333
-          &.errorColor
-            color #c2181f
         input:
         :-moz-placeholder
           text-align right

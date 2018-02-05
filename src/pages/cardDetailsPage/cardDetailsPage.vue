@@ -20,7 +20,7 @@
       </div>
     </div>
     <footer class="CardDetailsFooter">
-      <a href="javascript:;"></a>
+      <a href="javascript:;" @touchstart.stop="$router.push('/homePage/creditCardPage/cardApplyForPage')"></a>
     </footer>
   </div>
 </template>

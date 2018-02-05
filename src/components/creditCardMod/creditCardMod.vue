@@ -7,7 +7,7 @@
           <div class="creditCardDescribe">
             <span class="firstLine">{{creditCardModData.title}}</span>
             <span class="secondLine">预估额度：{{creditCardModData.limit}}</span>
-            <a href="javascript:;" class="applyFor"></a>
+            <a href="javascript:;" class="applyFor" @click.stop="$router.push(creditCardModData.applyForUrl)"></a>
           </div>
         </router-link>
       </li>

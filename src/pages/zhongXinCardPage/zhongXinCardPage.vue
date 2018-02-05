@@ -26,57 +26,74 @@
             bankName: "交通银行标准信用卡",
             money: "75元",
             logImg:"../../../static/img/creditCardImg/degreeofheat1.png",
-            url: "/homePage/creditCardPage/CardDetailsPage"
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "中信银行标准信用卡",
             money: "75元",
             logImg:"../../../static/img/creditCardImg/degreeofheat2.png",
-            url: "/homePage/creditCardPage/CardDetailsPage"
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "兴业星夜星座信用卡",
             money: "75元",
             logImg:"../../../static/img/creditCardImg/degreeofheat3.png",
-            url: "/homePage/creditCardPage/CardDetailsPage"
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "广发淘宝联名信用卡",
             money: "75元",
             logImg:"",
-            url: "/homePage/creditCardPage/CardDetailsPage"
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "广发淘宝联名信用卡",
             money: "75元",
             logImg:"",
-            url: "/homePage/creditCardPage/CardDetailsPage"
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "广发淘宝联名信用卡",
             money: "75元",
             logImg:"",
-            url: "/homePage/creditCardPage/CardDetailsPage"
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "广发淘宝联名信用卡",
             money: "75元",
             logImg:"",
-            url: "/homePage/creditCardPage/CardDetailsPage"
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "广发淘宝联名信用卡",
             money: "75元",
             logImg:"",
-            url: "/homePage/creditCardPage/CardDetailsPage"
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
+          {
+            imgUrl: "../../../static/img/creditCardImg/kapian.png",
+            bankName: "广发淘宝联名信用卡",
+            money: "75元",
+            logImg:"",
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
+          },
+
         ]
       }
     },

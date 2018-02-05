@@ -10,10 +10,11 @@
               <span>成功开卡可赚</span>
               <span class="price">{{recommendListData.money}}</span>
             </div>
-            <a href="javascript:;" class="button"></a>
+            <a href="javascript:;" class="button"
+               @click.stop="$router.push(recommendListData.buttonUrl)"></a>
           </div>
           <div class="smallLog" v-if="recommendListData.logImg">
-            <img :src="recommendListData.logImg">
+            <img :src="recommendListData.logImg" >
           </div>
         </router-link>
       </li>

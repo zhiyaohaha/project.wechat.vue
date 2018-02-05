@@ -17,8 +17,9 @@ const rebatePageTwoPage = () => import('../pages/rebatePageTwoPage/rebatePageTwo
 const depositPage = () => import('../pages/depositPage/depositPage.vue')
 const creditCardPage = () => import('../pages/creditCardPage/creditCardPage.vue')
 const zhongXinCardPage = () => import('../pages/zhongXinCardPage/zhongXinCardPage.vue')
-const CardDetailsPage = () => import('../pages/CardDetailsPage/CardDetailsPage.vue')
+const cardDetailsPage = () => import('../pages/cardDetailsPage/cardDetailsPage.vue')
 const productDetailsPage = () => import('../pages/productDetailsPage/productDetailsPage.vue')
+const cardApplyForPage = () => import('../pages/cardApplyForPage/cardApplyForPage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -64,11 +65,15 @@ const router = new Router({
               meta: {keepAlive: false, isTop: false, title: '中信信用卡'},
             },
             {
-              path: 'CardDetailsPage',
-              component: CardDetailsPage,
+              path: 'cardApplyForPage',
+              component: cardApplyForPage,
               meta: {keepAlive: false, isTop: false, title: '信用卡详情'},
             },
-
+            {
+              path: 'cardDetailsPage',
+              component: cardDetailsPage,
+              meta: {keepAlive: false, isTop: false, title: '信用卡详情'},
+            },
           ]
         },
       ]

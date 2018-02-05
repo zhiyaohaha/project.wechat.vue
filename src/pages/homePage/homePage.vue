@@ -104,23 +104,25 @@
         ],
         creditCardModDatas: [
           {
-            url: "/homePage/creditCardPage/CardDetailsPage",
+            url: "/homePage/creditCardPage/cardDetailsPage",
             imgUrl: "../../static/img/homeImg/kapian.png",
             title: "信用卡名称",
-            limit: "10000-100000元"
+            limit: "10000-100000元",
+            applyForUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
-            url: "/homePage/creditCardPage/CardDetailsPage",
+            url: "/homePage/creditCardPage/cardDetailsPage",
             imgUrl: "../../static/img/homeImg/kapian.png",
             title: "信用卡名称",
-            limit: "10000-100000元"
+            limit: "10000-100000元",
+            applyForUrl:"/homePage/creditCardPage/cardApplyForPage"
           }
         ],
-        recommendModDatas:[
+        /*recommendModDatas:[
           {
 
           }
-        ]
+        ]*/
       }
     },
 
