@@ -41,7 +41,7 @@
         reg:/^\d{0,4}$/,
         verificationShow:false,
         imgIsShow:true,
-        units:"获取验证码"
+        units:"获取验证码",
       }
     },
 
@@ -69,7 +69,7 @@
       },
       sendMsg(){
         this.verificationShow = true
-        if(this.num > 0){
+        if(this.num && this.num > 0){
           this.verificationShow = false
           MessageBox({
             title: '提示',
@@ -80,13 +80,14 @@
       },
       verificationCancel(flag){
         this.verificationShow = false
-        this.num = 60
         if(flag){
+          this.num = 60
           let timer = setInterval(()=>{
             this.num--
             if (this.num < 1){
               this.units = "获取验证码"
               clearInterval(timer)
+              this.num = null
             }else {
               if(flag){
                 this.units = this.num + "s后重发"

@@ -23,6 +23,9 @@ const productDetailsPage = () => import('../pages/productDetailsPage/productDeta
 const cardApplyForPage = () => import('../pages/cardApplyForPage/cardApplyForPage.vue')
 const tieOnCardPage = () => import('../pages/tieOnCardPage/tieOnCardPage.vue')
 const verifyPage = () => import('../pages/verifyPage/verifyPage.vue')
+const strategyPage = () => import('../pages/strategyPage/strategyPage.vue')
+const strategyListPage = () => import('../pages/strategyListPage/strategyListPage.vue')
+const schedulePage = () => import('../pages/schedulePage/schedulePage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -70,14 +73,30 @@ const router = new Router({
             {
               path: 'cardApplyForPage',
               component: cardApplyForPage,
-              meta: {keepAlive: false, isTop: false, title: '信用卡详情'},
+              meta: {keepAlive: false, isTop: false, title: '信用卡申请'},
             },
             {
               path: 'cardDetailsPage',
               component: cardDetailsPage,
               meta: {keepAlive: false, isTop: false, title: '信用卡详情'},
             },
+
           ]
+        },
+        {
+          path: 'strategyPage',
+          component: strategyPage,
+          meta: {keepAlive: false, isTop: false, title: '用卡攻略'},
+        },
+        {
+          path: 'strategyListPage',
+          component: strategyListPage,
+          meta: {keepAlive: false, isTop: false, title: '攻略列表'},
+        },
+        {
+          path: 'schedulePage',
+          component: schedulePage,
+          meta: {keepAlive: false, isTop: false, title: '办卡进度'},
         },
       ]
     },

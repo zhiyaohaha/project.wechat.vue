@@ -293,18 +293,21 @@
       },
       verificationCancel(flag){
         this.verificationShow = false
-        this.num = 60
-        let timer = setInterval(()=>{
-          this.num--
-          if (this.num == 0){
-            this.mformDatas[6].units = "获取验证码"
-            clearInterval(timer)
-          }else {
-            if(flag){
-              this.mformDatas[6].units = this.num + "s后重发"
+        if(flag){
+          this.num = 60
+          let timer = setInterval(()=>{
+            this.num--
+            if (this.num == 0){
+              this.mformDatas[6].units = "获取验证码"
+              clearInterval(timer)
+              this.num = null
+            }else {
+              if(flag){
+                this.mformDatas[6].units = this.num + "s后重发"
+              }
             }
-          }
-        },1000)
+          },1000)
+        }
       },
     }
   }

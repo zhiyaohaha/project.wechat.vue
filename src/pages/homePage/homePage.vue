@@ -72,7 +72,7 @@
           {
             imgUrl: "../../static/img/homeImg/sucai.png",
             title: "推广素材",
-            url: "/homePage/generalizePage"
+            url: "/homePage/strategyPage"
           },
           {
             imgUrl: "../../static/img/homeImg/jilu.png",
@@ -118,11 +118,6 @@
             applyForUrl:"/homePage/creditCardPage/cardApplyForPage"
           }
         ],
-        /*recommendModDatas:[
-          {
-
-          }
-        ]*/
       }
     },
 
@@ -135,7 +130,6 @@
     },
 
     mounted(){
-
       this.__boxheight(this.$refs.homePageWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.homePageWrap); //窗口或框架被调整大小时执行
       this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,})
