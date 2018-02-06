@@ -1,11 +1,11 @@
 <template>
   <div>
-    <header class="generalizePageHeader">
+    <header class="generalizeErPageHeader">
       <div class="headPortrait">
         <img src="./img/touxiang.gif">
       </div>
       <div class="userDescription">
-        <span class="petName">微信昵称 ( 我的一级代理 ) </span>
+        <span class="petName">微信昵称 ( 我的二级代理 ) </span>
         <span class="individual">个人代理</span>
       </div>
       <div class="agencyNum">
@@ -29,25 +29,29 @@
             imgUrl:"../../../static/img/myImg/touxiang.gif",
             userNum:2316556465789,
             userTime:"20XX-XX-XX XX:XX:XX",
-            agencyNum:"XXX"
+            agencyNum:"XXX",
+            url:"/myPage/generalizeYiPage/generalizeErPage"
           },
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
             userNum:2316556465789,
             userTime:"20XX-XX-XX XX:XX:XX",
-            agencyNum:"XXX"
+            agencyNum:"XXX",
+            url:"/myPage/generalizeYiPage/generalizeErPage"
           },
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
             userNum:2316556465789,
             userTime:"20XX-XX-XX XX:XX:XX",
-            agencyNum:"XXX"
+            agencyNum:"XXX",
+            url:"/myPage/generalizeYiPage/generalizeErPage"
           },
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
             userNum:2316556465789,
             userTime:"20XX-XX-XX XX:XX:XX",
-            agencyNum:"XXX"
+            agencyNum:"XXX",
+            url:"/myPage/generalizeYiPage/generalizeErPage"
           },
         ]
       }
@@ -66,10 +70,11 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .generalizePageHeader
+  .generalizeErPageHeader
     position relative
     width (1080/$rem)
     height (228/$rem)
+    border-bottom 1px solid #bbbbbb
     .headPortrait
       float left
       width (168/$rem)

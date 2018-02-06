@@ -17,7 +17,7 @@
               <input type="text" v-model="mformData.model"
                      @blur="loseFocus(mformData.reg,mformData.model,index)"
                      @input="goodInput(mformData.reg,mformData.model,index)"
-                     @focus="isFooter"
+                     @focus="pullDown(true,index)"
                      :placeholder="mformData.placeholder"
                      :maxlength="mformData.maxlength"
                      :name="mformData.name">
@@ -44,17 +44,17 @@
     <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
               showToolbar="true">
       <div class="shadeIsShowHeader">
-          <span @touchstart="pullDown(false)" class="cancel">
+          <span @touchstart="pullDown(false,0)" class="cancel">
             取消
           </span>
-        <span @touchstart="pullDown(false)" class="ascertain">
+        <span @touchstart="pullDown(false,0)" class="ascertain">
             确定
           </span>
       </div>
       <mt-picker :itemHeight="70" :slots="slots" @change="onValuesChange"
                  class="shadeIsShowContent"></mt-picker>
     </mt-popup>
-    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
+    <verification v-show="verificationShow" :changeShow="changeShow"  :verificationCancel="verificationCancel"/>
     <footer class="simulationSubmit" v-show="simulationSubmitIsShow">
       <a href="javascript:"></a>
     </footer>
@@ -65,7 +65,7 @@
   import propertyMod from "../../components/propertyMod/propertyMod.vue"
   import verification from "../../components/verification/verification.vue"
   import BScroll from "better-scroll"
-  import { MessageBox,Toast} from "mint-ui"
+  import { MessageBox, Toast } from "mint-ui"
   export default {
     data () {
       return {
@@ -102,6 +102,7 @@
             units: "",
             reg: /[\s\S]*/,
             errorColor: false,
+
           },
           {
             description: "贷款用途：",
@@ -133,7 +134,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[\u4e00-\u9fa5]{0,}$/,
+            reg: /^[\u4e00-\u9fa5_A-Za-z]{0,}$/,
             errorColor: false
           },
           {
@@ -173,6 +174,7 @@
             maxlength: "4"
           },
         ],
+//        readonly: false,
         shadeIsShow: false,
         mformDatasInd: 0,
         slots: [
@@ -197,7 +199,9 @@
     },
 
     computed: {
-
+      time(){
+        return  new Date().getTime()
+      }
     },
 // 滑动事件
     mounted(){
@@ -210,8 +214,8 @@
       })
     },
     updated(){
-      this.__boxheight(this.$refs.loanWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.loanWrap)
+      /*this.__boxheight(this.$refs.loanWrap); //执行函数
+      window.onresize = this.__boxheight(this.$refs.loanWrap)*/
 //      this.loanWrap = new BScroll(this.$refs.loanWrap, {touchstart: true, momentum: true})
 //      this.loanWrap.refresh()
     },
@@ -236,18 +240,16 @@
         }
         if (!reg.test(flag)) {
           Toast({
-            message:"格式错误",
-            className:"ToastStyle"
+            message: "格式错误",
+            className: "ToastStyle"
           })
-          for(let i=0;i<this.mformDatas.length;i++){
-            this.mformDatas[index].model = ""
-          }
+          this.mformDatas[index].model = ""
         }
       },
 //      验证码逻辑
       sendMsg(){
         let mformData = this.mformDatas[5]
-        if (mformData.model && !mformData.errorColor) {
+        if (mformData.model !== "" && mformData.model.length == 11) {
           this.verificationShow = true
         } else {
           MessageBox({
@@ -256,23 +258,34 @@
             showCancelButton: false
           })
         }
+        if(this.num > 0){
+          this.verificationShow = false
+          MessageBox({
+            title: '提示',
+            message: '请60秒后在请求验证码',
+            showCancelButton: false
+          })
+        }
       },
 //      三角点击
       pullDown(flag, index){
         this.mformDatasInd = index
-        switch (index) {
-          case 0:
-            this.slots[0].values = this.moneyArr
-            break
-          case 1:
-            this.slots[0].values = this.consumeArr
-            break
-          case 2:
-            this.slots[0].values = this.deadlineArr
-            break
-          default:
+        this.simulationSubmitIsShow = false
+        if (index < 3) {
+          switch (index) {
+            case 0:
+              this.slots[0].values = this.moneyArr
+              break
+            case 1:
+              this.slots[0].values = this.consumeArr
+              break
+            case 2:
+              this.slots[0].values = this.deadlineArr
+              break
+            default:
+          }
+          this.shadeIsShow = flag
         }
-        this.shadeIsShow = flag
       },
 //     图片验证码
       changeShow(){
@@ -280,6 +293,18 @@
       },
       verificationCancel(flag){
         this.verificationShow = false
+        this.num = 60
+        let timer = setInterval(()=>{
+          this.num--
+          if (this.num == 0){
+            this.mformDatas[6].units = "获取验证码"
+            clearInterval(timer)
+          }else {
+            if(flag){
+              this.mformDatas[6].units = this.num + "s后重发"
+            }
+          }
+        },1000)
       },
     }
   }
@@ -287,11 +312,13 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .ToastStyle
-    width (200/$rem)
-    height (70/$rem)
-    font-size (40/$rem)
+    width (200 /$rem)
+    height (70 /$rem)
+    font-size (40 /$rem)
     color #ffffff
     background-color #8a8a8a
+    text-align center
+    line-height (70 /$rem)
   .footerTap
     position fixed
     bottom 0
@@ -410,13 +437,12 @@
           background-size 100%
           padding-right: (40 /$rem)
         .sendMsg
+          border-radius (40/$rem)
           float right
           margin-top (17 /$rem)
           width (290 /$rem)
           height (86 /$rem)
-          background-image url("./img/yuanjiao_1.png")
-          background-repeat no-repeat
-          background-size 100%
+          background-color #bbb
           color #ffffff
           line-height (86 /$rem)
           text-align center

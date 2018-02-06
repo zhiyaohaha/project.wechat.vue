@@ -3,19 +3,21 @@
     <div class="usersListModContent">
       <ul class="usersList">
         <li v-for="(usersListData, index) in usersListDatas" :key="index">
-          <img :src="usersListData.imgUrl">
-          <div class="message">
-            <span class="userNum">用户编号:{{usersListData.userNum}}</span>
-            <div>
-              <span class="scheduleTime">{{usersListData.userTime}}</span>
-              <span class="fixation">成为我的代理</span>
+          <router-link :to="usersListData.url">
+            <img :src="usersListData.imgUrl">
+            <div class="message">
+              <span class="userNum">用户编号:{{usersListData.userNum}}</span>
+              <div>
+                <span class="scheduleTime">{{usersListData.userTime}}</span>
+                <span class="fixation">成为我的代理</span>
+              </div>
             </div>
-          </div>
-          <div class="agencyMessage">
-            <span>TA的代理</span>
-            <span class="price">{{usersListData.agencyNum}}</span>
-            <span>个</span>
-          </div>
+            <div class="agencyMessage">
+              <span>TA的代理</span>
+              <span class="price">{{usersListData.agencyNum}}</span>
+              <span>个</span>
+            </div>
+          </router-link>
         </li>
       </ul>
     </div>

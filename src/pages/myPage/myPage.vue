@@ -18,14 +18,14 @@
       </header>
       <split/>
       <div class="myPageContent">
-        <div class="generalIncome">
+        <a href="javascript:;" class="generalIncome">
           <span class="describe">总收入</span>
           <span class="price">XXXXX.XX元</span>
-        </div>
-        <div class="withdrawDeposit">
+        </a>
+        <router-link to="/myPage/tieOnCardPage" class="withdrawDeposit">
           <span class="describe">可提现</span>
           <span class="price">XXXXX.XX元</span>
-        </div>
+        </router-link>
       </div>
       <split/>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
@@ -43,7 +43,7 @@
           {
             imgUrl:"../../../static/img/myImg/gonggao1.png",
             title:"推广明细",
-            url:"/myPage/generalizePage"
+            url:"/myPage/generalizeYiPage"
           },
           {
             imgUrl:"../../../static/img/myImg/gonggao2.png",
@@ -125,7 +125,7 @@
         color #ffffff
   .myPageContent
     height (247/$rem)
-    div
+    a
       box-sizing border-box
       float left
       width 50%

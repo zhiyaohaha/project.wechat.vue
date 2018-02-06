@@ -77,7 +77,7 @@
           {
             imgUrl: "../../static/img/homeImg/jilu.png",
             title: "推广记录",
-            url: "/homePage/generalizePage"
+            url: "/myPage/generalizeYiPage"
           }
         ],
         visaDatas: [

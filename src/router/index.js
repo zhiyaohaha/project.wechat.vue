@@ -5,7 +5,8 @@ const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
 const loanPage = () => import('../pages/loanPage/loanPage.vue')
 const productPage = () => import('../pages/productPage/productPage.vue')
 const myPage = () => import('../pages/myPage/myPage.vue')
-const generalizePage = () => import('../pages/generalizePage/generalizePage.vue')
+const generalizeYiPage = () => import('../pages/generalizeYiPage/generalizeYiPage.vue')
+const generalizeErPage = () => import('../pages/generalizeErPage/generalizeErPage.vue')
 const orderFormPage = () => import('../pages/orderFormPage/orderFormPage.vue')
 const orderFormMyPage = () => import('../pages/orderFormMyPage/orderFormMyPage.vue')
 const orderFormStairPage = () => import('../pages/orderFormStairPage/orderFormStairPage.vue')
@@ -20,6 +21,8 @@ const zhongXinCardPage = () => import('../pages/zhongXinCardPage/zhongXinCardPag
 const cardDetailsPage = () => import('../pages/cardDetailsPage/cardDetailsPage.vue')
 const productDetailsPage = () => import('../pages/productDetailsPage/productDetailsPage.vue')
 const cardApplyForPage = () => import('../pages/cardApplyForPage/cardApplyForPage.vue')
+const tieOnCardPage = () => import('../pages/tieOnCardPage/tieOnCardPage.vue')
+const verifyPage = () => import('../pages/verifyPage/verifyPage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -89,9 +92,16 @@ const router = new Router({
       meta: {keepAlive: true, isTop: true, title: '我的'},
       children: [
         {
-          path: 'generalizePage',
-          component: generalizePage,
-          meta: {keepAlive: false, isTop: true, title: '我的二级代理'},
+          path: 'generalizeYiPage',
+          component: generalizeYiPage,
+          meta: {keepAlive: false, isTop: true, title: '我的一级代理'},
+          children:[
+            {
+              path: 'generalizeErPage',
+              component: generalizeErPage,
+              meta: {keepAlive: false, isTop: false, title: '我的二级代理'},
+            }
+          ]
         },
         {
           path: 'orderFormPage',
@@ -149,6 +159,16 @@ const router = new Router({
           path: 'depositPage',
           component: depositPage,
           meta: {keepAlive: false, isTop: true, title: '提现明细'},
+        },
+        {
+          path: 'tieOnCardPage',
+          component: tieOnCardPage,
+          meta: {keepAlive: false, isTop: true, title: '实名绑卡'},
+        },
+        {
+          path: 'verifyPage',
+          component: verifyPage,
+          meta: {keepAlive: false, isTop: true, title: '实名认证'},
         },
       ]
     },
