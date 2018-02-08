@@ -9,25 +9,18 @@
         <div class="myContent">
           <img src="./img/banner.png">
           <split/>
-          <ul class="cellphoneList">
-            <li>
-              <span class="description">手机号：</span>
-              <input type="text" v-model="cellphoneNum"
+          <ul class="mform">
+            <li v-for="(mformData, index) in mformDatas" :key="index">
+              <span class="description">{{mformData.description}}</span>
+              <input type="text" v-model="mformData.model"
                      @blur="loseFocus"
-                     @input="goodInput(/^[0-9]{1,11}$/,cellphoneNum,0)" maxlength="11"
-                     @focus="isFooter"
-                     :placeholder="phoneTooltip"
-                     name="cellphoneNum">
-            </li>
-            <li>
-              <span class="description">验证码：</span>
-              <input type="text" v-model="authCode"
-                     @blur="loseFocus(/^\d{1,4}$/,authCode,1)"
-                     @input="goodInput(/^\d{4}$/,authCode,1)" maxlength="4"
-                     :placeholder="codeTooltip"
-                     @focus="isFooter"
-                     name="authCode">
-              <span class="sendMsg" @touchstart="sendMsg">获取验证码</span>
+                     @input="goodInput(mformData.reg,mformData.model,index)"
+                     :placeholder="mformData.placeholder"
+                     :maxlength="mformData.maxlength"
+                     :name="mformData.name">
+              <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" @touchstart="sendMsg(index)">
+                {{mformData.units}}
+              </a>
             </li>
           </ul>
           <a href="javascript:;" class="protocol">
@@ -48,46 +41,89 @@
   </div>
 </template>
 <script>
-  import { MessageBox } from "mint-ui"
+  import { MessageBox, Toast } from "mint-ui"
   import { mapState } from "vuex"
   import BScroll from "better-scroll"
   import verification from "../../components/verification/verification.vue"
   export default {
     data () {
       return {
+        mformDatas: [
+          {
+            description: "姓名：",
+            placeholder: "请输入您的姓名",
+            name: "username",
+            model: "",
+            purposeList: false,
+            sendMsg: false,
+            units: "",
+            reg: /^[\u4e00-\u9fa5_A-Za-z]{1,}$/,
+            regular:/^[\u4e00-\u9fa5_A-Za-z]{0,}$/,
+            errorColor: false
+          },
+          {
+            description: "身份证号：",
+            placeholder: "请输入您的身份证号",
+            name: "IDnumber",
+            model: "",
+            purposeList: false,
+            sendMsg: false,
+            units: "",
+            reg: /^[0-9xX]{1,18}$/,
+            regular:/^([0-9]){7,18}(x|X)?$/,
+            errorColor: false,
+            maxlength: "18"
+          },
+          {
+            description: "手机号：",
+            placeholder: "请输入您的手机号",
+            name: "cellPhoneNum",
+            model: "",
+            purposeList: false,
+            sendMsg: false,
+            units: "",
+            reg: /^[0-9]{1,11}$/,
+            regular:/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
+            errorColor: false,
+            maxlength: "11"
+          },
+          {
+            description: "验证码：",
+            placeholder: "请输入验证码",
+            name: "authCode",
+            model: "",
+            purposeList: false,
+            sendMsg: true,
+            units: "获取验证码",
+            reg: /^\d{1,4}$/,
+            regular:/^\d{4}$/,
+            errorColor: false,
+            maxlength: "4"
+          },
+        ],
         imgIsShow: true,
-        cellphoneNum: '',
-        authCode: '',
-        codeTooltip: "请输入验证码",
-        phoneTooltip: "请填写你的手机号",
         myFooterIsShow: true,
         verificationShow: false,
-        time: new Date().getTime(),
+        time:new Date().getTime()
       }
     },
     components: {
       verification
     },
     computed: {
-      ...mapState(["verification", "phoneNote","openID"])
+      ...mapState(["verification", "phoneNote", "openID"])
     },
     beforeMount(){
 
     },
     mounted(){
-      if(this.openID){
-        if(this.openID.success){
-          console.log(111)
-          this.$router.replace('/myPage')
-        }else {
-          this.__boxheight(this.$refs.myWrap); //执行函数
-          window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
-          this.$nextTick(() => {
-            this.myWrap = new BScroll(this.$refs.myWrap, {touchstart: true, momentum: false})
-            this.myWrap.refresh()
-          })
-        }
-      }
+      console.log(this.time)
+      this.__boxheight(this.$refs.myWrap); //执行函数
+      window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
+      this.$nextTick(() => {
+        this.myWrap = new BScroll(this.$refs.myWrap, {touchstart: true, momentum: false})
+        this.myWrap.refresh()
+      })
     },
     updated(){
     },
@@ -101,6 +137,18 @@
             showCancelButton: false
           })
           clearInterval(this.timer1)
+          let timer = setInterval(() => {
+            this.num--
+            if (this.num == 0) {
+              this.mformDatas[6].units = "获取验证码"
+              clearInterval(timer)
+              this.num = null
+            } else {
+              if (flag) {
+                this.mformDatas[6].units = this.num + "s后重发"
+              }
+            }
+          }, 1000)
         } else {
           MessageBox({
             title: '提交失败',
@@ -112,31 +160,35 @@
       },
 //    申请逻辑
       approve(){
-        let data = {
-          phone: this.cellphoneNum,
-          verifyCode: this.authCode,
-          firstLevelId: "",
-          thirdPlatFormBind: true,//第三方绑定接口
-          openId: "123456", //第三方OpenId
-          thirdLoginType: "ThirdPlatForm.WeChat",  //第三方登录代号
-          head: "",//第三方登录头像
-          nickName: "",//第三方登录昵称
-          source:"OfficialAccounts"
-        }
-        this.$store.dispatch("postPhone", {data})
-        this.timer2 = setTimeout(() => {
-          if (this.phoneNote.success) {
-            clearInterval(this.timer2)
-            this.$router.replace('/myPage')
-          } else {
-            MessageBox({
-              title: '提交失败',
-              message: '短信验证码输入错误',
-              showCancelButton: false
-            })
-            clearInterval(this.timer2)
+        let Arr = this.mformDatas.filter(item=>item.reg.test(item.model))
+        if(Arr.length === this.mformDatas.length){
+          let data = {
+            phone: this.cellphoneNum,
+            verifyCode: this.authCode,
+            firstLevelId: "",
+            thirdPlatFormBind: true,//第三方绑定接口
+            openId: "123454", //第三方OpenId
+            thirdLoginType: "ThirdPlatForm.WeChat",  //第三方登录代号
+            head: "",//第三方登录头像
+            nickName: "",//第三方登录昵称
+            source: "OfficialAccounts"
           }
-        }, 2000)
+          this.$store.dispatch("postPhone", {data})
+          this.timer2 = setTimeout(() => {
+            if (this.phoneNote.success) {
+              clearInterval(this.timer2)
+              this.$router.replace('/homePage/generalizePage')
+            } else {
+              MessageBox({
+                title: '提交失败',
+                message: '短信验证码输入错误',
+                showCancelButton: false
+              })
+              clearInterval(this.timer2)
+            }
+          }, 2000)
+        }
+
 
       },
 //      验证码
@@ -166,26 +218,39 @@
         this.imgIsShow = !this.imgIsShow
       },
 //      错误变红
-      loseFocus(reg, flag, num){
+      loseFocus(){
         this.myFooterIsShow = true
       },
       isFooter(){
         this.myFooterIsShow = false
       },
 //      正确变色
-      goodInput(reg, flag, num){
-        if (reg.test(flag)) {
-
+      goodInput(reg, flag, index){
+        if (!reg.test(flag)) {
+          Toast({
+            message: "格式错误",
+            className: "ToastStyle"
+          })
+          this.mformDatas[index].model = flag.substring(0, flag.length - 1)
         }
       },
 //      验证码逻辑
-      sendMsg(){
-        if (this.cellphoneNum && !this.errorColor) {
+      sendMsg(index){
+        let mformData = this.mformDatas[index-1]
+        if(this.num > 0){
+          MessageBox({
+            title: '提示',
+            message: '60s后在从新获取验证码',
+            showCancelButton: false
+          })
+          return false
+        }
+        if (mformData.model !== "" && mformData.regular.test(mformData.model)) {
           this.verificationShow = true
         } else {
           MessageBox({
             title: '提示',
-            message: '请正确输入手机号',
+            message: '手机号码输入不正确',
             showCancelButton: false
           })
         }
@@ -194,6 +259,15 @@
   }
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .ToastStyle
+    width (200 /$rem)
+    height (70 /$rem)
+    font-size (40 /$rem)
+    color #ffffff
+    background-color #8a8a8a
+    text-align center
+    line-height (70 /$rem)
+
   .footerOccupied
     width (1080 /$rem)
     height (146 /$rem)
@@ -215,7 +289,7 @@
   .myContent
     img
       width (1080 /$rem)
-    .cellphoneList
+    .mform
       margin: 0 (30 /$rem)
       li
         box-sizing border-box
@@ -231,13 +305,14 @@
         .description
           float left
         input
-          margin-top
           font-size (42 /$rem)
           outline: none
           border: none
           text-align right
-          margin-right (30 /$rem)
-          width (500 /$rem)
+          margin-right (20 /$rem)
+          width (540 /$rem)
+          caret-color #000
+          color #333
         input:
         :-moz-placeholder
           text-align right
@@ -250,18 +325,15 @@
           text-align right
           color #bbbbbb
         .sendMsg
-          display block
+          border-radius (40 /$rem)
+          float right
           margin-top (17 /$rem)
           width (290 /$rem)
           height (86 /$rem)
+          background-color #bbb
           color #ffffff
-          font-size (36 /$rem)
-          background-image url("./img/huoquyanzhengma.png")
-          background-repeat no-repeat
-          background-size 100%
-          text-align center
           line-height (86 /$rem)
-          float right
+          text-align center
     .protocol
       box-sizing border-box
       height (155 /$rem)

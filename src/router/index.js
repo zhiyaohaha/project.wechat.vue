@@ -27,6 +27,7 @@ const strategyPage = () => import('../pages/strategyPage/strategyPage.vue')
 const strategyListPage = () => import('../pages/strategyListPage/strategyListPage.vue')
 const schedulePage = () => import('../pages/schedulePage/schedulePage.vue')
 const posterPage = () => import('../pages/posterPage/posterPage.vue')
+const generalizePage = () => import('../pages/generalizePage/generalizePage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -104,6 +105,12 @@ const router = new Router({
           component: posterPage,
           meta: {keepAlive: false, isTop: false, title: '推广海报'},
         },
+        {
+          path: 'generalizePage',
+          component: generalizePage,
+          meta: {keepAlive: false, isTop: true, title: '推广海报'},
+        },
+
       ]
     },
     {

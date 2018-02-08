@@ -9,14 +9,12 @@
       <router-link to="/homePage">
         <img src="../static/img/homeImg/shouye.png">
       </router-link>
-      <router-link to="/phoneApprove">
+      <router-link to="/myPage">
         <img src="../static/img/homeImg/wode.png">
       </router-link>
     </footer>
   </div>
-
 </template>
-
 <script>
   import { mapState } from "vuex"
   export default {
@@ -29,7 +27,7 @@
     },
     mounted(){
       let data = {
-        openId: "123457",
+        openId: "123454",
         thirdLoginType: "ThirdPlatForm.WeChat"
       }
       this.$store.dispatch("getOpenid", {data})

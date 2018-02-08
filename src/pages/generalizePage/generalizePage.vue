@@ -1,0 +1,95 @@
+<template>
+  <div>
+    <div class="generalizeContent">
+      <div class="introduceHeadline">
+        微信三级分销系统的商业模式
+      </div>
+      <p>
+        赚佣金规则 <br>
+        我们假设有ABCD4个人，返佣总金额100元，看看他们赚佣金的模式。 <br>
+          A关注公众平台，实名认证，获得专属推广二维码；A申请办理业务，成功下卡/放款，可赚取50元佣金。<br>
+          A分享二维码给B，B扫码，申请办理业务，成功下卡/放款后，B可赚取50元佣金，A可赚取30元佣金；<br>
+          C扫B的二维码，申请办理业务，成功下卡/放款后，C赚取50元佣金，B可赚取30元佣金， A赚取20元佣金；<br>
+          D扫C的二维码，申请办理业务，成功下卡/放款后，D赚取50元佣金，C赚取30元佣金，B赚取20元佣金，A不赚取佣金。
+      </p>
+      <div class="QRcodeWrap">
+        <img src="./img/erweima.jpg" class="QRcode" v-if="QRcodeShow">
+      </div>
+    </div>
+    <footer class="generalizeFooter" v-if="!QRcodeShow">
+      <a href="javascript:;" @click="$router.replace('/phoneApprove')">
+        获取我的推广二维码
+      </a>
+    </footer>
+  </div>
+</template>
+
+<script>
+  import {mapState} from "vuex"
+  export default {
+    data () {
+      return {
+        QRcodeShow:false
+      }
+    },
+
+    components: {},
+
+    computed: {
+      ...mapState(["openID"])
+    },
+
+    mounted(){
+      if(this.openID){
+        if(this.openID.success){
+          this.QRcodeShow = true
+        }else {
+          this.QRcodeShow = false
+        }
+      }
+    },
+
+    methods: {}
+  }
+
+</script>
+<style lang='stylus' rel="stylesheet/stylus">
+  .generalizeContent
+    box-sizing border-box
+    padding (30/$rem)
+    font-size (46/$rem)
+    color #bbbbbb
+    .introduceHeadline
+      height (130/$rem)
+      line-height (130/$rem)
+      border-bottom 1px solid #f4f4f4
+    p
+      font-size:(46/$rem);/*字体大小*/
+      line-height:1.5em;/*行距为1.5个单位*/
+      margin:0;/*去掉默认的段间距*/
+      border-bottom 1px solid #f4f4f4
+    .QRcodeWrap
+      position relative
+      height (400/$rem)
+      .QRcode
+        position absolute
+        top 50%
+        left 50%
+        margin-top -(150/$rem)
+        margin-left -(150/$rem)
+        width (300/$rem)
+        height (300/$rem)
+  .generalizeFooter
+    position fixed
+    bottom 0
+    left 0
+    height (146/$rem)
+    width (1080/$rem)
+    background-color: #c2181f;
+    a
+      height 100%
+      color #ffffff
+      text-align center
+      line-height (146/$rem)
+      font-size (56/$rem)
+</style>

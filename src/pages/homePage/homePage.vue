@@ -135,11 +135,10 @@
       this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,})
       this.homePageWrap.refresh()
     },
-    beforeUpdated(){
 
-    },
     updated(){
     },
+
     methods: {}
   }
 

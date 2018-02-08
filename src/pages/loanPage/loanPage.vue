@@ -15,7 +15,7 @@
             <li v-for="(mformData, index) in mformDatas" :key="index">
               <span class="description">{{mformData.description}}</span>
               <input type="text" v-model="mformData.model"
-                     @blur="loseFocus(mformData.reg,mformData.model,index)"
+                     @blur="loseFocus"
                      @input="goodInput(mformData.reg,mformData.model,index)"
                      @focus="pullDown(true,index)"
                      :placeholder="mformData.placeholder"
@@ -54,7 +54,7 @@
       <mt-picker :itemHeight="70" :slots="slots" @change="onValuesChange"
                  class="shadeIsShowContent"></mt-picker>
     </mt-popup>
-    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
+    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel" :time="time"/>
     <footer class="simulationSubmit" v-show="simulationSubmitIsShow">
       <a href="javascript:"></a>
     </footer>
@@ -134,7 +134,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[\u4e00-\u9fa5_A-Za-z]{0,}$/,
+            reg: /^[\u4e00-\u9fa5_A-Za-z]{1,}$/,
             errorColor: false
           },
           {
@@ -145,7 +145,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[0-9xX]{0,}$/,
+            reg: /^[0-9xX]{1,}$/,
             errorColor: false,
             maxlength: "18"
           },
@@ -157,7 +157,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[0-9]{0,}$/,
+            reg: /^[0-9]{1,}$/,
             errorColor: false,
             maxlength: "11"
           },
@@ -169,7 +169,7 @@
             purposeList: false,
             sendMsg: true,
             units: "获取验证码",
-            reg: /^\d{0,}$/,
+            reg: /^\d{1,}$/,
             errorColor: false,
             maxlength: "4"
           },
@@ -190,7 +190,8 @@
         consumeArr: ["买车", "买房", "消费", "娱乐"],
         deadlineArr: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
         simulationSubmitIsShow: true,
-        verificationShow: false
+        verificationShow: false,
+        time: new Date().getTime()
       }
     },
 
@@ -199,9 +200,7 @@
     },
 
     computed: {
-      time(){
-        return new Date().getTime()
-      }
+
     },
 // 滑动事件
     mounted(){
@@ -231,7 +230,7 @@
         this.simulationSubmitIsShow = false
       },
 //      错误变色
-      loseFocus(reg, flag, index){
+      loseFocus(){
         this.simulationSubmitIsShow = true
       },
 //      输入框值
@@ -242,7 +241,7 @@
       goodInput(reg, flag, index){
 //        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (index < 3) {
-          flag = ""
+          this.mformDatas[index].model = ""
         }
         if (!reg.test(flag)) {
           Toast({

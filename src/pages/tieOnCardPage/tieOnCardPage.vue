@@ -19,11 +19,6 @@
                 @click="pullDown(true,index)">
                 {{mformData.units}}
               </span>
-          <!--<a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
-             @touchstart="sendMsg()">
-            {{mformData.units}}
-          </a>-->
-
         </li>
       </ul>
       <a href="javascript:;" class="authentication" @click="approve">
@@ -48,7 +43,6 @@
     </footer>
   </div>
 </template>
-
 <script>
   import { Toast, MessageBox } from "mint-ui"
   export default {
@@ -73,7 +67,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[0-9xX]{1,18}$/,
+            reg: /^[0-9_xX]{1,18}$/,
             maxlength: "18"
           },
           {

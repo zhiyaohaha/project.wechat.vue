@@ -42,6 +42,7 @@
         verificationShow:false,
         imgIsShow:true,
         units:"获取验证码",
+        time:new Date().getTime()
       }
     },
 
@@ -50,9 +51,6 @@
     },
 
     computed: {
-      time(){
-        return  new Date().getTime()
-      }
     },
 
     mounted(){
@@ -79,6 +77,7 @@
         }
       },
       verificationCancel(flag){
+        this.time = new Date().getTime()
         this.verificationShow = false
         if(flag){
           this.num = 60
