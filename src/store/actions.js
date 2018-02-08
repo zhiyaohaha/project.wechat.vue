@@ -13,12 +13,13 @@ export default {
       commit('POST_SENDMSG', {result})
     }
   },
-  async getOpenid({commit}, {data}) {
+  async getOpenid({commit}, {data,cb}) {
     // debugger
     let url = apiPrefix + '/api/OfficialAccounts/ThridPlatFormLogin'
     const result = await getOpenid(url, data)
     commit('GET_OPENID', {result})
-  },
+    cb && cb()
+   },
   async postPhone({commit}, {data}) {
     // debugger
     let url = apiPrefix + '/api/OfficialAccounts/LoginByVerifyCode'

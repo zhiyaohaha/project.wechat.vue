@@ -27,7 +27,7 @@
     },
     mounted(){
       let data = {
-        openId: "123454",
+        openId: "123451",
         thirdLoginType: "ThirdPlatForm.WeChat"
       }
       this.$store.dispatch("getOpenid", {data})

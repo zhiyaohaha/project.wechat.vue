@@ -104,7 +104,8 @@
         imgIsShow: true,
         myFooterIsShow: true,
         verificationShow: false,
-        time:new Date().getTime()
+        time:new Date().getTime(),
+        isFlag:null
       }
     },
     components: {
@@ -117,7 +118,6 @@
 
     },
     mounted(){
-      console.log(this.time)
       this.__boxheight(this.$refs.myWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
       this.$nextTick(() => {
@@ -137,15 +137,16 @@
             showCancelButton: false
           })
           clearInterval(this.timer1)
+          this.num = 60
           let timer = setInterval(() => {
             this.num--
             if (this.num == 0) {
-              this.mformDatas[6].units = "获取验证码"
+              this.mformDatas[3].units = "获取验证码"
               clearInterval(timer)
               this.num = null
             } else {
-              if (flag) {
-                this.mformDatas[6].units = this.num + "s后重发"
+              if (this.isFlag) {
+                this.mformDatas[3].units = this.num + "s后重发"
               }
             }
           }, 1000)
@@ -163,11 +164,11 @@
         let Arr = this.mformDatas.filter(item=>item.reg.test(item.model))
         if(Arr.length === this.mformDatas.length){
           let data = {
-            phone: this.cellphoneNum,
-            verifyCode: this.authCode,
+            phone: this.mformDatas[2].model,
+            verifyCode: this.mformDatas[3].model,
             firstLevelId: "",
             thirdPlatFormBind: true,//第三方绑定接口
-            openId: "123454", //第三方OpenId
+            openId: "123453", //第三方OpenId
             thirdLoginType: "ThirdPlatForm.WeChat",  //第三方登录代号
             head: "",//第三方登录头像
             nickName: "",//第三方登录昵称
@@ -187,9 +188,13 @@
               clearInterval(this.timer2)
             }
           }, 2000)
+        }else {
+          MessageBox({
+            title: '提交失败',
+            message: '请正确输入信息',
+            showCancelButton: false
+          })
         }
-
-
       },
 //      验证码
       changeShow(){
@@ -197,13 +202,14 @@
       },
 
       //发送图片验证码核实请求
-      verificationCancel(flag, validateCode, time){
+      verificationCancel(flag, validateCode){
+        this.isFlag = flag
         this.time = new Date().getTime()
         this.verificationShow = false
         if (flag) {
           let data = {
             code: 'SMS_123738830',
-            mobilePhone: this.cellphoneNum,
+            mobilePhone: this.mformDatas[2].model,
             validateCode: validateCode,
             needvalidateCode: true
           }
