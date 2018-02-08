@@ -54,7 +54,7 @@
       <mt-picker :itemHeight="70" :slots="slots" @change="onValuesChange"
                  class="shadeIsShowContent"></mt-picker>
     </mt-popup>
-    <verification v-show="verificationShow" :changeShow="changeShow"  :verificationCancel="verificationCancel"/>
+    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
     <footer class="simulationSubmit" v-show="simulationSubmitIsShow">
       <a href="javascript:"></a>
     </footer>
@@ -145,7 +145,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[0-9xX]{0,18}$/,
+            reg: /^[0-9xX]{0,}$/,
             errorColor: false,
             maxlength: "18"
           },
@@ -157,7 +157,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[0-9]{0,11}$/,
+            reg: /^[0-9]{0,}$/,
             errorColor: false,
             maxlength: "11"
           },
@@ -169,7 +169,7 @@
             purposeList: false,
             sendMsg: true,
             units: "获取验证码",
-            reg: /^\d{0,4}$/,
+            reg: /^\d{0,}$/,
             errorColor: false,
             maxlength: "4"
           },
@@ -200,7 +200,7 @@
 
     computed: {
       time(){
-        return  new Date().getTime()
+        return new Date().getTime()
       }
     },
 // 滑动事件
@@ -215,11 +215,17 @@
     },
     updated(){
       /*this.__boxheight(this.$refs.loanWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.loanWrap)*/
+       window.onresize = this.__boxheight(this.$refs.loanWrap)*/
 //      this.loanWrap = new BScroll(this.$refs.loanWrap, {touchstart: true, momentum: true})
 //      this.loanWrap.refresh()
     },
     methods: {
+      /*importS(){
+        Toast({
+          message: event.keyCode,
+          className: "ToastStyle"
+        })
+      },*/
 //      输入框焦点时底部消失
       isFooter(){
         this.simulationSubmitIsShow = false
@@ -236,14 +242,14 @@
       goodInput(reg, flag, index){
 //        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (index < 3) {
-          this.mformDatas[index].model = ""
+          flag = ""
         }
         if (!reg.test(flag)) {
           Toast({
             message: "格式错误",
             className: "ToastStyle"
           })
-          this.mformDatas[index].model = ""
+          this.mformDatas[index].model = flag.substring(0,flag.length - 1)
         }
       },
 //      验证码逻辑
@@ -258,7 +264,7 @@
             showCancelButton: false
           })
         }
-        if(this.num > 0){
+        if (this.num > 0) {
           this.verificationShow = false
           MessageBox({
             title: '提示',
@@ -293,20 +299,20 @@
       },
       verificationCancel(flag){
         this.verificationShow = false
-        if(flag){
+        if (flag) {
           this.num = 60
-          let timer = setInterval(()=>{
+          let timer = setInterval(() => {
             this.num--
-            if (this.num == 0){
+            if (this.num == 0) {
               this.mformDatas[6].units = "获取验证码"
               clearInterval(timer)
               this.num = null
-            }else {
-              if(flag){
+            } else {
+              if (flag) {
                 this.mformDatas[6].units = this.num + "s后重发"
               }
             }
-          },1000)
+          }, 1000)
         }
       },
     }
@@ -322,6 +328,7 @@
     background-color #8a8a8a
     text-align center
     line-height (70 /$rem)
+
   .footerTap
     position fixed
     bottom 0
@@ -440,7 +447,7 @@
           background-size 100%
           padding-right: (40 /$rem)
         .sendMsg
-          border-radius (40/$rem)
+          border-radius (40 /$rem)
           float right
           margin-top (17 /$rem)
           width (290 /$rem)

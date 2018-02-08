@@ -26,6 +26,7 @@ const verifyPage = () => import('../pages/verifyPage/verifyPage.vue')
 const strategyPage = () => import('../pages/strategyPage/strategyPage.vue')
 const strategyListPage = () => import('../pages/strategyListPage/strategyListPage.vue')
 const schedulePage = () => import('../pages/schedulePage/schedulePage.vue')
+const posterPage = () => import('../pages/posterPage/posterPage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -97,6 +98,11 @@ const router = new Router({
           path: 'schedulePage',
           component: schedulePage,
           meta: {keepAlive: false, isTop: false, title: '办卡进度'},
+        },
+        {
+          path: 'posterPage',
+          component: posterPage,
+          meta: {keepAlive: false, isTop: false, title: '推广海报'},
         },
       ]
     },

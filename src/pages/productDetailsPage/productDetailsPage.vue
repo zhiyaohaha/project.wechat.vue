@@ -23,9 +23,22 @@
       <split/>
       <productHeadLine title="认证材料"/>
       <authenticationList :authenticationListDatas="authenticationListDatas"/>
+      <split/>
+      <ul class="mform">
+        <li v-for="(mformData, index) in mformDatas" :key="index">
+          <span class="description">{{mformData.description}}</span>
+          <input type="text" v-model="mformData.model"
+                 @blur="loseFocus(mformData.reg,mformData.model,index)"
+                 @input="goodInput(mformData.reg,mformData.model,index)"
+                 @focus="isFooter"
+                 :placeholder="mformData.placeholder"
+                 :maxlength="mformData.maxlength"
+                 :name="mformData.name">
+        </li>
+      </ul>
     </div>
-    <div class="setting"></div>
-    <footer class="productDetailsFooter">
+
+    <footer class="productDetailsFooter" v-show="FooterShow">
       <a href="javascript:;">
         立即申请
       </a>
@@ -34,6 +47,7 @@
 </template>
 
 <script>
+  import {Toast} from "mint-ui"
   import productHeadLine from "../../components/productHeadLine/productHeadLine.vue"
   import authenticationList from "../../components/authenticationList/authenticationList.vue"
   export default {
@@ -71,7 +85,32 @@
             imgUrl:"../../../static/img/productImg/shoujihao.png",
             character:"手机号"
           },
-        ]
+        ],
+        mformDatas: [
+          {
+            description: "姓名：",
+            placeholder: "请输入姓名",
+            name: "userName",
+            model: "",
+            reg:/^[\u4e00-\u9fa5_a-zA-Z]{0,}$/,
+          },
+          {
+            description: "身份证号：",
+            placeholder: "请输入身份证号",
+            name: "IDnumber",
+            model: "",
+            reg: /^[0-9xX]{0,18}$/,
+            maxlength: "18"
+          },
+          {
+            description: "手机号：",
+            placeholder: "请输入手机号",
+            name: "userName",
+            model: "",
+            reg: /^[0-9]{0,11}$/,
+          },
+        ],
+        FooterShow:true
       }
     },
 
@@ -84,11 +123,40 @@
 
     mounted(){},
 
-    methods: {}
+    methods: {
+      isFooter(){
+        this.FooterShow = false
+      },
+      loseFocus(reg, flag, index){
+        this.FooterShow = true
+      },
+      goodInput(reg, flag, index){
+//        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
+        if (!reg.test(flag)) {
+          Toast({
+            message:"格式错误",
+            className:"ToastStyle",
+            duration:2000,
+            position:"bottom"
+          })
+          for(let i=0;i<this.mformDatas.length;i++){
+            this.mformDatas[index].model = ""
+          }
+        }
+      },
+    }
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .ToastStyle
+    width (200/$rem)
+    height (70/$rem)
+    font-size (40/$rem)
+    color #ffffff
+    background-color #8a8a8a
+    text-align center
+    line-height (70/$rem)
   .productDetailsHeader
     box-sizing border-box
     width (1080 /$rem)
@@ -117,6 +185,43 @@
         .lightspot
           margin-top (28/$rem)
   .productDetailContent
+    .mform
+      margin: 0 (30 /$rem)
+      li
+        box-sizing border-box
+        position relative
+        line-height (120 /$rem)
+        width (1020 /$rem)
+        height (120 /$rem)
+        font-size (42 /$rem)
+        border-bottom 1px solid #ccc
+        text-align right
+        span
+          color #333333
+        .description
+          float left
+        input
+          font-size (42 /$rem)
+          outline: none
+          border: none
+          text-align right
+          margin-right (20 /$rem)
+          width (540 /$rem)
+          caret-color #000
+          color #333
+        input:
+        :-moz-placeholder
+          text-align right
+          color #bbbbbb
+        input:
+        :-webkit-input-placeholder
+          text-align right
+          color #bbbbbb
+        input:-ms-input-placeholder
+          text-align right
+          color #bbbbbb
+
+
     .applyForCondition
       box-sizing border-box
       padding (30/$rem) 0 (30/$rem) (48/$rem)

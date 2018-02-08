@@ -63,7 +63,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[\u4e00-\u9fa5_A-Za-z]{0,}$/,
+            reg: /^[\u4e00-\u9fa5_A-Za-z]{1,}$/,
           },
           {
             description: "身份证号：",
@@ -73,7 +73,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[0-9xX]{0,18}$/,
+            reg: /^[0-9xX]{1,18}$/,
             maxlength: "18"
           },
           {
@@ -84,7 +84,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[0-9]{0,21}$/,
+            reg: /^[0-9]{1,21}$/,
             maxlength: "21"
           },
           {
@@ -105,7 +105,7 @@
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[0-9]{0,11}$/,
+            reg: /^[0-9]{1,11}$/,
           },
         ],
         shadeIsShow: false,
@@ -127,7 +127,11 @@
 
     computed: {},
 
-    mounted(){},
+    mounted(){
+      let str = "abcdefgh"
+      str = str.substring(0,8)
+      console.log(str)
+    },
 
     methods: {
       loseFocus(){
@@ -138,12 +142,13 @@
         if (index == 3) {
           this.mformDatas[index].model = ""
         }
+
         if (!reg.test(flag)) {
           Toast({
             message: "格式错误",
             className: "ToastStyle"
           })
-          this.mformDatas[index].model = ""
+          this.mformDatas[index].model = flag.substring(0,flag.length - 1)
         }
       },
       pullDown(flag, index){
@@ -157,14 +162,11 @@
         this.mformDatas[3].model = picker.getValues()
       },
       approve(){
-        console.log(11)
-        let Arr = []
-        this.mformDatas.map((item)=>{
-          if(item.model !== ""){
-            Arr.push("1")
-          }
-          return Arr
+        let Arr = this.mformDatas.filter((item)=>{
+          return item.reg.test(item.model)
         })
+        Array.from(Arr)
+        console.log(Arr)
         if(Arr.length < 5){
           MessageBox({
             title: '提示',

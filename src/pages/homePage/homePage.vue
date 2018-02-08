@@ -67,7 +67,7 @@
           {
             imgUrl: "../../static/img/homeImg/haibao.png",
             title: "推广海报",
-            url: "/homePage/generalizePage"
+            url: "/homePage/posterPage"
           },
           {
             imgUrl: "../../static/img/homeImg/sucai.png",
@@ -99,7 +99,7 @@
           {
             imgUrl: "../../static/img/homeImg/daihuan.png",
             title: "信用卡代还",
-            url: "/homePage/repaymentPage"
+            url: "/homePage/productPage"
           }
         ],
         creditCardModDatas: [

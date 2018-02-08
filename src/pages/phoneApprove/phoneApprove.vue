@@ -12,17 +12,19 @@
           <ul class="cellphoneList">
             <li>
               <span class="description">手机号：</span>
-              <input type="text" v-model="cellphoneNum" @blur="loseFocus(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)"
-                     @input="goodInput(/^[1][3,4,5,7,8][0-9]{9}$/,cellphoneNum,0)" maxlength="11"
+              <input type="text" v-model="cellphoneNum"
+                     @blur="loseFocus"
+                     @input="goodInput(/^[0-9]{1,11}$/,cellphoneNum,0)" maxlength="11"
                      @focus="isFooter"
-                     :placeholder="phoneTooltip" :class="{errorColor}"
+                     :placeholder="phoneTooltip"
                      name="cellphoneNum">
             </li>
             <li>
               <span class="description">验证码：</span>
-              <input type="text" v-model="authCode" @blur="loseFocus(/^\d{4}$/,authCode,1)"
+              <input type="text" v-model="authCode"
+                     @blur="loseFocus(/^\d{1,4}$/,authCode,1)"
                      @input="goodInput(/^\d{4}$/,authCode,1)" maxlength="4"
-                     :placeholder="codeTooltip" :class="{errorColor:codeColor}"
+                     :placeholder="codeTooltip"
                      @focus="isFooter"
                      name="authCode">
               <span class="sendMsg" @touchstart="sendMsg">获取验证码</span>
@@ -58,8 +60,6 @@
         authCode: '',
         codeTooltip: "请输入验证码",
         phoneTooltip: "请填写你的手机号",
-        errorColor: false,
-        codeColor: false,
         myFooterIsShow: true,
         verificationShow: false,
         time: new Date().getTime(),
@@ -90,8 +90,6 @@
       }
     },
     updated(){
-      this.__boxheight(this.$refs.myWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.myWrap);
     },
     methods: {
       //      发送短信验证码请求
@@ -146,7 +144,7 @@
         this.verificationShow = false
       },
 
-      //发送图片验证码请求
+      //发送图片验证码核实请求
       verificationCancel(flag, validateCode, time){
         this.time = new Date().getTime()
         this.verificationShow = false
@@ -170,13 +168,6 @@
 //      错误变红
       loseFocus(reg, flag, num){
         this.myFooterIsShow = true
-        if (!reg.test(flag)) {
-          if (num == 1) {
-            this.codeColor = true
-          } else {
-            this.errorColor = true
-          }
-        }
       },
       isFooter(){
         this.myFooterIsShow = false
@@ -184,11 +175,7 @@
 //      正确变色
       goodInput(reg, flag, num){
         if (reg.test(flag)) {
-          if (num == 1) {
-            this.codeColor = false
-          } else {
-            this.errorColor = false
-          }
+
         }
       },
 //      验证码逻辑
@@ -251,8 +238,6 @@
           text-align right
           margin-right (30 /$rem)
           width (500 /$rem)
-          &.errorColor
-            color #c2181f
         input:
         :-moz-placeholder
           text-align right
