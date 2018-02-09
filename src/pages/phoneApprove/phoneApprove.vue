@@ -15,6 +15,7 @@
               <input type="text" v-model="mformData.model"
                      @blur="loseFocus"
                      @input="goodInput(mformData.reg,mformData.model,index)"
+                     @focus="pullDown"
                      :placeholder="mformData.placeholder"
                      :maxlength="mformData.maxlength"
                      :name="mformData.name">
@@ -36,7 +37,11 @@
     <verification v-show="verificationShow" :changeShow="changeShow" :time="time"
                   :verificationCancel="verificationCancel"/>
     <footer class="myFooter" v-show="myFooterIsShow">
-      <span>申请贷款前请进新手机认证，仅需认证一次</span>
+      <span>
+        实名认证仅用来确保您提交的需求真实有效，绝不会被泄露。
+        认证后，不仅能获取提交贷款需求的资格，还可以获取专属二维码。
+        专属二维码可以用来推广，别人通过扫你的二维码办理参与返佣的业务，成功放款/批卡，您就可以获取返佣。真正的躺着赚钱
+      </span>
     </footer>
   </div>
 </template>
@@ -58,7 +63,7 @@
             sendMsg: false,
             units: "",
             reg: /^[\u4e00-\u9fa5_A-Za-z]{1,}$/,
-            regular:/^[\u4e00-\u9fa5_A-Za-z]{0,}$/,
+            regular: /^[\u4e00-\u9fa5_A-Za-z]{0,}$/,
             errorColor: false
           },
           {
@@ -70,7 +75,7 @@
             sendMsg: false,
             units: "",
             reg: /^[0-9xX]{1,18}$/,
-            regular:/^([0-9]){7,18}(x|X)?$/,
+            regular: /^([0-9]){7,18}(x|X)?$/,
             errorColor: false,
             maxlength: "18"
           },
@@ -83,7 +88,7 @@
             sendMsg: false,
             units: "",
             reg: /^[0-9]{1,11}$/,
-            regular:/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
+            regular: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
             errorColor: false,
             maxlength: "11"
           },
@@ -96,7 +101,7 @@
             sendMsg: true,
             units: "获取验证码",
             reg: /^\d{1,4}$/,
-            regular:/^\d{4}$/,
+            regular: /^\d{4}$/,
             errorColor: false,
             maxlength: "4"
           },
@@ -104,8 +109,8 @@
         imgIsShow: true,
         myFooterIsShow: true,
         verificationShow: false,
-        time:new Date().getTime(),
-        isFlag:null
+        time: new Date().getTime(),
+        isFlag: null
       }
     },
     components: {
@@ -159,10 +164,14 @@
           clearInterval(this.timer1)
         }
       },
+//      底部消失
+      pullDown(){
+        this.myFooterIsShow = false
+      },
 //    申请逻辑
       approve(){
-        let Arr = this.mformDatas.filter(item=>item.reg.test(item.model))
-        if(Arr.length === this.mformDatas.length){
+        let Arr = this.mformDatas.filter(item => item.reg.test(item.model))
+        if (Arr.length === this.mformDatas.length) {
           let data = {
             phone: this.mformDatas[2].model,
             verifyCode: this.mformDatas[3].model,
@@ -188,7 +197,7 @@
               clearInterval(this.timer2)
             }
           }, 2000)
-        }else {
+        } else {
           MessageBox({
             title: '提交失败',
             message: '请正确输入信息',
@@ -242,8 +251,8 @@
       },
 //      验证码逻辑
       sendMsg(index){
-        let mformData = this.mformDatas[index-1]
-        if(this.num > 0){
+        let mformData = this.mformDatas[index - 1]
+        if (this.num > 0) {
           MessageBox({
             title: '提示',
             message: '60s后在从新获取验证码',

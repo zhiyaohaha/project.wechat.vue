@@ -1,48 +1,195 @@
 <template>
   <div>
     <header class="orderFormTap">
-      <router-link to="/myPage/rebatePage/rebatePageMyPage">我的</router-link>
-      <router-link to="/myPage/rebatePage/rebatePageStairPage">一级代理</router-link>
-      <router-link to="/myPage/rebatePage/rebatePageTwoPage">二级代理</router-link>
+      <a href="javascript:;" :class="{active:orderFormInd === index}"
+         v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
+         @click="changeColor(index)">
+        {{orderFormTapData.title}}
+      </a>
     </header>
-    <keep-alive>
-      <router-view/>
-    </keep-alive>
+    <rebateList v-for="(rebate, index) in rebates" :key="index"
+                :rebateListDatas="rebate.rebateListDatas" v-show="orderFormInd === index"/>
   </div>
 </template>
 
 <script>
+  import rebateList from "../../components/rebateList/rebateList.vue"
   export default {
     data () {
-      return {}
+      return {
+        rebates: [
+          {
+            rebateListDatas: [
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+            ]
+          },
+          {
+            rebateListDatas: [
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+            ]
+          },
+          {
+            rebateListDatas: [
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+              {
+                imgUrl: "../../../static/img/myImg/touxiang.gif",
+                applyForTime: "20XX-XX-XX XX:XX:XX",
+                money: "100000.00",
+                form: "小赢卡贷",
+                state: "100000.00"
+              },
+            ]
+          }
+        ],
+        orderFormTapDatas: [
+          {
+            title: "我的"
+          },
+          {
+            title: "一级代理"
+          },
+          {
+            title: "二级代理"
+          },
+        ],
+        orderFormInd: 0
+      }
     },
 
-    components: {},
+    components: {
+      rebateList
+    },
 
     computed: {},
 
     mounted(){
       /*let sign = this.__getBack()*/
       /*if (sign) {
-//        removeEventListener("popstate",this.__callback)
-      }*/
+       //        removeEventListener("popstate",this.__callback)
+       }*/
     },
 
     methods: {
+//      点击变色
+      changeColor(ind){
+        this.orderFormInd = ind
+      }
       /*__callback(e){
-        let bool = true
-        if (bool) {
-          alert("我监听到了浏览器的返回按钮事件啦");
-          //根据自己的需求实现自己的功能
-          bool = false
-        }
-        bool = true
-      },
-      __getBack(){
-        console.log(666)
-        window.addEventListener("popstate", this.__callback)
-        return true
-      }*/
+       let bool = true
+       if (bool) {
+       alert("我监听到了浏览器的返回按钮事件啦");
+       //根据自己的需求实现自己的功能
+       bool = false
+       }
+       bool = true
+       },
+       __getBack(){
+       console.log(666)
+       window.addEventListener("popstate", this.__callback)
+       return true
+       }*/
     }
   }
 
@@ -62,7 +209,8 @@
       color #515151
       text-align center
       line-height (123 /$rem)
-      &.router-link-active
+      transition all 0.5s
+      &.active
         background-color #c2181f
         color #ffffff
 </style>

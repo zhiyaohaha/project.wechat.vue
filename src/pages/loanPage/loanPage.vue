@@ -15,7 +15,7 @@
             <li v-for="(mformData, index) in mformDatas" :key="index">
               <span class="description">{{mformData.description}}</span>
               <input type="text" v-model="mformData.model"
-                     @blur="loseFocus"
+                     @blur="loseFocus" :readonly="mformData.purposeList"
                      @input="goodInput(mformData.reg,mformData.model,index)"
                      @focus="pullDown(true,index)"
                      :placeholder="mformData.placeholder"
