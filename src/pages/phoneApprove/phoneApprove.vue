@@ -177,7 +177,7 @@
             verifyCode: this.mformDatas[3].model,
             firstLevelId: "",
             thirdPlatFormBind: true,//第三方绑定接口
-            openId: "123453", //第三方OpenId
+            openId: "123456", //第三方OpenId
             thirdLoginType: "ThirdPlatForm.WeChat",  //第三方登录代号
             head: "",//第三方登录头像
             nickName: "",//第三方登录昵称

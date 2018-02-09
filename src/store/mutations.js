@@ -11,4 +11,8 @@ export default {
     console.log(result)
     state.phoneNote = result
   },
+  SAVE_POSITION(state,{result}){
+    console.log(result)
+    state.scroll = result
+  }
 }

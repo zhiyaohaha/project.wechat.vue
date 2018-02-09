@@ -45,7 +45,7 @@
 
     mounted(){
       let data = {
-        openId: "123458",
+        openId: "123456",
         thirdLoginType: "ThirdPlatForm.WeChat"
       }
       let __QRcode = this.__QRcode

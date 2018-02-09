@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="content">
-      <!--<keep-alive>-->
-      <router-view/>
-      <!--</keep-alive>-->
+      <keep-alive>
+        <router-view/>
+      </keep-alive>
     </div>
     <footer class="footerTap" v-if="$route.meta.keepAlive">
       <router-link to="/homePage">
@@ -36,9 +36,7 @@
       }
       this.$store.dispatch("getOpenid", {data})
     },
-    methods: {
-
-    }
+    methods: {}
   }
 
 </script>

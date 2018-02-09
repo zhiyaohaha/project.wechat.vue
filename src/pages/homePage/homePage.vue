@@ -2,7 +2,7 @@
   <div>
     <router-view/>
     <div class="homePageWrap" ref="homePageWrap" v-show="$route.meta.keepAlive">
-      <div>
+      <div @click="changeTop" ref="homePage">
         <header class="homePageHeader">
           <img src="./img/banner.png">
         </header>
@@ -30,7 +30,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 <script>
@@ -108,16 +107,17 @@
             imgUrl: "../../static/img/homeImg/kapian.png",
             title: "信用卡名称",
             limit: "10000-100000元",
-            applyForUrl:"/homePage/creditCardPage/cardApplyForPage"
+            applyForUrl: "/homePage/creditCardPage/cardApplyForPage"
           },
           {
             url: "/homePage/creditCardPage/cardDetailsPage",
             imgUrl: "../../static/img/homeImg/kapian.png",
             title: "信用卡名称",
             limit: "10000-100000元",
-            applyForUrl:"/homePage/creditCardPage/cardApplyForPage"
+            applyForUrl: "/homePage/creditCardPage/cardApplyForPage"
           }
         ],
+        top: 0
       }
     },
 
@@ -132,14 +132,27 @@
     mounted(){
       this.__boxheight(this.$refs.homePageWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.homePageWrap); //窗口或框架被调整大小时执行
-      this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,})
-      this.homePageWrap.refresh()
+      this.$nextTick(()=>{
+        this._initScroll()
+      })
+
     },
 
     updated(){
-    },
+      let top = this.top
+      this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,startY:top})
 
-    methods: {}
+    },
+    methods: {
+      _initScroll(){
+        this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,})
+        this.homePageWrap.refresh()
+      },
+      changeTop(){
+        this.top = this.homePageWrap.y
+        console.log(this.homePageWrap.y)
+      }
+    }
   }
 
 </script>
@@ -147,7 +160,6 @@
   .footerOccupied
     width (1080 /$rem)
     height (146 /$rem)
-
   .homePageHeader
     img
       width 100%
