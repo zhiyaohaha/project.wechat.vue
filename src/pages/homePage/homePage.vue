@@ -150,7 +150,6 @@
       },
       changeTop(){
         this.top = this.homePageWrap.y
-        console.log(this.homePageWrap.y)
       }
     }
   }

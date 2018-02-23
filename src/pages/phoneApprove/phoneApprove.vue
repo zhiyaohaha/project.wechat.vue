@@ -75,7 +75,7 @@
             sendMsg: false,
             units: "",
             reg: /^[0-9xX]{1,18}$/,
-            regular: /^([0-9]){7,18}(x|X)?$/,
+            regular: /^([0-9]){15,18}(x|X)?$/,
             errorColor: false,
             maxlength: "18"
           },

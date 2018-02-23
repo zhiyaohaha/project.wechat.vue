@@ -62,12 +62,8 @@
 
           },
           {
-            imgUrl:"../../../static/img/myImg/gonggao5.png",
-            title:"专属客服",
-            url:"/myPage/servicePage"
           },
           {
-            url:"servicePage"
           },
         ]
       }

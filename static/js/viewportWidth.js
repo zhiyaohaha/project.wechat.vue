@@ -28,7 +28,4 @@ export const postAuth = function(param) {
   _param.sign = md5(str + timestamp + "84qudMIhOkX5JMQXVd0f4jneqfP2Lp");
   return Qs.stringify(_param)
 }
-export const changeTitle = (font = "微信")=>{
-  console.log(22)
-  document.title = font
-}
+

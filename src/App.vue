@@ -29,12 +29,23 @@
     computed: {
       ...mapState(["openID"])
     },
-    mounted(){
+    created(){
       let data = {
         openId: "123456",
         thirdLoginType: "ThirdPlatForm.WeChat"
       }
       this.$store.dispatch("getOpenid", {data})
+    },
+    mounted(){
+      setTimeout(()=>{
+        /*let exp = new Date();
+         exp.setTime(exp.getTime() + 1000 * 60 * 60 * 24 * 7); //这里表示保存24小时
+         if(this.openID){
+         document.cookie = "openID="+ true + ";expires=" + exp.toGMTString();
+         }
+         console.log(document.cookie)*/
+        this.setCookie("openID", true, 7)
+      },100)
     },
     methods: {}
   }

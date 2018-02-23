@@ -44,10 +44,10 @@
     <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
               showToolbar="true">
       <div class="shadeIsShowHeader">
-          <span @touchstart="pullDown(false,0)" class="cancel">
+          <span @touchstart="pullDown(false,mformDatasInd)" class="cancel">
             取消
           </span>
-        <span @touchstart="pullDown(false,0)" class="ascertain">
+        <span @touchstart="pullDown(false,mformDatasInd)" class="ascertain">
             确定
           </span>
       </div>
@@ -102,7 +102,6 @@
             units: "",
             reg: /[\s\S]*/,
             errorColor: false,
-
           },
           {
             description: "贷款用途：",
@@ -182,13 +181,13 @@
             defaultIndex: 1,
             flex: 1,
             className: "slots1",
-            values: [],
+            values: [0],
             textAlign: 'center'
           }
         ],
         moneyArr: ["1000元", "1万元", "10万元", "60万元"],
         consumeArr: ["买车", "买房", "消费", "娱乐"],
-        deadlineArr: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+        deadlineArr: ['1个月', '3个月', '5个月', '半年', '8个月', '1年'],
         simulationSubmitIsShow: true,
         verificationShow: false,
         time: new Date().getTime()
@@ -235,7 +234,9 @@
       },
 //      输入框值
       onValuesChange(picker, values) {
-        this.mformDatas[this.mformDatasInd].model = picker.getValues()
+//        debugger
+        console.log(picker.getSlotValue(0))
+        this.mformDatas[this.mformDatasInd].model = picker.getSlotValue(0)
       },
 //      输入正确变色
       goodInput(reg, flag, index){
@@ -287,10 +288,12 @@
             case 2:
               this.slots[0].values = this.deadlineArr
               break
-            default:
+            default:this.slots[0].values = []
+              break
           }
           this.shadeIsShow = flag
         }
+
       },
 //     图片验证码
       changeShow(){

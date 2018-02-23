@@ -3,7 +3,7 @@
     <div class="myParticulars">
       <ul class="myParticularsList">
         <li v-for="(myParticularsData, index) in myParticularsDatas" :key="index">
-          <router-link :to="myParticularsData.url">
+          <router-link :to="myParticularsData.url" v-if="myParticularsData.url">
             <img :src="myParticularsData.imgUrl">
             <span>{{myParticularsData.title}}</span>
           </router-link>

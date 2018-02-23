@@ -44,24 +44,19 @@
     },
 
     mounted(){
-      let data = {
-        openId: "123456",
-        thirdLoginType: "ThirdPlatForm.WeChat"
-      }
-      let __QRcode = this.__QRcode
-      this.$store.dispatch("getOpenid", {data})
       setTimeout(() => {
         this.QRcodeShow = this.openID
-      }, 150)
+        console.log(this.QRcodeShow)
+      }, 0)
     },
     updated(){
 
     },
 
     methods: {
-      __QRcode(){
+      /*__QRcode(){
         this.QRcodeShow = this.openID
-      }
+      }*/
     }
   }
 
