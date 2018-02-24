@@ -29,7 +29,6 @@
 </template>
 
 <script>
-  import { mapState } from "vuex"
   export default {
     data () {
       return {
@@ -39,35 +38,26 @@
 
     components: {},
 
-    computed: {
-      ...mapState(["openID"])
-    },
+    computed: {},
 
-    mounted(){
-      setTimeout(() => {
-        this.QRcodeShow = this.openID
-        console.log(this.QRcodeShow)
-      }, 0)
+    mounted () {
+      this.getCookie('openID') === '1' ? this.QRcodeShow = true : this.QRcodeShow = false
     },
-    updated(){
+    updated () {
 
     },
 
-    methods: {
-      /*__QRcode(){
-        this.QRcodeShow = this.openID
-      }*/
-    }
+    methods: {}
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .fade-enter-active, .fade-leave-active {
+  .fade-enter-active, .fade-leave-active
     transition: all .5s;
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
     transform translate(-100%)
-  }
+
   .generalizeContent
     box-sizing border-box
     padding (30 /$rem)

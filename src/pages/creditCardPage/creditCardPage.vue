@@ -38,7 +38,6 @@
   import cardHeadLine from "../../components/cardHeadLine/cardHeadLine.vue"
   import allBankList from "../../components/allBankList/allBankList.vue"
   import recommendList from "../../components/recommendList/recommendList.vue"
-  import BScroll from "better-scroll"
   export default {
     data () {
       return {
@@ -172,7 +171,7 @@
     mounted(){
       this.__boxheight(this.$refs.creditWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.creditWrap); //窗口或框架被调整大小时执行
-      this.creditWrap = new BScroll(this.$refs.creditWrap, {click: true,})
+      this.creditWrap = new this.BScroll(this.$refs.creditWrap, {click: true,})
       this.creditWrap.refresh()
     },
 

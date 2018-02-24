@@ -48,7 +48,6 @@
 <script>
   import { MessageBox, Toast } from "mint-ui"
   import { mapState } from "vuex"
-  import BScroll from "better-scroll"
   import verification from "../../components/verification/verification.vue"
   export default {
     data () {
@@ -126,7 +125,7 @@
       this.__boxheight(this.$refs.myWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
       this.$nextTick(() => {
-        this.myWrap = new BScroll(this.$refs.myWrap, {touchstart: true, momentum: false})
+        this.myWrap = new this.BScroll(this.$refs.myWrap, {touchstart: true, momentum: false})
         this.myWrap.refresh()
       })
     },

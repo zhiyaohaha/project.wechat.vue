@@ -64,7 +64,6 @@
 <script>
   import propertyMod from "../../components/propertyMod/propertyMod.vue"
   import verification from "../../components/verification/verification.vue"
-  import BScroll from "better-scroll"
   import { MessageBox, Toast } from "mint-ui"
   export default {
     data () {
@@ -206,7 +205,7 @@
       this.__boxheight(this.$refs.loanWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.loanWrap); //窗口或框架被调整大小时执行
       this.$nextTick(() => {
-        this.loanWrap = new BScroll(this.$refs.loanWrap, {touchstart: true, momentum: true})
+        this.loanWrap = new this.BScroll(this.$refs.loanWrap, {touchstart: true, momentum: true})
         this.loanWrap.refresh()
         this.$route.meta.keepAlive = false
       })

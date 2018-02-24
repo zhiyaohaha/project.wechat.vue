@@ -8,7 +8,6 @@
 
 <script>
   import scheduleList from "../../components/scheduleList/scheduleList.vue"
-  import BScroll from "better-scroll"
   export default {
     data () {
       return {
@@ -98,7 +97,7 @@
     mounted(){
       this.__boxheight(this.$refs.scheduleWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.scheduleWrap); //窗口或框架被调整大小时执行
-      this.scheduleWrap = new BScroll(this.$refs.scheduleWrap, {click: true,})
+      this.scheduleWrap = new this.BScroll(this.$refs.scheduleWrap, {click: true,})
       this.scheduleWrap.refresh()
     },
 

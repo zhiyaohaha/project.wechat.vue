@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router'
 import { Popup, Picker } from 'mint-ui'
 import store from './store'
+import BScroll from 'better-scroll'
 import split from './components/split/split.vue'
 import {
   __boxheight,
@@ -16,12 +17,14 @@ import {
 import '../static/css/reset.styl'
 import '../static/js/adaptive'
 import 'mint-ui/lib/style.css'
+
 Vue.component('split', split)
 Vue.component(Popup.name, Popup)
 Vue.component(Picker.name, Picker)
 Vue.prototype.__boxheight = __boxheight
 Vue.prototype.getCookie = getCookie
 Vue.prototype.setCookie = setCookie
+Vue.prototype.BScroll = BScroll
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

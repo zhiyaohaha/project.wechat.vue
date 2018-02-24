@@ -33,7 +33,6 @@
   </div>
 </template>
 <script>
-  import BScroll from "better-scroll"
   import { MessageBox } from "mint-ui"
   import { mapState } from "vuex"
   import headline from "../../components/headline/headline.vue"
@@ -139,13 +138,12 @@
     },
 
     updated(){
-      let top = this.top
-      this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,startY:top})
+      this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,startY:this.top})
 
     },
     methods: {
       _initScroll(){
-        this.homePageWrap = new BScroll(this.$refs.homePageWrap, {click: true,})
+        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,})
         this.homePageWrap.refresh()
       },
       changeTop(){

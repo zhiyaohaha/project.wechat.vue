@@ -12,7 +12,6 @@
 <script>
   import cardHeadLine from "../../components/cardHeadLine/cardHeadLine.vue"
   import recommendList from "../../components/recommendList/recommendList.vue"
-  import BScroll from "better-scroll"
   export default {
     data () {
       return {
@@ -107,7 +106,7 @@
     mounted(){
       this.__boxheight(this.$refs.recommendListWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.recommendListWrap); //窗口或框架被调整大小时执行
-      this.recommendListWrap = new BScroll(this.$refs.recommendListWrap, {click: true,})
+      this.recommendListWrap = new this.BScroll(this.$refs.recommendListWrap, {click: true,})
       this.recommendListWrap.refresh()
     },
 

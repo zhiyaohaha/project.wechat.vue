@@ -20,7 +20,6 @@
 
 <script>
   import strategyList from "../../components/strategyList/strategyList.vue"
-  import BScroll from "better-scroll"
   export default {
     data () {
       return {
@@ -96,7 +95,7 @@
     mounted(){
       this.__boxheight(this.$refs.strategyWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.strategyWrap); //窗口或框架被调整大小时执行
-      this.strategyWrap = new BScroll(this.$refs.strategyWrap, {click: true,})
+      this.strategyWrap = new this.BScroll(this.$refs.strategyWrap, {click: true,})
       this.strategyWrap.refresh()
     },
 

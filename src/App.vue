@@ -30,24 +30,37 @@
       ...mapState(["openID"])
     },
     created(){
+      /*(flag)=>{
+        let a =1
+        console.log(a)
+        return this.setCookie('openID', flag, 7)
+      },*/
       let data = {
         openId: "123456",
         thirdLoginType: "ThirdPlatForm.WeChat"
       }
-      this.$store.dispatch("getOpenid", {data})
+      this.$store.dispatch("getOpenid", {
+        data,
+        cb:(flag)=>{
+          this.setCookie("openID", flag, 7)
+        }
+      })
     },
     mounted(){
       setTimeout(()=>{
+
         /*let exp = new Date();
          exp.setTime(exp.getTime() + 1000 * 60 * 60 * 24 * 7); //这里表示保存24小时
          if(this.openID){
          document.cookie = "openID="+ true + ";expires=" + exp.toGMTString();
          }
          console.log(document.cookie)*/
-        this.setCookie("openID", true, 7)
+       /* this.setCookie("openID", true, 7)
+        console.log(this.getCookie("openID"))*/
       },100)
     },
-    methods: {}
+    methods: {
+    }
   }
 
 </script>

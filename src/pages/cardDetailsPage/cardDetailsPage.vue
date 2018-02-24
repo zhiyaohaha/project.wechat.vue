@@ -29,7 +29,6 @@
   import cardHeadLine from "../../components/cardHeadLine/cardHeadLine.vue"
   import privilegeMod from "../../components/privilegeMod/privilegeMod.vue"
   import detailsMessageMod from "../../components/detailsMessageMod/detailsMessageMod.vue"
-  import BScroll from "better-scroll"
   export default {
     data () {
       return {
@@ -93,7 +92,7 @@
     mounted(){
       this.__boxheight(this.$refs.CardDetailsWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.CardDetailsWrap); //窗口或框架被调整大小时执行
-      this.CardDetailsWrap = new BScroll(this.$refs.CardDetailsWrap, {click: true,})
+      this.CardDetailsWrap = new this.BScroll(this.$refs.CardDetailsWrap, {click: true,})
       this.CardDetailsWrap.refresh()
     },
 

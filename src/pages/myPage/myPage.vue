@@ -61,10 +61,8 @@
             url:"/myPage/depositPage"
 
           },
-          {
-          },
-          {
-          },
+          {},
+          {},
         ]
       }
     },

@@ -21,7 +21,6 @@
 
 <script>
   import headline from "../../components/headline/headline.vue"
-  import BScroll from "better-scroll"
   export default {
     data () {
       return {
@@ -42,7 +41,7 @@
     mounted(){
       this.__boxheight(this.$refs.posterWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.posterWrap); //窗口或框架被调整大小时执行
-      this.posterWrap = new BScroll(this.$refs.posterWrap, {click: true,})
+      this.posterWrap = new this.BScroll(this.$refs.posterWrap, {click: true,})
       this.posterWrap.refresh()
     },
 
