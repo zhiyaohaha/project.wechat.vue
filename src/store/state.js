@@ -3,5 +3,6 @@ export default {
   verification:null,
   openID:null,
   phoneNote:null,
-  scroll:0
+  scroll:0,
+  userinfo:{}
 }

@@ -1,8 +1,5 @@
 import axios from 'axios'
-import md5 from 'js-md5'
-
-axios.defaults.withCredentials = true
-export default function ajax (url = '', data = {}, type = 'GET') {
+export default async function wAjax (url = '', data = {}, type = 'GET') {
   return new Promise(function (resolve, reject) {
     // if (type === 'GET') {
     // 准备url query参数数据
@@ -17,10 +14,9 @@ export default function ajax (url = '', data = {}, type = 'GET') {
       })
 
       if (dataStr !== '') {
-        let timestamp = (new Date().getTime()).toString().substr(0, 10)
         dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'))
-        let sign = md5(dataStr + timestamp + '84qudMIhOkX5JMQXVd0f4jneqfP2Lp')
-        url = url + '?' + dataStr + '&timestamp=' + timestamp + '&sign=' + sign
+        url = url + '?' + dataStr
+        console.log(url)
       }
       promise = axios.get(url)
       // axios.get(url)
@@ -37,10 +33,8 @@ export default function ajax (url = '', data = {}, type = 'GET') {
       resolve(response.data)
     })
       .catch(error => {
-        console.log(error)
+        alert(error)
         reject(error)
       })
   })
 }
-
-

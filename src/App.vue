@@ -18,7 +18,9 @@
   </div>
 </template>
 <script>
-  import { mapState } from "vuex"
+  import { mapState } from 'vuex'
+  import ajax from './api/ajax.js'
+
   export default {
     data () {
       return {
@@ -27,40 +29,34 @@
     },
     components: {},
     computed: {
-      ...mapState(["openID"])
+      ...mapState(['openID', 'userinfo'])
     },
-    created(){
-      /*(flag)=>{
-        let a =1
-        console.log(a)
-        return this.setCookie('openID', flag, 7)
-      },*/
+    beforeCreate () {
+      /*if (this.code === undefined) {
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+        return
+      }*/
+    },
+    created () {
+      let code = this.__GetRequest().code
+      this.$store.dispatch('getUserinfo', {code})
       let data = {
-        openId: "123456",
-        thirdLoginType: "ThirdPlatForm.WeChat"
+        openId: '123456',
+        thirdLoginType: 'ThirdPlatForm.WeChat'
       }
-      this.$store.dispatch("getOpenid", {
+      this.$store.dispatch('getOpenid', {
         data,
-        cb:(flag)=>{
-          this.setCookie("openID", flag, 7)
+        cb: (flag) => {
+          !(this.getCookie('openId') === '') ? this.setCookie('openID', flag, 7) : null
         }
       })
     },
-    mounted(){
+    mounted () {
       setTimeout(()=>{
-
-        /*let exp = new Date();
-         exp.setTime(exp.getTime() + 1000 * 60 * 60 * 24 * 7); //这里表示保存24小时
-         if(this.openID){
-         document.cookie = "openID="+ true + ";expires=" + exp.toGMTString();
-         }
-         console.log(document.cookie)*/
-       /* this.setCookie("openID", true, 7)
-        console.log(this.getCookie("openID"))*/
+        console.log(this.userinfo)
       },100)
     },
-    methods: {
-    }
+    methods: {}
   }
 
 </script>

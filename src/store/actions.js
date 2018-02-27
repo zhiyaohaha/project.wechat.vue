@@ -1,10 +1,12 @@
 import {
   postSendMsg,
   getOpenid,
-  postPhone
+  postPhone,
+  getUserinfo
 } from '../api'
 
 let apiPrefix = 'http://192.168.6.66:8001'
+let apiWeChat = 'http://api2.cpf360.com'
 export default {
   async postSendMsg ({commit}, {data,}) {
     // debugger
@@ -31,5 +33,13 @@ export default {
     const result = await postPhone(url, data)
     commit('POST_PHONE', {result})
   },
+  async getUserinfo ({commit}, data) {
+    let url = apiWeChat + '/api/OfficialAccounts/GetWeChatInfo'
+    console.log(data)
+    const result = await getUserinfo(url, data)
+    if (result) {
+      commit('GET_USERINFO', {result})
+    }
+  }
 }
 
