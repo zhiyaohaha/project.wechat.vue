@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <keep-alive>
-        <router-view/>
-      </keep-alive>
+      <router-view/>
     </div>
     <footer class="footerTap" v-if="$route.meta.keepAlive">
       <router-link to="/homePage">
@@ -32,29 +30,40 @@
       ...mapState(['openID', 'userinfo'])
     },
     beforeCreate () {
+      let obj = this.__GetRequest()
+      this.$store.dispatch('getUserinfo', {
+        obj,
+        cb:(userinfo, val)=>{
+          this.saveTodos(userinfo)
+          this.setCookie("id", val, 7)
+        }
+      })
+      setTimeout(() => {
+        let userinfo = this.readTodos()
+        let data = {
+          openId: userinfo.openid,
+          thirdLoginType: 'ThirdPlatForm.WeChat'
+        }
+        this.$store.dispatch('getOpenid', {
+          data,
+          cb: (va1, whether) => {
+
+            this.setCookie('openId', va1, 7)
+            //存入cookie 判断是否实名
+            this.setCookie('whether', whether, 7)
+          }
+        })
+      }, 1000)
       /*if (this.code === undefined) {
         window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
         return
       }*/
     },
     created () {
-      let code = this.__GetRequest().code
-      this.$store.dispatch('getUserinfo', {code})
-      let data = {
-        openId: '123456',
-        thirdLoginType: 'ThirdPlatForm.WeChat'
-      }
-      this.$store.dispatch('getOpenid', {
-        data,
-        cb: (flag) => {
-          !(this.getCookie('openId') === '') ? this.setCookie('openID', flag, 7) : null
-        }
-      })
+
     },
     mounted () {
-      setTimeout(()=>{
-        console.log(this.userinfo)
-      },100)
+
     },
     methods: {}
   }

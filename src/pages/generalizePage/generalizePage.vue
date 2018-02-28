@@ -32,22 +32,36 @@
   export default {
     data () {
       return {
-        QRcodeShow: false
+        QRcodeShow:false,
       }
     },
 
     components: {},
 
-    computed: {},
+    computed: {
+      cookikeIf(){
+        return this.getCookie('whether') === '1'
+      }
+    },
+    watch: {
+      cookikeIf(val){
+        console.log(222)
+        this.QRcodeShow = this.cookikeIf
+      }
+    },
+    created () {
 
+    },
     mounted () {
-      this.getCookie('openID') === '1' ? this.QRcodeShow = true : this.QRcodeShow = false
+      // console.log(this.getCookie('whether') === '1') ? this.QRcodeShow = true : this.QRcodeShow = false
+      this.QRcodeShow = this.cookikeIf
+      console.log(this.QRcodeShow)
     },
     updated () {
-
     },
 
-    methods: {}
+    methods: {
+    }
   }
 
 </script>

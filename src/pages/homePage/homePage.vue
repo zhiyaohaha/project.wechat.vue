@@ -139,7 +139,6 @@
 
     updated(){
       this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,startY:this.top})
-
     },
     methods: {
       _initScroll(){

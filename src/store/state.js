@@ -4,5 +4,5 @@ export default {
   openID:null,
   phoneNote:null,
   scroll:0,
-  userinfo:{}
+  userinfo:null
 }

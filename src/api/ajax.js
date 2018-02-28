@@ -1,5 +1,6 @@
 import axios from 'axios'
 import md5 from 'js-md5'
+import {postAuth} from '../../static/js/viewportWidth'
 
 axios.defaults.withCredentials = true
 export default function ajax (url = '', data = {}, type = 'GET') {

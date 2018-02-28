@@ -13,6 +13,7 @@ export const getCookie = function (c_name) {
   return ""
 }
 export const setCookie = function(c_name,value,expiredays) {
+  console.log(c_name +"="+ value)
   let exdate = new Date()
   exdate.setDate(exdate.getDate() + expiredays)
   document.cookie = c_name+ "=" + escape(value)+ ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())

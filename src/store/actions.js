@@ -22,22 +22,28 @@ export default {
     const result = await getOpenid(url, data)
     if (result) {
       commit('GET_OPENID', {result})
-      let flag = null
-      result.success ? flag = 1 : flag = 0
-      cb && cb(flag)
+      let flag = data.openId
+      let whether = null
+      result.success ? whether = 1 : whether = 0
+      cb && cb(flag, whether)
     }
   },
-  async postPhone ({commit}, {data}) {
+  async postPhone ({commit}, {data, cb}) {
     // debugger
     let url = apiPrefix + '/api/OfficialAccounts/LoginByVerifyCode'
     const result = await postPhone(url, data)
+    let whether = null
+    result.success ? whether = 1 : whether = 0
+    console.log(whether)
+    cb && cb(whether)
     commit('POST_PHONE', {result})
   },
   async getUserinfo ({commit}, data) {
     let url = apiWeChat + '/api/OfficialAccounts/GetWeChatInfo'
-    console.log(data)
-    const result = await getUserinfo(url, data)
+    let obj = data.obj
+    const result = await getUserinfo(url, {code:obj.code})
     if (result) {
+      data.cb && data.cb(result,obj.id)
       commit('GET_USERINFO', {result})
     }
   }

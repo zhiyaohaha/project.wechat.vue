@@ -46,63 +46,64 @@
   </div>
 </template>
 <script>
-  import { MessageBox, Toast } from "mint-ui"
-  import { mapState } from "vuex"
-  import verification from "../../components/verification/verification.vue"
+  import { MessageBox, Toast } from 'mint-ui'
+  import { mapState } from 'vuex'
+  import verification from '../../components/verification/verification.vue'
+
   export default {
     data () {
       return {
         mformDatas: [
           {
-            description: "姓名：",
-            placeholder: "请输入您的姓名",
-            name: "username",
-            model: "",
+            description: '姓名：',
+            placeholder: '请输入您的姓名',
+            name: 'username',
+            model: '',
             purposeList: false,
             sendMsg: false,
-            units: "",
+            units: '',
             reg: /^[\u4e00-\u9fa5_A-Za-z]{1,}$/,
             regular: /^[\u4e00-\u9fa5_A-Za-z]{0,}$/,
             errorColor: false
           },
           {
-            description: "身份证号：",
-            placeholder: "请输入您的身份证号",
-            name: "IDnumber",
-            model: "",
+            description: '身份证号：',
+            placeholder: '请输入您的身份证号',
+            name: 'IDnumber',
+            model: '',
             purposeList: false,
             sendMsg: false,
-            units: "",
+            units: '',
             reg: /^[0-9xX]{1,18}$/,
             regular: /^([0-9]){15,18}(x|X)?$/,
             errorColor: false,
-            maxlength: "18"
+            maxlength: '18'
           },
           {
-            description: "手机号：",
-            placeholder: "请输入您的手机号",
-            name: "cellPhoneNum",
-            model: "",
+            description: '手机号：',
+            placeholder: '请输入您的手机号',
+            name: 'cellPhoneNum',
+            model: '',
             purposeList: false,
             sendMsg: false,
-            units: "",
+            units: '',
             reg: /^[0-9]{1,11}$/,
-            regular: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
+            regular: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9]|17[0-9])\d{8}$/,
             errorColor: false,
-            maxlength: "11"
+            maxlength: '11'
           },
           {
-            description: "验证码：",
-            placeholder: "请输入验证码",
-            name: "authCode",
-            model: "",
+            description: '验证码：',
+            placeholder: '请输入验证码',
+            name: 'authCode',
+            model: '',
             purposeList: false,
             sendMsg: true,
-            units: "获取验证码",
+            units: '获取验证码',
             reg: /^\d{1,4}$/,
             regular: /^\d{4}$/,
             errorColor: false,
-            maxlength: "4"
+            maxlength: '4'
           },
         ],
         imgIsShow: true,
@@ -116,24 +117,24 @@
       verification
     },
     computed: {
-      ...mapState(["verification", "phoneNote", "openID"])
+      ...mapState(['verification', 'phoneNote', 'openID'])
     },
-    beforeMount(){
+    beforeMount () {
 
     },
-    mounted(){
-      this.__boxheight(this.$refs.myWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.myWrap); //窗口或框架被调整大小时执行
+    mounted () {
+      this.__boxheight(this.$refs.myWrap) //执行函数
+      window.onresize = this.__boxheight(this.$refs.myWrap) //窗口或框架被调整大小时执行
       this.$nextTick(() => {
         this.myWrap = new this.BScroll(this.$refs.myWrap, {touchstart: true, momentum: false})
         this.myWrap.refresh()
       })
     },
-    updated(){
+    updated () {
     },
     methods: {
       //      发送短信验证码请求
-      __phoneNote(){
+      __phoneNote () {
         if (this.verification.success) {
           MessageBox({
             title: '提示',
@@ -145,12 +146,12 @@
           let timer = setInterval(() => {
             this.num--
             if (this.num == 0) {
-              this.mformDatas[3].units = "获取验证码"
+              this.mformDatas[3].units = '获取验证码'
               clearInterval(timer)
               this.num = null
             } else {
               if (this.isFlag) {
-                this.mformDatas[3].units = this.num + "s后重发"
+                this.mformDatas[3].units = this.num + 's后重发'
               }
             }
           }, 1000)
@@ -164,29 +165,37 @@
         }
       },
 //      底部消失
-      pullDown(){
+      pullDown () {
         this.myFooterIsShow = false
       },
 //    申请逻辑
-      approve(){
+      approve () {
+        let userinfo = this.readTodos()
         let Arr = this.mformDatas.filter(item => item.reg.test(item.model))
         if (Arr.length === this.mformDatas.length) {
           let data = {
             phone: this.mformDatas[2].model,
             verifyCode: this.mformDatas[3].model,
-            firstLevelId: "",
+            firstLevelId: this.getCookie("id"),
             thirdPlatFormBind: true,//第三方绑定接口
-            openId: "123456", //第三方OpenId
-            thirdLoginType: "ThirdPlatForm.WeChat",  //第三方登录代号
-            head: "",//第三方登录头像
-            nickName: "",//第三方登录昵称
-            source: "OfficialAccounts"
+            openId:this.getCookie("openId"), //第三方OpenId
+            thirdLoginType: 'ThirdPlatForm.WeChat',  //第三方登录代号
+            head: userinfo.headimgurl,//第三方登录头像
+            nickName: userinfo.nickname,//第三方登录昵称
+            source: 'OfficialAccounts'
           }
-          this.$store.dispatch("postPhone", {data})
+          this.$store.dispatch('postPhone', {
+            data,
+            cb: (whether) => {
+              this.setCookie('whether', whether, 7)
+            }
+          })
+
           this.timer2 = setTimeout(() => {
+            //短信验证码
             if (this.phoneNote.success) {
               clearInterval(this.timer2)
-              this.$router.replace('/homePage/generalizePage')
+              this.$router.push('/homePage/generalizePage')
             } else {
               MessageBox({
                 title: '提交失败',
@@ -205,12 +214,12 @@
         }
       },
 //      验证码
-      changeShow(){
+      changeShow () {
         this.verificationShow = false
       },
 
       //发送图片验证码核实请求
-      verificationCancel(flag, validateCode){
+      verificationCancel (flag, validateCode) {
         this.isFlag = flag
         this.time = new Date().getTime()
         this.verificationShow = false
@@ -221,35 +230,35 @@
             validateCode: validateCode,
             needvalidateCode: true
           }
-          this.$store.dispatch("postSendMsg", {data})
+          this.$store.dispatch('postSendMsg', {data})
           this.timer1 = setTimeout(() => {
             this.__phoneNote()
           }, 500)
         }
       },
 //      选中切换
-      notarize(){
+      notarize () {
         this.imgIsShow = !this.imgIsShow
       },
 //      错误变红
-      loseFocus(){
+      loseFocus () {
         this.myFooterIsShow = true
       },
-      isFooter(){
+      isFooter () {
         this.myFooterIsShow = false
       },
 //      正确变色
-      goodInput(reg, flag, index){
+      goodInput (reg, flag, index) {
         if (!reg.test(flag)) {
           Toast({
-            message: "格式错误",
-            className: "ToastStyle"
+            message: '格式错误',
+            className: 'ToastStyle'
           })
           this.mformDatas[index].model = flag.substring(0, flag.length - 1)
         }
       },
 //      验证码逻辑
-      sendMsg(index){
+      sendMsg (index) {
         let mformData = this.mformDatas[index - 1]
         if (this.num > 0) {
           MessageBox({
@@ -259,7 +268,7 @@
           })
           return false
         }
-        if (mformData.model !== "" && mformData.regular.test(mformData.model)) {
+        if (mformData.model !== '' && mformData.regular.test(mformData.model)) {
           this.verificationShow = true
         } else {
           MessageBox({

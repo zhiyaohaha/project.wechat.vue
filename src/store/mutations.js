@@ -16,8 +16,8 @@ export default {
     state.scroll = result
   },
   GET_USERINFO(state,{result}){
-    console.log(result.data)
-    state.userinfo = JSON.stringify(result)
-    console.log(state.userinfo)
+    result = JSON.stringify(result)
+    console.log(result)
+    state.userinfo = result
   },
 }
