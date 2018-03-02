@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="myWrap">
+    <div>
       <div>
         <!--<header class="myHeader">
           <span class="iconLogo" @touchstart="$router.back()"><</span>
@@ -123,12 +123,9 @@
 
     },
     mounted () {
-      this.__boxheight(this.$refs.myWrap) //执行函数
-      window.onresize = this.__boxheight(this.$refs.myWrap) //窗口或框架被调整大小时执行
-      this.$nextTick(() => {
-        this.myWrap = new this.BScroll(this.$refs.myWrap, {touchstart: true, momentum: false})
-        this.myWrap.refresh()
-      })
+      window.addEventListener("popstate", ()=>{
+        this.$router.back()
+      });
     },
     updated () {
     },
@@ -152,6 +149,7 @@
             } else {
               if (this.isFlag) {
                 this.mformDatas[3].units = this.num + 's后重发'
+
               }
             }
           }, 1000)
@@ -195,7 +193,7 @@
             //短信验证码
             if (this.phoneNote.success) {
               clearInterval(this.timer2)
-              this.$router.push('/homePage/generalizePage')
+              this.$router.go(-1)
             } else {
               MessageBox({
                 title: '提交失败',

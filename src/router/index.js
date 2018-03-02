@@ -103,7 +103,7 @@ const router = new Router({
         {
           path: 'generalizePage',
           component: generalizePage,
-          meta: {keepAlive: false, isTop: true, title: '推广海报'},
+          meta: {keepAlive: false, isTop: true, title: '赚佣金'},
         },
 
       ]

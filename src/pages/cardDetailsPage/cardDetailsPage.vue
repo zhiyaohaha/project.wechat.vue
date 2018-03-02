@@ -26,72 +26,73 @@
 </template>
 
 <script>
-  import cardHeadLine from "../../components/cardHeadLine/cardHeadLine.vue"
-  import privilegeMod from "../../components/privilegeMod/privilegeMod.vue"
-  import detailsMessageMod from "../../components/detailsMessageMod/detailsMessageMod.vue"
+  import cardHeadLine from '../../components/cardHeadLine/cardHeadLine.vue'
+  import privilegeMod from '../../components/privilegeMod/privilegeMod.vue'
+  import detailsMessageMod from '../../components/detailsMessageMod/detailsMessageMod.vue'
+
   export default {
     data () {
       return {
         cardHeadLineData: {
-          title: "专享特权",
-          aFont: ""
+          title: '专享特权',
+          aFont: ''
         },
         message: {
-          title: "基本信息",
-          aFont: ""
+          title: '基本信息',
+          aFont: ''
         },
         privilegeModDatas: [
           {
-            bgUrl: "../../../static/img/creditCardImg/money.png",
-            title: "每个月账单首笔取现交易费全免"
+            bgUrl: '../../../static/img/creditCardImg/money.png',
+            title: '每个月账单首笔取现交易费全免'
           },
           {
-            bgUrl: "../../../static/img/creditCardImg/information.png",
-            title: "至尊租车最低5折优惠"
+            bgUrl: '../../../static/img/creditCardImg/information.png',
+            title: '至尊租车最低5折优惠'
           },
           {
-            bgUrl: "../../../static/img/creditCardImg/information.png",
-            title: "赠送200万航空业务险"
+            bgUrl: '../../../static/img/creditCardImg/information.png',
+            title: '赠送200万航空业务险'
           },
         ],
-        detailsMessageDatas:[
+        detailsMessageDatas: [
           {
-            describe:"等级",
-            price:"金卡"
+            describe: '等级',
+            price: '金卡'
           },
           {
-            describe:"币种",
-            price:"人民币"
+            describe: '币种',
+            price: '人民币'
           },
           {
-            describe:"发卡组织",
-            price:"银联"
+            describe: '发卡组织',
+            price: '银联'
           },
           {
-            describe:"免息期限",
-            price:"最短20天，最长50天"
+            describe: '免息期限',
+            price: '最短20天，最长50天'
           },
           {
-            describe:"积分规则",
-            price:"取现1元1积分，消费1元1积分"
+            describe: '积分规则',
+            price: '取现1元1积分，消费1元1积分'
           },
           {
-            describe:"申请条件",
-            price:"18岁 有工作"
+            describe: '申请条件',
+            price: '18岁 有工作'
           },
         ]
       }
     },
 
     components: {
-      cardHeadLine, privilegeMod,detailsMessageMod
+      cardHeadLine, privilegeMod, detailsMessageMod
     },
 
     computed: {},
 
-    mounted(){
-      this.__boxheight(this.$refs.CardDetailsWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.CardDetailsWrap); //窗口或框架被调整大小时执行
+    mounted () {
+      this.__boxheight(this.$refs.CardDetailsWrap) //执行函数
+      window.onresize = this.__boxheight(this.$refs.CardDetailsWrap) //窗口或框架被调整大小时执行
       this.CardDetailsWrap = new this.BScroll(this.$refs.CardDetailsWrap, {click: true,})
       this.CardDetailsWrap.refresh()
     },
@@ -113,16 +114,18 @@
       display block
       font-size (45 /$rem)
       margin-top (66 /$rem)
+
   .occupiedFooter
-    width (1080/$rem)
-    height (150/$rem)
+    width (1080 /$rem)
+    height (150 /$rem)
+
   .CardDetailsFooter
     position fixed
     bottom 0
     left 0
     a
-      width (1080/$rem)
-      height (150/$rem)
+      width (1080 /$rem)
+      height (150 /$rem)
       background-image url("../../../static/img/creditCardImg/transactimmediately1.png")
       background-repeat no-repeat
       background-size 100%

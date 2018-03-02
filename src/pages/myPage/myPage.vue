@@ -6,14 +6,14 @@
     <div v-if="$route.meta.keepAlive">
       <header class="myPageHeader">
         <div class="headPortrait">
-          <img src="./img/touxiang.gif">
+          <img :src=this.readTodos().headimgurl>
         </div>
         <div class="userDescription">
           <span class="petName">微信昵称</span>
           <span class="individual">个人代理</span>
         </div>
         <div class="brokerage">
-          <a href="javascript:;">我要赚佣金</a>
+          <router-link to="/homePage/generalizePage">我要赚佣金</router-link>
         </div>
       </header>
       <split/>

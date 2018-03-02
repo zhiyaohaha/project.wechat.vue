@@ -4,7 +4,7 @@
     <div class="homePageWrap" ref="homePageWrap" v-show="$route.meta.keepAlive">
       <div @click="changeTop" ref="homePage">
         <header class="homePageHeader">
-          <img src="./img/banner.png">
+          <img src="./img/xinyongkabanner.png">
         </header>
         <split/>
         <div class="homePageContent">

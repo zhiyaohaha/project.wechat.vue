@@ -17,7 +17,6 @@
 </template>
 <script>
   import { mapState } from 'vuex'
-  import ajax from './api/ajax.js'
 
   export default {
     data () {
@@ -38,6 +37,8 @@
           this.setCookie("id", val, 7)
         }
       })
+    },
+    created () {
       setTimeout(() => {
         let userinfo = this.readTodos()
         let data = {
@@ -47,23 +48,14 @@
         this.$store.dispatch('getOpenid', {
           data,
           cb: (va1, whether) => {
-
             this.setCookie('openId', va1, 7)
             //存入cookie 判断是否实名
             this.setCookie('whether', whether, 7)
           }
         })
       }, 1000)
-      /*if (this.code === undefined) {
-        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
-        return
-      }*/
-    },
-    created () {
-
     },
     mounted () {
-
     },
     methods: {}
   }

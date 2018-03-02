@@ -54,7 +54,8 @@
       <mt-picker :itemHeight="70" :slots="slots" @change="onValuesChange"
                  class="shadeIsShowContent"></mt-picker>
     </mt-popup>
-    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel" :time="time"/>
+    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"
+                  :time="time"/>
     <footer class="simulationSubmit" v-show="simulationSubmitIsShow">
       <a href="javascript:"></a>
     </footer>
@@ -62,130 +63,132 @@
 </template>
 
 <script>
-  import propertyMod from "../../components/propertyMod/propertyMod.vue"
-  import verification from "../../components/verification/verification.vue"
-  import { MessageBox, Toast } from "mint-ui"
+  import propertyMod from '../../components/propertyMod/propertyMod.vue'
+  import verification from '../../components/verification/verification.vue'
+  import { getLoanAmount } from '../../api'
+  import { MessageBox, Toast } from 'mint-ui'
+
   export default {
     data () {
       return {
         propertyModDatas: [
           {
-            character: "我有房",
+            character: '我有房',
             imgUrlIsShow: false,
           },
           {
-            character: "我有车",
+            character: '我有车',
             imgUrlIsShow: false,
           },
           {
-            character: "我有信用卡",
+            character: '我有信用卡',
             imgUrlIsShow: false,
           },
           {
-            character: "我有公积金",
+            character: '我有公积金',
             imgUrlIsShow: false,
           },
           {
-            character: "我有社保",
+            character: '我有社保',
             imgUrlIsShow: false,
           }
         ],
         mformDatas: [
           {
-            description: "贷款金额：",
-            placeholder: "请输入贷款金额",
-            name: "money",
-            model: "",
+            description: '贷款金额：',
+            placeholder: '请输入贷款金额',
+            name: 'money',
+            model: '',
             purposeList: true,
             sendMsg: false,
-            units: "",
+            units: '',
             reg: /[\s\S]*/,
             errorColor: false,
           },
           {
-            description: "贷款用途：",
-            placeholder: "请输入贷款用途",
-            name: "purpose",
-            model: "",
+            description: '贷款用途：',
+            placeholder: '请输入贷款用途',
+            name: 'purpose',
+            model: '',
             purposeList: true,
             sendMsg: false,
-            units: "",
+            units: '',
             reg: /[\s\S]*/,
             errorColor: false
           },
           {
-            description: "贷款期限：",
-            placeholder: "请输入贷款期限",
-            name: "timeLimit",
-            model: "",
+            description: '贷款期限：',
+            placeholder: '请输入贷款期限',
+            name: 'timeLimit',
+            model: '',
             purposeList: true,
             sendMsg: false,
-            units: "",
+            units: '',
             reg: /[\s\S]*/,
             errorColor: false
           },
           {
-            description: "贷款人姓名：",
-            placeholder: "请输入您的姓名",
-            name: "username",
-            model: "",
+            description: '贷款人姓名：',
+            placeholder: '请输入您的姓名',
+            name: 'username',
+            model: '',
             purposeList: false,
             sendMsg: false,
-            units: "",
+            units: '',
             reg: /^[\u4e00-\u9fa5_A-Za-z]{1,}$/,
             errorColor: false
           },
           {
-            description: "身份证号：",
-            placeholder: "请输入您的身份证号",
-            name: "IDnumber",
-            model: "",
+            description: '身份证号：',
+            placeholder: '请输入您的身份证号',
+            name: 'IDnumber',
+            model: '',
             purposeList: false,
             sendMsg: false,
-            units: "",
+            units: '',
             reg: /^[0-9xX]{1,}$/,
             errorColor: false,
-            maxlength: "18"
+            maxlength: '18'
           },
           {
-            description: "手机号：",
-            placeholder: "请输入您的手机号",
-            name: "cellPhoneNum",
-            model: "",
+            description: '手机号：',
+            placeholder: '请输入您的手机号',
+            name: 'cellPhoneNum',
+            model: '',
             purposeList: false,
             sendMsg: false,
-            units: "",
+            units: '',
             reg: /^[0-9]{1,}$/,
             errorColor: false,
-            maxlength: "11"
+            maxlength: '11'
           },
           {
-            description: "验证码：",
-            placeholder: "请输入验证码",
-            name: "authCode",
-            model: "",
+            description: '验证码：',
+            placeholder: '请输入验证码',
+            name: 'authCode',
+            model: '',
             purposeList: false,
             sendMsg: true,
-            units: "获取验证码",
+            units: '获取验证码',
             reg: /^\d{1,}$/,
             errorColor: false,
-            maxlength: "4"
+            maxlength: '4'
           },
         ],
-//        readonly: false,
         shadeIsShow: false,
         mformDatasInd: 0,
         slots: [
           {
             defaultIndex: 1,
             flex: 1,
-            className: "slots1",
-            values: [0],
+            className: 'slots1',
+            values: [],
             textAlign: 'center'
           }
         ],
-        moneyArr: ["1000元", "1万元", "10万元", "60万元"],
-        consumeArr: ["买车", "买房", "消费", "娱乐"],
+        // Arr:[],
+        // moneyArr: ['1000元', '1万元', '10万元', '60万元'],
+        consumeArr: ['买车', '买房', '消费', '娱乐'],
         deadlineArr: ['1个月', '3个月', '5个月', '半年', '8个月', '1年'],
         simulationSubmitIsShow: true,
         verificationShow: false,
@@ -200,23 +203,45 @@
     computed: {
 
     },
-// 滑动事件
-    mounted(){
-      this.__boxheight(this.$refs.loanWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.loanWrap); //窗口或框架被调整大小时执行
+    created () {
+      this.b("LoanAmount").then(()=>{
+        this.moneyArr = this.Arr
+      })
+      this.b("LoanTerm").then(()=>{
+        this.deadlineArr = this.Arr
+      })
+      this.b("LoanUse").then(()=>{
+        this.consumeArr = this.Arr
+      })
+    },
+    // 滑动事件
+    mounted () {
+      this.__boxheight(this.$refs.loanWrap) //执行函数
+      window.onresize = this.__boxheight(this.$refs.loanWrap) //窗口或框架被调整大小时执行
       this.$nextTick(() => {
         this.loanWrap = new this.BScroll(this.$refs.loanWrap, {touchstart: true, momentum: true})
         this.loanWrap.refresh()
         this.$route.meta.keepAlive = false
       })
     },
-    updated(){
-      /*this.__boxheight(this.$refs.loanWrap); //执行函数
-       window.onresize = this.__boxheight(this.$refs.loanWrap)*/
-//      this.loanWrap = new BScroll(this.$refs.loanWrap, {touchstart: true, momentum: true})
-//      this.loanWrap.refresh()
+    updated () {
+
     },
     methods: {
+      async b (codes) {
+        let apiPrefix = 'http://192.168.6.66:8001'
+        let url = apiPrefix + '/api/Values/GetSelectDataSourceLogin'
+        this.Arr = await getLoanAmount(url, {codes: codes})
+        let Arr = []
+        Arr = this.Arr.data.map((item)=>{
+          return item.childrens
+        })
+        Arr.forEach((item)=>{
+          this.Arr = item.map((item)=>{
+            return item.name
+          })
+        })
+      },
       /*importS(){
         Toast({
           message: event.keyCode,
@@ -224,37 +249,37 @@
         })
       },*/
 //      输入框焦点时底部消失
-      isFooter(){
+      isFooter () {
         this.simulationSubmitIsShow = false
       },
 //      错误变色
-      loseFocus(){
+      loseFocus () {
         this.simulationSubmitIsShow = true
       },
 //      输入框值
-      onValuesChange(picker, values) {
+      onValuesChange (picker, values) {
 //        debugger
         console.log(picker.getSlotValue(0))
         this.mformDatas[this.mformDatasInd].model = picker.getSlotValue(0)
       },
 //      输入正确变色
-      goodInput(reg, flag, index){
+      goodInput (reg, flag, index) {
 //        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (index < 3) {
-          this.mformDatas[index].model = ""
+          this.mformDatas[index].model = ''
         }
         if (!reg.test(flag)) {
           Toast({
-            message: "格式错误",
-            className: "ToastStyle"
+            message: '格式错误',
+            className: 'ToastStyle'
           })
-          this.mformDatas[index].model = flag.substring(0,flag.length - 1)
+          this.mformDatas[index].model = flag.substring(0, flag.length - 1)
         }
       },
 //      验证码逻辑
-      sendMsg(){
+      sendMsg () {
         let mformData = this.mformDatas[5]
-        if (mformData.model !== "" && mformData.model.length == 11) {
+        if (mformData.model !== '' && mformData.model.length == 11) {
           this.verificationShow = true
         } else {
           MessageBox({
@@ -273,7 +298,7 @@
         }
       },
 //      三角点击
-      pullDown(flag, index){
+      pullDown (flag, index) {
         this.mformDatasInd = index
         this.simulationSubmitIsShow = false
         if (index < 3) {
@@ -287,7 +312,8 @@
             case 2:
               this.slots[0].values = this.deadlineArr
               break
-            default:this.slots[0].values = []
+            default:
+              this.this.slots[0].values = []
               break
           }
           this.shadeIsShow = flag
@@ -295,22 +321,22 @@
 
       },
 //     图片验证码
-      changeShow(){
+      changeShow () {
         this.verificationShow = false
       },
-      verificationCancel(flag){
+      verificationCancel (flag) {
         this.verificationShow = false
         if (flag) {
           this.num = 60
           let timer = setInterval(() => {
             this.num--
             if (this.num == 0) {
-              this.mformDatas[6].units = "获取验证码"
+              this.mformDatas[6].units = '获取验证码'
               clearInterval(timer)
               this.num = null
             } else {
               if (flag) {
-                this.mformDatas[6].units = this.num + "s后重发"
+                this.mformDatas[6].units = this.num + 's后重发'
               }
             }
           }, 1000)
@@ -329,6 +355,7 @@
     background-color #8a8a8a
     text-align center
     line-height (70 /$rem)
+    overflow: hidden
 
   .footerTap
     position fixed
@@ -481,19 +508,20 @@
     box-sizing border-box
     width (1080 /$rem)
     height (650 /$rem)
-    .shadeIsShowHeader
-      font-size (42 /$rem)
-      background-color #e8e8e8
-      height (120 /$rem)
-      line-height (120 /$rem)
-      .cancel
-        margin-left (50 /$rem)
-        float left
-        color #bbb
-      .ascertain
-        margin-right (50 /$rem)
-        float right
-        color #c2181f
+
+  .shadeIsShowHeader
+    font-size (42 /$rem)
+    background-color #e8e8e8
+    height (120 /$rem)
+    line-height (120 /$rem)
+    .cancel
+      margin-left (50 /$rem)
+      float left
+      color #bbb
+    .ascertain
+      margin-right (50 /$rem)
+      float right
+      color #c2181f
     .shadeIsShowContent
       font-size (52 /$rem)
       .picker-slot

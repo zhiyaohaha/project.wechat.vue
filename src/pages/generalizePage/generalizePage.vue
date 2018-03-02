@@ -20,7 +20,7 @@
     </div>
     <transition name="fade">
       <footer class="generalizeFooter" v-show="!QRcodeShow">
-        <a href="javascript:;" @click="$router.replace('/phoneApprove')">
+        <a href="javascript:;" @click="$router.push('/phoneApprove')">
           获取我的推广二维码
         </a>
       </footer>
@@ -44,10 +44,7 @@
       }
     },
     watch: {
-      cookikeIf(val){
-        console.log(222)
-        this.QRcodeShow = this.cookikeIf
-      }
+
     },
     created () {
 

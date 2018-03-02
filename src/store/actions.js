@@ -2,7 +2,8 @@ import {
   postSendMsg,
   getOpenid,
   postPhone,
-  getUserinfo
+  getUserinfo,
+  getLoanAmount
 } from '../api'
 
 let apiPrefix = 'http://192.168.6.66:8001'
@@ -46,6 +47,6 @@ export default {
       data.cb && data.cb(result,obj.id)
       commit('GET_USERINFO', {result})
     }
-  }
+  },
 }
 

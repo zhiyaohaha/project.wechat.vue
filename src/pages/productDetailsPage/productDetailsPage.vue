@@ -28,7 +28,7 @@
         <li v-for="(mformData, index) in mformDatas" :key="index">
           <span class="description">{{mformData.description}}</span>
           <input type="text" v-model="mformData.model"
-                 @blur="loseFocus(mformData.reg,mformData.model,index)"
+                 @blur="loseFocus()"
                  @input="goodInput(mformData.reg,mformData.model,index)"
                  @focus="isFooter"
                  :placeholder="mformData.placeholder"
@@ -120,14 +120,18 @@
     },
 
     computed: {},
-
+    created () {
+      if(this.getCookie("whether") === "0"){
+        this.$router.push("/phoneApprove")
+      }
+    },
     mounted(){},
 
     methods: {
       isFooter(){
         this.FooterShow = false
       },
-      loseFocus(reg, flag, index){
+      loseFocus(){
         this.FooterShow = true
       },
       goodInput(reg, flag, index){

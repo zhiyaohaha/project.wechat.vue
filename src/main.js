@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import { Popup, Picker } from 'mint-ui'
+// import { Popup } from 'vue-ydui/dist/lib.rem/popup'
+// import {DateTime} from 'vue-ydui/dist/lib.rem/datetime'
 import store from './store'
 import BScroll from 'better-scroll'
 import split from './components/split/split.vue'
@@ -19,9 +21,11 @@ import storageUtil from './util/storageUtil.js'
 import '../static/css/reset.styl'
 import '../static/js/adaptive'
 import 'mint-ui/lib/style.css'
+import 'vue-ydui/dist/ydui.base.css'
 
 Vue.component('split', split)
 Vue.component(Popup.name, Popup)
+// Vue.component(DateTime.name, DateTime)
 Vue.component(Picker.name, Picker)
 Vue.prototype.__boxheight = __boxheight
 Vue.prototype.__GetRequest = __GetRequest
@@ -32,9 +36,10 @@ Vue.prototype.readTodos = storageUtil.readTodos
 
 Vue.prototype.BScroll = BScroll
 let code = __GetRequest().code
-if (code === undefined) {
+console.log(code)
+/*if (code === undefined) {
   window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=123&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
-}
+}*/
  // eslint-disable no-new
 new Vue({
   el: '#app',
