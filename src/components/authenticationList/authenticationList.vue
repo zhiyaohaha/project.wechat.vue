@@ -7,24 +7,6 @@
           <span>{{authenticationListData.character}}</span>
         </a>
       </li>
-      <!--<li>
-        <a href="javascript:;">
-          <img src="../../../static/img/productImg/xinyongka.png">
-          <span>信用卡</span>
-        </a>
-      </li>
-      <li>
-        <a href="javascript:;">
-          <img src="../../../static/img/productImg/zhifubao.png">
-          <span>支付宝账号</span>
-        </a>
-      </li>
-      <li>
-        <a href="javascript:;">
-          <img src="../../../static/img/productImg/shoujihao.png">
-          <span>手机号</span>
-        </a>
-      </li>-->
     </ul>
   </div>
 </template>

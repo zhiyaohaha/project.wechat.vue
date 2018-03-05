@@ -1,45 +1,23 @@
 <template>
   <div>
     <ul class="recommendMod">
-      <li>
-        <router-link to="/homePage/productPage/productDetailsPage">
+      <li v-for="(recommend, index) in recommendModDatas" :key="index" :class="{recommendModTop: index != 0 }">
+        <router-link :to="recommend.url">
           <div class="recommendModLogo">
-            <img src="./img/jiuyi.png">
+            <img :src="recommend.recommendModLogoUrl">
           </div>
+          <img class="fanyonglog" src="../../../static/img/homeImg/content_fanyong.png" alt="">
           <div class="recommendModDescribe">
-            <span class="title">久亿-能卡</span>
-            <span class="asSecondLine">一天审核，闪电到款，当天到账</span>
-            <div class="detailsWrap">
-              <div class="detailsList">
-                <span class="details">成功率：<star :score="5"/></span>
-                <span class="details secondLine">额度：<span class="price">10000-10万元</span></span>
-              </div>
-              <div class="detailsRight">
-                <span class="details">月利率：<span class="price">XX.XX%</span></span>
-                <span class="details secondLine">月费率：<span class="price">XX.XX%</span></span>
-              </div>
+            <span class="title">{{recommend.title}}</span>
+            <div class="interestRate">
+              <span>月利率：{{recommend.interestRate}}</span>
+              <span>月费率：{{recommend.rate}}</span>
             </div>
-          </div>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/homePage/productPage/productDetailsPage">
-          <div class="recommendModLogo">
-            <img src="./img/xiaoyingkadai.png">
-          </div>
-          <div class="recommendModDescribe">
-            <span class="title">小赢卡贷-信用卡代还</span>
-            <span class="asSecondLine">一天审核，闪电到款，当天到账</span>
-            <div class="detailsWrap">
-              <div class="detailsList">
-                <span class="details">成功率：<span class="price"><star :score="5"/></span></span>
-                <span class="details secondLine">额度：<span class="price">10000-10万元</span></span>
-              </div>
-              <div class="detailsRight">
-                <span class="details">月利率：<span class="price">XX.XX%</span></span>
-                <span class="details secondLine">月费率：<span class="price">XX.XX%</span></span>
-              </div>
+            <div class="describe">
+              <span>额度：<span class="price">{{recommend.price}}</span></span>
+              <span>成功率：<star :score="recommend.score" class="star"/></span>
             </div>
+            <span class="asSecondLine">一天审核，闪电到款，当天到账</span>
           </div>
         </router-link>
       </li>
@@ -50,6 +28,7 @@
 <script>
   import star from "../star/star.vue"
   export default {
+    props:["recommendModDatas"],
     data () {
       return {}
     },
@@ -71,61 +50,49 @@
     li
       position relative
       box-sizing border-box
-      border-bottom 1px solid #f4f4f4
+      border-bottom 1px solid #f2f2f2
       width (1080 /$rem)
-      height (346 /$rem)
-      background-image url("./img/fan.png")
-      background-repeat no-repeat
-      background-position right top
-      background-size (80 /$rem)
+      height (284 /$rem)
+      &.recommendModTop
+        margin-top (30/$rem)
       a
         width 100%
         height 100%
         .recommendModLogo
           position absolute
-          top (30 /$rem)
+          top 0
           left (30 /$rem)
           img
             width (150 /$rem)
+        .fanyonglog
+          width (70/$rem)
+          height (34/$rem)
+          position absolute
+          left (130/$rem)
+          bottom (265/$rem)
         .recommendModDescribe
           position absolute
-          top (54 /$rem)
-          right (216 /$rem)
-          bottom (54 /$rem)
+          top (15 /$rem)
           left (210 /$rem)
-          span
-            font-family "Microsoft YaHei"
-            &.title
-              display block
-              font-size (40 /$rem)
-              color #333
-            &.asSecondLine
-              display block
-              margin-top 0.444444rem
-              font-size (36 /$rem)
-              color #bbb
-          .detailsWrap
-            margin-top (50 /$rem)
-            font-size (30 /$rem)
-            .secondLine
-              display block
-              margin-top (30 /$rem)
-            .detailsList
-              display block
-              float left
-              .details
-                display block
-                color: #bbb
-              .price
-                color #c2181f
-                width (218 /$rem)
-                height (40 /$rem)
-            .detailsRight
-              display block
-              float right
-              .details
-                display block
-                color: #bbb
-              .price
-                color #c2181f
+          .title
+            font-size (42/$rem)
+            color #333
+          .interestRate
+            margin-top (20/$rem)
+            font-size (34/$rem)
+            color #bbb
+          .describe
+            margin-top (40/$rem)
+            font-size (34/$rem)
+            .price
+              font-size (42/$rem)
+              color #efca7d
+            .star
+              display inline-block
+          .asSecondLine
+            display block
+            margin-top (20/$rem)
+            font-size (36/$rem)
+            color #bbb
+
 </style>

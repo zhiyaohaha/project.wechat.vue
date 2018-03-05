@@ -5,8 +5,8 @@
     </div>
     <footer class="footerTap" v-if="$route.meta.keepAlive">
       <router-link to="/homePage">
-        <img src="../static/img/homeImg/shouye.png" v-show="$route.meta.footerShow">
-        <img src="../static/img/homeImg/shouye1.png" v-show="!$route.meta.footerShow">
+        <img src="../static/img/homeImg/shouye1.png" v-show="$route.meta.footerShow">
+        <img src="../static/img/homeImg/shouye.png" v-show="!$route.meta.footerShow">
       </router-link>
       <router-link to="/myPage">
         <img src="../static/img/homeImg/wode.png" v-show="$route.meta.footerShow">
@@ -68,9 +68,10 @@
     left 0
     z-index 10
     a
+      background-color #fff
+      width (540 /$rem)
+      height (146 /$rem)
       float left
       img
-        display block
-        width (540 /$rem)
-        height (146 /$rem)
+        margin (21/$rem) auto
 </style>

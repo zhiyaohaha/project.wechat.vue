@@ -6,10 +6,12 @@
           <img :src="creditCardModData.imgUrl">
           <div class="creditCardDescribe">
             <span class="firstLine">{{creditCardModData.title}}</span>
-            <span class="secondLine">预估额度：{{creditCardModData.limit}}</span>
+            <span class="secondLine">预估额度：<span class="price">{{creditCardModData.limit}}</span></span>
             <a href="javascript:;" class="applyFor" @click.stop="$router.push(creditCardModData.applyForUrl)"></a>
           </div>
+          <img class="fanyonglog" src="../../../static/img/homeImg/content_fanyong.png" alt="">
         </router-link>
+
       </li>
     </ul>
   </div>
@@ -37,10 +39,6 @@
   .creditCardModList
     li
       position relative
-      background-image url("./img/fan.png")
-      background-repeat no-repeat
-      background-position top right
-      background-size (80 /$rem)
       box-sizing border-box
       border 1px solid #f4f4f4
       height (342 /$rem)
@@ -48,6 +46,12 @@
         position relative
         width 100%
         height 100%
+        .fanyonglog
+          width (70/$rem)
+          height (34/$rem)
+          position absolute
+          left (295/$rem)
+          bottom (200/$rem)
         img
           margin (60 /$rem) (50 /$rem) (60 /$rem) (30 /$rem)
           float left
@@ -56,21 +60,26 @@
           position absolute
           top (66 /$rem)
           left (432 /$rem)
+          right (30/$rem)
+          bottom (40/$rem)
           .firstLine
             font-size (40 /$rem)
             color #333
           .secondLine
             display block
-            margin-top (40 /$rem)
+            margin-top (30 /$rem)
             font-size (36 /$rem)
             color #bbb
+            .price
+              color #efca7d
           .applyFor
             display block
-            margin-top (30 /$rem)
-            margin-left (174 /$rem)
+            position absolute
+            right 0
+            bottom 0
             width (250 /$rem)
-            height (64 /$rem)
-            background-image url("./img/lijishenqing.png")
+            height (90 /$rem)
+            background-image url("./img/content_butten_lijishenqing_normal.png")
             background-repeat no-repeat
             background-size 100%
 </style>

@@ -6,25 +6,15 @@
         <header class="homePageHeader">
           <img src="./img/xinyongkabanner.png">
         </header>
-        <split/>
         <div class="homePageContent">
-          <headline headlineTitle="贷款"/>
           <loanMod :loanModDatas="loanModDatas"/>
-          <split/>
-          <headline headlineTitle="推广返佣"/>
-          <generalizeMod :generalizeModDatas="generalizeModDatas"/>
-          <split/>
-          <headline headlineTitle="信用卡"/>
-          <generalizeMod :generalizeModDatas="visaDatas"/>
-          <split/>
+          <generalizeMod :generalizeModData="generalizeModData"/>
+          <generalizeMod :generalizeModData="visaDatas"/>
           <headline headlineTitle="热门贷款推荐"/>
-          <recommendMod/>
-          <footline footlineTitle="全部热门贷款>>"/>
-          <split/>
+          <recommendMod :recommendModDatas="recommendModDatas"/>
           <headline headlineTitle="热门信用卡推荐"/>
           <creditCardMod :creditCardModDatas="creditCardModDatas"/>
-          <footline footlineTitle="全部热门卡片>>"/>
-          <split/>
+          <footline footlineTitle="我是有底线的~"/>
         </div>
         <div class="footerOccupied">
         </div>
@@ -33,72 +23,99 @@
   </div>
 </template>
 <script>
-  import { MessageBox } from "mint-ui"
-  import { mapState } from "vuex"
-  import headline from "../../components/headline/headline.vue"
+  import {MessageBox} from "mint-ui"
+  import {mapState} from "vuex"
   import loanMod from "../../components/loanMod/loanMod.vue"
   import generalizeMod from "../../components/generalizeMod/generalizeMod.vue"
   import recommendMod from "../../components/recommendMod/recommendMod.vue"
   import footline from "../../components/footline/footline.vue"
   import creditCardMod from "../../components/creditCardMod/creditCardMod.vue"
+  import headline from "../../components/headline/headline.vue"
+
   export default {
-    data () {
+    data() {
       return {
         loanModDatas: [
           {
-            imgUrl: "../../static/img/homeImg/daikuanchanpin.png",
+            imgUrl: "../../static/img/homeImg/conten_icon_daikuanchanpin_.png",
             title: "贷款产品",
             aUrl: "/homePage/productPage"
           },
           {
-            imgUrl: "../../static/img/homeImg/kuaisudaikuan.png",
+            imgUrl: "../../static/img/homeImg/conten_icon_kusudaikuan.png",
             title: "快速贷款",
             aUrl: "/homePage/loanPage"
           },
         ],
-        generalizeModDatas: [
+        generalizeModData: {
+          name:"推广返佣",
+          datas: [
+            {
+              imgUrl: "../../static/img/homeImg/content_icon_woyaotuiguang.png",
+              title: "我要推广",
+              url: "/homePage/generalizePage"
+            },
+            {
+              imgUrl: "../../static/img/homeImg/content_icon_tuiguanghaibao.png",
+              title: "推广海报",
+              url: "/homePage/posterPage"
+            },
+            {
+              imgUrl: "../../static/img/homeImg/content_icon_tuiguangsucai.png",
+              title: "推广素材",
+              url: "/homePage/strategyPage"
+            },
+            {
+              imgUrl: "../../static/img/homeImg/content_icon_tuiguangjilu.png",
+              title: "推广记录",
+              url: "/myPage/generalizeYiPage"
+            },
+          ]
+        },
+        visaDatas: {
+          name:"信用卡",
+          datas : [
           {
-            imgUrl: "../../static/img/homeImg/tuiguang.png",
-            title: "我要推广",
-            url: "/homePage/generalizePage"
-          },
-          {
-            imgUrl: "../../static/img/homeImg/haibao.png",
-            title: "推广海报",
-            url: "/homePage/posterPage"
-          },
-          {
-            imgUrl: "../../static/img/homeImg/sucai.png",
-            title: "推广素材",
-            url: "/homePage/strategyPage"
-          },
-          {
-            imgUrl: "../../static/img/homeImg/jilu.png",
-            title: "推广记录",
-            url: "/myPage/generalizeYiPage"
-          }
-        ],
-        visaDatas: [
-          {
-            imgUrl: "../../static/img/homeImg/xinyongka.png",
+            imgUrl: "../../static/img/homeImg/content_icon_banxinyongka.png",
             title: "办信用卡",
             url: "/homePage/creditCardPage"
           },
           {
-            imgUrl: "../../static/img/homeImg/jindu.png",
+            imgUrl: "../../static/img/homeImg/content_icon_bankajindu.png",
             title: "办卡进度",
             url: "/homePage/schedulePage"
           },
           {
-            imgUrl: "../../static/img/homeImg/gonglie.png",
+            imgUrl: "../../static/img/homeImg/content_icon_gongluezhuanqu.png",
             title: "攻略专区",
             url: "/homePage/strategyPage"
           },
           {
-            imgUrl: "../../static/img/homeImg/daihuan.png",
+            imgUrl: "../../static/img/homeImg/content_icon_xinyongkadaihuan.png",
             title: "信用卡代还",
             url: "/homePage/productPage"
           }
+        ]},
+        recommendModDatas:[
+          {
+            url:"/homePage/productPage/productDetailsPage",
+            recommendModLogoUrl:"../../../static/img/homeImg/content_pic_jiuynengkai.png",
+            title:"久亿-能卡",
+            interestRate:"XX.XX%",
+            rate:"XX.XX%",
+            price:"1000-10万元",
+            score:4,
+          },
+          {
+            url:"/homePage/productPage/productDetailsPage",
+            recommendModLogoUrl:"../../../static/img/homeImg/content_pic_xiaoyin.png",
+            title:"小米卡贷-信用卡代还",
+            interestRate:"XX.XX%",
+            rate:"XX.XX%",
+            price:"1000-10万元",
+            score:4,
+
+          },
         ],
         creditCardModDatas: [
           {
@@ -128,24 +145,24 @@
       ...mapState(["openID"])
     },
 
-    mounted(){
+    mounted() {
       this.__boxheight(this.$refs.homePageWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.homePageWrap); //窗口或框架被调整大小时执行
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this._initScroll()
       })
 
     },
 
-    updated(){
-      this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,startY:this.top})
+    updated() {
+      this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true, startY: this.top})
     },
     methods: {
-      _initScroll(){
+      _initScroll() {
         this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,})
         this.homePageWrap.refresh()
       },
-      changeTop(){
+      changeTop() {
         this.top = this.homePageWrap.y
       }
     }
@@ -156,8 +173,14 @@
   .footerOccupied
     width (1080 /$rem)
     height (146 /$rem)
+
   .homePageHeader
     img
       width 100%
-      height (500 /$rem)
+      height (520 /$rem)
+
+  .homePageContent
+    background-color #fff
+    position relative
+    padding-top (256/$rem)
 </style>

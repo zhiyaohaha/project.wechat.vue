@@ -24,14 +24,12 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .headline
     width 100%
-    height (120 /$rem)
-    border-bottom 1px solid #f4f4f4
+    height (126 /$rem)
     span
       float left
       font-family "Microsoft YaHei"
-      font-weight bold
-      line-height (120 /$rem)
-      font-size (42 /$rem)
+      line-height (126 /$rem)
+      font-size (46 /$rem)
       color #333
       margin-left (30 /$rem)
 </style>

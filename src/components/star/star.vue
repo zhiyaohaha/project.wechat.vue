@@ -24,12 +24,12 @@
 
         // 向数组中添加CLASS_ON
         for (let i = 0; i < integerScore; i++) {
-          scs.push(CLASS_ON)
+          scs.unshift(CLASS_ON)
         }
         // 向数组中添加CLASS_HALF
         // 向数组中添加CLASS_OFF
         while(scs.length<5) {
-          scs.push(CLASS_OFF)
+          scs.unshift(CLASS_OFF)
         }
 
         return scs
@@ -51,7 +51,7 @@
       height (30/$rem)
       margin-right (7/$rem)
       &.on
-        background-image url("./img/hongwuxaing.png")
+        background-image url("./img/content_icon_chenggonlv_normal.png")
       &.off
-        background-image url("./img/huiwuxing.png")
+        background-image url("./img/content_icon_chenggonglv_disabled.png")
 </style>
