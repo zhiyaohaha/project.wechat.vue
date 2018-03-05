@@ -123,9 +123,7 @@
 
     },
     mounted () {
-      window.addEventListener("popstate", ()=>{
-        this.$router.back()
-      });
+
     },
     updated () {
     },
@@ -149,7 +147,6 @@
             } else {
               if (this.isFlag) {
                 this.mformDatas[3].units = this.num + 's后重发'
-
               }
             }
           }, 1000)
