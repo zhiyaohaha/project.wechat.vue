@@ -1,33 +1,35 @@
 <template>
-  <div>
+  <div class="generalizeYiPage">
     <router-view/>
     <div v-show="$route.meta.isTop">
       <header class="generalizePageHeader">
         <div class="headPortrait">
-          <img src="./img/touxiang.gif">
+          <img src="../../../static/img/myImg/touxiang.png">
         </div>
         <div class="userDescription">
-          <span class="petName">微信昵称 ( 我的一级代理 ) </span>
+          <span class="petName">微信昵称</span>
           <span class="individual">个人代理</span>
         </div>
         <div class="agencyNum">
           <span class="describe">代理总数:</span>
-          <span class="price">XXXXX</span>
+          <span class="price">11111</span>
           <span class="unit">个</span>
         </div>
       </header>
-      <div class="generalizeContent">
+      <div class="generalizeYiContent">
         <a href="javascript:;" class="generalIncome">
           <span class="describe">一级代理</span>
-          <span class="price">XXXXX.XX人</span>
+          <span class="price">00000</span>
+          <span class="unit">人</span>
         </a>
+        <div class="line"></div>
         <router-link to="/myPage/generalizeYiPage/generalizeErPage" class="withdrawDeposit">
           <span class="describe">二级代理</span>
-          <span class="price">XXXXX.XX人</span>
+          <span class="price">00000</span>
+          <span class="unit">人</span>
         </router-link>
       </div>
-      <split />
-      <usersListMod :usersListDatas="usersListDatas"/>
+      <usersListMod :usersListDatas="usersListDatas" class="usersListMod"/>
     </div>
   </div>
 </template>
@@ -40,30 +42,30 @@
         usersListDatas:[
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
-            userNum:2316556465789,
+            userNum:"用户名1",
             userTime:"20XX-XX-XX XX:XX:XX",
-            agencyNum:"XXX",
+            agencyNum:"2222",
             url:"/myPage/generalizeYiPage/generalizeErPage"
           },
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
-            userNum:2316556465789,
+            userNum:"用户名1",
             userTime:"20XX-XX-XX XX:XX:XX",
-            agencyNum:"XXX",
+            agencyNum:"1111",
             url:"/myPage/generalizeYiPage/generalizeErPage"
           },
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
-            userNum:2316556465789,
+            userNum:"用户名1",
             userTime:"20XX-XX-XX XX:XX:XX",
-            agencyNum:"XXX",
+            agencyNum:"1111",
             url:"/myPage/generalizeYiPage/generalizeErPage"
           },
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
-            userNum:2316556465789,
+            userNum:"用户名1",
             userTime:"20XX-XX-XX XX:XX:XX",
-            agencyNum:"XXX",
+            agencyNum:"111",
             url:"/myPage/generalizeYiPage/generalizeErPage"
           },
         ]
@@ -74,8 +76,11 @@
       usersListMod
     },
 
-    computed: {},
+    computed: {
+    },
+    created(){
 
+    },
     mounted(){},
 
     methods: {}
@@ -83,58 +88,85 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .generalizePageHeader
+  .generalizeYiPage
+    background-color #ffffff
     position relative
-    width (1080/$rem)
-    height (228/$rem)
-    border-bottom 1px solid #bbbbbb
-    .headPortrait
-      float left
-      width (168/$rem)
-      height (168/$rem)
-      margin (30/$rem)
-      img
-        width 100%
-    .userDescription
-      box-sizing border-box
-      float left
-      padding (60/$rem) 0 (55/$rem)
-      span
-        display: block
-      .petName
-        color #515151
-        font-size (46/$rem)
-        font-weight 600
-      .individual
-        margin-top (30/$rem)
-        color #bbb
-        font-size (36/$rem)
-    .agencyNum
-      position absolute
-      right (30/$rem)
-      bottom (55/$rem)
-      span
-        font-size (36/$rem)
-        color #bbbbbb
-        &.price
-          color #c2181f
-  .generalizeContent
-    height (247/$rem)
-    a
-      box-sizing border-box
-      float left
-      width 50%
-      height 100%
-      text-align center
-      padding (75/$rem) 0 (80/$rem) 0
-      span
-        display block
-        &.describe
+    .generalizePageHeader
+      background-image url("../../../static/img/generalizeImg/erjidaoli_banner.png")
+      background-repeat no-repeat
+      background-size 100%
+      position relative
+      width (1080/$rem)
+      height (320/$rem)
+      color #fff
+      .headPortrait
+        float left
+        width (140/$rem)
+        height (140/$rem)
+        margin (40/$rem) 0 0 (30/$rem)
+        img
+          width 100%
+      .userDescription
+        box-sizing border-box
+        float left
+        margin-left (30/$rem)
+        padding (50/$rem) 0 (55/$rem)
+        span
+          display: block
+        .petName
+          font-size (42/$rem)
+        .individual
+          margin-top (20/$rem)
           font-size (36/$rem)
-        &.price
-          margin-top (24/$rem)
-          font-size (46/$rem)
-          color #c2181f
-      &.withdrawDeposit
-        border-left 1px solid #bbb
+      .agencyNum
+        position absolute
+        right (30/$rem)
+        top (112/$rem)
+        span
+          font-size (36/$rem)
+          &.price
+            color #efca7d
+    .generalizeYiContent
+      position absolute
+      background-color #ffffff
+      top (240/$rem)
+      left (146/$rem)
+      width (790/$rem)
+      height (230/$rem)
+      border-radius (10/$rem)
+      z-index 1
+      box-shadow 0 0 (62/$rem) rgba(0 , 0 ,0 ,0.19)
+      a:first-child
+        padding-left (152/$rem)
+      a:last-child
+        padding-right (152/$rem)
+        text-align right
+      a
+        box-sizing border-box
+        float left
+        width (394/$rem)
+        height 100%
+        padding-top (67/$rem)
+        span
+          color #333
+          &.describe
+            display block
+            font-size (40/$rem)
+            margin-bottom (30/$rem)
+          &.price
+            margin-top (24/$rem)
+            font-size (42/$rem)
+            color #efca7d
+          &.unit
+            font-size (34/$rem)
+      .line
+        float left
+        background-color #f2f2f2
+        height (100/$rem)
+        width (1/$rem)
+        margin-top (65/$rem)
+        margin-left 0
+    .usersListMod
+      margin-top (150/$rem)
+      background-color #ffffff
 </style>

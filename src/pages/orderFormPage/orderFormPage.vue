@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header class="orderFormTap">
+    <header class="orderFormHeader">
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
@@ -31,6 +31,20 @@
         orders:[
           {
             orderFormListDatas:[
+              {
+                imgUrl:"../../../static/img/myImg/touxiang.gif",
+                applyForTime:"20XX-XX-XX XX:XX:XX",
+                money:"100000.00",
+                form:"小赢卡贷",
+                state:"待处理"
+              },
+              {
+                imgUrl:"../../../static/img/myImg/touxiang.gif",
+                applyForTime:"20XX-XX-XX XX:XX:XX",
+                money:"100000.00",
+                form:"小赢卡贷",
+                state:"待处理"
+              },
               {
                 imgUrl:"../../../static/img/myImg/touxiang.gif",
                 applyForTime:"20XX-XX-XX XX:XX:XX",
@@ -175,22 +189,20 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .orderFormTap
+  .orderFormHeader
     height (123/$rem)
     width (1080/$rem)
     a
       box-sizing border-box
-      border-right 1px solid #fff
+      border-bottom 1px solid #f2f2f2
       height 100%
       width (360/$rem)
-      background-color #bbb
+      background-color #ffffff
       float left
       font-size (46/$rem)
-      color #515151
       text-align center
       line-height (123/$rem)
       transition all 0.5s
       &.active
-        background-color #c2181f
-        color #ffffff
+        color #efca7d
 </style>

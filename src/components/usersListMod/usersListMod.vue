@@ -6,16 +6,19 @@
           <router-link :to="usersListData.url">
             <img :src="usersListData.imgUrl">
             <div class="message">
-              <span class="userNum">用户编号:{{usersListData.userNum}}</span>
+              <span class="userNum">{{usersListData.userNum}}</span>
               <div>
                 <span class="scheduleTime">{{usersListData.userTime}}</span>
                 <span class="fixation">成为我的代理</span>
               </div>
             </div>
             <div class="agencyMessage">
-              <span>TA的代理</span>
+              <span>他的代理</span>
               <span class="price">{{usersListData.agencyNum}}</span>
               <span>个</span>
+            </div>
+            <div class="triangle">
+              <img src="../../../static/img/generalizeImg/content_icon_more_normal.png">
             </div>
           </router-link>
         </li>
@@ -50,25 +53,30 @@
         box-sizing border-box
         overflow hidden
         width (1080 /$rem)
-        height (234 /$rem)
-        border-bottom 1px solid #bbbbbb
+        height (200 /$rem)
+        border-bottom 1px solid #f2f2f2
+        padding (35/$rem) (30/$rem)
+        a
+          height (130/$rem)
         img
           float left
-          height (156 /$rem)
-          width (156 /$rem)
-          margin (38 /$rem) (36 /$rem) (38 /$rem) (30 /$rem)
+          height (130 /$rem)
+          width (130 /$rem)
         /*用户信息*/
         .message
           float left
-          margin (50 /$rem) 0
+          margin-top (10 /$rem)
+          margin-left (20/$rem)
           .userNum
-            font-size (40 /$rem)
-            color #515151
+            display block
+            margin-bottom (48/$rem)
+            font-size (42 /$rem)
+            color #333
           .scheduleTime
-            font-size (30 /$rem)
+            font-size (34 /$rem)
             color #bbbbbb
           .fixation
-            font-size (36 /$rem)
+            font-size (34 /$rem)
             color #bbbbbb
 
         .agencyMessage
@@ -76,8 +84,14 @@
           top (50 /$rem)
           right (30 /$rem)
           span
-            font-size (30 /$rem)
+            font-size (40 /$rem)
             color #bbbbbb
-            &.price
-              color #c2181f
+        .triangle
+          position absolute
+          right (30/$rem)
+          bottom (35/$rem)
+          img
+            width (16/$rem)
+            height (30/$rem)
+
 </style>

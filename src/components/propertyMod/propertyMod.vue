@@ -1,10 +1,9 @@
 <template>
   <div class="propertyMod">
     <ul class="propertyModList">
-      <li v-for="(propertyModData, index) in propertyModDatas" :key="index"
-          :class="{pitchOn:propertyModData.imgUrlIsShow}" @touchstart="pitchOn(index)">
+      <li v-for="(propertyModData, index) in propertyModDatas" :key="index" @touchstart="pitchOn(index)">
         <div>
-          <img src="./img/xuanze.png" v-show="propertyModData.imgUrlIsShow">
+          <img src="./img/xaunze.png" v-show="propertyModData.imgUrlIsShow">
           <img src="./img/huikuang.png" v-show="!propertyModData.imgUrlIsShow">
           <span :class="{pitchOnFont:propertyModData.imgUrlIsShow}">{{propertyModData.character}}</span>
         </div>
@@ -53,12 +52,8 @@
         height (100/$rem)
         float left
         margin (20/$rem) (40/$rem) (20/$rem) 0
-        background url("./img/huiseda.png") no-repeat scroll right center transparent
         border-radius (20/$rem)
         text-align center
-        border 1px solid #f4f4f4
-        &.pitchOn
-          background-image url("./img/hongseda.png")
         div
           line-height (100/$rem)
           overflow hidden
@@ -67,8 +62,8 @@
           img
             float left
             margin-top (30/$rem)
-            width (40/$rem)
-            vertical-align: middle
+            width (41/$rem)
+            height (40/$rem)
           span
             float left
             margin-left (20/$rem)
@@ -76,5 +71,5 @@
             color #bbb
             font-size (36/$rem)
             &.pitchOnFont
-              color #fff
+              color #efca7d
 </style>

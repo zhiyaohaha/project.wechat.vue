@@ -24,7 +24,9 @@
 
     computed: {},
 
-    mounted(){},
+    mounted(){
+      console.log(this.allBankListDatas[0].url)
+    },
 
     methods: {}
   }
@@ -37,16 +39,16 @@
     li
       box-sizing border-box
       float left
-      width (270/$rem)
-      height (270/$rem)
-      padding (67/$rem) (67/$rem) 0
+      width 25%
+      text-align center
+      padding-top (50/$rem)
       img
+        display inline-block
         width (136/$rem)
         height (136/$rem)
       span
         display block
-        font-size (30/$rem)
-        color #515151
-        margin-left (5/$rem)
-        margin-top (32/$rem)
+        font-size (36/$rem)
+        color #333
+        margin-top (30/$rem)
 </style>

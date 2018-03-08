@@ -2,19 +2,18 @@
   <div>
     <header class="generalizeErPageHeader">
       <div class="headPortrait">
-        <img src="./img/touxiang.gif">
+        <img src="../../../static/img/myImg/touxiang.png">
       </div>
       <div class="userDescription">
-        <span class="petName">微信昵称 ( 我的二级代理 ) </span>
+        <span class="petName">微信昵称 ( 我的一级代理 ) </span>
         <span class="individual">个人代理</span>
       </div>
       <div class="agencyNum">
         <span class="describe">代理总数:</span>
-        <span class="price">XXXXX</span>
+        <span class="price">11111</span>
         <span class="unit">个</span>
       </div>
     </header>
-    <split />
     <usersListMod :usersListDatas="usersListDatas"/>
   </div>
 </template>
@@ -27,28 +26,42 @@
         usersListDatas:[
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
-            userNum:2316556465789,
+            userNum:"用户名1",
             userTime:"20XX-XX-XX XX:XX:XX",
             agencyNum:"XXX",
             url:"/myPage/generalizeYiPage/generalizeErPage"
           },
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
-            userNum:2316556465789,
+            userNum:"用户名1",
             userTime:"20XX-XX-XX XX:XX:XX",
             agencyNum:"XXX",
             url:"/myPage/generalizeYiPage/generalizeErPage"
           },
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
-            userNum:2316556465789,
+            userNum:"用户名1",
             userTime:"20XX-XX-XX XX:XX:XX",
             agencyNum:"XXX",
             url:"/myPage/generalizeYiPage/generalizeErPage"
           },
           {
             imgUrl:"../../../static/img/myImg/touxiang.gif",
-            userNum:2316556465789,
+            userNum:"用户名1",
+            userTime:"20XX-XX-XX XX:XX:XX",
+            agencyNum:"XXX",
+            url:"/myPage/generalizeYiPage/generalizeErPage"
+          },
+          {
+            imgUrl:"../../../static/img/myImg/touxiang.gif",
+            userNum:"用户名1",
+            userTime:"20XX-XX-XX XX:XX:XX",
+            agencyNum:"XXX",
+            url:"/myPage/generalizeYiPage/generalizeErPage"
+          },
+          {
+            imgUrl:"../../../static/img/myImg/touxiang.gif",
+            userNum:"用户名1",
             userTime:"20XX-XX-XX XX:XX:XX",
             agencyNum:"XXX",
             url:"/myPage/generalizeYiPage/generalizeErPage"
@@ -71,38 +84,38 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .generalizeErPageHeader
+    background-image url("../../../static/img/generalizeImg/erjidaoli_banner.png")
+    background-repeat no-repeat
+    background-size 100%
     position relative
+    color #ffffff
     width (1080/$rem)
-    height (228/$rem)
+    height (320/$rem)
     border-bottom 1px solid #bbbbbb
+    padding (40/$rem) (30/$rem) 0
     .headPortrait
       float left
-      width (168/$rem)
-      height (168/$rem)
-      margin (30/$rem)
+      width (140/$rem)
+      height (140/$rem)
       img
         width 100%
     .userDescription
-      box-sizing border-box
       float left
-      padding (60/$rem) 0 (55/$rem)
+      margin-top (10/$rem)
+      margin-left (30/$rem)
       span
         display: block
       .petName
-        color #515151
-        font-size (46/$rem)
-        font-weight 600
+        font-size (42/$rem)
       .individual
-        margin-top (30/$rem)
-        color #bbb
-        font-size (36/$rem)
+        margin-top (20/$rem)
+        font-size (40/$rem)
     .agencyNum
       position absolute
       right (30/$rem)
-      bottom (55/$rem)
+      top (112/$rem)
       span
-        font-size (36/$rem)
-        color #bbbbbb
+        font-size (40/$rem)
         &.price
-          color #c2181f
+          color #efca7d
 </style>

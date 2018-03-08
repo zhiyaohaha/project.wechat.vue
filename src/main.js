@@ -3,12 +3,13 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { Popup, Picker } from 'mint-ui'
+import { Popup, Picker, Swipe, SwipeItem  } from 'mint-ui'
 // import { Popup } from 'vue-ydui/dist/lib.rem/popup'
 // import {DateTime} from 'vue-ydui/dist/lib.rem/datetime'
 import store from './store'
 import BScroll from 'better-scroll'
 import split from './components/split/split.vue'
+import headline from './components/headline/headline.vue'
 import {
   __boxheight,
   __GetRequest
@@ -21,12 +22,15 @@ import storageUtil from './util/storageUtil.js'
 import '../static/css/reset.styl'
 import '../static/js/adaptive'
 import 'mint-ui/lib/style.css'
-import 'vue-ydui/dist/ydui.base.css'
+// import 'vue-ydui/dist/ydui.base.css'
 
 Vue.component('split', split)
+Vue.component('headline', headline)
 Vue.component(Popup.name, Popup)
 // Vue.component(DateTime.name, DateTime)
 Vue.component(Picker.name, Picker)
+Vue.component(Swipe.name, Swipe)
+Vue.component(SwipeItem.name, SwipeItem)
 Vue.prototype.__boxheight = __boxheight
 Vue.prototype.__GetRequest = __GetRequest
 Vue.prototype.getCookie = getCookie

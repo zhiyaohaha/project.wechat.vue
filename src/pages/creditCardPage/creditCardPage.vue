@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <keep-alive>
+  <div class="creditCard">
       <router-view/>
-    </keep-alive>
     <div ref="creditWrap" v-show="$route.meta.isTop">
       <div>
-        <header class="creditCardPageHeader">
+        <!--<header class="creditCardPageHeader">
           <ul class="CardPageHeaderList">
             <li v-for="(CardPageHeaderListDatas, index) in CardPageHeaderListDatas">
               <a href="javascript:;">
@@ -14,19 +12,19 @@
               </a>
             </li>
           </ul>
-        </header>
+        </header>-->
         <div class="allBank">
-          <cardHeadLine :cardHeadLineData="cardHeadLineData1"/>
+          <!--<cardHeadLine :cardHeadLineData="cardHeadLineData1"/>-->
           <allBankList :allBankListDatas="allBankListDatas"/>
           <footer class="allBankFooter">
-            <a href="javascript:;">
-              <span>展开更多</span><span class="icon"></span>
-            </a>
+            <div class="line"></div>
+            <div class="character">即将开发跟多信用卡</div>
+            <div class="line"></div>
           </footer>
-          <split/>
         </div>
         <div class="recommend">
-          <cardHeadLine :cardHeadLineData="cardHeadLineData2"/>
+          <headline :headlineData="{title:'推荐信用卡'}"/>
+          <div class="line"></div>
           <recommendList :recommendListDatas="recommendListDatas"/>
         </div>
       </div>
@@ -35,75 +33,88 @@
 </template>
 
 <script>
-  import cardHeadLine from "../../components/cardHeadLine/cardHeadLine.vue"
+  import headline from "../../components/headline/headline.vue"
   import allBankList from "../../components/allBankList/allBankList.vue"
   import recommendList from "../../components/recommendList/recommendList.vue"
   export default {
     data () {
       return {
-        cardHeadLineData1: {
-          title: "按银行卡找卡",
-          aFont: "全部银行"
-        },
-        cardHeadLineData2: {
-          title: "推荐信用卡",
-          aFont: ""
-        },
+        // cardHeadLineData1: {
+        //   title: "按银行卡找卡",
+        //   aFont: "全部银行"
+        // },
+        // cardHeadLineData2: {
+        //   title: "推荐信用卡",
+        //   aFont: ""
+        // },
         allBankListDatas: [
-          {
+          /*{
             imgUrl: "../../../static/img/creditCardImg/citic.png",
             title: "中信银行",
             url:"/homePage/creditCardPage/zhongXinCardPage"
-          },
+          },*/
           {
             imgUrl: "../../../static/img/creditCardImg/communications.png",
             title: "交通银行",
-            url:"/homePage/creditCardPage/zhongXinCardPage"
+            url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "交通银行"}}
           },
-          {
+          /*{
             imgUrl: "../../../static/img/creditCardImg/guangfabank.png",
             title: "广发银行",
             url:"/homePage/creditCardPage/zhongXinCardPage"
-          },
+          },*/
           {
             imgUrl: "../../../static/img/creditCardImg/industrialbank.png",
             title: "兴业银行",
-            url:"/homePage/creditCardPage/zhongXinCardPage"
+            url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "兴业银行"}}
           },
-          {
+          /*{
             imgUrl: "../../../static/img/creditCardImg/pinganbank.png",
             title: "平安银行",
             url:"/homePage/creditCardPage/zhongXinCardPage"
+          },*/
+          {
+            imgUrl: "../../../static/img/creditCardImg/generalbanks.png",
+            title: "光大银行",
+            url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "光大银行"}}
           },
           {
             imgUrl: "../../../static/img/creditCardImg/pudongdevelopmentbank.png",
             title: "浦发银行",
-            url:"/homePage/creditCardPage/zhongXinCardPage"
+            url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "浦发银行"}}
           },
-          {
-            imgUrl: "../../../static/img/creditCardImg/generalbanks.png",
-            title: "光大银行",
-            url:"/homePage/creditCardPage/zhongXinCardPage"
-          },
-          {
+
+          /*{
             imgUrl: "../../../static/img/creditCardImg/merchantsbank.png",
             title: "招商银行",
             url:"/homePage/creditCardPage/zhongXinCardPage"
-          },
+          },*/
         ],
         recommendListDatas: [
           {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
+            imgUrl: "../../../static/img/creditCardImg/kapian01.png",
             bankName: "交通银行标准信用卡",
-            money: "75元",
-            logImg:"../../../static/img/creditCardImg/degreeofheat.png",
+            logImg:"../../../static/img/creditCardImg/redu01.png",
             url:"/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
-            money: "75元",
+            logImg:"../../../static/img/creditCardImg/redu02.png",
+            url:"/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
+          },
+          {
+            imgUrl: "../../../static/img/creditCardImg/kapian.png",
+            bankName: "交通银行标准信用卡",
+            logImg:"../../../static/img/creditCardImg/redu03.png",
+            url:"/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
+          },
+          {
+            imgUrl: "../../../static/img/creditCardImg/kapian.png",
+            bankName: "交通银行标准信用卡",
             logImg:"",
             url:"/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
@@ -111,31 +122,13 @@
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "交通银行标准信用卡",
-            money: "75元",
             logImg:"",
             url:"/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
+            imgUrl: "../../../static/img/creditCardImg/kapian01.png",
             bankName: "交通银行标准信用卡",
-            money: "75元",
-            logImg:"",
-            url:"/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "交通银行标准信用卡",
-            money: "75元",
-            logImg:"",
-            url:"/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "交通银行标准信用卡",
-            money: "75元",
             logImg:"",
             url:"/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
@@ -163,7 +156,7 @@
     },
 
     components: {
-      cardHeadLine, allBankList, recommendList
+      headline, allBankList, recommendList
     },
 
     computed: {},
@@ -180,6 +173,8 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .creditCard
+    background-color #ffffff
   .creditCardPageHeader
     width (1080/$rem)
     height (330/$rem)
@@ -204,18 +199,25 @@
   .allBank
     width (1080 /$rem)
     .allBankFooter
+      height (101/$rem)
+      padding (0) (80/$rem)
       box-sizing border-box
-      height (156 /$rem)
-      padding (76 /$rem) (444 /$rem) (52 /$rem)
-      span
+      border-bottom 1px solid #f2f2f2
+      div
         float left
-        font-size (30 /$rem)
-        color #bbbbbb
-        &.icon
-          background-image url("../../../static/img/creditCardImg/dropdown.png")
-          background-repeat no-repeat
-          background-size 100%
-          margin-left (32 /$rem)
-          width (37 /$rem)
-          height (18 /$rem)
+        &.line
+          margin-top (50/$rem)
+          background-color #f2f2f2
+          height 1px
+          width (240/$rem)
+        &.character
+          margin (36/$rem) (50/$rem)
+          font-size (30/$rem)
+          color #bbbbbb
+
+  .recommend
+    .line
+      width (1080/$rem)
+      height 1px
+      background-color: #f2f2f2;
 </style>

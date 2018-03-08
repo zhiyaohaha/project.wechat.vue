@@ -60,16 +60,14 @@
         height 100%
         .recommendModLogo
           position absolute
-          top 0
+          top (10/$rem)
           left (30 /$rem)
           img
             width (150 /$rem)
         .fanyonglog
-          width (70/$rem)
-          height (34/$rem)
           position absolute
           left (130/$rem)
-          bottom (265/$rem)
+          bottom (255/$rem)
         .recommendModDescribe
           position absolute
           top (15 /$rem)

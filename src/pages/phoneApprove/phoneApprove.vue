@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="phoneApprove">
     <div>
       <div>
         <!--<header class="myHeader">
@@ -7,8 +7,7 @@
           <span>手机认证</span>
         </header>-->
         <div class="myContent">
-          <img src="./img/banner.png">
-          <split/>
+          <img src="./img/xinyongkabanner.png">
           <ul class="mform">
             <li v-for="(mformData, index) in mformDatas" :key="index">
               <span class="description">{{mformData.description}}</span>
@@ -19,7 +18,7 @@
                      :placeholder="mformData.placeholder"
                      :maxlength="mformData.maxlength"
                      :name="mformData.name">
-              <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" @touchstart="sendMsg(index)">
+              <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" @click="sendMsg(index)">
                 {{mformData.units}}
               </a>
             </li>
@@ -29,7 +28,7 @@
             <img src="./img/huisekuang.png" v-show="!imgIsShow" @touchstart="notarize">
             <span>我已阅读并同意《XXXXXX协议》</span>
           </a>
-          <a href="javascript:;" class="approve" @touchstart="approve"></a>
+          <a href="javascript:;" class="approve" @click="approve"></a>
         </div>
         <div class="footerOccupied"></div>
       </div>
@@ -54,31 +53,6 @@
     data () {
       return {
         mformDatas: [
-          {
-            description: '姓名：',
-            placeholder: '请输入您的姓名',
-            name: 'username',
-            model: '',
-            purposeList: false,
-            sendMsg: false,
-            units: '',
-            reg: /^[\u4e00-\u9fa5_A-Za-z]{1,}$/,
-            regular: /^[\u4e00-\u9fa5_A-Za-z]{0,}$/,
-            errorColor: false
-          },
-          {
-            description: '身份证号：',
-            placeholder: '请输入您的身份证号',
-            name: 'IDnumber',
-            model: '',
-            purposeList: false,
-            sendMsg: false,
-            units: '',
-            reg: /^[0-9xX]{1,18}$/,
-            regular: /^([0-9]){15,18}(x|X)?$/,
-            errorColor: false,
-            maxlength: '18'
-          },
           {
             description: '手机号：',
             placeholder: '请输入您的手机号',
@@ -141,12 +115,12 @@
           let timer = setInterval(() => {
             this.num--
             if (this.num == 0) {
-              this.mformDatas[3].units = '获取验证码'
+              this.mformDatas[1].units = '获取验证码'
               clearInterval(timer)
               this.num = null
             } else {
               if (this.isFlag) {
-                this.mformDatas[3].units = this.num + 's后重发'
+                this.mformDatas[1].units = this.num + 's后重发'
               }
             }
           }, 1000)
@@ -169,8 +143,8 @@
         let Arr = this.mformDatas.filter(item => item.reg.test(item.model))
         if (Arr.length === this.mformDatas.length) {
           let data = {
-            phone: this.mformDatas[2].model,
-            verifyCode: this.mformDatas[3].model,
+            phone: this.mformDatas[0].model,
+            verifyCode: this.mformDatas[1].model,
             firstLevelId: this.getCookie("id"),
             thirdPlatFormBind: true,//第三方绑定接口
             openId:this.getCookie("openId"), //第三方OpenId
@@ -221,7 +195,7 @@
         if (flag) {
           let data = {
             code: 'SMS_123738830',
-            mobilePhone: this.mformDatas[2].model,
+            mobilePhone: this.mformDatas[0].model,
             validateCode: validateCode,
             needvalidateCode: true
           }
@@ -277,6 +251,8 @@
   }
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .phoneApprove
+    background-color: #fff
   .ToastStyle
     width (200 /$rem)
     height (70 /$rem)
@@ -316,7 +292,7 @@
         width (1020 /$rem)
         height (120 /$rem)
         font-size (42 /$rem)
-        border-bottom 1px solid #ccc
+        border-bottom 1px solid #f2f2f2
         text-align right
         span
           color #333333
@@ -343,12 +319,12 @@
           text-align right
           color #bbbbbb
         .sendMsg
-          border-radius (40 /$rem)
+          border-radius (20 /$rem)
           float right
           margin-top (17 /$rem)
           width (290 /$rem)
           height (86 /$rem)
-          background-color #bbb
+          background-color #cdcdcd
           color #ffffff
           line-height (86 /$rem)
           text-align center
@@ -360,7 +336,11 @@
       line-height (155 /$rem)
       img
         display inline-block
-        width (35 /$rem)
+        margin-top (60/$rem)
+        margin-right (20/$rem)
+        width (36 /$rem)
+        height (35 /$rem)
+        vertical-align top
       span
         font-size (36 /$rem)
         color #333333
@@ -403,6 +383,8 @@
     .mint-msgbox-btns
       height (136 /$rem)
       line-height (136 /$rem)
+      background-color: #efca7d
+      color #ffffff
       .mint-msgbox-confirm
         font-size (46 /$rem)
       .mint-msgbox-cancel

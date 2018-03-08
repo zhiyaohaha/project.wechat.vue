@@ -67,11 +67,22 @@
     bottom 0
     left 0
     z-index 10
+    a:last-child
+      padding-right (310/$rem)
+      text-align right
+    a:first-child
+      padding-left (310/$rem)
     a
+      float left
+      box-sizing border-box
+      border-top 1px solid #f2f2f2
       background-color #fff
       width (540 /$rem)
       height (146 /$rem)
       float left
       img
-        margin (21/$rem) auto
+        display inline-block
+        width (66/$rem)
+        height (108/$rem)
+        margin (21/$rem) 0 0 0
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="generalizeMod">
-    <headline :headlineTitle="generalizeModData.name"/>
+    <headline :headlineData="generalizeModData.name" class="headline"/>
     <ul class="generalizeModList">
       <li v-for="(generalizeModData, index) in generalizeModData.datas" :key="index" :class="{'icon':index === 0}">
         <router-link :to="generalizeModData.url">
@@ -36,7 +36,7 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .generalizeMod
     position relative
-    height (314/$rem)
+    height (304/$rem)
   .generalizeModList
     box-sizing border-box
     width 100%
@@ -65,9 +65,7 @@
           margin-top (20/$rem)
           font-size (32/$rem)
   .fanyonglog
-    width (70/$rem)
-    height (34/$rem)
     position absolute
     left (170/$rem)
-    bottom (175/$rem)
+    bottom (160/$rem)
 </style>

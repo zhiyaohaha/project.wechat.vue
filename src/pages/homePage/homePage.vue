@@ -1,18 +1,23 @@
 <template>
   <div>
     <router-view/>
+
     <div class="homePageWrap" ref="homePageWrap" v-show="$route.meta.keepAlive">
       <div @click="changeTop" ref="homePage">
         <header class="homePageHeader">
-          <img src="./img/xinyongkabanner.png">
+          <mt-swipe :auto="3000">
+            <mt-swipe-item><img src="./img/xinyongkabanner.png"></mt-swipe-item>
+            <mt-swipe-item><img src="./img/banner1.png"></mt-swipe-item>
+            <mt-swipe-item><img src="./img/banner2.png"></mt-swipe-item>
+          </mt-swipe>
         </header>
         <div class="homePageContent">
           <loanMod :loanModDatas="loanModDatas"/>
           <generalizeMod :generalizeModData="generalizeModData"/>
           <generalizeMod :generalizeModData="visaDatas"/>
-          <headline headlineTitle="热门贷款推荐"/>
+          <headline :headlineData="{title:'热门贷款推荐',more:'更多贷款推荐'}"/>
           <recommendMod :recommendModDatas="recommendModDatas"/>
-          <headline headlineTitle="热门信用卡推荐"/>
+          <headline :headlineData="{title:'热门信用卡推荐',more:'更多信用卡推荐'}"/>
           <creditCardMod :creditCardModDatas="creditCardModDatas"/>
           <footline footlineTitle="我是有底线的~"/>
         </div>
@@ -48,7 +53,10 @@
           },
         ],
         generalizeModData: {
-          name:"推广返佣",
+          name:{
+            title:"推广返佣",
+            more:""
+          },
           datas: [
             {
               imgUrl: "../../static/img/homeImg/content_icon_woyaotuiguang.png",
@@ -73,7 +81,10 @@
           ]
         },
         visaDatas: {
-          name:"信用卡",
+          name:{
+            title:"信用卡",
+            more:""
+          },
           datas : [
           {
             imgUrl: "../../static/img/homeImg/content_icon_banxinyongka.png",
@@ -155,11 +166,14 @@
     },
 
     updated() {
-      this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true, startY: this.top})
+      if(this.$route.meta.homeShow){
+        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,startY: this.top})
+        this.homePageWrap.refresh()
+      }
     },
     methods: {
       _initScroll() {
-        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,})
+        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true})
         this.homePageWrap.refresh()
       },
       changeTop() {
@@ -175,12 +189,20 @@
     height (146 /$rem)
 
   .homePageHeader
+    width 100%
+    height (520 /$rem)
+    .mint-swipe-items-wrap
+      transform translateZ(0)
     img
       width 100%
-      height (520 /$rem)
+      height 100%
 
   .homePageContent
     background-color #fff
     position relative
-    padding-top (256/$rem)
+    padding-top (266/$rem)
+  .fanyonglog
+    transform translateZ(0)
+    width (70/$rem)
+    height (34/$rem)
 </style>

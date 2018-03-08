@@ -1,11 +1,11 @@
 <template>
-  <div class="verification" @touchstart.stop="changeShow">
-    <div class="verificationContent" @touchstart.stop>
+  <div class="verification" @click.stop="changeShow">
+    <div class="verificationContent" @click.stop>
       <div class="verificationTitle">
         请填写图片验证码
       </div>
       <div class="verificationMessage">
-        <div class="verificationImg" @touchstart.stop="touchstartMap">
+        <div class="verificationImg" @click.stop="touchstartMap">
           <img :src="verification">
         </div>
         <input type="text" placeholder="输入验证码"
@@ -13,8 +13,8 @@
                name="verification">
       </div>
       <div class="verificationFooter">
-        <div class="verificationFooterLeft" @touchstart.stop="verificationCancel(false)">取消</div>
-        <div class="verificationFooterRight" @touchstart.stop="verificationCancel(true,validateCode)">确定</div>
+        <div class="verificationFooterLeft" @click.stop="verificationCancel(false)">取消</div>
+        <div class="verificationFooterRight" @click.stop="verificationCancel(true,validateCode)">确定</div>
       </div>
     </div>
   </div>
@@ -101,6 +101,7 @@
         height (136/$rem)
         border-top 1px solid #bbbbbb
         font-size (46/$rem)
+        background-color: #efca7d;
         div
           float left
           width 50%
@@ -108,7 +109,7 @@
           text-align center
           line-height (136/$rem)
           &.verificationFooterLeft
-            color #333333
+            color #fff
           &.verificationFooterRight
-            color #c2181f
+            color #fff
 </style>

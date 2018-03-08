@@ -2,7 +2,7 @@
   <div>
     <header class="productDetailsHeader">
       <div class="imgWrap">
-        <img src="../../../static/img/productImg/yirendai.png">
+        <img src="../../../static/img/productImg/jisudai.png">
       </div>
       <div class="describe">
         <div class="productTitle">宜人极速 - 秒下款</div>
@@ -10,9 +10,8 @@
         <div class="lightspot">亮点:凭信用卡，10分钟轻松贷款10万元</div>
       </div>
     </header>
-    <split/>
     <div class="productDetailContent">
-      <productHeadLine title="申请条件"/>
+      <headline :headlineData="{title:'申请条件',line:true}"/>
       <div class="applyForCondition">
         <ul class="applyForList">
           <li v-for="(applyForListDatas, index) in applyForListDatas">
@@ -20,10 +19,8 @@
           </li>
         </ul>
       </div>
-      <split/>
-      <productHeadLine title="认证材料"/>
+      <headline :headlineData="{title:'认证材料',line:true}"/>
       <authenticationList :authenticationListDatas="authenticationListDatas"/>
-      <split/>
       <ul class="mform">
         <li v-for="(mformData, index) in mformDatas" :key="index">
           <span class="description">{{mformData.description}}</span>
@@ -50,40 +47,41 @@
   import {Toast} from "mint-ui"
   import productHeadLine from "../../components/productHeadLine/productHeadLine.vue"
   import authenticationList from "../../components/authenticationList/authenticationList.vue"
+
   export default {
-    data () {
+    data() {
       return {
-        applyForListDatas:[
+        applyForListDatas: [
           {
-            character:"1，年龄要求:23-25周岁",
+            character: "1，年龄要求:23-25周岁",
           },
           {
-            character:"2，本人需要有正在使用的信用卡",
+            character: "2，本人需要有正在使用的信用卡",
           },
           {
-            character:"3，本人需要有正在使用的淘宝(支付宝)账户",
+            character: "3，本人需要有正在使用的淘宝(支付宝)账户",
           },
           {
-            character:"4，本人需要有实名认证的手机号",
+            character: "4，本人需要有实名认证的手机号",
           },
 
         ],
-        authenticationListDatas:[
+        authenticationListDatas: [
           {
-            imgUrl:"../../../static/img/productImg/id.png",
-            character:"身份证"
+            imgUrl: "../../../static/img/productImg/id.png",
+            character: "身份证"
           },
           {
-            imgUrl:"../../../static/img/productImg/xinyongka.png",
-            character:"信用卡"
+            imgUrl: "../../../static/img/productImg/xinyongka.png",
+            character: "信用卡"
           },
           {
-            imgUrl:"../../../static/img/productImg/zhifubao.png",
-            character:"支付宝账号"
+            imgUrl: "../../../static/img/productImg/zhifubao.png",
+            character: "支付宝账号"
           },
           {
-            imgUrl:"../../../static/img/productImg/shoujihao.png",
-            character:"手机号"
+            imgUrl: "../../../static/img/productImg/shoujihao.png",
+            character: "手机号"
           },
         ],
         mformDatas: [
@@ -92,7 +90,7 @@
             placeholder: "请输入姓名",
             name: "userName",
             model: "",
-            reg:/^[\u4e00-\u9fa5_a-zA-Z]{0,}$/,
+            reg: /^[\u4e00-\u9fa5_a-zA-Z]{0,}$/,
           },
           {
             description: "身份证号：",
@@ -110,7 +108,7 @@
             reg: /^[0-9]{0,11}$/,
           },
         ],
-        FooterShow:true
+        FooterShow: true
       }
     },
 
@@ -120,30 +118,31 @@
     },
 
     computed: {},
-    created () {
-      if(this.getCookie("whether") === "0"){
+    created() {
+      if (this.getCookie("whether") === "0") {
         this.$router.push("/phoneApprove")
       }
     },
-    mounted(){},
+    mounted() {
+    },
 
     methods: {
-      isFooter(){
+      isFooter() {
         this.FooterShow = false
       },
-      loseFocus(){
+      loseFocus() {
         this.FooterShow = true
       },
-      goodInput(reg, flag, index){
+      goodInput(reg, flag, index) {
 //        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (!reg.test(flag)) {
           Toast({
-            message:"格式错误",
-            className:"ToastStyle",
-            duration:2000,
-            position:"bottom"
+            message: "格式错误",
+            className: "ToastStyle",
+            duration: 2000,
+            position: "bottom"
           })
-          for(let i=0;i<this.mformDatas.length;i++){
+          for (let i = 0; i < this.mformDatas.length; i++) {
             this.mformDatas[index].model = ""
           }
         }
@@ -154,18 +153,20 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .ToastStyle
-    width (200/$rem)
-    height (70/$rem)
-    font-size (40/$rem)
+    width (200 /$rem)
+    height (70 /$rem)
+    font-size (40 /$rem)
     color #ffffff
     background-color #8a8a8a
     text-align center
-    line-height (70/$rem)
+    line-height (70 /$rem)
+
   .productDetailsHeader
     box-sizing border-box
     width (1080 /$rem)
-    height (240 /$rem)
-    padding (30 /$rem) 0 (30 /$rem) (30 /$rem)
+    height (261 /$rem)
+    padding (40 /$rem) 0 (40 /$rem) (30 /$rem)
+    border-bottom 1px solid #f2f2f2
     & > div
       float left
       &.imgWrap
@@ -175,19 +176,22 @@
         box-sizing border-box
         border 1px solid #e4e4e4
         img
-          width (120 /$rem)
-          margin (29 /$rem)
+          width 100%
+          height 100%
       &.describe
-        color #515151
-        font-size (36/$rem)
-        margin-top (8/$rem)
-        margin-left (30/$rem)
+        color #333
+        font-size (36 /$rem)
+        margin-top (6 /$rem)
+        margin-left (30 /$rem)
         .productTitle
-          font-size (40/$rem)
+          font-size (42 /$rem)
         .limit
-          margin-top (24/$rem)
+          color #bbbbbb
+          margin-top (30 /$rem)
         .lightspot
-          margin-top (28/$rem)
+          color #bbbbbb
+          margin-top (30 /$rem)
+
   .productDetailContent
     .mform
       margin: 0 (30 /$rem)
@@ -198,7 +202,7 @@
         width (1020 /$rem)
         height (120 /$rem)
         font-size (42 /$rem)
-        border-bottom 1px solid #ccc
+        border-bottom 1px solid #f2f2f2
         text-align right
         span
           color #333333
@@ -225,29 +229,31 @@
           text-align right
           color #bbbbbb
 
-
     .applyForCondition
       box-sizing border-box
-      padding (30/$rem) 0 (30/$rem) (48/$rem)
+      padding (30 /$rem) 0 (30 /$rem) (30 /$rem)
+      border-bottom 1px solid #f2f2f2
       .applyForList
-        font-size (36/$rem)
-        color #8a8a8a
+        font-size (36 /$rem)
+        color #bbbbbb
         li:not(:first-child)
-          margin-top (20/$rem)
+          margin-top (20 /$rem)
+
   .setting
-    height (600/$rem)
+    height (600 /$rem)
     background-color: #f6f6f6
+
   .productDetailsFooter
-    width (1080/$rem)
-    height (148/$rem)
+    width (1080 /$rem)
+    height (146 /$rem)
     position fixed
     bottom 0
     left 0
     a
       height 100%
-      background-color: #c2181f;
-      font-size (60/$rem)
-      color #f4f4f4
+      background-color: #efca7d;
+      font-size (48 /$rem)
+      color #ffffff
       text-align center
-      line-height (148/$rem)
+      line-height (146 /$rem)
 </style>

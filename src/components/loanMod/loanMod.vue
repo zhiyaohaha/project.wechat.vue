@@ -43,12 +43,13 @@
     background-color #fff
     border-radius (20 /$rem)
     box-shadow 0 0 (64/$rem) #999
+    transform translateZ(0)
     .loanModHeader
       box-sizing border-box
-      height (86 /$rem)
+      height (96 /$rem)
       width 100%
       font-size (46 /$rem)
-      padding (40 /$rem) 0 0 (40 /$rem)
+      padding (40 /$rem) 0 (10/$rem) (40 /$rem)
     .loanModList
       width 100%
       height (254/$rem)
@@ -74,5 +75,5 @@
     .fanyonglog
       position absolute
       left (150/$rem)
-      bottom (112/$rem)
+      bottom (102/$rem)
 </style>

@@ -9,7 +9,7 @@
             <span class="secondLine">预估额度：<span class="price">{{creditCardModData.limit}}</span></span>
             <a href="javascript:;" class="applyFor" @click.stop="$router.push(creditCardModData.applyForUrl)"></a>
           </div>
-          <img class="fanyonglog" src="../../../static/img/homeImg/content_fanyong.png" alt="">
+          <img class="fanyonglog" src="../../../static/img/homeImg/content_fanyong.png">
         </router-link>
 
       </li>

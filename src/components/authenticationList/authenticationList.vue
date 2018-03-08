@@ -32,6 +32,7 @@
   .authenticationList
     display -webkit-flex
     display flex
+    border-bottom 1px solid #f2f2f2
     justify-content: space-around
     align-items: center;
     width (1080 /$rem)

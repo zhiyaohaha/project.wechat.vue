@@ -37,6 +37,7 @@ const router = new Router({
         keepAlive: true,
         isTop: true,
         footerShow: true,
+        homeShow:true,
         title: '首页'
       },
       children: [
@@ -60,12 +61,13 @@ const router = new Router({
         {
           path: 'creditCardPage',
           component: creditCardPage,
-          meta: {keepAlive: false, isTop: true, title: '信用卡'},
+          meta: {keepAlive: false, isTop: true, title: '办信用卡'},
           children: [
             {
               path: 'zhongXinCardPage',
               component: zhongXinCardPage,
-              meta: {keepAlive: false, isTop: false, title: '中信信用卡'},
+              name:"银行卡详情",
+              meta: {keepAlive: false, isTop: false, title: ''},
             },
             {
               path: 'cardApplyForPage',
@@ -116,7 +118,7 @@ const router = new Router({
     {
       path: '/myPage',
       component: myPage,
-      meta: {keepAlive: true, isTop: true, footerShow: false, title: '我的'},
+      meta: {keepAlive: true, isTop: true, footerShow: false,homeShow:false , title: '我的'},
       children: [
         {
           path: 'generalizeYiPage',
@@ -162,6 +164,9 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
+  if(to.name == "银行卡详情"){
+    to.meta.title = to.query.name
+  }
   if (to.meta.title) {
     document.title = to.meta.title
   }

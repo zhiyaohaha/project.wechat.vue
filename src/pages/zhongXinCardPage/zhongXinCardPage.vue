@@ -16,38 +16,55 @@
     data () {
       return {
         cardHeadLineData: {
-          title: "推荐信用卡",
+          title: "全部信用卡",
           aFont: ""
         },
         recommendListDatas:[
           {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
+            imgUrl: "../../../static/img/creditCardImg/kapian01.png",
             bankName: "交通银行标准信用卡",
-            money: "75元",
-            logImg:"../../../static/img/creditCardImg/degreeofheat1.png",
+            logImg:"../../../static/img/creditCardImg/redu01.png",
             url: "/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "中信银行标准信用卡",
-            money: "75元",
-            logImg:"../../../static/img/creditCardImg/degreeofheat2.png",
+            imgUrl: "../../../static/img/creditCardImg/kapian02.png",
+            bankName: "交通银行凤凰之音金卡",
+            logImg:"../../../static/img/creditCardImg/redu02.png",
             url: "/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "兴业星夜星座信用卡",
-            money: "75元",
-            logImg:"../../../static/img/creditCardImg/degreeofheat3.png",
+            imgUrl: "../../../static/img/creditCardImg/kapian03.png",
+            bankName: "交通银行东方航空金卡",
+            logImg:"../../../static/img/creditCardImg/redu03.png",
             url: "/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
           },
           {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
+            imgUrl: "../../../static/img/creditCardImg/kapian04.png",
+            bankName: "交通银行凤凰之音普卡",
+            logImg:"",
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
+          },
+          {
+            imgUrl: "../../../static/img/creditCardImg/kapian05.png",
+            bankName: "交通银行power黑卡",
+            logImg:"",
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
+          },
+          {
+            imgUrl: "../../../static/img/creditCardImg/kapian01.png",
             bankName: "广发淘宝联名信用卡",
-            money: "75元",
+            logImg:"",
+            url: "/homePage/creditCardPage/cardDetailsPage",
+            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
+          },
+          {
+            imgUrl: "../../../static/img/creditCardImg/kapian02.png",
+            bankName: "广发淘宝联名信用卡",
             logImg:"",
             url: "/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
@@ -55,7 +72,6 @@
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "广发淘宝联名信用卡",
-            money: "75元",
             logImg:"",
             url: "/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
@@ -63,31 +79,6 @@
           {
             imgUrl: "../../../static/img/creditCardImg/kapian.png",
             bankName: "广发淘宝联名信用卡",
-            money: "75元",
-            logImg:"",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "广发淘宝联名信用卡",
-            money: "75元",
-            logImg:"",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "广发淘宝联名信用卡",
-            money: "75元",
-            logImg:"",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "广发淘宝联名信用卡",
-            money: "75元",
             logImg:"",
             url: "/homePage/creditCardPage/cardDetailsPage",
             buttonUrl:"/homePage/creditCardPage/cardApplyForPage"
@@ -101,8 +92,11 @@
       cardHeadLine,recommendList
     },
 
-    computed: {},
+    computed: {
 
+    },
+    created(){
+    },
     mounted(){
       this.__boxheight(this.$refs.recommendListWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.recommendListWrap); //窗口或框架被调整大小时执行

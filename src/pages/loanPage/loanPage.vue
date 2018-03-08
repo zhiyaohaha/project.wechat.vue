@@ -2,15 +2,9 @@
   <div>
     <div class="loanWrap" ref="loanWrap">
       <div>
-        <!--<header class="loanHeader">
-          <span class="iconLogo" @touchstart="$router.back()"><</span>
-          <span>申请贷款</span>
-        </header>-->
         <div class="loanContent">
-          <img src="./img/banner.png">
-          <div class="loanTitle">
-            <span>立即申请贷款</span>
-          </div>
+          <img src="./img/xinyongkabanner.png">
+          <headline :headlineData="{title:'立刻申请贷款'}"/>
           <ul class="mform">
             <li v-for="(mformData, index) in mformDatas" :key="index">
               <span class="description">{{mformData.description}}</span>
@@ -35,7 +29,6 @@
             <span>资产情况</span>
             <propertyMod :propertyModDatas="propertyModDatas"/>
           </div>
-          <split :splitHeight="true"/>
         </div>
         <div class="footerOccupied">
         </div>
@@ -350,24 +343,13 @@
   .ToastStyle
     width (200 /$rem)
     height (70 /$rem)
-    font-size (40 /$rem)
+    font-size (36 /$rem)
+    border-radius (15/$rem)
     color #ffffff
-    background-color #8a8a8a
+    background-color #000
     text-align center
     line-height (70 /$rem)
     overflow: hidden
-
-  .footerTap
-    position fixed
-    bottom 0
-    left 0
-    z-index 10
-    a
-      float left
-      img
-        display block
-        width (540 /$rem)
-        height (146 /$rem)
 
   .mint-msgbox
     height (450 /$rem)
@@ -410,40 +392,22 @@
     width (1080 /$rem)
     height (146 /$rem)
 
-  .loanHeader
-    width (1080 /$rem)
-    height (130 /$rem)
-    background-color #292929
-    font-size (60 /$rem)
-    color #fff
-    text-align center
-    line-height (130 /$rem)
-    .iconLogo
-      float left
-      margin-left (30 /$rem)
-
   .loanContent
     img
       width (1080 /$rem)
-    .loanTitle
-      background-color #f4f4f4
-      color #bbbbbb
-      font-size (36 /$rem)
-      width (1080 /$rem)
-      height (98 /$rem)
-      line-height (90 /$rem)
-      span
-        margin-left (30 /$rem)
+      height (520/$rem)
     .mform
       margin: 0 (30 /$rem)
+      li:first-child
+        border-top 1px solid #f2f2f2
       li
         box-sizing border-box
         position relative
         line-height (120 /$rem)
         width (1020 /$rem)
-        height (120 /$rem)
+        height (121 /$rem)
         font-size (42 /$rem)
-        border-bottom 1px solid #ccc
+        border-bottom 1px solid #f2f2f2
         text-align right
         span
           color #333333
@@ -475,7 +439,7 @@
           background-size 100%
           padding-right: (40 /$rem)
         .sendMsg
-          border-radius (40 /$rem)
+          border-radius (20 /$rem)
           float right
           margin-top (17 /$rem)
           width (290 /$rem)
