@@ -25,11 +25,8 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .wrap
-    box-sizing border-box
     width (1080/$rem)
-    height (106/$rem)
-    font-size (45/$rem)
-    color #515151
-    padding (30/$rem) 0 (30/$rem) (48/$rem)
-    border-bottom 1px solid #e4e4e4
+    height (40/$rem)
+    font-size (40/$rem)
+    color #333
 </style>

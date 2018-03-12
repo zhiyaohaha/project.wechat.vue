@@ -45,7 +45,6 @@
 
 <script>
   import {Toast} from "mint-ui"
-  import productHeadLine from "../../components/productHeadLine/productHeadLine.vue"
   import authenticationList from "../../components/authenticationList/authenticationList.vue"
 
   export default {
@@ -113,7 +112,6 @@
     },
 
     components: {
-      productHeadLine,
       authenticationList
     },
 

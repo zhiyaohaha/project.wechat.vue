@@ -20,9 +20,9 @@
               <span>元</span>
             </div>
             <div class="down right">
-              <span class="appearance">提现费用 : </span>
-              <span class="price">{{drawMoneyData.cost}}</span>
-              <span class="unit">元</span>
+              <span>提现费用 : </span>
+              <span>{{drawMoneyData.cost}}</span>
+              <span>元</span>
             </div>
           </div>
         </li>
@@ -33,18 +33,16 @@
 
 <script>
   export default {
-    props:["drawMoneyDatas"],
+    props: ['drawMoneyDatas'],
     data () {
-      return {
-
-      }
+      return {}
     },
 
     components: {},
 
     computed: {},
 
-    mounted(){},
+    mounted () {},
 
     methods: {}
   }
@@ -52,38 +50,33 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .drawMoney
-    width (1080/$rem)
+    width (1080 /$rem)
     .drawMoneyList
+      box-sizing border-box
+      padding 0 (30 /$rem)
       li
         box-sizing border-box
-        height (234/$rem)
-        border-bottom 1px solid #bbbbbb
-        padding (50/$rem) (30/$rem)
+        height (200 /$rem)
+        border-bottom 1px solid #f2f2f2
+        padding (45 /$rem) 0 (35 /$rem)
         color #bbbbbb
         .state
           float left
         .describe
           float right
         .up
-          font-size (30/$rem)
-          overflow hidden
-          font-size (30/$rem)
+          font-size (34 /$rem)
         .down
-          overflow hidden
-          font-size (30/$rem)
-          margin-top (65/$rem)
-          font-size (30/$rem)
+          margin-top (48 /$rem)
+          font-size (36 /$rem)
         .left
-          color #333333
+          color #bbb
         .right
-          line-height (36/$rem)
+          line-height (34 /$rem)
           text-align right
           .appearance
             float left
-            text-align left
-        .appearance
-          font-size (36/$rem)
         .price
-          color #c2181f
-
+          font-size (42 /$rem)
+          color #efca7d
 </style>

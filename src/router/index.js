@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import Router from 'vue-router'
 const homePage = () => import('../pages/homePage/homePage.vue')
@@ -22,6 +23,7 @@ const strategyListPage = () => import('../pages/strategyListPage/strategyListPag
 const schedulePage = () => import('../pages/schedulePage/schedulePage.vue')
 const posterPage = () => import('../pages/posterPage/posterPage.vue')
 const generalizePage = () => import('../pages/generalizePage/generalizePage.vue')
+const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -156,6 +158,11 @@ const router = new Router({
           path: 'verifyPage',
           component: verifyPage,
           meta: {keepAlive: false, isTop: true, title: '实名认证'},
+        },
+        {
+          path: 'WithdrawalPage',
+          component: WithdrawalPage,
+          meta: {keepAlive: false, isTop: true, title: '提现'},
         },
       ]
     },

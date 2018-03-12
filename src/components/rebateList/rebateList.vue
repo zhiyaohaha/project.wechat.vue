@@ -18,7 +18,7 @@
           <div class="state">
             <span class="form">{{rebateListData.form}}</span>
             <div class="down">
-              <span>我的返佣 ：</span>
+              <span>我的返佣:</span>
               <span class="stateDescribe">{{rebateListData.state}}</span>
               <span>元</span>
             </div>
@@ -74,20 +74,21 @@
 
     .rebateList
       box-sizing border-box
+      padding 0 (30/$rem)
       li
+        box-sizing border-box
         overflow hidden
         position relative
-        height (236 /$rem)
-        border-bottom 1px solid #bbbbbb
-
+        height (200 /$rem)
+        border-bottom 1px solid #f2f2f2
+        padding (35/$rem) 0
         img
           float left
-          width (156 /$rem)
-          margin (40 /$rem) (36 /$rem) (40 /$rem) (40 /$rem)
+          width (130 /$rem)
         .rebateListDescribe
           float left
-          height (126 /$rem)
-          margin (60 /$rem) 0 (50 /$rem)
+          margin-top (10/$rem)
+          margin-left (20/$rem)
           span
             display block
             float left
@@ -96,36 +97,32 @@
             overflow hidden
             color #333
             line-height (36/$rem)
-            .applyForTime
-              font-size (30/$rem)
+            font-size (34/$rem)
             .applyFor
               margin-left (5/$rem)
-              font-size (36/$rem)
           .down
             display block
-            margin-top (40/$rem)
-            font-size (30/$rem)
-            .price
-              color #c2181f
+            margin-top (52/$rem)
+            font-size (36/$rem)
+            color #bbbbbb
             .unit
               margin-left (5/$rem)
-              color #bbbbbb
 
         .state
           position absolute
-          top (60/$rem)
-          right (30/$rem)
-          font-size (36/$rem)
+          top (45/$rem)
+          right 0
+          font-size (34/$rem)
           text-align right
           .form
             display block
             color #bbbbbb
           .down
-            font-size (30/$rem)
-            color #bbbbbb
-            margin-top (40/$rem)
+            font-size (34/$rem)
+            color #333
+            margin-top (50/$rem)
             .stateDescribe
-              font-size (30/$rem)
-              color #c2181f
+              font-size (42/$rem)
+              color #efca7d
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="propertyMod">
     <ul class="propertyModList">
-      <li v-for="(propertyModData, index) in propertyModDatas" :key="index" @touchstart="pitchOn(index)">
+      <li v-for="(propertyModData, index) in propertyModDatas" :key="index" @click="pitchOn(index)">
         <div>
           <img src="./img/xaunze.png" v-show="propertyModData.imgUrlIsShow">
           <img src="./img/huikuang.png" v-show="!propertyModData.imgUrlIsShow">

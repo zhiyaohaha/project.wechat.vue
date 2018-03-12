@@ -175,9 +175,10 @@
       _initScroll() {
         this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true})
         this.homePageWrap.refresh()
-        this.homePageWrap.on('this.homePageWrap', (pos)=>{
+        /*this.homePageWrap.on('scroll', (pos)=>{
+          console.log(1)
           console.log(pos)
-        })
+        })*/
       },
       changeTop() {
         this.top = this.homePageWrap.y

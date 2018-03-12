@@ -1,14 +1,13 @@
 <template>
   <div>
     <header class="verifyHeader">
-      <img src="../../../static/img/homeImg/banner.png">
+      <img src="../../../static/img/homeImg/xinyongkabanner.png">
     </header>
     <div class="verifyContent">
       <ul class="mform">
         <li>
           <span class="description">验证码：</span>
-          <input type="text" v-model="authCode"
-                 @input="goodInput(mformData.reg,mformData.model,index)"
+          <input type="number" v-model="authCode"
                  placeholder="请输入短信验证码"
                  maxlength="4"
                  name="authCode">
@@ -19,11 +18,11 @@
         </li>
       </ul>
       <a href="javascript:;" class="protocol">
-        <img src="./img/xuanze.png" v-show="imgIsShow" @touchstart="notarize">
-        <img src="./img/huisekuang.png" v-show="!imgIsShow" @touchstart="notarize">
+        <img src="./img/xaunze.png" v-show="imgIsShow" @touchstart="notarize">
+        <img src="./img/weixuan.png" v-show="!imgIsShow" @touchstart="notarize">
         <span>我已阅读并同意《XXXXXX协议》</span>
       </a>
-      <a href="javascript:;" class="authentication">
+      <a href="javascript:;" class="authentication" @click="skipDeposit">
         立即认证
       </a>
     </div>
@@ -58,6 +57,18 @@
     },
 
     methods: {
+      //跳转逻辑
+      skipDeposit(){
+        if(this.authCode){
+          this.$router.replace("/myPage/WithdrawalPage")
+        }else {
+          MessageBox({
+            title: '提示',
+            message: '请正确输入短信验证码',
+            showCancelButton: false
+          })
+        }
+      },
       notarize(){
         this.imgIsShow = !this.imgIsShow
       },
@@ -125,7 +136,7 @@
 
   .verifyHeader
     width (1080 /$rem)
-    height (500 /$rem)
+    height (520 /$rem)
     img
       width 100%
   .verifyContent
@@ -138,7 +149,7 @@
         width (1020 /$rem)
         height (120 /$rem)
         font-size (42 /$rem)
-        border-bottom 1px solid #ccc
+        border-bottom 1px solid #f2f2f2
         text-align right
         span
           color #333333
@@ -165,7 +176,7 @@
           text-align right
           color #bbbbbb
         .sendMsg
-          border-radius (40/$rem)
+          border-radius (15/$rem)
           float right
           margin-top (17 /$rem)
           width (290 /$rem)
@@ -176,25 +187,26 @@
           text-align center
     .protocol
       box-sizing border-box
-      height (155 /$rem)
+      height (300 /$rem)
       width (1080 /$rem)
       text-align center
-      line-height (155 /$rem)
+      padding-top (200/$rem)
       img
         display inline-block
-        width (35 /$rem)
+        width (40 /$rem)
+        vertical-align middle
       span
         font-size (36 /$rem)
         color #333333
     .authentication
       width (996 /$rem)
       height (146 /$rem)
-      background-color #c2181f
+      background-color #efca7d
       color #ffffff
       font-size (56 /$rem)
       text-align center
       line-height (146 /$rem)
-      margin (100 /$rem) auto
+      margin 0 auto
       border-radius (20 /$rem)
 
 </style>

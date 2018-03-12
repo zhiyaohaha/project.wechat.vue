@@ -4,11 +4,11 @@
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
-        {{orderFormTapData.title}}
+        {{orderFormTapData.title}}<span class="manNumber">({{orderFormTapData.manNumber}})</span>
       </a>
     </header>
     <orderFormList v-for="(order, index) in orders" :orderFormListDatas = "order.orderFormListDatas"
-                   :key="index" v-show="orderFormInd === index"/>
+                   :key="index" v-if="orderFormInd === index"/>
   </div>
 </template>
 
@@ -19,13 +19,16 @@
       return {
         orderFormTapDatas: [
           {
-            title: "我的"
+            title: "我的",
+            manNumber:111
           },
           {
-            title: "一级代理"
+            title: "一级代理",
+            manNumber:111
           },
           {
-            title: "二级代理"
+            title: "二级代理",
+            manNumber:111
           },
         ],
         orders:[
@@ -190,7 +193,7 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .orderFormHeader
-    height (123/$rem)
+    height (110/$rem)
     width (1080/$rem)
     a
       box-sizing border-box
@@ -201,8 +204,10 @@
       float left
       font-size (46/$rem)
       text-align center
-      line-height (123/$rem)
+      line-height (110/$rem)
       transition all 0.5s
+      .manNumber
+        font-size (34/$rem)
       &.active
         color #efca7d
 </style>

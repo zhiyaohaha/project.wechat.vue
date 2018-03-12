@@ -6,7 +6,6 @@
         {{headerData.title}}
       </div>
     </header>
-    <split/>
     <drawMoney :drawMoneyDatas="drawMoneyDatas1" v-show="conceal"/>
     <drawMoney :drawMoneyDatas="drawMoneyDatas2" v-show="!conceal"/>
   </div>
@@ -111,21 +110,20 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .depositPageHeader
+    border-bottom 1px solid #f2f2f2
     width (1080/$rem)
-    height (120/$rem)
+    height (110/$rem)
     div
       box-sizing border-box
-      border-right 1px solid #ffffff
       float left
       width (540/$rem)
-      height (120/$rem)
-      background-color #e8e8e8
+      height (110/$rem)
+      background-color #fff
       font-size (46/$rem)
-      color #515151
+      color #333
       text-align center
-      line-height (120/$rem)
-      transition all 0.5s ease-in-out
+      line-height (110/$rem)
+      transition all 0.5s
       &.active
-        background-color #c2181f
-        color #ffffff
+        color #efca7d
 </style>

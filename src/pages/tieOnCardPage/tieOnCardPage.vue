@@ -1,9 +1,8 @@
 <template>
   <div>
     <header class="tieOnCardHeader">
-      <img src="../../../static/img/homeImg/banner.png">
+      <img src="../../../static/img/homeImg/xinyongkabanner.png">
     </header>
-    <split/>
     <div class="tieOnCardContent">
       <ul class="mform">
         <li v-for="(mformData, index) in mformDatas" :key="index">
@@ -210,7 +209,7 @@
 
   .tieOnCardHeader
     width (1080 /$rem)
-    height (500 /$rem)
+    height (520 /$rem)
     img
       width 100%
 
@@ -225,7 +224,7 @@
         width (1020 /$rem)
         height (120 /$rem)
         font-size (42 /$rem)
-        border-bottom 1px solid #ccc
+        border-bottom 1px solid #f2f2f2
         text-align right
         span
           color #333333
@@ -260,9 +259,9 @@
     .authentication
       width (996 /$rem)
       height (146 /$rem)
-      background-color #c2181f
+      background-color #efca7d
       color #ffffff
-      font-size (56 /$rem)
+      font-size (48 /$rem)
       text-align center
       line-height (146 /$rem)
       margin (100 /$rem) auto

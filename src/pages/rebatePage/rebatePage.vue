@@ -4,11 +4,11 @@
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
-        {{orderFormTapData.title}}
+        {{orderFormTapData.title}}<span class="manNumber">({{orderFormTapData.manNumber}})</span>
       </a>
     </header>
     <rebateList v-for="(rebate, index) in rebates" :key="index"
-                :rebateListDatas="rebate.rebateListDatas" v-show="orderFormInd === index"/>
+                :rebateListDatas="rebate.rebateListDatas" v-if="orderFormInd === index"/>
   </div>
 </template>
 
@@ -145,13 +145,16 @@
         ],
         orderFormTapDatas: [
           {
-            title: "我的"
+            title: "我的",
+            manNumber:111
           },
           {
-            title: "一级代理"
+            title: "一级代理",
+            manNumber:111
           },
           {
-            title: "二级代理"
+            title: "二级代理",
+            manNumber:111
           },
         ],
         orderFormInd: 0
@@ -196,21 +199,24 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .orderFormTap
-    height (123 /$rem)
+    height (110 /$rem)
     width (1080 /$rem)
+    border-bottom 1px solid #f2f2f2
     a
       box-sizing border-box
-      border-right 1px solid #fff
       height 100%
       width (360 /$rem)
-      background-color #bbb
       float left
       font-size (46 /$rem)
-      color #515151
+      color #333
       text-align center
-      line-height (123 /$rem)
+      line-height (110 /$rem)
       transition all 0.5s
+      .manNumber
+        font-size (34/$rem)
+        color #333
       &.active
-        background-color #c2181f
-        color #ffffff
+        color #efca7d
+        .manNumber
+          color #efca7d
 </style>
