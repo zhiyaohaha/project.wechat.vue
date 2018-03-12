@@ -4,8 +4,8 @@
       <header class="orderFormListHeader">
         <span class="font">订单列表</span>
         <a href="javascript:;">
-          <img src="../../../static/img/myImg/content_icon_shaixuan_normal.png" alt="">
-          <span>筛选</span>
+          <img src="../../../static/img/myImg/content_icon_shaixuan_normal.png"><span>筛选</span>
+
         </a>
       </header>
       <ul class="orderFormList">
@@ -61,6 +61,7 @@
         color #333
         font-size (42 /$rem)
       a
+        position relative
         float right
         width (122/$rem)
         height (40/$rem)
@@ -68,8 +69,12 @@
         img
           display inline-block
           width (40/$rem)
-          vertical-align: bottom
+          vertical-align: top
         span
+          position absolute
+          top 0
+          left (50/$rem)
+          line-height (36/$rem)
           font-size (36/$rem)
           color #bbbbbb
 

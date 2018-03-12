@@ -33,29 +33,29 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .myParticulars
     width (1080 /$rem)
-    height (684 /$rem)
+    margin-top (160/$rem)
     .myParticularsList
+      display flex
+      padding 0 (150/$rem)
+      justify-content: space-between
+      flex-wrap: wrap;
       li
-        box-sizing border-box
         position relative
-        float left
-        width (360 /$rem)
-        height (342 /$rem)
-        border-right 1px solid #ccc
-        border-bottom 1px solid #ccc
+        width (200/$rem)
+        height (248 /$rem)
         text-align center
         a
+          box-sizing border-box
+          padding-top (40/$rem)
           position absolute
           top 0
           left 0
-          display block
           width 100%
-          height 100%
           img
-            width (120 /$rem)
-            margin (78 /$rem) 0 (30 /$rem) (120 /$rem)
+            margin-left (32/$rem)
+            width (136 /$rem)
+            height (136/$rem)
           span
-            display block
-            font-size (36 /$rem)
+            font-size (40 /$rem)
             color #515151
 </style>

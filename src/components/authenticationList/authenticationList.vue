@@ -30,14 +30,16 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .authenticationList
+    box-sizing border-box
     display -webkit-flex
     display flex
+    padding 0 (66/$rem)
+    justify-content: space-between
     border-bottom 1px solid #f2f2f2
-    justify-content: space-around
-    align-items: center;
     width (1080 /$rem)
-    height (286 /$rem)
+    height (246 /$rem)
     li
+      margin-top (40/$rem)
       font-size (36/$rem)
       color #515151
       text-align center

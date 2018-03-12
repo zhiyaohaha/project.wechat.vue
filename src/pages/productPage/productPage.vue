@@ -3,9 +3,10 @@
     <router-view/>
     <div v-if="$route.meta.isTop">
       <header class="productPageHeader">
-        <img src="./img/banner.png">
+        <img src="./img/xinyongkabanner.png">
       </header>
       <headline :headlineData="{title:'贷款产品',line:true}"/>
+      <div class="inanition"></div>
       <recommendMod :recommendModDatas="recommendModDatas"/>
     </div>
   </div>
@@ -61,4 +62,6 @@
     img
       width 100%
       height (500 /$rem)
+  .inanition
+    height (30/$rem)
 </style>

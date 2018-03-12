@@ -42,7 +42,7 @@
     height (340 /$rem)
     background-color #fff
     border-radius (20 /$rem)
-    box-shadow 0 0 (64/$rem) #999
+    box-shadow 0 0 (64/$rem) rgba(0 , 0, 0, 0.19)
     transform translateZ(0)
     .loanModHeader
       box-sizing border-box

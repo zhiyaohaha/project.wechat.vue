@@ -167,7 +167,7 @@
 
     updated() {
       if(this.$route.meta.homeShow){
-        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,startY: this.top})
+        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,startY: this.top,  probeType: 3})
         this.homePageWrap.refresh()
       }
     },
@@ -175,6 +175,9 @@
       _initScroll() {
         this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true})
         this.homePageWrap.refresh()
+        this.homePageWrap.on('this.homePageWrap', (pos)=>{
+          console.log(pos)
+        })
       },
       changeTop() {
         this.top = this.homePageWrap.y
@@ -187,7 +190,6 @@
   .footerOccupied
     width (1080 /$rem)
     height (146 /$rem)
-
   .homePageHeader
     width 100%
     height (520 /$rem)

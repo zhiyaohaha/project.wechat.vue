@@ -7,7 +7,7 @@
             <img :src="usersListData.imgUrl">
             <div class="message">
               <span class="userNum">{{usersListData.userNum}}</span>
-              <div>
+              <div class="down">
                 <span class="scheduleTime">{{usersListData.userTime}}</span>
                 <span class="fixation">成为我的代理</span>
               </div>
@@ -48,14 +48,15 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .usersListModContent
     .usersList
+      box-sizing border-box
+      padding 0 (30/$rem)
       li
         position relative
         box-sizing border-box
         overflow hidden
-        width (1080 /$rem)
         height (200 /$rem)
         border-bottom 1px solid #f2f2f2
-        padding (35/$rem) (30/$rem)
+        padding (35/$rem) 0
         a
           height (130/$rem)
         img
@@ -72,23 +73,20 @@
             margin-bottom (48/$rem)
             font-size (42 /$rem)
             color #333
-          .scheduleTime
-            font-size (34 /$rem)
-            color #bbbbbb
-          .fixation
+          .down
             font-size (34 /$rem)
             color #bbbbbb
 
         .agencyMessage
           position absolute
-          top (50 /$rem)
-          right (30 /$rem)
+          top (15 /$rem)
+          right 0
           span
             font-size (40 /$rem)
             color #bbbbbb
         .triangle
           position absolute
-          right (30/$rem)
+          right 0
           bottom (35/$rem)
           img
             width (16/$rem)

@@ -84,6 +84,7 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .generalizeErPageHeader
+    box-sizing border-box
     background-image url("../../../static/img/generalizeImg/erjidaoli_banner.png")
     background-repeat no-repeat
     background-size 100%

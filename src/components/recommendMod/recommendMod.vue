@@ -52,7 +52,7 @@
       box-sizing border-box
       border-bottom 1px solid #f2f2f2
       width (1080 /$rem)
-      height (284 /$rem)
+      height (286 /$rem)
       &.recommendModTop
         margin-top (30/$rem)
       a
@@ -70,11 +70,13 @@
           bottom (255/$rem)
         .recommendModDescribe
           position absolute
-          top (15 /$rem)
+          top (10/$rem)
           left (210 /$rem)
           .title
+            display block
             font-size (42/$rem)
             color #333
+            line-height (42/$rem)
           .interestRate
             margin-top (20/$rem)
             font-size (34/$rem)
@@ -83,6 +85,7 @@
             margin-top (40/$rem)
             font-size (34/$rem)
             .price
+              margin-right (55/$rem)
               font-size (42/$rem)
               color #efca7d
             .star

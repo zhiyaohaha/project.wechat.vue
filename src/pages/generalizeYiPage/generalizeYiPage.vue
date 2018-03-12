@@ -117,13 +117,13 @@
           font-size (42/$rem)
         .individual
           margin-top (20/$rem)
-          font-size (36/$rem)
+          font-size (40/$rem)
       .agencyNum
         position absolute
         right (30/$rem)
         top (112/$rem)
+        font-size (40/$rem)
         span
-          font-size (36/$rem)
           &.price
             color #efca7d
     .generalizeYiContent
