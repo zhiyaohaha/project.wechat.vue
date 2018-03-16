@@ -1,6 +1,6 @@
 import {
   postSendMsg,
-  getOpenid,
+  postOpenid,
   postPhone,
   getUserinfo,
   getLoanAmount
@@ -17,10 +17,10 @@ export default {
       commit('POST_SENDMSG', {result})
     }
   },
-  async getOpenid ({commit}, {data, cb}) {
+  async postOpenid ({commit}, {data, cb}) {
     // debugger
     let url = apiPrefix + '/api/OfficialAccounts/ThridPlatFormLogin'
-    const result = await getOpenid(url, data)
+    const result = await postOpenid(url, data)
     if (result) {
       commit('GET_OPENID', {result})
       let flag = data.openId
@@ -35,7 +35,6 @@ export default {
     const result = await postPhone(url, data)
     let whether = null
     result.success ? whether = 1 : whether = 0
-    console.log(whether)
     cb && cb(whether)
     commit('POST_PHONE', {result})
   },

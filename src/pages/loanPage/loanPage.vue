@@ -20,7 +20,7 @@
                 {{mformData.units}}
               </span>
               <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
-                 @touchstart="sendMsg()">
+                 @click="sendMsg()">
                 {{mformData.units}}
               </a>
             </li>
@@ -37,15 +37,14 @@
     <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
               showToolbar="true">
       <div class="shadeIsShowHeader">
-          <span @touchstart="pullDown(false,mformDatasInd)" class="cancel">
+          <span @touchstart="pullDown(false,mformDatasInd,false )" class="cancel">
             取消
           </span>
-        <span @touchstart="pullDown(false,mformDatasInd)" class="ascertain">
+        <span @touchstart="pullDown(false,mformDatasInd,true)" class="ascertain">
             确定
           </span>
       </div>
-      <mt-picker :itemHeight="70" :slots="slots" @change="onValuesChange"
-                 class="shadeIsShowContent"></mt-picker>
+      <pickerMod :pickerModDatas="pickerModDatas" :shadeIsShow="shadeIsShow" :onValuesChange="onValuesChange"/>
     </mt-popup>
     <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"
                   :time="time"/>
@@ -170,71 +169,134 @@
         ],
         shadeIsShow: false,
         mformDatasInd: 0,
-        slots: [
+        pickerModDatas: [
           {
-            defaultIndex: 1,
-            flex: 1,
-            className: 'slots1',
-            values: [],
-            textAlign: 'center'
+            name: '装修',
+            code: 'LoanUse.Renovation'
+          },
+          {
+            name: '日常生活消费',
+            code: 'LoanUse.DailyConsumption'
+          },
+          {
+            name: '教育支出',
+            code: 'LoanUse.EducationalExpenditure'
+          },
+          {
+            name: '医疗',
+            code: 'LoanUse.MedicalCare'
+          },
+          {
+            name: '支付员工工资',
+            code: 'LoanUse.PayWages'
+          },
+          {
+            name: '扩大生产/经营',
+            code: 'LoanUse.ExpandingProductionOperation'
+          },
+          {
+            name: '购买货物/原材料/设备',
+            code: 'LoanUse.PurchaseGoodsRawMaterialsEquipment'
+          },
+          {
+            name: '资金周转',
+            code: 'LoanUse.CapitalTurnover'
+          },
+          {
+            name: '购车',
+            code: 'LoanUse.BuyCar'
+          },
+          {
+            name: '购房',
+            code: 'LoanUse.Purchase'
+          },
+          {
+            name: '物流运输',
+            code: 'LoanUse.LogisticsTransportation'
+          },
+          {
+            name: '旅游',
+            code: 'LoanUse.Tourism'
+          },
+          {
+            name: '婚丧嫁娶',
+            code: 'LoanUse.MarriageFuneral'
+          },
+          {
+            name: '租房',
+            code: 'LoanUse.Rental'
+          },
+          {
+            name: '其他',
+            code: 'LoanUse.Other'
           }
         ],
         // Arr:[],
         // moneyArr: ['1000元', '1万元', '10万元', '60万元'],
-        consumeArr: ['买车', '买房', '消费', '娱乐'],
-        deadlineArr: ['1个月', '3个月', '5个月', '半年', '8个月', '1年'],
-        simulationSubmitIsShow: true,
-        verificationShow: false,
-        time: new Date().getTime()
+        consumeArr:
+          ['买车', '买房', '消费', '娱乐'],
+        deadlineArr:
+          ['1个月', '3个月', '5个月', '半年', '8个月', '1年'],
+        simulationSubmitIsShow:
+          true,
+        verificationShow:
+          false,
+        time:
+          new Date().getTime()
       }
-    },
+    }
+    ,
 
     components: {
       propertyMod, verification
-    },
+    }
+    ,
 
-    computed: {
-
-    },
+    computed: {}
+    ,
     created () {
-      this.b("LoanAmount").then(()=>{
+      this.getLoanAmount("LoanAmount").then(()=>{
         this.moneyArr = this.Arr
       })
-      this.b("LoanTerm").then(()=>{
+      this.getLoanAmount("LoanTerm").then(()=>{
         this.deadlineArr = this.Arr
       })
-      this.b("LoanUse").then(()=>{
+      this.getLoanAmount("LoanUse").then(()=>{
         this.consumeArr = this.Arr
       })
-    },
+    }
+    ,
     // 滑动事件
     mounted () {
       this.__boxheight(this.$refs.loanWrap) //执行函数
       window.onresize = this.__boxheight(this.$refs.loanWrap) //窗口或框架被调整大小时执行
       this.$nextTick(() => {
-        this.loanWrap = new this.BScroll(this.$refs.loanWrap, {touchstart: true, momentum: true})
+        this.loanWrap = new this.BScroll(this.$refs.loanWrap, {click:true,touchstart: true, momentum: true})
         this.loanWrap.refresh()
-        this.$route.meta.keepAlive = false
       })
-    },
+    }
+    ,
     updated () {
 
-    },
+    }
+    ,
     methods: {
-      async b (codes) {
+      async getLoanAmount (codes) {
         let apiPrefix = 'http://192.168.6.66:8001'
         let url = apiPrefix + '/api/Values/GetSelectDataSourceLogin'
-        this.Arr = await getLoanAmount(url, {codes: codes})
+        this.Arr = await
+          getLoanAmount(url, {codes: codes})
+        console.log(this.Arr)
         let Arr = []
-        Arr = this.Arr.data.map((item)=>{
+        Arr = this.Arr.data.map((item) => {
           return item.childrens
         })
-        Arr.forEach((item)=>{
-          this.Arr = item.map((item)=>{
-            return item.name
-          })
+        Arr.forEach((item) => {
+          this.Arr = item
+          console.log(item)
         })
-      },
+      }
+      ,
       /*importS(){
         Toast({
           message: event.keyCode,
@@ -244,17 +306,19 @@
 //      输入框焦点时底部消失
       isFooter () {
         this.simulationSubmitIsShow = false
-      },
+      }
+      ,
 //      错误变色
       loseFocus () {
         this.simulationSubmitIsShow = true
-      },
+      }
+      ,
 //      输入框值
-      onValuesChange (picker, values) {
+      onValuesChange (index) {
 //        debugger
-        console.log(picker.getSlotValue(0))
-        this.mformDatas[this.mformDatasInd].model = picker.getSlotValue(0)
-      },
+        this.mformDatas[this.mformDatasInd].model = this.pickerModDatas[index].name
+      }
+      ,
 //      输入正确变色
       goodInput (reg, flag, index) {
 //        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
@@ -268,7 +332,8 @@
           })
           this.mformDatas[index].model = flag.substring(0, flag.length - 1)
         }
-      },
+      }
+      ,
 //      验证码逻辑
       sendMsg () {
         let mformData = this.mformDatas[5]
@@ -289,34 +354,39 @@
             showCancelButton: false
           })
         }
-      },
+      }
+      ,
 //      三角点击
-      pullDown (flag, index) {
+      pullDown (flag, index, inputValue) {
         this.mformDatasInd = index
-        this.simulationSubmitIsShow = false
         if (index < 3) {
           switch (index) {
             case 0:
-              this.slots[0].values = this.moneyArr
+              this.pickerModDatas = this.moneyArr
               break
             case 1:
-              this.slots[0].values = this.consumeArr
+              this.pickerModDatas = this.consumeArr
               break
             case 2:
-              this.slots[0].values = this.deadlineArr
+              this.pickerModDatas = this.deadlineArr
               break
             default:
-              this.this.slots[0].values = []
+              this.pickerModDatas = []
               break
           }
           this.shadeIsShow = flag
+          !inputValue ? this.mformDatas[index].model = '' : ''
+        } else {
+          this.simulationSubmitIsShow = false
         }
 
-      },
+      }
+      ,
 //     图片验证码
       changeShow () {
         this.verificationShow = false
-      },
+      }
+      ,
       verificationCancel (flag) {
         this.verificationShow = false
         if (flag) {
@@ -334,7 +404,8 @@
             }
           }, 1000)
         }
-      },
+      }
+      ,
     }
   }
 
@@ -344,7 +415,7 @@
     width (200 /$rem)
     height (70 /$rem)
     font-size (36 /$rem)
-    border-radius (15/$rem)
+    border-radius (15 /$rem)
     color #ffffff
     background-color #000
     text-align center
@@ -395,7 +466,7 @@
   .loanContent
     img
       width (1080 /$rem)
-      height (520/$rem)
+      height (520 /$rem)
     .mform
       margin: 0 (30 /$rem)
       li:first-child
@@ -471,27 +542,18 @@
     font-family "Microsoft YaHei UI"
     box-sizing border-box
     width (1080 /$rem)
-    height (650 /$rem)
+    height (674 /$rem)
 
   .shadeIsShowHeader
     font-size (42 /$rem)
-    background-color #e8e8e8
     height (120 /$rem)
     line-height (120 /$rem)
     .cancel
-      margin-left (50 /$rem)
+      margin-left (59 /$rem)
       float left
       color #bbb
     .ascertain
       margin-right (50 /$rem)
       float right
-      color #c2181f
-    .shadeIsShowContent
-      font-size (52 /$rem)
-      .picker-slot
-        div
-          font-size (52 /$rem)
-          color #ddd
-          &.picker-selected
-            color #333
+      color #efca7d
 </style>

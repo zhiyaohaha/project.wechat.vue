@@ -1,7 +1,14 @@
 <template>
   <div>
     <header class="WithdrawalHeader">
-      <img src="">
+      <div class="fakeBankCard">
+        <div class="BankNameWrap">
+          <img src="./img/logo.png"><span class="BankName">中国工商银行</span>
+        </div>
+        <div class="bankCardNumWrap">
+          <span class="bankCardNum">621700*********6341</span>
+        </div>
+      </div>
     </header>
     <div class="WithdrawalContent">
       <ul class="mform">
@@ -22,6 +29,13 @@
       <a href="javascript:;" class="affirm">
         确认
       </a>
+      <div class="notice">
+        <img src="./img/icon.png">
+        <span>提现须知 ：</span>
+        <div>
+          <span>每日最高提现额度50000元，最低提现额度100元。1-3个工作日到账，遇到节假日顺延；具体时间以银行信息为准。</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -70,11 +84,44 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .WithdrawalHeader
+    box-sizing border-box
     height (442/$rem)
     width (1080/$rem)
+    padding-top (120/$rem)
+    .fakeBankCard
+      position relative
+      z-index 10
+      border-radius (12/$rem) (12/$rem) 0 0
+      width (880/$rem)
+      height (322/$rem)
+      background-color: #ef6355
+      margin 0 auto
+      box-sizing border-box
+      padding (40/$rem) 0 (88/$rem) (30/$rem)
+      color #ffffff
+      .BankNameWrap
+        line-height (60/$rem)
+        img
+          display inline-block
+          width (60/$rem)
+          vertical-align middle
+          margin-right (20/$rem)
+        .BankName
+          font-size (42/$rem)
+      .bankCardNumWrap
+        position absolute
+        width (880/$rem)
+        left (0)
+        bottom (88/$rem)
+        text-align center
+        font-size (48/$rem)
   .WithdrawalContent
     .mform
-      margin: 0 (30 /$rem)
+      box-sizing border-box
+      background-color: #fff;
+      padding 0 (30/$rem)
+      box-shadow: 0 (-30/$rem) (60/$rem) (10/$rem) rgba(51, 51, 51, 0.1);
+      li:first-child
       li
         box-sizing border-box
         position relative
@@ -127,4 +174,19 @@
       margin 0 auto
       line-height (146/$rem)
       text-align center
+    .notice
+      overflow hidden
+      box-sizing border-box
+      padding (35/$rem) (30/$rem)
+      img
+        display inline-block
+        width (30/$rem)
+        vertical-align bottom
+      span
+        font-size (30/$rem)
+        color #efca7d
+      div
+        width (800/$rem)
+        float right
+
 </style>

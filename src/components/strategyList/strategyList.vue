@@ -7,7 +7,7 @@
             <span class="title">{{strategyListData.title}}</span>
             <span class="time">{{strategyListData.time}}</span>
           </div>
-          <img src="../../../static/img/strategyImg/creditcard01.png">
+          <img :src="strategyListData.imgUrl">
         </a>
       </li>
     </ul>

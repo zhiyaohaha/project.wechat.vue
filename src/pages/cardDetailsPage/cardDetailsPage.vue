@@ -4,23 +4,20 @@
       <div>
         <header class="CardDetailsHeader">
           <img src="../../../static/img/creditCardImg/kapian.png">
-          <span>交通银行标准信用卡金卡</span>
         </header>
-        <split/>
+        <headline :headlineData="{title:'交通银行标准信用卡金卡',line:true}"/>
         <div class="CardDetailsContent">
-          <cardHeadLine :cardHeadLineData="cardHeadLineData"/>
+          <headline :headlineData="{title:'专享特权',line:true}"/>
           <privilegeMod :privilegeModDatas="privilegeModDatas"/>
-          <split/>
-          <cardHeadLine :cardHeadLineData="message"/>
+          <headline :headlineData="{title:'基本信息',line:true}"/>
           <detailsMessageMod :detailsMessageDatas="detailsMessageDatas"/>
-          <split/>
         </div>
         <footer class="occupiedFooter">
         </footer>
       </div>
     </div>
     <footer class="CardDetailsFooter">
-      <a href="javascript:;" @touchstart.stop="$router.push('/homePage/creditCardPage/cardApplyForPage')"></a>
+      <a href="javascript:;" @touchstart.stop="$router.push('/homePage/creditCardPage/cardApplyForPage')">立即申请</a>
     </footer>
   </div>
 </template>
@@ -43,15 +40,15 @@
         },
         privilegeModDatas: [
           {
-            bgUrl: '../../../static/img/creditCardImg/money.png',
+            bgUrl: '../../../static/img/creditCardImg/qian.png',
             title: '每个月账单首笔取现交易费全免'
           },
           {
-            bgUrl: '../../../static/img/creditCardImg/information.png',
+            bgUrl: '../../../static/img/creditCardImg/youhui.png',
             title: '至尊租车最低5折优惠'
           },
           {
-            bgUrl: '../../../static/img/creditCardImg/information.png',
+            bgUrl: '../../../static/img/creditCardImg/youhui.png',
             title: '赠送200万航空业务险'
           },
         ],
@@ -105,15 +102,11 @@
   .CardDetailsHeader
     box-sizing border-box
     width (1080 /$rem)
-    height (846 /$rem)
+    height (664 /$rem)
     padding (60 /$rem) (60 /$rem) (70 /$rem) (60 /$rem)
     img
       width (960 /$rem)
-      height (600 /$rem)
-    span
-      display block
-      font-size (45 /$rem)
-      margin-top (66 /$rem)
+      height (606 /$rem)
 
   .occupiedFooter
     width (1080 /$rem)
@@ -124,9 +117,11 @@
     bottom 0
     left 0
     a
+      text-align center
+      line-height (150/$rem)
       width (1080 /$rem)
       height (150 /$rem)
-      background-image url("../../../static/img/creditCardImg/transactimmediately1.png")
-      background-repeat no-repeat
-      background-size 100%
+      background-color #efca7d
+      color #ffffff
+      font-size (48/$rem)
 </style>

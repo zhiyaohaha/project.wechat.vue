@@ -1,30 +1,34 @@
 <template>
   <div>
+    <header class="generalizeHeader">
+      <img src="../../../static/img/homeImg/banner.png">
+    </header>
+    <headline :headlineData="{title:'赚佣金规则'}"/>
     <div class="generalizeContent">
-      <div class="introduceHeadline">
-        微信三级分销系统的商业模式
-      </div>
       <p>
-        赚佣金规则 <br>
-        我们假设有ABCD4个人，返佣总金额100元，看看他们赚佣金的模式。 <br>
-        A关注公众平台，实名认证，获得专属推广二维码；A申请办理业务，成功下卡/放款，可赚取50元佣金。<br>
-        A分享二维码给B，B扫码，申请办理业务，成功下卡/放款后，B可赚取50元佣金，A可赚取30元佣金；<br>
-        C扫B的二维码，申请办理业务，成功下卡/放款后，C赚取50元佣金，B可赚取30元佣金， A赚取20元佣金；<br>
-        D扫C的二维码，申请办理业务，成功下卡/放款后，D赚取50元佣金，C赚取30元佣金，B赚取20元佣金，A不赚取佣金。
+        <span>我们假设有ABCD4个人，返佣总金额100元，看看他们赚佣金的模式。</span>
       </p>
-      <div class="QRcodeWrap">
-        <transition name="fade">
-          <img src="./img/erweima.jpg" class="QRcode" v-show="QRcodeShow">
-        </transition>
-      </div>
+      <p>
+        <span>A关注公众平台，实名认证，获得专属推广二维码；A申请办理业务，成功下卡/放款，可赚取50元佣金。</span><br>
+        <span>A分享二维码给B，B扫码，申请办理业务，成功下卡/放款后，B可赚取50元佣金，A可赚取30元佣金；</span><br>
+        <span>C扫B的二维码，申请办理业务，成功下卡/放款后，C赚取50元佣金，B可赚取30元佣金， A赚取20元佣金；</span><br>
+        <span>D扫C的二维码，申请办理业务，成功下卡/放款后，D赚取50元佣金，C赚取30元佣金，B赚取20元佣金，A不赚取佣金。</span><br>
+        <span>(部分放款需要提现才能获得佣金)</span>
+      </p>
     </div>
-    <transition name="fade">
-      <footer class="generalizeFooter" v-show="!QRcodeShow">
-        <a href="javascript:;" @click="$router.push('/phoneApprove')">
-          获取我的推广二维码
-        </a>
-      </footer>
-    </transition>
+    <div class="QRcodeWrap">
+      <transition name="fade">
+        <img src="./img/erweima.jpg" class="QRcode" v-show="QRcodeShow">
+      </transition>
+      <transition name="tran">
+        <footer class="generalizeFooter" v-show="!QRcodeShow">
+          <a href="javascript:;" @click="$router.push('/authenticationPage')">
+            获取我的推广二维码
+          </a>
+        </footer>
+      </transition>
+
+    </div>
   </div>
 </template>
 
@@ -64,48 +68,61 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .fade-enter-active, .fade-leave-active
-    transition: all .5s;
-
+    transition: all 0.5s ;
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-    transform translate(-100%)
-
+    transform translateY(100%)
+  .tran-enter-active, .tran-leave-active
+    transition: all 1s ;
+  .tran-enter, .tran-leave-to /* .fade-leave-active below version 2.1.8 */
+    transform translateY(100%)
+  .generalizeHeader
+    height (520/$rem)
+    margin-bottom  (10/$rem)
+    img
+      width 100%
+      height 100%
   .generalizeContent
     box-sizing border-box
-    padding (30 /$rem)
-    font-size (46 /$rem)
-    color #bbbbbb
+    padding 0 (30 /$rem)
+    color #999999
     .introduceHeadline
       height (130 /$rem)
       line-height (130 /$rem)
       border-bottom 1px solid #f4f4f4
     p
-      font-size: (46 /$rem); /*字体大小*/
-      line-height: 1.5em; /*行距为1.5个单位*/
+      line-height 0.75em
       margin: 0; /*去掉默认的段间距*/
-      border-bottom 1px solid #f4f4f4
-    .QRcodeWrap
-      position relative
-      height (400 /$rem)
-      .QRcode
-        position absolute
-        top 50%
-        left 50%
-        margin-top -(150 /$rem)
-        margin-left -(150 /$rem)
-        width (300 /$rem)
-        height (300 /$rem)
+      span
+        font-size (40/$rem)
+        &:last-child
+          font-size (36/$rem)
+      &:first-child
+        text-indent:1em
+      &:last-child
+        text-indent:1em
+  .QRcodeWrap
+    overflow hidden
+    box-sizing border-box
+    position relative
+    padding (50/$rem) 0
+    .generalizeFooter
+      box-sizing border-box
+      height (262 /$rem)
+      width (1080 /$rem)
+      padding (58/$rem) 0
+      a
+        height (146/$rem)
+        width (1020/$rem)
+        background-color: #efca7d;
+        color #ffffff
+        text-align center
+        line-height (146 /$rem)
+        font-size (48 /$rem)
+        border-radius (15/$rem)
+        margin 0 auto
+    .QRcode
+      margin 0 auto
+      width (300 /$rem)
+      height (300 /$rem)
 
-  .generalizeFooter
-    position fixed
-    bottom 0
-    left 0
-    height (146 /$rem)
-    width (1080 /$rem)
-    background-color: #c2181f;
-    a
-      height 100%
-      color #ffffff
-      text-align center
-      line-height (146 /$rem)
-      font-size (56 /$rem)
 </style>

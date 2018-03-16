@@ -33,8 +33,8 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .privilegeContent
     box-sizing border-box
-    height (316/$rem)
-    padding (58/$rem) 0 (50/$rem) (45/$rem)
+    height (276/$rem)
+    padding (40/$rem) (30/$rem)
     li:not(:first-child)
       margin-top (30/$rem)
     li
@@ -48,6 +48,6 @@
           background-size 100%
         &.describe
           margin-left (30/$rem)
-          font-size (45/$rem)
-          color #000
+          font-size (42/$rem)
+          color #333
 </style>

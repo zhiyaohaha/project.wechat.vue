@@ -2,12 +2,14 @@
   <div>
     <ul class="scheduleList">
       <li v-for="(scheduleListData, index) in scheduleListDatas">
-        <span class="bankCard">{{scheduleListData.bankCard}}</span>
-        <span class="time">{{scheduleListData.time}}</span>
-        <span class="message">
+        <div class="up">
+          <span class="bankCard">{{scheduleListData.bankCard}}</span>
+          <span class="time">{{scheduleListData.time}}</span>
+        </div>
+        <div class="down">
           <span>{{scheduleListData.messageName}}</span>
           <span>{{scheduleListData.messageNum}}</span>
-        </span>
+        </div>
         <a href="javascript:;" class="button">查看进度</a>
       </li>
     </ul>
@@ -35,43 +37,39 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .scheduleList
+    box-sizing border-box
+    padding 0 (30/$rem)
     li
       box-sizing border-box
+      height (200/$rem)
+      padding-top (32/$rem)
+      border-bottom 1px solid #f2f2f2
       position relative
-      height (245/$rem)
-      padding (60/$rem) (48/$rem)
-      border-bottom 1px solid #dddddd
-      &>span
-        font-size (40/$rem)
-        color #515151
-        position absolute
-        &.bankCard
-          top (60/$rem)
-          left (48/$rem)
-        &.time
-          font-size (36/$rem)
-          top (60/$rem)
-          right (60/$rem)
-        &.message
-          font-size (36/$rem)
-          color #8a8a8a
-          bottom (60/$rem)
-          left (48/$rem)
-          span:last-child
-            margin-left (40/$rem)
-          span
-            float left
+      .up
+        height (42/$rem)
+        width 100%
+        span
+          float left
+          font-size (42/$rem)
+          &.time
+            vertical-align:bottom
+            font-size (34/$rem)
+            color #bbb
+            float right
+      .down
+        overflow hidden
+        font-size (34/$rem)
+        margin-top (62/$rem)
       .button
         position absolute
-        height (69/$rem)
-        width (300/$rem)
-        font-size (40/$rem)
+        bottom (30/$rem)
+        right 0
+        height (70/$rem)
+        width (250/$rem)
+        font-size (36/$rem)
         text-align center
         line-height (69/$rem)
-        background-color #c2181f
+        background-color #efca7d
         border-radius (15/$rem)
         color #ffffff
-        bottom (46/$rem)
-        right (48/$rem)
-
 </style>

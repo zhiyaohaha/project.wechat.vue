@@ -15,78 +15,52 @@
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard02.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard03.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
-          },
+
         ]
       }
     },

@@ -25,19 +25,19 @@
       return {
         authenticationListDatas: [
           {
-            imgUrl: "../../../static/img/strategyImg/card.png",
+            imgUrl: "../../../static/img/strategyImg/banka.png",
             character: "办卡"
           },
           {
-            imgUrl: "../../../static/img/strategyImg/increasethequota.png",
+            imgUrl: "../../../static/img/strategyImg/tie.png",
             character: "提额"
           },
           {
-            imgUrl: "../../../static/img/strategyImg/bystages.png",
+            imgUrl: "../../../static/img/strategyImg/fenqi.png",
             character: "分期"
           },
           {
-            imgUrl: "../../../static/img/strategyImg/other.png",
+            imgUrl: "../../../static/img/strategyImg/qita.png",
             character: "其他"
           },
         ],
@@ -45,43 +45,58 @@
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard02.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard03.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
           {
             title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
             time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag"
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
           },
+          {
+            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
+            time:"2017-12-12",
+            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
+            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
+          },
+
         ]
       }
     },
@@ -106,23 +121,23 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .strategyHeader
     width (1080 /$rem)
-    height (328 /$rem)
-    background-color #00aeff
+    height (266 /$rem)
     .authenticationList
+      box-sizing border-box
       height 100%
       display -webkit-flex
       display flex
       justify-content: space-around
-      align-items: center
+      padding (50/$rem) 0
+      border-bottom 1px solid #f2f2f2
       li
         a
           text-align center
-          font-size (36 /$rem)
-          color #ffffff
+          font-size (42 /$rem)
+          color #333333
           img
-            height (89 /$rem)
+            height (96 /$rem)
           span
-            margin-top (62/$rem)
             display block
-
+            margin-top (28/$rem)
 </style>

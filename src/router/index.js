@@ -24,6 +24,8 @@ const schedulePage = () => import('../pages/schedulePage/schedulePage.vue')
 const posterPage = () => import('../pages/posterPage/posterPage.vue')
 const generalizePage = () => import('../pages/generalizePage/generalizePage.vue')
 const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue')
+const authenticationPage = () => import('../pages/authenticationPage/authenticationPage.vue')
+const materialPage = () => import('../pages/materialPage/materialPage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -105,6 +107,12 @@ const router = new Router({
           meta: {keepAlive: false, isTop: false, title: '推广海报'},
         },
         {
+          path: 'materialPage',
+          component: materialPage,
+          meta: {keepAlive: false, isTop: false, title: '推广素材'},
+        },
+
+        {
           path: 'generalizePage',
           component: generalizePage,
           meta: {keepAlive: false, isTop: true, title: '赚佣金'},
@@ -115,7 +123,12 @@ const router = new Router({
     {
       path: '/phoneApprove',
       component: phoneApprove,
-      meta: {keepAlive: false, isTop: true, title: '手机认证'},
+      meta: {keepAlive: false, isTop: true, title: '手机号认证'},
+    },
+    {
+      path: '/authenticationPage',
+      component: authenticationPage,
+      meta: {keepAlive: false, isTop: true, title: '认证选择'},
     },
     {
       path: '/myPage',
@@ -166,6 +179,7 @@ const router = new Router({
         },
       ]
     },
+
   ]
 })
 

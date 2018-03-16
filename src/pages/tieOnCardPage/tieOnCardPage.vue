@@ -24,18 +24,17 @@
         立即认证
       </a>
     </div>
-    <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
+    <mt-popup v-model="shadeIsShow" position="bottom" class="maskLayer"
               showToolbar="true">
       <div class="shadeIsShowHeader">
-          <span @touchstart="pullDown(false,3)" class="cancel">
+          <span @touchstart="pullDown(false,mformDatasInd,false)" class="cancel">
             取消
           </span>
-        <span @touchstart="pullDown(false,3)" class="ascertain">
+        <span @touchstart="pullDown(false,mformDatasInd,true)" class="ascertain">
             确定
           </span>
       </div>
-      <mt-picker :itemHeight="70" :slots="slots" @change="onValuesChange"
-                 class="shadeIsShowContent"></mt-picker>
+      <pickerMod :shadeIsShow="shadeIsShow" :pickerModDatas="bankArr" :onValuesChange="onValuesChange"/>
     </mt-popup>
     <footer class="tieOnCardFooter" v-show="tieOnFooterIsShow">
       实名认证仅用来确保您提交的需求真实有效，绝不泄露
@@ -101,17 +100,17 @@
             reg: /^[0-9]{1,11}$/,
           },
         ],
+        mformDatasInd:0,
         shadeIsShow: false,
-        slots: [
-          {
-            defaultIndex: 1,
-            flex: 1,
-            className: "slots1",
-            values: [],
-            textAlign: 'center'
-          }
+        bankArr: [
+          {name:"中信银行",code:1},
+          {name:"工商银行",code:2},
+          {name:"农业银行",code:3},
+          {name:"邮政银行",code:4},
+          {name:"建设银行",code:5},
+          {name:"兴业银行",code:6},
+          {name:"北京银行",code:7},
         ],
-        bankArr: ["中信银行", "中国银行", "工商银行", "建设银行", "农业银行", "邮政银行", "阿里银行"],
         tieOnFooterIsShow:true
       }
     },
@@ -121,9 +120,7 @@
     computed: {},
 
     mounted(){
-      let str = "abcdefgh"
-      str = str.substring(0,8)
-      console.log(str)
+
     },
 
     methods: {
@@ -131,11 +128,9 @@
         this.tieOnFooterIsShow = true
       },
       goodInput(reg, flag, index){
-//        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (index == 3) {
           this.mformDatas[index].model = ""
         }
-
         if (!reg.test(flag)) {
           Toast({
             message: "格式错误",
@@ -144,15 +139,15 @@
           this.mformDatas[index].model = flag.substring(0,flag.length - 1)
         }
       },
-      pullDown(flag, index){
-        this.tieOnFooterIsShow=false
-        if (index == 3) {
-          this.slots[0].values = this.bankArr
+      pullDown(flag, index, inputVal){
+        this.mformDatasInd = index
+        if (index === 3) {
+          inputVal ? '' : this.mformDatas[index].model = ""
           this.shadeIsShow = flag
         }
       },
-      onValuesChange(picker, values) {
-        this.mformDatas[3].model = picker.getValues()
+      onValuesChange(index) {
+        this.mformDatas[this.mformDatasInd].model = this.bankArr[index].name
       },
       approve(){
         let Arr = this.mformDatas.filter((item)=>{
@@ -203,7 +198,7 @@
     height (70 /$rem)
     font-size (40 /$rem)
     color #ffffff
-    background-color #8a8a8a
+    background-color #333
     text-align center
     line-height (70 /$rem)
 
@@ -274,7 +269,6 @@
     height (650 /$rem)
     .shadeIsShowHeader
       font-size (42 /$rem)
-      background-color #e8e8e8
       height (120 /$rem)
       line-height (120 /$rem)
       .cancel
@@ -284,15 +278,7 @@
       .ascertain
         margin-right (50 /$rem)
         float right
-        color #c2181f
-    .shadeIsShowContent
-      font-size (52 /$rem)
-      .picker-slot
-        div
-          font-size (52 /$rem)
-          color #ddd
-          &.picker-selected
-            color #333
+        color #efca7d
 
   .tieOnCardFooter
     width (1080 /$rem)

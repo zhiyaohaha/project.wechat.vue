@@ -3,25 +3,22 @@
     <header class="applyForHeader">
       <ul class="applyForList">
         <li>
-          <div style="backgroundImage:url('../../../static/img/creditCardImg/tianxie.png')"></div>
+          <img src="../../../static/img/creditCardImg/tianxie.png"/>
           <span>填写资料</span>
         </li>
-        <div></div>
         <li>
-          <div style="backgroundImage:url('../../../static/img/creditCardImg/shengqing.png')"></div>
+          <img src="../../../static/img/creditCardImg/shenqing.png"/>
           <span>点击申请</span>
         </li>
-        <div></div>
         <li>
-          <div style="backgroundImage:url('../../../static/img/creditCardImg/shenghe.png')"></div>
+          <img src="../../../static/img/creditCardImg/shenhe.png"/>
           <span>审核发卡</span>
         </li>
       </ul>
+      <div class="transverseLine"></div>
     </header>
     <div class="applyForContent">
-      <header class="firstTrialHeader">
-        初审资料
-      </header>
+      <headline :headlineData="{title:'初审资料',line:true}"/>
       <ul class="mform">
         <li v-for="(mformData, index) in mformDatas" :key="index">
           <span class="description">{{mformData.description}}</span>
@@ -32,14 +29,6 @@
                  :placeholder="mformData.placeholder"
                  :maxlength="mformData.maxlength"
                  :name="mformData.name">
-          <!--<span :class="{purposeList:mformData.purposeList}" v-if="!mformData.sendMsg && !mformData.units"
-                @touchstart="pullDown(true,index)">
-                {{mformData.units}}
-              </span>-->
-          <!--<a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
-             @touchstart="sendMsg()">
-            {{mformData.units}}
-          </a>-->
         </li>
       </ul>
     </div>
@@ -125,14 +114,14 @@
     bottom 0
     left 0
     width (1080/$rem)
-    height (146/$rem)
-    background-color #c2181f
+    height (150/$rem)
+    background-color #efca7d
     a
       height 100%
-      font-size (56/$rem)
+      font-size (48/$rem)
       color #ffffff
       text-align center
-      line-height (146/$rem)
+      line-height (150/$rem)
   .ToastStyle
     width (200/$rem)
     height (70/$rem)
@@ -142,35 +131,39 @@
     text-align center
     line-height (70/$rem)
   .applyForHeader
+    position relative
     width (1080 /$rem)
-    height (280 /$rem)
+    height (276 /$rem)
     .applyForList
+      position relative
+      z-index 10
       height 100%
       box-sizing border-box
-      padding (60 /$rem) (90/$rem)
-      & > div
-        float left
-        width (230 /$rem)
-        height (5 /$rem)
-        background-color #c2181f
-        margin-top (50 /$rem)
+      padding (50 /$rem) (70/$rem)
+      display flex
+      justify-content space-between
       li
         text-align center
         float left
-        div
+        img
           display inline-block
-          background-color: #c2181f;
-          background-repeat no-repeat
-          background-position center
-          background-size (53 /$rem)
-          width (100 /$rem)
-          height (100 /$rem)
-          border-radius 50%
+          width (96/$rem)
+          height (96/$rem)
         span
-          margin-top (24 /$rem)
+          margin-top (30 /$rem)
           display block
           font-size (36 /$rem)
-          color #8a8a8a
+          color #333333
+
+    .transverseLine
+      position absolute
+      margin-left (-351.5/$rem)
+      top (88/$rem)
+      left 50%
+      width (703/$rem)
+      height (6/$rem)
+      background-image url("../../../static/img/creditCardImg/huangxian.png")
+      background-repeat no-repeat
 
   .applyForContent
     width (1080 /$rem)
@@ -190,7 +183,7 @@
         width (1020 /$rem)
         height (120 /$rem)
         font-size (42 /$rem)
-        border-bottom 1px solid #ccc
+        border-bottom 1px solid #f2f2f2
         text-align right
         span
           color #333333

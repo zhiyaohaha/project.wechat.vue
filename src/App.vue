@@ -29,6 +29,7 @@
       ...mapState(['openID', 'userinfo'])
     },
     beforeCreate () {
+      //获取用户信息
       let obj = this.__GetRequest()
       this.$store.dispatch('getUserinfo', {
         obj,
@@ -43,9 +44,11 @@
         let userinfo = this.readTodos()
         let data = {
           openId: userinfo.openid,
-          thirdLoginType: 'ThirdPlatForm.WeChat'
+          thirdLoginType: 'ThirdPlatForm.WeChat',
+          nickName:userinfo.nickname,
+          head:userinfo.headimgurl
         }
-        this.$store.dispatch('getOpenid', {
+        this.$store.dispatch('postOpenid', {
           data,
           cb: (va1, whether) => {
             this.setCookie('openId', va1, 7)

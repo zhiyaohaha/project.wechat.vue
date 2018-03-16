@@ -24,8 +24,8 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .headline
+    width (1080/$rem)
     box-sizing border-box
-    width 100%
     height (126 /$rem)
     &.line
       border-bottom 1px solid #f2f2f2

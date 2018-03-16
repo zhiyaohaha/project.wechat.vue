@@ -32,15 +32,15 @@
   .messageList
     box-sizing border-box
     width (1080/$rem)
-    height (556/$rem)
-    padding-left (45/$rem)
-    overflow hidden
+    height (476/$rem)
+    padding-left (30/$rem)
+    padding-top (10/$rem)
     li
       overflow hidden
-      height (45/$rem)
-      margin-top (40/$rem)
-      font-size (45/$rem)
-      color #8a8a8a
+      height (42/$rem)
+      margin-top (30/$rem)
+      font-size (42/$rem)
+      color #333
       .describe
         float left
         text-align justify
@@ -52,5 +52,5 @@
       .price
         float left
         margin-left (60/$rem)
-        color #222
+        color #bbb
 </style>

@@ -117,9 +117,7 @@
 
     computed: {},
     created() {
-      if (this.getCookie("whether") === "0") {
-        this.$router.push("/phoneApprove")
-      }
+
     },
     mounted() {
     },
@@ -155,7 +153,7 @@
     height (70 /$rem)
     font-size (40 /$rem)
     color #ffffff
-    background-color #8a8a8a
+    background-color #333
     text-align center
     line-height (70 /$rem)
 

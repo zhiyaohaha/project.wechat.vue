@@ -1,10 +1,10 @@
 <template>
   <div class="propertyMod">
     <ul class="propertyModList">
-      <li v-for="(propertyModData, index) in propertyModDatas" :key="index" @click="pitchOn(index)">
+      <li v-for="(propertyModData, index) in propertyModDatas" :key="index" @touchstart="pitchOn(index)">
         <div>
           <img src="./img/xaunze.png" v-show="propertyModData.imgUrlIsShow">
-          <img src="./img/huikuang.png" v-show="!propertyModData.imgUrlIsShow">
+          <img src="./img/weixuan.png" v-show="!propertyModData.imgUrlIsShow">
           <span :class="{pitchOnFont:propertyModData.imgUrlIsShow}">{{propertyModData.character}}</span>
         </div>
       </li>
@@ -17,7 +17,6 @@
     props:["propertyModDatas"],
     data () {
       return {
-        pitchOnIndex:null,
       }
     },
 
@@ -30,12 +29,7 @@
 
     methods: {
       pitchOn(index){
-        this.pitchOnIndex = index
-        this.propertyModDatas.forEach((item, index)=>{
-          if(this.pitchOnIndex == index){
-            item.imgUrlIsShow = !item.imgUrlIsShow
-          }
-        })
+        this.propertyModDatas[index].imgUrlIsShow = !this.propertyModDatas[index].imgUrlIsShow
       }
     }
   }

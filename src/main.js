@@ -10,6 +10,8 @@ import store from './store'
 import BScroll from 'better-scroll'
 import split from './components/split/split.vue'
 import headline from './components/headline/headline.vue'
+import pickerMod from './components/pickerMod/pickerMod.vue'
+
 import {
   __boxheight,
   __GetRequest
@@ -26,9 +28,10 @@ import 'mint-ui/lib/style.css'
 
 Vue.component('split', split)
 Vue.component('headline', headline)
+Vue.component('pickerMod', pickerMod)
 Vue.component(Popup.name, Popup)
 // Vue.component(DateTime.name, DateTime)
-Vue.component(Picker.name, Picker)
+// Vue.component(Picker.name, Picker)
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.prototype.__boxheight = __boxheight

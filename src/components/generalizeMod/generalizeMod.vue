@@ -47,7 +47,7 @@
     li
       position relative
       box-sizing border-box
-      width (160/$rem)
+      width (174/$rem)
       height (148 /$rem)
       a
         text-align center
@@ -66,6 +66,6 @@
           font-size (32/$rem)
   .fanyonglog
     position absolute
-    left (170/$rem)
+    left (182/$rem)
     bottom (160/$rem)
 </style>

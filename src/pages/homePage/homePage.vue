@@ -71,7 +71,7 @@
             {
               imgUrl: "../../static/img/homeImg/content_icon_tuiguangsucai.png",
               title: "推广素材",
-              url: "/homePage/strategyPage"
+              url: "/homePage/materialPage"
             },
             {
               imgUrl: "../../static/img/homeImg/content_icon_tuiguangjilu.png",

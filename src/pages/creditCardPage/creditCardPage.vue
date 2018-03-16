@@ -3,18 +3,7 @@
       <router-view/>
     <div ref="creditWrap" v-show="$route.meta.isTop">
       <div>
-        <!--<header class="creditCardPageHeader">
-          <ul class="CardPageHeaderList">
-            <li v-for="(CardPageHeaderListDatas, index) in CardPageHeaderListDatas">
-              <a href="javascript:;">
-                <img :src="CardPageHeaderListDatas.imgUrl">
-                <span>{{CardPageHeaderListDatas.character}}</span>
-              </a>
-            </li>
-          </ul>
-        </header>-->
         <div class="allBank">
-          <!--<cardHeadLine :cardHeadLineData="cardHeadLineData1"/>-->
           <allBankList :allBankListDatas="allBankListDatas"/>
           <footer class="allBankFooter">
             <div class="line"></div>
@@ -23,7 +12,9 @@
           </footer>
         </div>
         <div class="recommend">
-          <headline :headlineData="{title:'推荐信用卡'}"/>
+          <header class="recommendHeader">
+            <span>推荐信用卡</span>
+          </header>
           <div class="line"></div>
           <recommendList :recommendListDatas="recommendListDatas"/>
         </div>
@@ -48,31 +39,19 @@
         //   aFont: ""
         // },
         allBankListDatas: [
-          /*{
-            imgUrl: "../../../static/img/creditCardImg/citic.png",
-            title: "中信银行",
-            url:"/homePage/creditCardPage/zhongXinCardPage"
-          },*/
+
           {
             imgUrl: "../../../static/img/creditCardImg/communications.png",
             title: "交通银行",
             url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "交通银行"}}
           },
-          /*{
-            imgUrl: "../../../static/img/creditCardImg/guangfabank.png",
-            title: "广发银行",
-            url:"/homePage/creditCardPage/zhongXinCardPage"
-          },*/
+
           {
             imgUrl: "../../../static/img/creditCardImg/industrialbank.png",
             title: "兴业银行",
             url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "兴业银行"}}
           },
-          /*{
-            imgUrl: "../../../static/img/creditCardImg/pinganbank.png",
-            title: "平安银行",
-            url:"/homePage/creditCardPage/zhongXinCardPage"
-          },*/
+
           {
             imgUrl: "../../../static/img/creditCardImg/generalbanks.png",
             title: "光大银行",
@@ -84,11 +63,6 @@
             url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "浦发银行"}}
           },
 
-          /*{
-            imgUrl: "../../../static/img/creditCardImg/merchantsbank.png",
-            title: "招商银行",
-            url:"/homePage/creditCardPage/zhongXinCardPage"
-          },*/
         ],
         recommendListDatas: [
           {
@@ -216,6 +190,16 @@
           color #bbbbbb
 
   .recommend
+    .recommendHeader
+      position relative
+      height (126/$rem)
+      line-height (126/$rem)
+      width (1080/$rem)
+      span
+        position absolute
+        font-size (46 /$rem)
+        color #333
+        left (30/$rem)
     .line
       width (1080/$rem)
       height 1px

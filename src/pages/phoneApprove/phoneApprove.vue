@@ -145,9 +145,9 @@
           let data = {
             phone: this.mformDatas[0].model,
             verifyCode: this.mformDatas[1].model,
-            firstLevelId: this.getCookie("id"),
+            firstLevelId: this.getCookie('id'),
             thirdPlatFormBind: true,//第三方绑定接口
-            openId:this.getCookie("openId"), //第三方OpenId
+            openId: this.getCookie('openId'), //第三方OpenId
             thirdLoginType: 'ThirdPlatForm.WeChat',  //第三方登录代号
             head: userinfo.headimgurl,//第三方登录头像
             nickName: userinfo.nickname,//第三方登录昵称
@@ -164,7 +164,7 @@
             //短信验证码
             if (this.phoneNote.success) {
               clearInterval(this.timer2)
-              this.$router.go(-1)
+              this.$router.replace("/homePage/productPage/productDetailsPage")
             } else {
               MessageBox({
                 title: '提交失败',
@@ -253,6 +253,7 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .phoneApprove
     background-color: #fff
+
   .ToastStyle
     width (200 /$rem)
     height (70 /$rem)
@@ -331,16 +332,13 @@
     .protocol
       box-sizing border-box
       height (155 /$rem)
-      width (1080 /$rem)
       text-align center
       line-height (155 /$rem)
       img
         display inline-block
-        margin-top (60/$rem)
-        margin-right (20/$rem)
         width (36 /$rem)
         height (35 /$rem)
-        vertical-align top
+        vertical-align middle
       span
         font-size (36 /$rem)
         color #333333
