@@ -12,14 +12,15 @@ export default function ajax (url = '', data = {}, type = 'GET') {
     if (type === 'GET') {
       // 准备url query参数数据
       let dataStr = '' //数据拼接字符串
-
-      Object.keys(data).forEach(key => {
+      let dataArr = Object.keys(data).sort()
+      dataArr.forEach(key => {
         dataStr += key + '=' + data[key] + '&'
       })
 
       if (dataStr !== '') {
         let timestamp = (new Date().getTime()).toString().substr(0, 10)
         dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'))
+        console.log(dataStr + timestamp + '84qudMIhOkX5JMQXVd0f4jneqfP2Lp')
         let sign = md5(dataStr + timestamp + '84qudMIhOkX5JMQXVd0f4jneqfP2Lp')
         url = url + '?' + dataStr + '&timestamp=' + timestamp + '&sign=' + sign
       }
