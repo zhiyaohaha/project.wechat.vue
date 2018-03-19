@@ -3,7 +3,7 @@ import {
   postOpenid,
   postPhone,
   getUserinfo,
-  getLoanAmount
+  getListForApp
 } from '../api'
 
 let apiPrefix = 'http://192.168.6.66:8001'
@@ -47,5 +47,14 @@ export default {
       commit('GET_USERINFO', {result})
     }
   },
+  async getListForApp({commit}, {data}){
+    let url = apiPrefix + '/api/LoanProduct/ListForOfficialAccounts'
+    const result = await getListForApp(url ,data)
+    if(data.hot){
+      commit('GET_LISTFORAPP', {result})
+    }else {
+      commit('GET_LISTFORAPPLONG',{result})
+    }
+  }
 }
 

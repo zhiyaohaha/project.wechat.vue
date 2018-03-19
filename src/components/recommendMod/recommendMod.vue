@@ -1,21 +1,17 @@
 <template>
-  <div>
+  <div v-if="recommendModDatas">
     <ul class="recommendMod">
-      <li v-for="(recommend, index) in recommendModDatas" :key="index" :class="{recommendModTop: index != 0 }" v-if="index>4">
-        <router-link :to="getCookie('whether') === '0' ? '/phoneApprove':recommend.url">
+      <li v-for="(recommend, index) in recommendModDatas" :key="index" :class="{recommendModTop: index != 0 }">
+        <a href="javascript:;" @click="getCookie('whether') === '0' ? '/phoneApprove':'/homePage/productPage/productDetailsPage'">
           <div class="recommendModLogo">
             <img :src="recommend.basic._logo">
           </div>
           <img class="fanyonglog" src="../../../static/img/homeImg/content_fanyong.png">
           <div class="recommendModDescribe">
-            <span class="title">{{1111}}</span>
-            <div class="interestRate">
-              <span>月利率：{{recommend.basic.monthlyRate_max}}</span>
-              <span>月费率：{{recommend.basic.monthlyRate_min}}</span>
-            </div>
+            <span class="title">{{recommend.basic.name}}</span>
             <div class="describe">
-              <span>额度：<span class="price">{{recommend.filter.amount_min + '-'+ recommend.filter.amount_max}}</span></span>
-              <span>成功率：<star :score="recommend.score" class="star"/></span>
+              <span>额度：<span
+                class="price">{{recommend.filter.amount_min + '-'+ recommend.filter.amount_max}}</span></span>
             </div>
             <span class="asSecondLine">{{recommend.summary}}</span>
           </div>
@@ -26,37 +22,21 @@
 </template>
 
 <script>
-  import star from '../star/star.vue'
-  import { getListForApp } from '../../api'
-
   export default {
-    data () {
+    props: ['recommendModDatas'],
+
+    data() {
       return {}
     },
 
-    components: {
-      star
-    },
+    components: {},
 
-    computed: {
+    computed: {},
+    beforeCreate() {
+
     },
-    beforeCreate(){
-      let data = {
-        name: 'LoanProductType.Speed',
-        id: this.__GetRequest().id,
-        size: '',
-        hot:false
-      }
-      let apiPrefix = 'http://192.168.6.66:8001'
-      let url = apiPrefix + '/api/LoanProduct/ListForApp'
-      getListForApp(url, data).then((res)=>{
-        console.log(this)
-        this.recommendModDatas = res.data
-        console.log(this.recommendModDatas)
-      })
-    },
-    mounted () {
-      console.log(this.recommendModDatas[0].basic.name)
+    mounted() {
+      console.log(this.recommendModDatas)
     },
 
     methods: {}
@@ -95,10 +75,6 @@
             font-size (42 /$rem)
             color #333
             line-height (42 /$rem)
-          .interestRate
-            margin-top (20 /$rem)
-            font-size (34 /$rem)
-            color #bbb
           .describe
             margin-top (40 /$rem)
             font-size (34 /$rem)

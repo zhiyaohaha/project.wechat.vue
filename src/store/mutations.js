@@ -20,4 +20,12 @@ export default {
     console.log(result)
     state.userinfo = result
   },
+  GET_LISTFORAPP(state,{result}){
+    console.log(result)
+    state.recommendModDatas = result.data
+  },
+  GET_LISTFORAPPLONG(state,{result}){
+    console.log(result)
+    state.recommendDatas = result.data
+  },
 }

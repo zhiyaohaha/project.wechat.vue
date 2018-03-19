@@ -5,7 +5,7 @@
     <div class="homePageWrap" ref="homePageWrap" v-show="$route.meta.keepAlive">
       <div @click="changeTop" ref="homePage">
         <header class="homePageHeader">
-          <mt-swipe :auto="3000">
+          <mt-swipe :auto="2000" :prevent="true" :stopPropagation="true" :showIndicators="false">
             <mt-swipe-item><img src="./img/xinyongkabanner.png"></mt-swipe-item>
             <mt-swipe-item><img src="./img/banner1.png"></mt-swipe-item>
             <mt-swipe-item><img src="./img/banner2.png"></mt-swipe-item>
@@ -16,7 +16,7 @@
           <generalizeMod :generalizeModData="generalizeModData"/>
           <generalizeMod :generalizeModData="visaDatas"/>
           <headline :headlineData="{title:'热门贷款推荐',more:'更多贷款推荐'}"/>
-          <recommendMod/>
+          <recommendMod :recommendModDatas="recommendModDatas"/>
           <headline :headlineData="{title:'热门信用卡推荐',more:'更多信用卡推荐'}"/>
           <creditCardMod :creditCardModDatas="creditCardModDatas"/>
           <footline footlineTitle="我是有底线的~"/>
@@ -36,7 +36,7 @@
   import footline from "../../components/footline/footline.vue"
   import creditCardMod from "../../components/creditCardMod/creditCardMod.vue"
   import headline from "../../components/headline/headline.vue"
-
+  import {getListForApp} from '../../api'
 
   export default {
     data() {
@@ -54,9 +54,9 @@
           },
         ],
         generalizeModData: {
-          name:{
-            title:"推广返佣",
-            more:""
+          name: {
+            title: "推广返佣",
+            more: ""
           },
           datas: [
             {
@@ -82,32 +82,33 @@
           ]
         },
         visaDatas: {
-          name:{
-            title:"信用卡",
-            more:""
+          name: {
+            title: "信用卡",
+            more: ""
           },
-          datas : [
-          {
-            imgUrl: "../../static/img/homeImg/content_icon_banxinyongka.png",
-            title: "办信用卡",
-            url: "/homePage/creditCardPage"
-          },
-          {
-            imgUrl: "../../static/img/homeImg/content_icon_bankajindu.png",
-            title: "办卡进度",
-            url: "/homePage/schedulePage"
-          },
-          {
-            imgUrl: "../../static/img/homeImg/content_icon_gongluezhuanqu.png",
-            title: "攻略专区",
-            url: "/homePage/strategyPage"
-          },
-          {
-            imgUrl: "../../static/img/homeImg/content_icon_xinyongkadaihuan.png",
-            title: "信用卡代还",
-            url: "/homePage/productPage"
-          }
-        ]},
+          datas: [
+            {
+              imgUrl: "../../static/img/homeImg/content_icon_banxinyongka.png",
+              title: "办信用卡",
+              url: "/homePage/creditCardPage"
+            },
+            {
+              imgUrl: "../../static/img/homeImg/content_icon_bankajindu.png",
+              title: "办卡进度",
+              url: "/homePage/schedulePage"
+            },
+            {
+              imgUrl: "../../static/img/homeImg/content_icon_gongluezhuanqu.png",
+              title: "攻略专区",
+              url: "/homePage/strategyPage"
+            },
+            {
+              imgUrl: "../../static/img/homeImg/content_icon_xinyongkadaihuan.png",
+              title: "信用卡代还",
+              url: "/homePage/productPage"
+            }
+          ]
+        },
         /*recommendModDatas:[
           /!*{
             url:"/homePage/productPage/productDetailsPage",
@@ -154,21 +155,30 @@
     },
 
     computed: {
-      ...mapState(["openID"])
+      ...mapState(["openID","recommendModDatas"])
     },
-
+   created() {
+     let data ={
+       name: 'LoanProductType.Speed',
+       id: this.__GetRequest().id,
+       size: '',
+       hot: true
+     }
+     this.$store.dispatch("getListForApp", {data})
+    },
     mounted() {
+
       this.__boxheight(this.$refs.homePageWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.homePageWrap); //窗口或框架被调整大小时执行
       this.$nextTick(() => {
         this._initScroll()
       })
-
+      console.log(this.recommendModDatas)
     },
 
     updated() {
-      if(this.$route.meta.homeShow){
-        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true,startY: this.top,  probeType: 3})
+      if (this.$route.meta.homeShow) {
+        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true, startY: this.top, probeType: 3})
         this.homePageWrap.refresh()
       }
     },
@@ -176,10 +186,6 @@
       _initScroll() {
         this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true})
         this.homePageWrap.refresh()
-        /*this.homePageWrap.on('scroll', (pos)=>{
-          console.log(1)
-          console.log(pos)
-        })*/
       },
       changeTop() {
         this.top = this.homePageWrap.y
@@ -192,6 +198,7 @@
   .footerOccupied
     width (1080 /$rem)
     height (146 /$rem)
+
   .homePageHeader
     width 100%
     height (520 /$rem)
@@ -204,9 +211,10 @@
   .homePageContent
     background-color #fff
     position relative
-    padding-top (266/$rem)
+    padding-top (266 /$rem)
+
   .fanyonglog
     transform translateZ(0)
-    width (70/$rem)
-    height (34/$rem)
+    width (70 /$rem)
+    height (34 /$rem)
 </style>

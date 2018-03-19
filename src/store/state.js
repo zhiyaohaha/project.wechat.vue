@@ -4,5 +4,7 @@ export default {
   openID:null,
   phoneNote:null,
   scroll:0,
-  userinfo:null
+  userinfo:null,
+  recommendModDatas:null,
+  recommendDatas:null
 }
