@@ -16,7 +16,7 @@
           <generalizeMod :generalizeModData="generalizeModData"/>
           <generalizeMod :generalizeModData="visaDatas"/>
           <headline :headlineData="{title:'热门贷款推荐',more:'更多贷款推荐'}"/>
-          <recommendMod :recommendModDatas="recommendModDatas"/>
+          <recommendMod/>
           <headline :headlineData="{title:'热门信用卡推荐',more:'更多信用卡推荐'}"/>
           <creditCardMod :creditCardModDatas="creditCardModDatas"/>
           <footline footlineTitle="我是有底线的~"/>
@@ -36,6 +36,7 @@
   import footline from "../../components/footline/footline.vue"
   import creditCardMod from "../../components/creditCardMod/creditCardMod.vue"
   import headline from "../../components/headline/headline.vue"
+
 
   export default {
     data() {
@@ -107,8 +108,8 @@
             url: "/homePage/productPage"
           }
         ]},
-        recommendModDatas:[
-          {
+        /*recommendModDatas:[
+          /!*{
             url:"/homePage/productPage/productDetailsPage",
             recommendModLogoUrl:"../../../static/img/homeImg/content_pic_jiuynengkai.png",
             title:"久亿-能卡",
@@ -126,8 +127,8 @@
             price:"1000-10万元",
             score:4,
 
-          },
-        ],
+          },*!/
+        ],*/
         creditCardModDatas: [
           {
             url: "/homePage/creditCardPage/cardDetailsPage",

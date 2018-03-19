@@ -1,23 +1,23 @@
 <template>
   <div>
     <ul class="recommendMod">
-      <li v-for="(recommend, index) in recommendModDatas" :key="index" :class="{recommendModTop: index != 0 }">
+      <li v-for="(recommend, index) in recommendModDatas" :key="index" :class="{recommendModTop: index != 0 }" v-if="index>4">
         <router-link :to="getCookie('whether') === '0' ? '/phoneApprove':recommend.url">
           <div class="recommendModLogo">
-            <img :src="recommend.recommendModLogoUrl">
+            <img :src="recommend.basic._logo">
           </div>
-          <img class="fanyonglog" src="../../../static/img/homeImg/content_fanyong.png" alt="">
+          <img class="fanyonglog" src="../../../static/img/homeImg/content_fanyong.png">
           <div class="recommendModDescribe">
-            <span class="title">{{recommend.title}}</span>
+            <span class="title">{{1111}}</span>
             <div class="interestRate">
-              <span>月利率：{{recommend.interestRate}}</span>
-              <span>月费率：{{recommend.rate}}</span>
+              <span>月利率：{{recommend.basic.monthlyRate_max}}</span>
+              <span>月费率：{{recommend.basic.monthlyRate_min}}</span>
             </div>
             <div class="describe">
-              <span>额度：<span class="price">{{recommend.price}}</span></span>
+              <span>额度：<span class="price">{{recommend.filter.amount_min + '-'+ recommend.filter.amount_max}}</span></span>
               <span>成功率：<star :score="recommend.score" class="star"/></span>
             </div>
-            <span class="asSecondLine">一天审核，闪电到款，当天到账</span>
+            <span class="asSecondLine">{{recommend.summary}}</span>
           </div>
         </router-link>
       </li>
@@ -27,9 +27,9 @@
 
 <script>
   import star from '../star/star.vue'
+  import { getListForApp } from '../../api'
 
   export default {
-    props: ['recommendModDatas'],
     data () {
       return {}
     },
@@ -40,8 +40,24 @@
 
     computed: {
     },
-
-    mounted () {},
+    beforeCreate(){
+      let data = {
+        name: 'LoanProductType.Speed',
+        id: this.__GetRequest().id,
+        size: '',
+        hot:false
+      }
+      let apiPrefix = 'http://192.168.6.66:8001'
+      let url = apiPrefix + '/api/LoanProduct/ListForApp'
+      getListForApp(url, data).then((res)=>{
+        console.log(this)
+        this.recommendModDatas = res.data
+        console.log(this.recommendModDatas)
+      })
+    },
+    mounted () {
+      console.log(this.recommendModDatas[0].basic.name)
+    },
 
     methods: {}
   }

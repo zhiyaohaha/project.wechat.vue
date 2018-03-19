@@ -17,7 +17,6 @@
 </template>
 <script>
   import { mapState } from 'vuex'
-  import { getListForApp } from './api'
 
   export default {
     data () {
@@ -61,15 +60,7 @@
       }, 1000)
     },
     mounted () {
-      let data = {
-        name: 'LoanProductType.Speed',
-        id: this.__GetRequest().id,
-        size: 10,
-        hot:false
-      }
-      let apiPrefix = 'http://192.168.6.66:8001'
-      let url = apiPrefix + '/api/LoanProduct/ListForApp'
-      getListForApp(url, data)
+
 
     },
     methods: {}
