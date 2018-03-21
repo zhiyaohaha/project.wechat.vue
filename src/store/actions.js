@@ -80,8 +80,8 @@ export default {
       commit('GET_HOMELISTBANKCARD', {result})
     }else if(site === "credit"){
       commit('GET_CREDITLISTBANKCARD', {result})
-    }else {
-      commit('GET_LISTBANKCARD', {result})
+    }else if(site === "newCredit" ) {
+      return result.data
     }
 
   },

@@ -1,7 +1,11 @@
 <template>
   <div class="creditCard">
     <router-view/>
-    <div ref="creditWrap" v-show="$route.meta.isTop">
+    <scroll class="wrapper"
+            :data="creditListBankCard"
+            :pullup="true"
+            @scrollToEnd="loadData"
+            v-show="$route.meta.isTop">
       <div>
         <div class="allBank">
           <allBankList :allBankListDatas="listBanks"/>
@@ -16,10 +20,12 @@
             <span>推荐信用卡</span>
           </header>
           <div class="line"></div>
-          <recommendList :recommendListDatas="creditListBankCard"/>
+          <recommendList :recommendListDatas="creditListBankCard" class="content"/>
+
         </div>
+        <div class="loading-wrapper"></div>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
@@ -28,6 +34,7 @@
   import allBankList from "../../components/allBankList/allBankList.vue"
   import recommendList from "../../components/recommendList/recommendList.vue"
   import {mapState} from "vuex"
+  import Bscroll from "better-scroll"
 
   export default {
     data() {
@@ -118,7 +125,7 @@
             imgUrl: "../../../static/img/creditCardImg/bankingservices.png",
             character: "银行服务"
           },
-        ]
+        ],
       }
     },
 
@@ -127,40 +134,77 @@
     },
 
     computed: {
-      ...mapState(["listBanks", "creditListBankCard"])
+      ...mapState(["listBanks", "newListBankCard"]),
+      creditListBankCard: {
+        get: function () {
+          return this.$store.state.creditListBankCard
+        },
+        set: function () {
+        }
+      }
     },
     created() {
-      let bank = ""
+      this.bank = ""
       this.listBanks.forEach((item) => {
-        bank += item.id + ","
+        this.bank += item.id + ","
       })
+      let that = this
       this.$store.dispatch("getListBankCard", {
         data: {
           id: '',//最后一条Id，第一次请求不用传
-          bank: bank,//银行id，多个则逗号分隔，不传则不进行筛选
+          bank: that.bank,//银行id，多个则逗号分隔，不传则不进行筛选
           size: 10//每页展示数量
         },
-        site:"credit"
+        site: "credit"
       })
     },
     mounted() {
-      this.__boxheight(this.$refs.creditWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.creditWrap); //窗口或框架被调整大小时执行
-      this.creditWrap = new this.BScroll(this.$refs.creditWrap, {
+      /*this.__boxheight(this.$refs.wrapper); //执行函数
+      window.onresize = this.__boxheight(this.$refs.creditWrap);*/ //窗口或框架被调整大小时执行
+      /*this.creditWrap = new this.BScroll(this.$refs.wrapper, {
         click: true,
         pullUpLoad: {
-          threshold: 50,
-          stop: 20,
-          moreTxt:"加载更多",
-          noMoreTxt:"没有跟多数据拉"
-        }
+          threshold: -30,
+        },
+        probeType: 1
+      })*/
+      /*this.creditWrap.on("pullingUp", () => {
+        this.$store.dispatch("getListBankCard", {
+          data: {
+            id: that.creditListBankCard[that.creditListBankCard.length - 1].id,//最后一条Id，第一次请求不用传
+            bank: that.bank,//银行id，多个则逗号分隔，不传则不进行筛选
+            size: 10//每页展示数量
+          },
+          site: "newCredit"
+        }).then((res) => {
+          for (let value of res) {
+            that.creditListBankCard.push(value)
+          }
+          console.log(that.creditListBankCard);
+          this.creditWrap.refresh()
+        })
       })
-      this.creditWrap.refresh()
+      this.creditWrap.refresh()*/
     },
     updated() {
-      console.log(this.creditListBankCard)
+
     },
-    methods: {}
+    methods: {
+      loadData() {
+        let that = this
+        this.$store.dispatch("getListBankCard", {
+          data: {
+            id: that.creditListBankCard[that.creditListBankCard.length - 1].id,//最后一条Id，第一次请求不用传
+            bank: that.bank,//银行id，多个则逗号分隔，不传则不进行筛选
+            size: 10//每页展示数量
+          },
+          site: "newCredit"
+        }).then((res) => {
+          console.log(res);
+          this.creditListBankCard = this.creditListBankCard.push(...res)
+        })
+      }
+    }
   }
 
 </script>

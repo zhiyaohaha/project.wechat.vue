@@ -10,5 +10,6 @@ export default {
   productDetailsPageData:null,
   listBanks:null,
   homeListBankCard:null,
-  creditListBankCard:null
+  creditListBankCard:null,
+  newListBankCard:null
 }

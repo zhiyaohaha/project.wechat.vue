@@ -8,6 +8,7 @@ import store from './store'
 import BScroll from 'better-scroll'
 import headline from './components/headline/headline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
+import scroll from './components/scroll/scroll.vue'
 
 import {
   __boxheight,
@@ -23,6 +24,7 @@ import '../static/js/adaptive'
 import 'mint-ui/lib/style.css'
 // import 'vue-ydui/dist/ydui.base.css'
 Vue.component(Loadmore.name, Loadmore);
+Vue.component("scroll",scroll);
 Vue.component('headline', headline)
 Vue.component('pickerMod', pickerMod)
 Vue.component(Popup.name, Popup)

@@ -44,4 +44,8 @@ export default {
     console.log(result)
     state.creditListBankCard = result.data
   },
+  GET_NEWLISTBANKCARD(state,{result}){
+    console.log(result)
+    state.newListBankCard = result.data
+  },
 }
