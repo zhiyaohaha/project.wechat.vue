@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div v-if="creditCardModDatas">
     <ul class="creditCardModList">
-      <li v-for="(creditCardModData, index) in creditCardModDatas">
-        <router-link :to="creditCardModData.url">
-          <img :src="creditCardModData.imgUrl">
+      <li v-for="(creditCardModData, index) in creditCardModDatas" :key="index">
+        <router-link to="/homePage/creditCardPage/cardDetailsPage">
+          <img :src="creditCardModData._logo">
           <div class="creditCardDescribe">
-            <span class="firstLine">{{creditCardModData.title}}</span>
+            <span class="firstLine">{{creditCardModData.name}}</span>
             <span class="secondLine">预估额度：<span class="price">{{creditCardModData.limit}}</span></span>
             <a href="javascript:;" class="applyFor" @click.stop="$router.push(creditCardModData.applyForUrl)"></a>
           </div>

@@ -1,10 +1,10 @@
 <template>
-  <div class="allBankListMod">
+  <div class="allBankListMod" v-if="allBankListDatas">
     <ul class="allBankList">
       <li v-for="(allBankListData, index) in allBankListDatas" :key="index">
-        <router-link :to="allBankListData.url">
-          <img :src="allBankListData.imgUrl">
-          <span>{{allBankListData.title}}</span>
+        <router-link :to="{path: '/homePage/creditCardPage/zhongXinCardPage', query: {name: allBankListData.name}}">
+          <img :src="allBankListData._icon">
+          <span>{{allBankListData.name}}</span>
         </router-link>
       </li>
     </ul>
@@ -14,6 +14,7 @@
 <script>
   export default {
     props:["allBankListDatas"],
+
     data () {
       return {
 
@@ -25,7 +26,6 @@
     computed: {},
 
     mounted(){
-      console.log(this.allBankListDatas[0].url)
     },
 
     methods: {}

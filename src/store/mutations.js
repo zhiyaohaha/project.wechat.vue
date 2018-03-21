@@ -28,4 +28,20 @@ export default {
     console.log(result)
     state.recommendDatas = result.data
   },
+  GET_DETAILEDFOR(state,{result}){
+    console.log(result)
+    state.productDetailsPageData = result.data
+  },
+  GET_LISTBANKS(state,{result}){
+    console.log(result)
+    state.listBanks = result
+  },
+  GET_HOMELISTBANKCARD(state,{result}){
+    console.log(result)
+    state.homeListBankCard = result.data
+  },
+  GET_CREDITLISTBANKCARD(state,{result}){
+    console.log(result)
+    state.creditListBankCard = result.data
+  },
 }

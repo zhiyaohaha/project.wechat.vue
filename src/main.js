@@ -3,12 +3,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { Popup, Picker, Swipe, SwipeItem  } from 'mint-ui'
-// import { Popup } from 'vue-ydui/dist/lib.rem/popup'
-// import {DateTime} from 'vue-ydui/dist/lib.rem/datetime'
+import { Popup, Picker, Swipe, SwipeItem ,Loadmore } from 'mint-ui'
 import store from './store'
 import BScroll from 'better-scroll'
-import split from './components/split/split.vue'
 import headline from './components/headline/headline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
 
@@ -25,8 +22,7 @@ import '../static/css/reset.styl'
 import '../static/js/adaptive'
 import 'mint-ui/lib/style.css'
 // import 'vue-ydui/dist/ydui.base.css'
-
-Vue.component('split', split)
+Vue.component(Loadmore.name, Loadmore);
 Vue.component('headline', headline)
 Vue.component('pickerMod', pickerMod)
 Vue.component(Popup.name, Popup)
@@ -40,6 +36,7 @@ Vue.prototype.getCookie = getCookie
 Vue.prototype.setCookie = setCookie
 Vue.prototype.saveTodos = storageUtil.saveTodos
 Vue.prototype.readTodos = storageUtil.readTodos
+Vue.prototype.apiPrefix = 'http://192.168.6.66:8001/'
 
 Vue.prototype.BScroll = BScroll
 /*let code = __GetRequest().code

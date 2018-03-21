@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="content">
-      <router-view/>
+      <keep-alive>
+        <router-view/>
+      </keep-alive>
     </div>
     <footer class="footerTap" v-if="$route.meta.keepAlive">
       <router-link to="/homePage">
@@ -44,10 +46,10 @@
       setTimeout(() => {
         let userinfo = this.readTodos()
         let data = {
-          openId: userinfo.openid,
+          openId: "undefined",
           thirdLoginType: 'ThirdPlatForm.WeChat',
-          nickName: userinfo.nickname,
-          head: userinfo.headimgurl
+          nickName:"" ,
+          head:""
         }
         this.$store.dispatch('postOpenid', {
           data,
@@ -90,4 +92,34 @@
         width (66 /$rem)
         height (108 /$rem)
         margin (21 /$rem) 0 0 0
+  .mint-msgbox
+    width (864/$rem)
+    height (450 /$rem)
+    font-size (46 /$rem)
+    border-radius (20 /$rem)
+    .mint-msgbox-header
+      box-sizing border-box
+      height (86/$rem)
+      padding: (40 /$rem) 0 0
+      .mint-msgbox-title
+        color #333
+        font-size (46 /$rem)
+    .mint-msgbox-content
+      height (234 /$rem)
+      text-align center
+      line-height (234 /$rem)
+      .mint-msgbox-message
+        display inline
+        font-size (42 /$rem)
+        color #333
+    .mint-msgbox-btns
+      height (130 /$rem)
+      line-height (130 /$rem)
+      .mint-msgbox-confirm
+        font-size (46 /$rem)
+        background-color #efca7d
+      .mint-msgbox-cancel
+        font-size (46 /$rem)
+        color #333
+
 </style>

@@ -2,7 +2,7 @@
   <div v-if="recommendModDatas">
     <ul class="recommendMod">
       <li v-for="(recommend, index) in recommendModDatas" :key="index" :class="{recommendModTop: index != 0 }">
-        <a href="javascript:;" @click="getCookie('whether') === '0' ? '/phoneApprove':'/homePage/productPage/productDetailsPage'">
+        <a href="javascript:;" @click="goToMain(recommend.id)">
           <div class="recommendModLogo">
             <img :src="recommend.basic._logo">
           </div>
@@ -15,7 +15,7 @@
             </div>
             <span class="asSecondLine">{{recommend.summary}}</span>
           </div>
-        </router-link>
+        </a>
       </li>
     </ul>
   </div>
@@ -36,10 +36,17 @@
 
     },
     mounted() {
-      console.log(this.recommendModDatas)
     },
 
-    methods: {}
+    methods: {
+      goToMain(id) {
+        if(this.getCookie('whether') === "1"){
+          this.$router.push({path:'/homePage/productPage/productDetailsPage',query:{id}})
+        }else {
+          this.$router.push("/phoneApprove")
+        }
+      }
+    }
   }
 
 </script>

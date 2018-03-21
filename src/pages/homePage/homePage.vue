@@ -1,10 +1,12 @@
 <template>
   <div>
-    <router-view/>
-
+    <keep-alive>
+      <router-view v-if="!$route.meta.cache"/>
+    </keep-alive>
+    <router-view v-if="$route.meta.cache"/>
     <div class="homePageWrap" ref="homePageWrap" v-show="$route.meta.keepAlive">
-      <div @click="changeTop" ref="homePage">
-        <header class="homePageHeader">
+      <div @click="changeTop">
+        <header class="homePageHeader" v-if="$route.meta.keepAlive">
           <mt-swipe :auto="2000" :prevent="true" :stopPropagation="true" :showIndicators="false">
             <mt-swipe-item><img src="./img/xinyongkabanner.png"></mt-swipe-item>
             <mt-swipe-item><img src="./img/banner1.png"></mt-swipe-item>
@@ -15,10 +17,10 @@
           <loanMod :loanModDatas="loanModDatas"/>
           <generalizeMod :generalizeModData="generalizeModData"/>
           <generalizeMod :generalizeModData="visaDatas"/>
-          <headline :headlineData="{title:'热门贷款推荐',more:'更多贷款推荐'}"/>
+          <headline :headlineData="{title:'热门贷款推荐',more:'更多贷款推荐',url:'/homePage/productPage'}"/>
           <recommendMod :recommendModDatas="recommendModDatas"/>
-          <headline :headlineData="{title:'热门信用卡推荐',more:'更多信用卡推荐'}"/>
-          <creditCardMod :creditCardModDatas="creditCardModDatas"/>
+          <headline :headlineData="{title:'热门信用卡推荐',more:'更多信用卡推荐',url:'/homePage/creditCardPage'}"/>
+          <recommendList :recommendListDatas="homeListBankCard"/>
           <footline footlineTitle="我是有底线的~"/>
         </div>
         <div class="footerOccupied">
@@ -29,13 +31,13 @@
 </template>
 <script>
   import {MessageBox} from "mint-ui"
-  import {mapState} from "vuex"
+  import {mapState, mapGetters} from "vuex"
   import loanMod from "../../components/loanMod/loanMod.vue"
   import generalizeMod from "../../components/generalizeMod/generalizeMod.vue"
   import recommendMod from "../../components/recommendMod/recommendMod.vue"
   import footline from "../../components/footline/footline.vue"
   import creditCardMod from "../../components/creditCardMod/creditCardMod.vue"
-  import headline from "../../components/headline/headline.vue"
+  import recommendList from "../../components/recommendList/recommendList.vue"
   import {getListForApp} from '../../api'
 
   export default {
@@ -109,84 +111,73 @@
             }
           ]
         },
-        /*recommendModDatas:[
-          /!*{
-            url:"/homePage/productPage/productDetailsPage",
-            recommendModLogoUrl:"../../../static/img/homeImg/content_pic_jiuynengkai.png",
-            title:"久亿-能卡",
-            interestRate:"XX.XX%",
-            rate:"XX.XX%",
-            price:"1000-10万元",
-            score:4,
-          },
-          {
-            url:"/homePage/productPage/productDetailsPage",
-            recommendModLogoUrl:"../../../static/img/homeImg/content_pic_xiaoyin.png",
-            title:"小米卡贷-信用卡代还",
-            interestRate:"XX.XX%",
-            rate:"XX.XX%",
-            price:"1000-10万元",
-            score:4,
-
-          },*!/
-        ],*/
-        creditCardModDatas: [
-          {
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            imgUrl: "../../static/img/homeImg/kapian.png",
-            title: "信用卡名称",
-            limit: "10000-100000元",
-            applyForUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            imgUrl: "../../static/img/homeImg/kapian.png",
-            title: "信用卡名称",
-            limit: "10000-100000元",
-            applyForUrl: "/homePage/creditCardPage/cardApplyForPage"
-          }
-        ],
         top: 0
       }
     },
 
     components: {
-      headline, loanMod, generalizeMod, recommendMod, footline, creditCardMod
+      loanMod, generalizeMod, recommendMod, footline, creditCardMod, recommendList
     },
 
     computed: {
-      ...mapState(["openID","recommendModDatas"])
+      ...mapState(["openID", "recommendModDatas", "listBanks", "homeListBankCard"]),
     },
-   created() {
-     let data ={
-       name: 'LoanProductType.Speed',
-       id: this.__GetRequest().id,
-       size: '',
-       hot: true
-     }
-     this.$store.dispatch("getListForApp", {data})
+    created() {
+      let data = {
+        name: 'LoanProductType.Speed',
+        id: this.__GetRequest().id,
+        size: 2,
+        hot: true
+      }
+      this.$store.dispatch("getListForApp", {data})
+      this.$store.dispatch("getListBanks").then((res) => {
+        let bank = ""
+        res.forEach((item) => {
+          bank += item.id + ","
+        })
+
+        this.$store.dispatch("getListBankCard", {
+          data: {
+            id: '',//最后一条Id，第一次请求不用传
+            bank: bank,//银行id，多个则逗号分隔，不传则不进行筛选
+            size: 2//每页展示数量
+          },
+          site:"home"
+        })
+      })
+
     },
     mounted() {
-
       this.__boxheight(this.$refs.homePageWrap); //执行函数
       window.onresize = this.__boxheight(this.$refs.homePageWrap); //窗口或框架被调整大小时执行
-      this.$nextTick(() => {
-        this._initScroll()
+      this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {
+        click: true,
+        startY: this.top,
+        momentumLimitDistance: 150,
+        flickLimitTime: 10,
+        bindToWrapper: true,
+        pullDownRefresh: {
+          threshold: 50,
+          stop: 20
+        }
       })
-      console.log(this.recommendModDatas)
+      this.homePageWrap.refresh()
     },
-
     updated() {
       if (this.$route.meta.homeShow) {
-        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true, startY: this.top, probeType: 3})
+        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {
+          click: true,
+          startY: this.top,
+          omentumLimitDistance: 150,
+          pullUpLoad:{
+            threshold: 50,
+            stop:10
+          }
+        })
         this.homePageWrap.refresh()
       }
     },
     methods: {
-      _initScroll() {
-        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {click: true})
-        this.homePageWrap.refresh()
-      },
       changeTop() {
         this.top = this.homePageWrap.y
       }

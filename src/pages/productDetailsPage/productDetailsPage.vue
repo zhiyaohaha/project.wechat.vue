@@ -1,26 +1,28 @@
 <template>
-  <div>
+  <div v-if="productDetailsPageData">
     <header class="productDetailsHeader">
       <div class="imgWrap">
-        <img src="../../../static/img/productImg/jisudai.png">
+        <img :src="productDetailsPageData.basic._logo">
       </div>
       <div class="describe">
-        <div class="productTitle">宜人极速 - 秒下款</div>
-        <div class="limit">额度范围:1000-20000</div>
-        <div class="lightspot">亮点:凭信用卡，10分钟轻松贷款10万元</div>
+        <div class="productTitle">{{productDetailsPageData.basic.name}}</div>
+        <div class="limit">
+          额度范围:{{productDetailsPageData.filter.amount_min+'-'+productDetailsPageData.filter.amount_max}}
+        </div>
+        <div class="lightspot">{{productDetailsPageData.summary}}</div>
       </div>
     </header>
     <div class="productDetailContent">
       <headline :headlineData="{title:'申请条件',line:true}"/>
       <div class="applyForCondition">
         <ul class="applyForList">
-          <li v-for="(applyForListDatas, index) in applyForListDatas">
-            <span>{{applyForListDatas.character}}</span>
+          <li v-for="(applyForListData, index) in (productDetailsPageData.filter.applicationConditions.split('\n'))">
+            <span>{{applyForListData}}</span>
           </li>
         </ul>
       </div>
       <headline :headlineData="{title:'认证材料',line:true}"/>
-      <authenticationList :authenticationListDatas="authenticationListDatas"/>
+      <authenticationList :authenticationListDatas="productDetailsPageData.attachment"/>
       <ul class="mform">
         <li v-for="(mformData, index) in mformDatas" :key="index">
           <span class="description">{{mformData.description}}</span>
@@ -35,8 +37,8 @@
       </ul>
     </div>
 
-    <footer class="productDetailsFooter" v-show="FooterShow">
-      <a href="javascript:;">
+    <footer class="productDetailsFooter" v-show="FooterShow" @click="applyFor">
+      <a href="javascript:">
         立即申请
       </a>
     </footer>
@@ -44,45 +46,14 @@
 </template>
 
 <script>
-  import {Toast} from "mint-ui"
+  import {Toast, MessageBox} from "mint-ui"
+  import {mapState} from "vuex"
+  import {postSpeedOrder} from "../../api"
   import authenticationList from "../../components/authenticationList/authenticationList.vue"
 
   export default {
     data() {
       return {
-        applyForListDatas: [
-          {
-            character: "1，年龄要求:23-25周岁",
-          },
-          {
-            character: "2，本人需要有正在使用的信用卡",
-          },
-          {
-            character: "3，本人需要有正在使用的淘宝(支付宝)账户",
-          },
-          {
-            character: "4，本人需要有实名认证的手机号",
-          },
-
-        ],
-        authenticationListDatas: [
-          {
-            imgUrl: "../../../static/img/productImg/id.png",
-            character: "身份证"
-          },
-          {
-            imgUrl: "../../../static/img/productImg/xinyongka.png",
-            character: "信用卡"
-          },
-          {
-            imgUrl: "../../../static/img/productImg/zhifubao.png",
-            character: "支付宝账号"
-          },
-          {
-            imgUrl: "../../../static/img/productImg/shoujihao.png",
-            character: "手机号"
-          },
-        ],
         mformDatas: [
           {
             description: "姓名：",
@@ -90,6 +61,7 @@
             name: "userName",
             model: "",
             reg: /^[\u4e00-\u9fa5_a-zA-Z]{0,}$/,
+            regular: /^[\u4e00-\u9fa5_a-zA-Z]{1,}$/
           },
           {
             description: "身份证号：",
@@ -97,14 +69,17 @@
             name: "IDnumber",
             model: "",
             reg: /^[0-9xX]{0,18}$/,
+            regular: /^[0-9xX]{15,18}$/,
             maxlength: "18"
           },
           {
             description: "手机号：",
             placeholder: "请输入手机号",
-            name: "userName",
+            name: "phoneNum",
             model: "",
             reg: /^[0-9]{0,11}$/,
+            regular: /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
+            maxlength: "11"
           },
         ],
         FooterShow: true
@@ -115,14 +90,45 @@
       authenticationList
     },
 
-    computed: {},
+    computed: {
+      ...mapState(['productDetailsPageData'])
+    },
     created() {
-
+      this.$store.dispatch("getDetailedFor", {id: this.$route.query.id})
     },
     mounted() {
     },
 
     methods: {
+      //申请
+      applyFor() {
+        let mformDatas = this.mformDatas
+        let judge = this.mformDatas.filter((item) => {
+          return item.regular.test(item.model)
+        })
+        if (judge.length === this.mformDatas.length) {
+          let data = {
+            mobilePhone: this.mformDatas[2].model,//手机
+            idCard: this.mformDatas[1].model,  //身份证
+            name: this.mformDatas[0].model,   //姓名
+            product: this.productDetailsPageData.id, //产品Id
+            source: 'OfficialAccounts'  //来源
+          }
+          let apiPrefix = 'http://192.168.6.66:8001'
+          let url = apiPrefix + "/api/LoanOrder/SpeedOrderRecordForApp"
+          postSpeedOrder(url, data).then((res) => {
+            console.log(res.data.url);
+            window.location.href = res.data.url
+          })
+        } else {
+          MessageBox({
+            title: '提示',
+            message: '请正确输入信息',
+            showCancelButton: false
+          })
+        }
+
+      },
       isFooter() {
         this.FooterShow = false
       },
@@ -130,7 +136,6 @@
         this.FooterShow = true
       },
       goodInput(reg, flag, index) {
-//        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (!reg.test(flag)) {
           Toast({
             message: "格式错误",
@@ -247,7 +252,7 @@
     left 0
     a
       height 100%
-      background-color: #efca7d;
+      background-color: #efca7d
       font-size (48 /$rem)
       color #ffffff
       text-align center

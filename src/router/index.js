@@ -1,6 +1,6 @@
-
 import Vue from 'vue'
 import Router from 'vue-router'
+
 const homePage = () => import('../pages/homePage/homePage.vue')
 const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
 const loanPage = () => import('../pages/loanPage/loanPage.vue')
@@ -41,14 +41,14 @@ const router = new Router({
         keepAlive: true,
         isTop: true,
         footerShow: true,
-        homeShow:true,
+        homeShow: true,
         title: '首页'
       },
       children: [
         {
           path: 'loanPage',
           component: loanPage,
-          meta: {keepAlive: false, isTop: true, title: '贷款产品'},
+          meta: {keepAlive: false, isTop: true, title: '快速贷款'},
         },
         {
           path: 'productPage',
@@ -70,7 +70,7 @@ const router = new Router({
             {
               path: 'zhongXinCardPage',
               component: zhongXinCardPage,
-              name:"银行卡详情",
+              name: "银行卡详情",
               meta: {keepAlive: false, isTop: false, title: ''},
             },
             {
@@ -111,11 +111,10 @@ const router = new Router({
           component: materialPage,
           meta: {keepAlive: false, isTop: false, title: '推广素材'},
         },
-
         {
           path: 'generalizePage',
           component: generalizePage,
-          meta: {keepAlive: false, isTop: true, title: '赚佣金'},
+          meta: {keepAlive: false, cache:true ,isTop: true, title: '赚佣金'},
         },
 
       ]
@@ -133,7 +132,7 @@ const router = new Router({
     {
       path: '/myPage',
       component: myPage,
-      meta: {keepAlive: true, isTop: true, footerShow: false,homeShow:false , title: '我的'},
+      meta: {keepAlive: true, isTop: true, footerShow: false, homeShow: false, title: '我的'},
       children: [
         {
           path: 'generalizeYiPage',
@@ -185,7 +184,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
-  if(to.name == "银行卡详情"){
+  if (to.name == "银行卡详情") {
     to.meta.title = to.query.name
   }
   if (to.meta.title) {

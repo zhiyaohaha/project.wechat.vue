@@ -3,7 +3,7 @@ import md5 from 'js-md5'
 import {postAuth} from '../../static/js/viewportWidth'
 
 axios.defaults.withCredentials = true
-export default function ajax (url = '', data = {}, type = 'GET') {
+export default function ajax(url = '', data = {}, type = 'GET') {
   return new Promise(function (resolve, reject) {
     // if (type === 'GET') {
     // 准备url query参数数据
@@ -17,13 +17,11 @@ export default function ajax (url = '', data = {}, type = 'GET') {
         dataStr += key + '=' + data[key] + '&'
       })
 
-      if (dataStr !== '') {
-        let timestamp = (new Date().getTime()).toString().substr(0, 10)
-        dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'))
-        console.log(dataStr + timestamp + '84qudMIhOkX5JMQXVd0f4jneqfP2Lp')
-        let sign = md5(dataStr + timestamp + '84qudMIhOkX5JMQXVd0f4jneqfP2Lp')
-        url = url + '?' + dataStr + '&timestamp=' + timestamp + '&sign=' + sign
-      }
+      let timestamp = (new Date().getTime()).toString().substr(0, 10)
+      dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'))
+      let sign = md5(dataStr + timestamp + '84qudMIhOkX5JMQXVd0f4jneqfP2Lp')
+      url = url + '?' + dataStr + '&timestamp=' + timestamp + '&sign=' + sign
+
       promise = axios.get(url)
       // axios.get(url)
     } else {

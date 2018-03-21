@@ -1,7 +1,7 @@
 <template>
   <div class="headline" :class="{line:headlineData.line}">
     <span>{{headlineData.title}}</span>
-    <span class="more" v-if="headlineData.more">{{headlineData.more}} ></span>
+    <span class="more" v-if="headlineData.more" @click="$router.push(headlineData.url)">{{headlineData.more}} ></span>
   </div>
 </template>
 

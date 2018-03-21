@@ -1,8 +1,8 @@
 <template>
   <div>
     <router-view/>
-    <div v-if="$route.meta.isTop">
-      <div>
+    <div ref="productPageWrap">
+      <div v-show="$route.meta.isTop">
         <header class="productPageHeader">
           <img src="./img/xinyongkabanner.png">
         </header>
@@ -45,8 +45,11 @@
       this.$store.dispatch("getListForApp", {data})
     },
     mounted() {
+      this.__boxheight(this.$refs.productPageWrap)
+      window.onresize = this.__boxheight(this.$refs.productPageWrap)
+      this.productPageWrap = new this.BScroll(this.$refs.productPageWrap, {click: true})
     },
-
+    updated(){},
     methods: {}
   }
 
