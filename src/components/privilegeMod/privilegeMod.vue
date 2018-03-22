@@ -3,8 +3,8 @@
     <div class="privilegeContent">
       <ul class="privilegeList">
         <li v-for="(privilegeModData, index) in privilegeModDatas" :key="index">
-          <span class="privilegeLog" :style="{'backgroundImage':'url(' + privilegeModData.bgUrl + ')'}"></span>
-          <span class="describe">{{privilegeModData.title}}</span>
+          <span class="privilegeLog" :style="{'backgroundImage':`url(${index === 0 ? bgqUrl:bgfUrl})`}"></span>
+          <span class="describe">{{privilegeModData}}</span>
         </li>
       </ul>
     </div>
@@ -16,7 +16,8 @@
     props:["privilegeModDatas"],
     data () {
       return {
-
+        bgqUrl:"../../../static/img/creditCardImg/qian.png",
+        bgfUrl:"../../../static/img/creditCardImg/youhui.png",
       }
     },
 

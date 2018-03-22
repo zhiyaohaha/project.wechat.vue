@@ -1,11 +1,9 @@
 <template>
   <div class="allBankListMod" v-if="allBankListDatas">
     <ul class="allBankList">
-      <li v-for="(allBankListData, index) in allBankListDatas" :key="index">
-        <router-link :to="{path: '/homePage/creditCardPage/zhongXinCardPage', query: {name: allBankListData.name}}">
-          <img :src="allBankListData._icon">
-          <span>{{allBankListData.name}}</span>
-        </router-link>
+      <li v-for="(allBankListData, index) in allBankListDatas" :key="index" @click="redirect(allBankListData)">
+        <img :src="allBankListData._icon">
+        <span>{{allBankListData.name}}</span>
       </li>
     </ul>
   </div>
@@ -13,22 +11,38 @@
 
 <script>
   export default {
-    props:["allBankListDatas"],
+    props: ["allBankListDatas"],
 
-    data () {
-      return {
-
-      }
+    data() {
+      return {}
     },
 
     components: {},
 
     computed: {},
 
-    mounted(){
+    mounted() {
     },
 
-    methods: {}
+    methods: {
+      redirect(item) {
+        this.$store.dispatch("getListBankCard", {
+          data: {
+            id: "",//最后一条Id，第一次请求不用传
+            bank: item.id,//银行id，多个则逗号分隔，不传则不进行筛选
+            size: 10//每页展示数量
+          },
+          site: "all"
+        })
+        this.$router.push({
+          path: '/homePage/creditCardPage/zhongXinCardPage',
+          query: {
+            name: item.name,
+            id:item.id
+          }
+        })
+      }
+    }
   }
 
 </script>
@@ -36,20 +50,20 @@
   .allBankListMod
     .allBankList
       overflow hidden
-      width (1080/$rem)
+      width (1080 /$rem)
       li
         box-sizing border-box
         float left
         width 25%
         text-align center
-        padding-top (50/$rem)
+        padding-top (50 /$rem)
         img
           display inline-block
-          width (136/$rem)
-          height (136/$rem)
+          width (136 /$rem)
+          height (136 /$rem)
         span
           display block
-          font-size (36/$rem)
+          font-size (36 /$rem)
           color #333
-          margin-top (30/$rem)
+          margin-top (30 /$rem)
 </style>

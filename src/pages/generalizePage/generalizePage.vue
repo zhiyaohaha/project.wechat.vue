@@ -18,7 +18,7 @@
     </div>
     <div class="QRcodeWrap">
       <transition name="fade">
-        <img src="./img/erweima.jpg" class="QRcode" v-show="QRcodeShow">
+        <img :src="inviteurl" class="QRcode" v-show="QRcodeShow">
       </transition>
       <transition name="tran">
         <footer class="generalizeFooter" v-show="!QRcodeShow">
@@ -33,54 +33,60 @@
 </template>
 
 <script>
+  import {mapState} from "vuex"
   export default {
-    data () {
+    data() {
       return {
-        QRcodeShow:false,
+        QRcodeShow: false,
       }
     },
 
     components: {},
 
     computed: {
-      cookikeIf(){
+      ...mapState(["inviteurl"]),
+      cookikeIf() {
         return this.getCookie('whether') === '1'
       }
     },
-    watch: {
+    watch: {},
+    created() {
+      this.$store.dispatch("getInviteUrl")
 
     },
-    created () {
-
-    },
-    mounted () {
+    mounted() {
       // console.log(this.getCookie('whether') === '1') ? this.QRcodeShow = true : this.QRcodeShow = false
       this.QRcodeShow = this.cookikeIf
       console.log(this.QRcodeShow)
     },
-    updated () {
+    updated() {
+      console.log(this.inviteurl)
     },
 
-    methods: {
-    }
+    methods: {}
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .fade-enter-active, .fade-leave-active
-    transition: all 0.5s ;
+    transition: all 0.5s;
+
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
     transform translateY(100%)
+
   .tran-enter-active, .tran-leave-active
-    transition: all 1s ;
+    transition: all 1s;
+
   .tran-enter, .tran-leave-to /* .fade-leave-active below version 2.1.8 */
     transform translateY(100%)
+
   .generalizeHeader
-    height (520/$rem)
-    margin-bottom  (10/$rem)
+    height (520 /$rem)
+    margin-bottom (10 /$rem)
     img
       width 100%
       height 100%
+
   .generalizeContent
     box-sizing border-box
     padding 0 (30 /$rem)
@@ -93,32 +99,33 @@
       line-height 0.75em
       margin: 0; /*去掉默认的段间距*/
       span
-        font-size (40/$rem)
+        font-size (40 /$rem)
         &:last-child
-          font-size (36/$rem)
+          font-size (36 /$rem)
       &:first-child
-        text-indent:1em
+        text-indent: 1em
       &:last-child
-        text-indent:1em
+        text-indent: 1em
+
   .QRcodeWrap
     overflow hidden
     box-sizing border-box
     position relative
-    padding (50/$rem) 0
+    padding (50 /$rem) 0
     .generalizeFooter
       box-sizing border-box
       height (262 /$rem)
       width (1080 /$rem)
-      padding (58/$rem) 0
+      padding (58 /$rem) 0
       a
-        height (146/$rem)
-        width (1020/$rem)
+        height (146 /$rem)
+        width (1020 /$rem)
         background-color: #efca7d;
         color #ffffff
         text-align center
         line-height (146 /$rem)
         font-size (48 /$rem)
-        border-radius (15/$rem)
+        border-radius (15 /$rem)
         margin 0 auto
     .QRcode
       margin 0 auto

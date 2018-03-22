@@ -7,6 +7,7 @@ import { Popup, Picker, Swipe, SwipeItem ,Loadmore } from 'mint-ui'
 import store from './store'
 import BScroll from 'better-scroll'
 import headline from './components/headline/headline.vue'
+import footline from './components/footline/footline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
 import scroll from './components/scroll/scroll.vue'
 
@@ -27,10 +28,12 @@ Vue.component(Loadmore.name, Loadmore);
 Vue.component("scroll",scroll);
 Vue.component('headline', headline)
 Vue.component('pickerMod', pickerMod)
+Vue.component('footline', footline)
 Vue.component(Popup.name, Popup)
 // Vue.component(DateTime.name, DateTime)
 // Vue.component(Picker.name, Picker)
 Vue.component(Swipe.name, Swipe)
+
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.prototype.__boxheight = __boxheight
 Vue.prototype.__GetRequest = __GetRequest
@@ -38,7 +41,7 @@ Vue.prototype.getCookie = getCookie
 Vue.prototype.setCookie = setCookie
 Vue.prototype.saveTodos = storageUtil.saveTodos
 Vue.prototype.readTodos = storageUtil.readTodos
-Vue.prototype.apiPrefix = 'http://192.168.6.66:8001/'
+Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
 
 Vue.prototype.BScroll = BScroll
 /*let code = __GetRequest().code

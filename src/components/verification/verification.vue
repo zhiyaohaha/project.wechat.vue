@@ -35,7 +35,7 @@
 
     computed: {
       verification(){
-        let url = "http://192.168.6.66:8001/api/OfficialAccounts/ValidateCode?time="
+        let url = "http://211.94.137.70:8001/api/OfficialAccounts/ValidateCode?time="
         let src = url+ this.time
         return src
       },

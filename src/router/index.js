@@ -54,13 +54,11 @@ const router = new Router({
           path: 'productPage',
           component: productPage,
           meta: {keepAlive: false, isTop: true, title: '贷款产品'},
-          children: [
-            {
-              path: 'productDetailsPage',
-              component: productDetailsPage,
-              meta: {keepAlive: false, isTop: false, title: '产品详情'},
-            }
-          ]
+        },
+        {
+          path: 'productDetailsPage',
+          component: productDetailsPage,
+          meta: {keepAlive: false, cache: true, isTop: false, title: '产品详情'},
         },
         {
           path: 'creditCardPage',
@@ -73,18 +71,17 @@ const router = new Router({
               name: "银行卡详情",
               meta: {keepAlive: false, isTop: false, title: ''},
             },
-            {
-              path: 'cardApplyForPage',
-              component: cardApplyForPage,
-              meta: {keepAlive: false, isTop: false, title: '信用卡申请'},
-            },
-            {
-              path: 'cardDetailsPage',
-              component: cardDetailsPage,
-              meta: {keepAlive: false, isTop: false, title: '信用卡详情'},
-            },
-
           ]
+        },
+        {
+          path: 'cardApplyForPage',
+          component: cardApplyForPage,
+          meta: {keepAlive: false, isTop: false, title: '信用卡申请'},
+        },
+        {
+          path: 'cardDetailsPage',
+          component: cardDetailsPage,
+          meta: {keepAlive: false, isTop: false, title: '信用卡详情'},
         },
         {
           path: 'strategyPage',
@@ -114,7 +111,7 @@ const router = new Router({
         {
           path: 'generalizePage',
           component: generalizePage,
-          meta: {keepAlive: false, cache:true ,isTop: true, title: '赚佣金'},
+          meta: {keepAlive: false, cache: true, isTop: true, title: '赚佣金'},
         },
 
       ]

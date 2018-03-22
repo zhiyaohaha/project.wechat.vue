@@ -44,8 +44,16 @@ export default {
     console.log(result)
     state.creditListBankCard = result.data
   },
-  GET_NEWLISTBANKCARD(state,{result}){
+  GET_ALLLISTBANKCARD(state,{result}){
     console.log(result)
-    state.newListBankCard = result.data
+    state.ALLListBankCard = result.data
+  },
+  GET_LISTBANKCARDDETAIL(state,{result}){
+    console.log(result)
+    state.bankCardDetail = result.data
+  },
+  GET_INVITEURL(state,{result}){
+    console.log(result)
+    state.inviteurl = result.message
   },
 }

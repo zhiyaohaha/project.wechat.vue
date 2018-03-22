@@ -1,14 +1,14 @@
 <template>
   <div class="footline">
     <a href="javascript:;">
-      <span>{{footlineTitle}}</span>
+      <span>{{title}}</span>
     </a>
   </div>
 </template>
 
 <script>
   export default {
-    props:["footlineTitle"],
+    props:["title"],
     data () {
       return {
 

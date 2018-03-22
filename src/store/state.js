@@ -11,5 +11,8 @@ export default {
   listBanks:null,
   homeListBankCard:null,
   creditListBankCard:null,
-  newListBankCard:null
+  newListBankCard:null,
+  ALLListBankCard:null,
+  bankCardDetail:null,
+  inviteurl:null
 }

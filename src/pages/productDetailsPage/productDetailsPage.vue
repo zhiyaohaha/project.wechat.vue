@@ -102,7 +102,6 @@
     methods: {
       //申请
       applyFor() {
-        let mformDatas = this.mformDatas
         let judge = this.mformDatas.filter((item) => {
           return item.regular.test(item.model)
         })
@@ -114,8 +113,7 @@
             product: this.productDetailsPageData.id, //产品Id
             source: 'OfficialAccounts'  //来源
           }
-          let apiPrefix = 'http://192.168.6.66:8001'
-          let url = apiPrefix + "/api/LoanOrder/SpeedOrderRecordForApp"
+          let url = this.apiPrefix + "/api/LoanOrder/SpeedOrderRecordForApp"
           postSpeedOrder(url, data).then((res) => {
             console.log(res.data.url);
             window.location.href = res.data.url

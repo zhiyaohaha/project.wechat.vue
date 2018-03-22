@@ -21,7 +21,7 @@
           <recommendMod :recommendModDatas="recommendModDatas"/>
           <headline :headlineData="{title:'热门信用卡推荐',more:'更多信用卡推荐',url:'/homePage/creditCardPage'}"/>
           <recommendList :recommendListDatas="homeListBankCard"/>
-          <footline footlineTitle="我是有底线的~"/>
+          <footline title="我是有底线的~"/>
         </div>
         <div class="footerOccupied">
         </div>
@@ -142,7 +142,7 @@
             bank: bank,//银行id，多个则逗号分隔，不传则不进行筛选
             size: 2//每页展示数量
           },
-          site:"home"
+          site: "home"
         })
       })
 
@@ -168,17 +168,11 @@
         this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {
           click: true,
           startY: this.top,
-          omentumLimitDistance: 150,
-          pullUpLoad:{
-            threshold: 50,
-            stop:10
-          }
         })
-        this.homePageWrap.refresh()
       }
     },
     methods: {
-      changeTop() {
+      changeTop(){
         this.top = this.homePageWrap.y
       }
     }

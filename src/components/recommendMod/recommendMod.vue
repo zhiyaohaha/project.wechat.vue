@@ -41,7 +41,7 @@
     methods: {
       goToMain(id) {
         if(this.getCookie('whether') === "1"){
-          this.$router.push({path:'/homePage/productPage/productDetailsPage',query:{id}})
+          this.$router.push({path:'/homePage/productDetailsPage',query:{id}})
         }else {
           this.$router.push("/phoneApprove")
         }

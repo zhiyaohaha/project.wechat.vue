@@ -18,10 +18,11 @@
   </div>
 </template>
 <script>
-  import { mapState } from 'vuex'
+  import {mapState} from 'vuex'
+  import {getInviteUrl} from './api'
 
   export default {
-    data () {
+    data() {
       return {
         footerShow: true
       }
@@ -30,7 +31,7 @@
     computed: {
       ...mapState(['openID', 'userinfo'])
     },
-    beforeCreate () {
+    beforeCreate() {
       //获取用户信息
       let obj = this.__GetRequest()
       this.$store.dispatch('getUserinfo', {
@@ -41,15 +42,16 @@
         }
       })
     },
-    created () {
+    created() {
 
+      getInviteUrl(this.apiPrefix + "api/Loginer/GetInviteUrl")
       setTimeout(() => {
         let userinfo = this.readTodos()
         let data = {
           openId: "undefined",
           thirdLoginType: 'ThirdPlatForm.WeChat',
-          nickName:"" ,
-          head:""
+          nickName: "",
+          head: ""
         }
         this.$store.dispatch('postOpenid', {
           data,
@@ -61,7 +63,7 @@
         })
       }, 1000)
     },
-    mounted () {
+    mounted() {
 
 
     },
@@ -92,14 +94,15 @@
         width (66 /$rem)
         height (108 /$rem)
         margin (21 /$rem) 0 0 0
+
   .mint-msgbox
-    width (864/$rem)
+    width (864 /$rem)
     height (450 /$rem)
     font-size (46 /$rem)
     border-radius (20 /$rem)
     .mint-msgbox-header
       box-sizing border-box
-      height (86/$rem)
+      height (86 /$rem)
       padding: (40 /$rem) 0 0
       .mint-msgbox-title
         color #333

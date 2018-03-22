@@ -287,7 +287,7 @@
         let judge = this.mformDatas.filter((item)=>{
           return  (item.regular.test(item.model)&&(item.model !== ''))
         })
-        if((judge.length == this.mformDatas.length)&&(this.__propertyCase().length > 0)){
+        if(judge.length == this.mformDatas.length){
           let that = this
           let url = this.apiPrefix + "api/OfficialAccounts/InsertLoanDemand"
           postLoanDemand(url,{

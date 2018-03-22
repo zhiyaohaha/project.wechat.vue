@@ -3,12 +3,12 @@
     <div ref="CardDetailsWrap">
       <div>
         <header class="CardDetailsHeader">
-          <img src="../../../static/img/creditCardImg/kapian.png">
+          <img :src="bankCardDetail._logo">
         </header>
-        <headline :headlineData="{title:'交通银行标准信用卡金卡',line:true}"/>
+        <headline :headlineData="{title:bankCardDetail.name,line:true}"/>
         <div class="CardDetailsContent">
           <headline :headlineData="{title:'专享特权',line:true}"/>
-          <privilegeMod :privilegeModDatas="privilegeModDatas"/>
+          <privilegeMod :privilegeModDatas="bankCardDetail.exclusivePrivilege"/>
           <headline :headlineData="{title:'基本信息',line:true}"/>
           <detailsMessageMod :detailsMessageDatas="detailsMessageDatas"/>
         </div>
@@ -17,7 +17,7 @@
       </div>
     </div>
     <footer class="CardDetailsFooter">
-      <a href="javascript:;" @touchstart.stop="$router.push('/homePage/creditCardPage/cardApplyForPage')">立即申请</a>
+      <a href="javascript:;" @touchstart.stop="$router.push({path:'/homePage/cardApplyForPage',query:{id:bankCardDetail.id}})">立即申请</a>
     </footer>
   </div>
 </template>
@@ -26,18 +26,11 @@
   import cardHeadLine from '../../components/cardHeadLine/cardHeadLine.vue'
   import privilegeMod from '../../components/privilegeMod/privilegeMod.vue'
   import detailsMessageMod from '../../components/detailsMessageMod/detailsMessageMod.vue'
+  import {mapState} from "vuex"
 
   export default {
-    data () {
+    data() {
       return {
-        cardHeadLineData: {
-          title: '专享特权',
-          aFont: ''
-        },
-        message: {
-          title: '基本信息',
-          aFont: ''
-        },
         privilegeModDatas: [
           {
             bgUrl: '../../../static/img/creditCardImg/qian.png',
@@ -52,32 +45,6 @@
             title: '赠送200万航空业务险'
           },
         ],
-        detailsMessageDatas: [
-          {
-            describe: '等级',
-            price: '金卡'
-          },
-          {
-            describe: '币种',
-            price: '人民币'
-          },
-          {
-            describe: '发卡组织',
-            price: '银联'
-          },
-          {
-            describe: '免息期限',
-            price: '最短20天，最长50天'
-          },
-          {
-            describe: '积分规则',
-            price: '取现1元1积分，消费1元1积分'
-          },
-          {
-            describe: '申请条件',
-            price: '18岁 有工作'
-          },
-        ]
       }
     },
 
@@ -85,9 +52,43 @@
       cardHeadLine, privilegeMod, detailsMessageMod
     },
 
-    computed: {},
+    computed: {
+      ...mapState(["bankCardDetail"]),
 
-    mounted () {
+      detailsMessageDatas() {
+        let that = this
+        let Arr = []
+        Arr = Arr.concat(
+          [
+            {
+              describe: "等级",
+              price: that.bankCardDetail._level
+            },
+            {
+              describe: "币种",
+              price: that.bankCardDetail._currency
+            },
+            {
+              describe: "发卡组织",
+              price: that.bankCardDetail._issuingOrg
+            },
+            {
+              describe: "免息期限",
+              price: `最短${that.bankCardDetail.interestFreePeriodMin}天，最长${that.bankCardDetail.interestFreePeriodMax}天`
+            },
+            {
+              describe: "申请条件",
+              price: that.bankCardDetail.applicationConditions
+            },
+          ]
+        )
+
+        return Arr
+
+      }
+    },
+
+    mounted() {
       this.__boxheight(this.$refs.CardDetailsWrap) //执行函数
       window.onresize = this.__boxheight(this.$refs.CardDetailsWrap) //窗口或框架被调整大小时执行
       this.CardDetailsWrap = new this.BScroll(this.$refs.CardDetailsWrap, {click: true,})
@@ -118,10 +119,10 @@
     left 0
     a
       text-align center
-      line-height (150/$rem)
+      line-height (150 /$rem)
       width (1080 /$rem)
       height (150 /$rem)
       background-color #efca7d
       color #ffffff
-      font-size (48/$rem)
+      font-size (48 /$rem)
 </style>

@@ -32,16 +32,17 @@
         </li>
       </ul>
     </div>
-    <footer class="applyForFooter" v-show="applyForFooterShow">
+    <footer class="applyForFooter" v-show="applyForFooterShow" @click="applyFor">
       <a href="javascript:;">立即提交</a>
     </footer>
   </div>
 </template>
 
 <script>
-  import {MessageBox ,Toast} from "mint-ui"
+  import {MessageBox, Toast} from "mint-ui"
+
   export default {
-    data () {
+    data() {
       return {
         mformDatas: [
           {
@@ -49,7 +50,8 @@
             placeholder: "请输入姓名",
             name: "userName",
             model: "",
-            reg:/^[\u4e00-\u9fa5_a-zA-Z]{0,}$/,
+            reg: /^[\u4e00-\u9fa5_a-zA-Z]{0,}$/,
+            regular: /^[\u4e00-\u9fa5_a-zA-Z]{1,}$/
           },
           {
             description: "身份证号：",
@@ -57,6 +59,7 @@
             name: "IDnumber",
             model: "",
             reg: /^[0-9xX]{0,18}$/,
+            regular: /^[0-9xX]{15,18}$/,
             maxlength: "18"
           },
           {
@@ -65,9 +68,11 @@
             name: "userName",
             model: "",
             reg: /^[0-9]{0,11}$/,
+            regular: /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
+            maxlength: "11"
           },
         ],
-        applyForFooterShow:true
+        applyForFooterShow: true
       }
     },
 
@@ -75,15 +80,43 @@
 
     computed: {},
 
-    mounted(){},
+    mounted() {
+    },
 
     methods: {
+      //提交逻辑
+      applyFor() {
+        let judge = this.mformDatas.filter((item)=>{
+          return item.regular.test(item.model)
+        })
+        console.log(judge);
+        if(judge.length === this.mformDatas.length){
+          let that = this
+          this.$store.dispatch("postRecordForApp", {
+            creditCard: that.$route.query.id,//信用卡Id
+            applyFormData: {
+              name:that.mformDatas[0].model,//姓名
+              idCard: that.mformDatas[1].model,//身份证号
+              mobilePhone: that.mformDatas[2].model//手机
+            },
+            source: 'OfficialAccounts'//来源
+          }).then((res)=>{
+            console.log(res)
+          })
+        }else {
+          MessageBox({
+            title: '提示',
+            message: '请正确输入信息',
+            showCancelButton: false
+          })
+        }
+      },
       //      输入框焦点时底部消失
-      isFooter(){
+      isFooter() {
         this.applyForFooterShow = false
       },
 //      错误变色
-      loseFocus(reg, flag, index){
+      loseFocus(reg, flag, index) {
         this.applyForFooterShow = true
       },
 //      输入框值
@@ -91,15 +124,15 @@
         this.mformDatas[this.mformDatasInd].model = picker.getValues()
       },
 //      输入正确变色
-      goodInput(reg, flag, index){
+      goodInput(reg, flag, index) {
 //        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (!reg.test(flag)) {
           Toast({
-            message:"格式错误",
-            className:"ToastStyle",
-            duration:2000
+            message: "格式错误",
+            className: "ToastStyle",
+            duration: 2000
           })
-          for(let i=0;i<this.mformDatas.length;i++){
+          for (let i = 0; i < this.mformDatas.length; i++) {
             this.mformDatas[index].model = ""
           }
         }
@@ -113,23 +146,25 @@
     position fixed
     bottom 0
     left 0
-    width (1080/$rem)
-    height (150/$rem)
+    width (1080 /$rem)
+    height (150 /$rem)
     background-color #efca7d
     a
       height 100%
-      font-size (48/$rem)
+      font-size (48 /$rem)
       color #ffffff
       text-align center
-      line-height (150/$rem)
+      line-height (150 /$rem)
+
   .ToastStyle
-    width (200/$rem)
-    height (70/$rem)
-    font-size (40/$rem)
+    width (200 /$rem)
+    height (70 /$rem)
+    font-size (40 /$rem)
     color #ffffff
     background-color #8a8a8a
     text-align center
-    line-height (70/$rem)
+    line-height (70 /$rem)
+
   .applyForHeader
     position relative
     width (1080 /$rem)
@@ -139,7 +174,7 @@
       z-index 10
       height 100%
       box-sizing border-box
-      padding (50 /$rem) (70/$rem)
+      padding (50 /$rem) (70 /$rem)
       display flex
       justify-content space-between
       li
@@ -147,8 +182,8 @@
         float left
         img
           display inline-block
-          width (96/$rem)
-          height (96/$rem)
+          width (96 /$rem)
+          height (96 /$rem)
         span
           margin-top (30 /$rem)
           display block
@@ -157,11 +192,11 @@
 
     .transverseLine
       position absolute
-      margin-left (-351.5/$rem)
-      top (88/$rem)
+      margin-left (-351.5 /$rem)
+      top (88 /$rem)
       left 50%
-      width (703/$rem)
-      height (6/$rem)
+      width (703 /$rem)
+      height (6 /$rem)
       background-image url("../../../static/img/creditCardImg/huangxian.png")
       background-repeat no-repeat
 
