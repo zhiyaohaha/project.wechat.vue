@@ -115,7 +115,6 @@
           }
           let url = this.apiPrefix + "/api/LoanOrder/SpeedOrderRecordForApp"
           postSpeedOrder(url, data).then((res) => {
-            console.log(res.data.url);
             window.location.href = res.data.url
           })
         } else {

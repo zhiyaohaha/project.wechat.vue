@@ -94,14 +94,32 @@
           let that = this
           this.$store.dispatch("postRecordForApp", {
             creditCard: that.$route.query.id,//信用卡Id
-            applyFormData: {
-              name:that.mformDatas[0].model,//姓名
-              idCard: that.mformDatas[1].model,//身份证号
-              mobilePhone: that.mformDatas[2].model//手机
-            },
+            applyFormData:[
+              {
+                key: "name",
+                value: that.mformDatas[0].model
+              },
+              {
+                key: "idCard",
+                value: that.mformDatas[1].model
+              },
+              {
+                key: "mobilePhone",
+                value: that.mformDatas[2].model
+              },
+            ],
             source: 'OfficialAccounts'//来源
           }).then((res)=>{
-            console.log(res)
+            if(res.success){
+              window.location.href = res.data.url
+            }else {
+              MessageBox({
+                title: '提示',
+                message: '网络不正常请稍后再试',
+                showCancelButton: false
+              })
+            }
+
           })
         }else {
           MessageBox({

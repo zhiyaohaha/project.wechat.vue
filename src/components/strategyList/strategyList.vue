@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div v-if="strategyListDatas">
     <ul class="strategyList">
       <li v-for="(strategyListData, index) in strategyListDatas" :key="index">
-        <a :href="strategyListData.url">
+        <router-link :to="{path:'/homePage/articlePage',query:{id:strategyListData.id}}">
           <div class="character">
             <span class="title">{{strategyListData.title}}</span>
-            <span class="time">{{strategyListData.time}}</span>
+            <span class="time">{{strategyListData.createdDate}}</span>
           </div>
-          <img :src="strategyListData.imgUrl">
-        </a>
+          <img :src="strategyListData.banner">
+        </router-link>
       </li>
     </ul>
   </div>
@@ -16,18 +16,16 @@
 
 <script>
   export default {
-    props:["strategyListDatas"],
-    data () {
-      return {
-
-      }
+    props: ["strategyListDatas"],
+    data() {
+      return {}
     },
 
     components: {},
 
     computed: {},
-
-    mounted(){},
+    mounted() {
+    },
 
     methods: {}
   }
@@ -35,29 +33,29 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .strategyList
-    width (1080/$rem)
+    width (1080 /$rem)
     li
-      height (286/$rem)
+      height (286 /$rem)
       box-sizing border-box
-      padding (50/$rem) (30/$rem)
+      padding (50 /$rem) (30 /$rem)
       border-bottom 1px solid #dddddd
       a
         height 100%
       .character
         float left
-        width (610/$rem)
-        height (182/$rem)
-        margin-top (2/$rem)
+        width (610 /$rem)
+        height (182 /$rem)
+        margin-top (2 /$rem)
         span
           display block
           &.title
-            font-size (45/$rem)
+            font-size (45 /$rem)
             color #515151
           &.time
-            margin-top (28/$rem)
-            font-size (36/$rem)
-            color  #bfbfbf
+            margin-top (28 /$rem)
+            font-size (36 /$rem)
+            color #bfbfbf
       img
         float right
-        height (186/$rem)
+        height (186 /$rem)
 </style>

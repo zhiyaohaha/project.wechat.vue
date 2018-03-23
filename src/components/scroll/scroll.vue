@@ -13,6 +13,7 @@
        * 2 滚动的时候实时派发scroll事件，不会截流。
        * 3 除了实时派发scroll事件，在swipe的情况下仍然能实时派发scroll事件
        */
+
       probeType: {
         type: Number,
         default: 1
@@ -20,6 +21,10 @@
       /**
        * 点击列表是否派发click事件
        */
+      tap:{
+        type: Boolean,
+        default: false
+      },
       click: {
         type: Boolean,
         default: true
@@ -90,7 +95,8 @@
         this.scroll = new BScroll(this.$refs.wrapper, {
           probeType: this.probeType,
           click: this.click,
-          scrollX: this.scrollX
+          scrollX: this.scrollX,
+          tap:this.tap
         })
 
         // 是否派发滚动事件

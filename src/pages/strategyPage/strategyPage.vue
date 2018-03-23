@@ -4,10 +4,10 @@
       <header class="strategyHeader">
         <ul class="authenticationList">
           <li v-for="(authenticationListData, index) in authenticationListDatas" :key="index">
-            <a href="javascript:;" @click="$router.push('/homePage/strategyListPage')">
+            <router-link to="/homePage/strategyListPage">
               <img :src="authenticationListData.imgUrl">
               <span>{{authenticationListData.character}}</span>
-            </a>
+            </router-link>
           </li>
         </ul>
       </header>

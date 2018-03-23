@@ -31,12 +31,11 @@
 </template>
 <script>
   import {MessageBox} from "mint-ui"
-  import {mapState, mapGetters} from "vuex"
+  import {mapState} from "vuex"
   import loanMod from "../../components/loanMod/loanMod.vue"
   import generalizeMod from "../../components/generalizeMod/generalizeMod.vue"
   import recommendMod from "../../components/recommendMod/recommendMod.vue"
   import footline from "../../components/footline/footline.vue"
-  import creditCardMod from "../../components/creditCardMod/creditCardMod.vue"
   import recommendList from "../../components/recommendList/recommendList.vue"
   import {getListForApp} from '../../api'
 
@@ -116,7 +115,7 @@
     },
 
     components: {
-      loanMod, generalizeMod, recommendMod, footline, creditCardMod, recommendList
+      loanMod, generalizeMod, recommendMod, footline, recommendList
     },
 
     computed: {
@@ -152,14 +151,7 @@
       window.onresize = this.__boxheight(this.$refs.homePageWrap); //窗口或框架被调整大小时执行
       this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {
         click: true,
-        startY: this.top,
-        momentumLimitDistance: 150,
-        flickLimitTime: 10,
-        bindToWrapper: true,
-        pullDownRefresh: {
-          threshold: 50,
-          stop: 20
-        }
+        startY: this.top
       })
       this.homePageWrap.refresh()
     },

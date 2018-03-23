@@ -1,8 +1,8 @@
 <template>
   <div v-if="recommendListDatas">
     <ul class="recommendList">
-      <li v-for="(recommendListData, index) in recommendListDatas" :key="index">
-        <a href="javascript:;" @touchstart.stop="redirect(recommendListData.id)">
+      <li v-for="(recommendListData, index) in recommendListDatas" :key="index" >
+        <router-link :to="{path:'/homePage/cardDetailsPage',query:{id:recommendListData.id}}">
           <img :src="recommendListData._logo">
           <div class="describe">
             <span class="up">{{recommendListData.name.length>=13?recommendListData.name.slice(0,13):recommendListData.name}}</span>
@@ -13,7 +13,7 @@
           <div class="smallLog" v-if="index < 3">
             <img :src="`../../../static/img/creditCardImg/redu0${index+1}.png`">
           </div>
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -35,13 +35,6 @@
     },
 
     methods: {
-      redirect(id) {
-        //这里曾经发生过双点击事件
-        this.$store.dispatch("getListBankCardDetail",{
-          id
-        })
-        this.$router.push("/homePage/cardDetailsPage")
-      }
     }
   }
 

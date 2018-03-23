@@ -1,103 +1,35 @@
 <template>
-  <div ref="materialWrap">
+  <scroll class="wrapper"
+          :data="newsListFor"
+          :pullup="true"
+          @scrollToEnd="loadData" v-if="newsListFor">
     <div>
-      <header class="materialHeader">
+      <header class="materialHeader" v-if="authenticationListDatas">
         <ul class="authenticationList">
           <li v-for="(authenticationListData, index) in authenticationListDatas" :key="index">
-            <a href="javascript:;" @click="$router.push('/homePage/strategyListPage')">
+            <router-link :to="{path:'/homePage/strategyListPage',query:{name:authenticationListData.name,code:authenticationListData.code}}">
               <img :src="authenticationListData.imgUrl">
-              <span>{{authenticationListData.character}}</span>
-            </a>
+              <span>{{authenticationListData.name}}</span>
+            </router-link>
           </li>
         </ul>
       </header>
       <div class="materialContent">
-        <strategyList :strategyListDatas="strategyListDatas"/>
+        <strategyList :strategyListDatas="newsListFor"/>
       </div>
+      <footline :title="footLineTitle"/>
     </div>
-  </div>
+  </scroll>
 </template>
 
 <script>
   import strategyList from "../../components/strategyList/strategyList.vue"
-  export default {
-    data () {
-      return {
-        authenticationListDatas: [
-          {
-            imgUrl: "../../../static/img/strategyImg/jiaoxue.png",
-            character: "教学"
-          },
-          {
-            imgUrl: "../../../static/img/strategyImg/tuiguang.png",
-            character: "推广"
-          },
-          {
-            imgUrl: "../../../static/img/strategyImg/kouzi.png",
-            character: "口子"
-          },
-          {
-            imgUrl: "../../../static/img/strategyImg/qita.png",
-            character: "其它"
-          },
-        ],
-        strategyListDatas:[
-          {
-            title:"如何成为具有推广资格的代理",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard02.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard03.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
 
-        ]
+  export default {
+    data() {
+      return {
+        authenticationListDatas: null,
+        footLineTitle: "查看更多"
       }
     },
 
@@ -105,16 +37,72 @@
       strategyList
     },
 
-    computed: {},
-
-    mounted(){
-      this.__boxheight(this.$refs.materialWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.materialWrap); //窗口或框架被调整大小时执行
-      this.materialWrap = new this.BScroll(this.$refs.materialWrap, {click: true,})
-      this.materialWrap.refresh()
+    computed: {
+      newsListFor: {
+        get() {
+          return this.$store.state.newsListFor
+        },
+        set() {
+        }
+      }
     },
+    created() {
+      this.$store.dispatch("getSelectDataSource", {
+        codes: "SpreadNewsCategory"
+      }).then((res) => {
+        let imgArr = [
+          "../../../static/img/strategyImg/jiaoxue.png",
+          "../../../static/img/strategyImg/tuiguang.png",
+          "../../../static/img/strategyImg/kouzi.png",
+          "../../../static/img/strategyImg/qita.png"
+        ]
+        res.forEach((item) => {
+          item.childrens.forEach((item, index, input) => {
+            input[index].imgUrl = imgArr[index]
+            this.authenticationListDatas = input
+          })
 
-    methods: {}
+        })
+      })
+      this.$store.dispatch("getNewsListFor", {
+        scene: 'Scene.Spead',
+        type: "",
+        id: "",
+        size: 1
+      })
+    },
+    mounted() {
+
+    },
+    updated() {
+    },
+    methods: {
+      loadData() {
+        let that = this
+        if (that.footLineTitle === "没有啦") {
+          return
+        } else {
+          that.footLineTitle = "加载中"
+          that.$store.dispatch("getNewsListFor", {
+            scene: 'Scene.Spead',
+            type: "",
+            id: that.newsListFor[that.newsListFor.length - 1].id,
+            size: 1
+          }).then((res) => {
+            if (res.length < 1) {
+              that.footLineTitle = "没有啦"
+            }else {
+              let time = setTimeout(() => {
+                that.newsListFor.push(...res)
+                that.footLineTitle = "查看更多"
+                clearTimeout(time)
+              }, 1000)
+            }
+          })
+        }
+
+      }
+    }
   }
 
 </script>
@@ -128,7 +116,7 @@
       display -webkit-flex
       display flex
       justify-content: space-around
-      padding (50/$rem) 0
+      padding (50 /$rem) 0
       border-bottom 1px solid #f2f2f2
       li
         a
@@ -139,5 +127,5 @@
             height (96 /$rem)
           span
             display block
-            margin-top (28/$rem)
+            margin-top (28 /$rem)
 </style>

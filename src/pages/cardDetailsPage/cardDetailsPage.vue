@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="CardDetailsWrap">
+    <div ref="CardDetailsWrap" v-if="bankCardDetail">
       <div>
         <header class="CardDetailsHeader">
           <img :src="bankCardDetail._logo">
@@ -17,7 +17,8 @@
       </div>
     </div>
     <footer class="CardDetailsFooter">
-      <a href="javascript:;" @touchstart.stop="$router.push({path:'/homePage/cardApplyForPage',query:{id:bankCardDetail.id}})">立即申请</a>
+      <a href="javascript:;"
+         @click.stop="$router.push({path:'/homePage/cardApplyForPage',query:{id:bankCardDetail.id}})">立即申请</a>
     </footer>
   </div>
 </template>
@@ -87,15 +88,29 @@
 
       }
     },
+    created() {
 
+      let that = this
+      this.$store.dispatch("getListBankCardDetail", {
+        id: that.$route.query.id
+      }).then(()=>{
+        this.__boxheight(this.$refs.CardDetailsWrap) //执行函数
+        window.onresize = this.__boxheight(this.$refs.CardDetailsWrap) //窗口或框架被调整大小时执行
+        this.CardDetailsWrap = new this.BScroll(this.$refs.CardDetailsWrap, {click: true})
+        this.CardDetailsWrap.refresh()
+      })
+
+    },
     mounted() {
-      this.__boxheight(this.$refs.CardDetailsWrap) //执行函数
-      window.onresize = this.__boxheight(this.$refs.CardDetailsWrap) //窗口或框架被调整大小时执行
-      this.CardDetailsWrap = new this.BScroll(this.$refs.CardDetailsWrap, {click: true,})
-      this.CardDetailsWrap.refresh()
+
     },
 
-    methods: {}
+    methods: {
+      __slide() {
+        console.log(this.bankCardDetail)
+
+      }
+    }
   }
 
 </script>

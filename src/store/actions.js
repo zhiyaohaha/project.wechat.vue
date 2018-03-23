@@ -9,7 +9,10 @@ import {
   getListBankCard,
   getListBankCardDetail,
   postRecordForApp,
-  getInviteUrl
+  getInviteUrl,
+  getSelectDataSource,
+  getNewsListFor,
+  getDetailForApp
 } from '../api'
 
 let apiPrefix = 'http://211.94.137.70:8001/'
@@ -50,7 +53,7 @@ export default {
   //信用卡申请
   async postRecordForApp({commit}, data) {
     // debugger
-    let url = apiPrefix + 'api/CreditCard/RecordForApp'
+    let url = apiPrefix + 'api/CreditCardOrder/RecordForApp'
     const result = await postRecordForApp(url, data)
     return result
   },
@@ -105,15 +108,43 @@ export default {
     }
   },
   //信用卡详情
-  async getListBankCardDetail({commit}, data) {
+  async getListBankCardDetail({commit}, {data}) {
     let url = apiPrefix + "api/CreditCard/GetDetailForApp"
     const result = await getListBankCardDetail(url, data)
     commit('GET_LISTBANKCARDDETAIL', {result})
   },
+  //二维码
   async getInviteUrl({commit},) {
     let url = apiPrefix + "api/Loginer/GetInviteUrl"
     const result = await getInviteUrl(url)
     commit('GET_INVITEURL', {result})
+  },
+  //获取推广素材分类
+  async getSelectDataSource({commit}, data) {
+    let url = apiPrefix + "api/Values/GetSelectDataSource"
+    const result = await getSelectDataSource(url, data)
+    return result.data
+  },
+  //获取推广素材列表
+  async getNewsListFor({commit}, data) {
+    let url = apiPrefix + "api/News/ListForApp"
+    const result = await getNewsListFor(url, data)
+    if (data.id) {
+      return result.data
+    } else {
+      if(data.type){
+        commit('GET_NEWSLIST', {result})
+      }else {
+        commit('GET_NEWSLISTFOR', {result})
+      }
+
+    }
+  },
+  //获取文章详情
+  async getDetailForApp({commit}, data) {
+    let url = apiPrefix + "api/News/DetailForApp"
+    const result = await getDetailForApp(url, data)
+    commit('GET_DETAILFORAPP', {result})
   },
 }
 

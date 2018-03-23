@@ -4,6 +4,8 @@
     <scroll class="wrapper"
             :data="creditListBankCard"
             :pullup="true"
+            :click="true"
+            :touchstart="true"
             @scrollToEnd="loadData"
             v-show="$route.meta.isTop">
       <div>

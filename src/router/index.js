@@ -26,6 +26,7 @@ const generalizePage = () => import('../pages/generalizePage/generalizePage.vue'
 const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue')
 const authenticationPage = () => import('../pages/authenticationPage/authenticationPage.vue')
 const materialPage = () => import('../pages/materialPage/materialPage.vue')
+const articlePage = () => import('../pages/articlePage/articlePage.vue')
 
 Vue.use(Router)
 const router = new Router({
@@ -81,7 +82,7 @@ const router = new Router({
         {
           path: 'cardDetailsPage',
           component: cardDetailsPage,
-          meta: {keepAlive: false, isTop: false, title: '信用卡详情'},
+          meta: {keepAlive: false, cache: true,isTop: false, title: '信用卡详情'},
         },
         {
           path: 'strategyPage',
@@ -91,7 +92,13 @@ const router = new Router({
         {
           path: 'strategyListPage',
           component: strategyListPage,
-          meta: {keepAlive: false, isTop: false, title: '攻略列表'},
+          name:"攻略列表",
+          meta: {keepAlive: false, cache: true,isTop: false, title: ''},
+        },
+        {
+          path: 'articlePage',
+          component: articlePage,
+          meta: {keepAlive: false,cache: true, isTop: false, title: '文章详情'},
         },
         {
           path: 'schedulePage',
@@ -108,12 +115,12 @@ const router = new Router({
           component: materialPage,
           meta: {keepAlive: false, isTop: false, title: '推广素材'},
         },
+
         {
           path: 'generalizePage',
           component: generalizePage,
           meta: {keepAlive: false, cache: true, isTop: true, title: '赚佣金'},
         },
-
       ]
     },
     {
@@ -181,7 +188,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
-  if (to.name == "银行卡详情") {
+  if (to.name == "银行卡详情"||to.name == "攻略列表"){
     to.meta.title = to.query.name
   }
   if (to.meta.title) {

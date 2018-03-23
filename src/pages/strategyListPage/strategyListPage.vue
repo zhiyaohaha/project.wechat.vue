@@ -1,67 +1,22 @@
 <template>
-  <div ref="strategyListWrap">
+  <scroll class="wrapper"
+          :data="newsList"
+          :pullup="true"
+          @scrollToEnd="loadData" v-if="newsList">
     <div>
-      <strategyList :strategyListDatas="strategyListDatas"/>
+      <strategyList :strategyListDatas="newsList"/>
+      <footline :title="footLineTitle"/>
     </div>
-  </div>
+  </scroll>
 </template>
 
 <script>
   import strategyList from "../../components/strategyList/strategyList.vue"
-  export default {
-    data () {
-      return {
-        strategyListDatas:[
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard02.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard03.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
 
-        ]
+  export default {
+    data() {
+      return {
+        footLineTitle: "查看更多"
       }
     },
 
@@ -69,16 +24,60 @@
       strategyList
     },
 
-    computed: {},
-
-    mounted(){
-      this.__boxheight(this.$refs.strategyListWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.strategyListWrap); //窗口或框架被调整大小时执行
-      this.strategyListWrap = new this.BScroll(this.$refs.strategyListWrap, {click: true,})
-      this.strategyListWrap.refresh()
+    computed: {
+      newsList: {
+        get() {
+          return this.$store.state.newsList
+        },
+        set() {
+        }
+      }
     },
+    created() {
+      this.$store.dispatch("getNewsListFor", {
+        scene: 'Scene.Spead',
+        type: this.$route.query.code,
+        id: "",
+        size: 1
+      })
+    },
+    mounted() {
 
-    methods: {}
+    },
+    updated(){
+      if (this.newsList.length < 1) {
+        this.footLineTitle = "暂无内容"
+      }
+    },
+    methods: {
+      loadData() {
+        if (this.newsList.length < 1) {
+          this.footLineTitle = "暂无内容"
+          return
+        }
+        let that = this
+        if (that.footLineTitle === "没有啦") {
+          return
+        } else {
+          this.footLineTitle = "加载中"
+          that.$store.dispatch("getNewsListFor", {
+            scene: 'Scene.Spead',
+            type: that.$route.query.code,
+            id: that.newsList[that.newsList.length - 1].id,
+            size: 1
+          }).then((res) => {
+            let time = setTimeout(() => {
+              that.newsList.push(...res)
+              clearTimeout(time)
+            }, 1000)
+            if (res.length < 1) {
+              that.footLineTitle = "没有啦"
+            }
+          })
+        }
+
+      }
+    }
   }
 
 </script>

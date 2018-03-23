@@ -16,5 +16,8 @@ export const getListBanks = (apiPrefix) => ajax(apiPrefix)
 export const getListBankCard = (apiPrefix, data) => ajax(apiPrefix, data)
 export const getListBankCardDetail = (apiPrefix, data) => ajax(apiPrefix, data)
 export const getInviteUrl = (apiPrefix) => ajax(apiPrefix)
+export const getSelectDataSource = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getNewsListFor = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getDetailForApp = (apiPrefix,data) => ajax(apiPrefix,data)
 
 
