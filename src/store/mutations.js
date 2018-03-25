@@ -80,4 +80,29 @@ export default {
     //文章详情
     state.detailForApp = result.data
   },
+  GET_ORDERLISTFOR1(state,{result}){
+    console.log(result)
+    //我的订单列表
+    state.orderListFor1 = result
+  },
+  GET_USERRELATED(state,{result}){
+    // console.log(result)
+    //我的订单列表
+    let data
+    result.data.forEach((item,index,input)=>{
+      item.imgShow = false
+      data = input
+    })
+    state.userrelated = data
+  },
+  /*GET_ORDERLISTFOR2(state,{result}){
+    console.log(result)
+    //我的订单列表
+    state.orderListFor2 = result
+  },
+  GET_ORDERLISTFOR3(state,{result}){
+    console.log(result)
+    //我的订单列表
+    state.orderListFor3 = result
+  },*/
 }

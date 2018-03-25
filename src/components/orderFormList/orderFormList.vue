@@ -1,103 +1,47 @@
 <template>
-  <div>
+  <div v-if="orderFormListDatas">
     <div class="orderFormListConttent">
       <header class="orderFormListHeader">
         <span class="font">订单列表</span>
-        <a href="javascript:;" @click="screenIsShow">
+        <a href="javascript:;" @click="screenIsShow(false)">
           <img src="../../../static/img/myImg/content_icon_shaixuan_normal.png"><span>筛选</span>
         </a>
       </header>
       <ul class="orderFormList">
-        <li v-for="(orderFormListData, index) in orderFormListDatas" :key="index">
-          <img :src="orderFormListData.imgUrl">
+        <li v-for="(orderFormListData, index) in orderFormListDatas.data" :key="index">
+          <img :src="orderFormListData.head||'../../../static/img/myImg/touxiang.gif'">
           <div class="orderFormListDescribe">
             <div class="up">
-              <span class="applyForTime">{{orderFormListData.applyForTime}}</span>
+              <span class="applyForTime">{{orderFormListData._createdDate}}</span>
               <span class="applyFor">申请</span>
             </div>
-            <div class="down">
+            <!--<div class="down">
               <span class="price">{{orderFormListData.money}}</span>
               <span class="unit">元</span>
-            </div>
+            </div>-->
           </div>
           <div class="state">
-            <span class="form">{{orderFormListData.form}}</span>
-            <span class="stateDescribe">{{orderFormListData.state}}</span>
+            <span class="form">{{orderFormListData._product.name}}</span>
+            <span class="stateDescribe">{{orderFormListData._status}}</span>
+
           </div>
         </li>
       </ul>
-      <mt-popup v-model="screenShow" position="bottom">
-        <header class="mintPopupHeader">
-          <span class="finish" @click="screenIsShow">完成</span>
-        </header>
-        <div class="mintPopupContent">
-          <div>
-            <checkboxHeadLine title="选择状态"/>
-            <checkboxList :checkboxListDatas="checkboxListDatas1"/>
-          </div>
-          <div class="blankBox"></div>
-          <div>
-            <checkboxHeadLine title="选择产品"/>
-            <checkboxList :checkboxListDatas="checkboxListDatas2"/>
-          </div>
-        </div>
-        <footer class="mintPopupFooter" @click="screenIsShow">
-          取消
-        </footer>
-      </mt-popup>
+
     </div>
   </div>
 </template>
 
 <script>
-  import checkboxHeadLine from "../../components/checkboxHeadLine/checkboxHeadLine"
-  import checkboxList from "../../components/checkboxList/checkboxList.vue"
   export default {
-    props:["orderFormListDatas"],
+    props:["orderFormListDatas","screenIsShow"],
     data () {
       return {
-        checkboxListDatas1:[
-          {
-            title:"待处理",
-            imgShow:false
-          },
-          {
-            title:"审核中",
-            imgShow:false
-          },
-          {
-            title:"已通过",
-            imgShow:false
-          },
-          {
-            title:"未通过",
-            imgShow:false
-          }
-        ],
-        checkboxListDatas2:[
-          {
-            title:"产品1",
-            imgShow:false
-          },
-          {
-            title:"产品2",
-            imgShow:false
-          },
-          {
-            title:"产品3",
-            imgShow:false
-          },
-          {
-            title:"产品4",
-            imgShow:false
-          }
-        ],
-        screenShow:false
+
       }
     },
 
     components: {
-      checkboxHeadLine, checkboxList
     },
 
     computed: {},
@@ -105,9 +49,6 @@
     mounted(){},
 
     methods: {
-      screenIsShow(){
-        this.screenShow = !this.screenShow
-      }
     }
   }
 
@@ -196,24 +137,5 @@
             display block
             margin-top (50/$rem)
             color #333333
-    .blankBox
-      height (10/$rem)
-    .mint-popup-bottom
-      box-sizing border-box
-      height (621/$rem)
-      width (1080/$rem)
-      padding 0 (30/$rem)
-      .mintPopupHeader
-        box-sizing border-box
-        height (124/$rem)
-        text-align right
-        font-size (46/$rem)
-        color #333333
-        padding (40/$rem) 0
-      .mintPopupFooter
-        height (146/$rem)
-        font-size (42/$rem)
-        color #333333
-        text-align center
-        line-height (146/$rem)
+
 </style>

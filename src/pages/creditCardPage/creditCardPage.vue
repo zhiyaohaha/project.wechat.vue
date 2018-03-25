@@ -4,8 +4,6 @@
     <scroll class="wrapper"
             :data="creditListBankCard"
             :pullup="true"
-            :click="true"
-            :touchstart="true"
             @scrollToEnd="loadData"
             v-show="$route.meta.isTop">
       <div>
@@ -184,6 +182,7 @@
                 this.creditListBankCard = this.creditListBankCard.push(...res)
                 clearTimeout(time)
               }, 500)
+
             } else {
               this.footlineTitle = "没有更多数据拉"
             }

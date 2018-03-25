@@ -12,7 +12,10 @@ import {
   getInviteUrl,
   getSelectDataSource,
   getNewsListFor,
-  getDetailForApp
+  getDetailForApp,
+  getOrderListFor,
+  postLoginout,
+  getUserRelated
 } from '../api'
 
 let apiPrefix = 'http://211.94.137.70:8001/'
@@ -55,6 +58,14 @@ export default {
     // debugger
     let url = apiPrefix + 'api/CreditCardOrder/RecordForApp'
     const result = await postRecordForApp(url, data)
+    return result
+  },
+  //退出
+  async postLoginout({commit}, {data, cb}) {
+    // debugger
+    let url = apiPrefix + 'api/Auth/Loginout'
+    cb && cb()
+    const result = await postLoginout(url, data)
     return result
   },
   //获取用户信息
@@ -108,12 +119,12 @@ export default {
     }
   },
   //信用卡详情
-  async getListBankCardDetail({commit}, {data}) {
+  async getListBankCardDetail({commit}, data) {
     let url = apiPrefix + "api/CreditCard/GetDetailForApp"
     const result = await getListBankCardDetail(url, data)
     commit('GET_LISTBANKCARDDETAIL', {result})
   },
-  //二维码
+
   async getInviteUrl({commit},) {
     let url = apiPrefix + "api/Loginer/GetInviteUrl"
     const result = await getInviteUrl(url)
@@ -132,9 +143,9 @@ export default {
     if (data.id) {
       return result.data
     } else {
-      if(data.type){
+      if (data.type) {
         commit('GET_NEWSLIST', {result})
-      }else {
+      } else {
         commit('GET_NEWSLISTFOR', {result})
       }
 
@@ -145,6 +156,21 @@ export default {
     let url = apiPrefix + "api/News/DetailForApp"
     const result = await getDetailForApp(url, data)
     commit('GET_DETAILFORAPP', {result})
+  },
+  //获取信用卡订单列表
+  async getOrderListFor({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/SpeedOrderListForOfficial"
+    const result = await getOrderListFor(url, data)
+    if (data.id) {
+      return result.data
+    } else {
+      commit('GET_ORDERLISTFOR1', {result})
+    }
+  },
+  async getUserRelated({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/GetUserRelatedProductForOfficial"
+    const result = await getUserRelated(url, data)
+    commit('GET_USERRELATED', {result})
   },
 }
 

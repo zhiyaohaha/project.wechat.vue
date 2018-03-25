@@ -15,6 +15,7 @@
 
 <script>
   export default {
+
     props:["myParticularsDatas"],
     data () {
       return {}

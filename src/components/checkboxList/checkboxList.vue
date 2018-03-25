@@ -1,11 +1,11 @@
 <template>
-  <div class="checkboxMod">
+  <div class="checkboxMod" v-if="checkboxListDatas">
     <ul class="checkboxList">
       <li v-for="(item, index) in checkboxListDatas" :key="index" @click="imgIsShow(index)">
         <div>
           <img src="./img/xaunze.png" v-show="item.imgShow">
           <img src="./img/weixuan.png" v-show="!item.imgShow">
-          <span :class="{checkboxFont:item.imgShow}">{{item.title}}</span>
+          <span :class="{checkboxFont:item.imgShow}">{{item.name}}</span>
         </div>
       </li>
     </ul>
@@ -41,11 +41,15 @@
       box-sizing border-box
       display flex
       justify-content space-between
+      flex-wrap: wrap
       padding 0 (32 /$rem)
       li
+        flex: 1
         box-sizing border-box
         padding-top (44 /$rem)
-        width (186 /$rem)
+        width 33.33%
+        min-width: 33.33%
+        max-width: 33.33%
         height (130 /$rem)
         font-size (42 /$rem)
         div

@@ -147,7 +147,7 @@
             verifyCode: this.mformDatas[1].model,
             firstLevelId: this.getCookie('id'),
             thirdPlatFormBind: true,//第三方绑定接口
-            openId: this.getCookie('openId'), //第三方OpenId
+            openId: userinfo.openid, //第三方OpenId
             thirdLoginType: 'ThirdPlatForm.WeChat',  //第三方登录代号
             head: userinfo.headimgurl,//第三方登录头像
             nickName: userinfo.nickname,//第三方登录昵称

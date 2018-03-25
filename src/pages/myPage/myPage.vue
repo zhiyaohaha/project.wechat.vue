@@ -29,6 +29,7 @@
         </router-link>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
+      <div class="feignButton" @click="quit">退出</div>
     </div>
   </div>
 </template>
@@ -37,7 +38,7 @@
   import myParticulars from '../../components/myParticulars/myParticulars.vue'
 
   export default {
-    data () {
+    data() {
       return {
         myParticularsDatas: [
           {
@@ -77,9 +78,21 @@
 
     computed: {},
 
-    mounted () {},
+    mounted() {
+    },
 
-    methods: {}
+    methods: {
+      quit() {
+        this.$store.dispatch('postLoginout', {
+          data:{},
+          cb:()=>{
+            this.setCookie('whether', 0, 7)
+          }
+        }).then((res)=>{
+
+        })
+      }
+    }
   }
 
 </script>
@@ -129,36 +142,45 @@
     .myPageContent
       box-sizing border-box
       position absolute
-      width (790/$rem)
+      width (790 /$rem)
       height (230 /$rem)
-      top (240/$rem)
-      left (145/$rem)
-      padding 0 (105/$rem)
+      top (240 /$rem)
+      left (145 /$rem)
+      padding 0 (105 /$rem)
       background-color: #fff;
-      border-radius (10/$rem)
-      box-shadow 0 0 (64/$rem) rgba(0 , 0, 0, 0.19)
+      border-radius (10 /$rem)
+      box-shadow 0 0 (64 /$rem) rgba(0, 0, 0, 0.19)
       z-index 1
 
       a
         box-sizing border-box
         float left
         text-align center
-        margin-top (60/$rem)
+        margin-top (60 /$rem)
         span
-          font-size (34/$rem)
+          font-size (34 /$rem)
           &.describe
             display block
             font-size (40 /$rem)
           &.unit
             text-align bottom
           &.price
-            margin-top (30/$rem)
+            margin-top (30 /$rem)
             font-size (42 /$rem)
             color #efca7d
       .line
         float left
-        margin (65/$rem) (54/$rem)
-        height (100/$rem)
+        margin (65 /$rem) (54 /$rem)
+        height (100 /$rem)
         width 1px
         background-color: #f2f2f2;
+    .feignButton
+      border-radius (15 /$rem)
+      width (985 /$rem)
+      height (140 /$rem)
+      background-color #efca7d
+      color #fff
+      margin (100 /$rem) auto
+      text-align center
+      line-height (140 /$rem)
 </style>

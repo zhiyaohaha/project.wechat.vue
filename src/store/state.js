@@ -16,4 +16,6 @@ export default {
   newsListFor:null,
   newsList:null,
   detailForApp:null,
+  orderListFor1:null,
+  userrelated:null
 }

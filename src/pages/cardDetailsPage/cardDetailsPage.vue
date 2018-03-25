@@ -91,13 +91,17 @@
     created() {
 
       let that = this
+      console.log(that.$route.query.id);
+
       this.$store.dispatch("getListBankCardDetail", {
         id: that.$route.query.id
       }).then(()=>{
         this.__boxheight(this.$refs.CardDetailsWrap) //执行函数
         window.onresize = this.__boxheight(this.$refs.CardDetailsWrap) //窗口或框架被调整大小时执行
-        this.CardDetailsWrap = new this.BScroll(this.$refs.CardDetailsWrap, {click: true})
-        this.CardDetailsWrap.refresh()
+        this.$nextTick(()=>{
+          this.CardDetailsWrap = new this.BScroll(this.$refs.CardDetailsWrap, {click: true})
+          this.CardDetailsWrap.refresh()
+        })
       })
 
     },
