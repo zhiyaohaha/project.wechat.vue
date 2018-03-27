@@ -1,25 +1,25 @@
 <template>
   <div>
-    <div class="rebateListConttent">
+    <div class="rebateListConttent" v-if="rebateListDatas">
       <ul class="rebateList">
-        <li v-for="(rebateListData, index) in rebateListDatas" :key="index">
-          <img :src="rebateListData.imgUrl">
+        <li v-for="(rebateListData, index) in rebateListDatas.result" :key="index">
+          <img :src="rebateListData.head|| '../../../static/img/myImg/touxiang.gif'">
           <div class="rebateListDescribe">
             <div class="up">
-              <span class="applyForTime">{{rebateListData.applyForTime}}</span>
+              <span class="applyForTime">{{rebateListData.dealUserIdTime}}</span>
               <span class="applyFor">返佣</span>
             </div>
             <div class="down">
               <span>返佣总额 ：</span>
-              <span class="price"> {{rebateListData.money}}</span>
+              <span class="price"> {{rebateListData.totalValue}}</span>
               <span class="unit">元</span>
             </div>
           </div>
           <div class="state">
-            <span class="form">{{rebateListData.form}}</span>
+            <span class="form">{{rebateListData.proName}}</span>
             <div class="down">
               <span>我的返佣:</span>
-              <span class="stateDescribe">{{rebateListData.state}}</span>
+              <span class="stateDescribe">{{rebateListData.value}}</span>
               <span>元</span>
             </div>
           </div>

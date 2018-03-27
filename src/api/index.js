@@ -22,5 +22,8 @@ export const getNewsListFor = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getDetailForApp = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getOrderListFor = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getUserRelated = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getRakeBackInfo = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getSubordinateNum = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getSubordinateUserList = (apiPrefix,data) => ajax(apiPrefix,data)
 
 

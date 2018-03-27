@@ -17,5 +17,11 @@ export default {
   newsList:null,
   detailForApp:null,
   orderListFor1:null,
-  userrelated:null
+  userrelated:null,
+  rakeBackInfo:null,
+  subordinateNum:null,
+  erSubordinateNum:null,
+  subordinateUserList:null,
+  erSubordinateUserList:null,
+
 }

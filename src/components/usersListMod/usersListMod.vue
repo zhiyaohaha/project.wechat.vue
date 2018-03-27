@@ -1,20 +1,20 @@
 <template>
   <div>
-    <div class="usersListModContent">
+    <div class="usersListModContent" v-if="usersListDatas">
       <ul class="usersList">
         <li v-for="(usersListData, index) in usersListDatas" :key="index">
-          <router-link :to="usersListData.url">
-            <img :src="usersListData.imgUrl">
+          <router-link :to="{path:'/myPage/generalizeYiPage/generalizeErPage',query:{id:usersListData.id}}">
+            <img :src="usersListData.head||'../../../static/img/myImg/touxiang.gif'">
             <div class="message">
-              <span class="userNum">{{usersListData.userNum}}</span>
+              <span class="userNum">{{usersListData.nickName||'用户'}}</span>
               <div class="down">
-                <span class="scheduleTime">{{usersListData.userTime}}</span>
+                <span class="scheduleTime">{{usersListData.createdDate}}</span>
                 <span class="fixation">成为我的代理</span>
               </div>
             </div>
             <div class="agencyMessage">
               <span>他的代理</span>
-              <span class="price">{{usersListData.agencyNum}}</span>
+              <span class="price">{{usersListData.totalSubordinateNum}}</span>
               <span>个</span>
             </div>
             <div class="triangle">

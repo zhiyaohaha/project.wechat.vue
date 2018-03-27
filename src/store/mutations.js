@@ -95,14 +95,29 @@ export default {
     })
     state.userrelated = data
   },
-  /*GET_ORDERLISTFOR2(state,{result}){
+  GET_RAKEBACKINFO(state,{result}){
     console.log(result)
-    //我的订单列表
-    state.orderListFor2 = result
+    //我的分佣列表
+    state.rakeBackInfo = result.data
   },
-  GET_ORDERLISTFOR3(state,{result}){
+  GET_SUBORDINATENUM(state,{result}){
     console.log(result)
-    //我的订单列表
-    state.orderListFor3 = result
-  },*/
+    //我的推广头部列表
+    state.subordinateNum = result.data
+  },
+  GET_ERSUBORDINATENUM(state,{result}){
+    console.log(result)
+    //我的二级推广头部列表
+    state.erSubordinateNum = result.data
+  },
+  GET_SUBORDINATEUSERLIST(state,{result}){
+    console.log(result)
+    //我的推广列表
+    state.subordinateUserList = result.data
+  },
+  GET_ERSUBORDINATEUSERLIST(state,{result}){
+    console.log(result)
+    //我的二级推广列表
+    state.erSubordinateUserList = result.data
+  },
 }

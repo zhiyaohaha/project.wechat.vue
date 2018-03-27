@@ -50,6 +50,7 @@ if (code === undefined) {
   window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=123&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
 }*/
  // eslint-disable no-new
+
 new Vue({
   el: '#app',
   render: h => h(App),

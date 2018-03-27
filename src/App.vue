@@ -33,6 +33,9 @@
     },
     beforeCreate() {
       //获取用户信息
+
+    },
+    created() {
       let obj = this.__GetRequest()
       this.$store.dispatch('getUserinfo', {
         obj,
@@ -40,12 +43,7 @@
           this.saveTodos(userinfo)
           this.setCookie('id', val, 7)
         }
-      })
-    },
-    created() {
-
-      getInviteUrl(this.apiPrefix + "api/Loginer/GetInviteUrl")
-      setTimeout(() => {
+      }).then(()=>{
         let userinfo = this.readTodos()
         let data = {
           openId: "undefined",
@@ -61,7 +59,9 @@
             this.setCookie('whether', whether, 7)
           }
         })
-      }, 1000)
+      })
+
+
     },
     mounted() {
 

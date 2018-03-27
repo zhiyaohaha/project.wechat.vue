@@ -15,7 +15,10 @@ import {
   getDetailForApp,
   getOrderListFor,
   postLoginout,
-  getUserRelated
+  getUserRelated,
+  getRakeBackInfo,
+  getSubordinateNum,
+  getSubordinateUserList
 } from '../api'
 
 let apiPrefix = 'http://211.94.137.70:8001/'
@@ -79,13 +82,17 @@ export default {
     }
   },
   //产品列表
-  async getListForApp({commit}, {data}) {
+  async getListForApp({commit}, data) {
     let url = apiPrefix + 'api/LoanProduct/ListForOfficialAccounts'
     const result = await getListForApp(url, data)
     if (data.hot) {
       commit('GET_LISTFORAPP', {result})
     } else {
-      commit('GET_LISTFORAPPLONG', {result})
+      if (data.id) {
+        return result.data
+      } else {
+        commit('GET_LISTFORAPPLONG', {result})
+      }
     }
   },
   //产品详情
@@ -167,10 +174,42 @@ export default {
       commit('GET_ORDERLISTFOR1', {result})
     }
   },
+  //信用卡赛选弹窗数据
   async getUserRelated({commit}, data) {
     let url = apiPrefix + "api/OfficialAccounts/GetUserRelatedProductForOfficial"
     const result = await getUserRelated(url, data)
     commit('GET_USERRELATED', {result})
+  },
+  //分佣列表
+  async getRakeBackInfo({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/GetRakeBackInfo"
+    const result = await getRakeBackInfo(url, data)
+    if (data.id) {
+      return result.data.result
+    } else {
+      commit('GET_RAKEBACKINFO', {result})
+    }
+  },
+  //推广列表头部
+  async getSubordinateNum({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/GetSubordinateNum"
+    const result = await getSubordinateNum(url, data)
+    if(data.userId){
+      commit('GET_ERSUBORDINATENUM', {result})
+    }else {
+      commit('GET_SUBORDINATENUM', {result})
+    }
+  },
+  //推广列表
+  async getSubordinateUserList({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/GetSubordinateUserList"
+    const result = await getSubordinateUserList(url, data)
+    if(data.userId){
+      commit('GET_ERSUBORDINATEUSERLIST', {result})
+    }else {
+      commit('GET_SUBORDINATEUSERLIST', {result})
+    }
+
   },
 }
 

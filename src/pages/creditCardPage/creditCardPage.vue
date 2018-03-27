@@ -179,12 +179,14 @@
           }).then((res) => {
             if (res.length > 0) {
               let time = setTimeout(() => {
-                this.creditListBankCard = this.creditListBankCard.push(...res)
+                this.creditListBankCard.push(...res)
                 clearTimeout(time)
-              }, 500)
-
+              }, 1000)
             } else {
-              this.footlineTitle = "没有更多数据拉"
+              let time = setTimeout(() => {
+                this.footlineTitle = "没有更多数据拉"
+                clearTimeout(time)
+              }, 1000)
             }
           })
         }

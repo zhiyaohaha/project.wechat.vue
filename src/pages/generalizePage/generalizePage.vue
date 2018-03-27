@@ -57,10 +57,8 @@
     mounted() {
       // console.log(this.getCookie('whether') === '1') ? this.QRcodeShow = true : this.QRcodeShow = false
       this.QRcodeShow = this.cookikeIf
-      console.log(this.QRcodeShow)
     },
     updated() {
-      console.log(this.inviteurl)
     },
 
     methods: {}

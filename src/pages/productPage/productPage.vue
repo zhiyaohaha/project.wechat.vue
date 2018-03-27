@@ -1,7 +1,11 @@
 <template>
   <div>
     <router-view/>
-    <div ref="productPageWrap">
+    <scroll class="wrapper"
+            :data="recommendDatas"
+            :pullup="true"
+            @scrollToEnd="loadData"
+    >
       <div v-show="$route.meta.isTop">
         <header class="productPageHeader">
           <img src="./img/xinyongkabanner.png">
@@ -9,8 +13,9 @@
         <headline :headlineData="{title:'贷款产品',line:true}"/>
         <div class="inanition"></div>
         <recommendMod :recommendModDatas="recommendDatas"/>
+        <footline :title="footlineTitle"/>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
@@ -25,6 +30,7 @@
           title: "贷款产品",
           aFont: ""
         },
+        footlineTitle: "查看更多"
       }
     },
 
@@ -33,24 +39,55 @@
     },
 
     computed: {
-      ...mapState(["recommendDatas"])
+      recommendDatas: {
+        get() {
+          return this.$store.state.recommendDatas
+        },
+        set() {
+
+        }
+      }
     },
     created() {
-      let data = {
+      this.$store.dispatch("getListForApp", {
         name: 'LoanProductType.Speed',
-        id: this.__GetRequest().id,
+        id: "",
         size: 10,
         hot: false
-      }
-      this.$store.dispatch("getListForApp", {data})
+      })
     },
     mounted() {
-      this.__boxheight(this.$refs.productPageWrap)
-      window.onresize = this.__boxheight(this.$refs.productPageWrap)
-      this.productPageWrap = new this.BScroll(this.$refs.productPageWrap, {click: true})
     },
-    updated(){},
-    methods: {}
+    updated() {
+    },
+    methods: {
+      //下拉刷新逻辑
+      loadData() {
+        if (this.footlineTitle === "没有跟多数据拉") {
+          return
+        } else {
+          this.footlineTitle = "加载中"
+          this.$store.dispatch("getListForApp", {
+            name: 'LoanProductType.Speed',
+            id: this.recommendDatas[this.recommendDatas.length - 1].id,
+            size: 10,
+            hot: false
+          }).then(res => {
+            if (res.length > 1) {
+              let time = setTimeout(() => {
+                this.recommendDatas.push(...res)
+                clearTimeout(time)
+              }, 1000)
+            } else {
+              let time = setTimeout(() => {
+                this.footlineTitle = "没有跟多数据拉"
+                clearTimeout(time)
+              }, 1000)
+            }
+          })
+        }
+      }
+    }
   }
 
 </script>

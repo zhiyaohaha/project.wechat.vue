@@ -124,17 +124,21 @@
     created() {
       let data = {
         name: 'LoanProductType.Speed',
-        id: this.__GetRequest().id,
+        id: "",
         size: 2,
         hot: true
       }
-      this.$store.dispatch("getListForApp", {data})
+      this.$store.dispatch("getListForApp", {
+        name: 'LoanProductType.Speed',
+        id: "",
+        size: 2,
+        hot: true
+      })
       this.$store.dispatch("getListBanks").then((res) => {
         let bank = ""
         res.forEach((item) => {
           bank += item.id + ","
         })
-
         this.$store.dispatch("getListBankCard", {
           data: {
             id: '',//最后一条Id，第一次请求不用传

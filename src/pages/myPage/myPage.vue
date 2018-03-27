@@ -88,8 +88,6 @@
           cb:()=>{
             this.setCookie('whether', 0, 7)
           }
-        }).then((res)=>{
-
         })
       }
     }

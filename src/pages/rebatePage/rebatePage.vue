@@ -4,160 +4,43 @@
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
-        {{orderFormTapData.title}}<span class="manNumber">({{orderFormTapData.manNumber}})</span>
+        {{orderFormTapData.title}}<span class="manNumber" v-show="orderFormTapData.manNumber">({{orderFormTapData.manNumber}})</span>
       </a>
     </header>
-    <rebateList v-for="(rebate, index) in rebates" :key="index"
-                :rebateListDatas="rebate.rebateListDatas" v-if="orderFormInd === index"/>
+    <scroll class="wrapper"
+            :data="rakeBackInfo.result"
+            :pullup="true"
+            @scrollToEnd="loadData" v-if="rakeBackInfo">
+      <rebateList :rebateListDatas="rakeBackInfo"/>
+      <footline :title="footlineTitle"/>
+    </scroll>
+
   </div>
 </template>
 
 <script>
   import rebateList from "../../components/rebateList/rebateList.vue"
+  import {mapState} from "vuex"
+
   export default {
-    data () {
+    data() {
       return {
-        rebates: [
-          {
-            rebateListDatas: [
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-            ]
-          },
-          {
-            rebateListDatas: [
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-            ]
-          },
-          {
-            rebateListDatas: [
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-              {
-                imgUrl: "../../../static/img/myImg/touxiang.gif",
-                applyForTime: "20XX-XX-XX XX:XX:XX",
-                money: "100000.00",
-                form: "小赢卡贷",
-                state: "100000.00"
-              },
-            ]
-          }
-        ],
         orderFormTapDatas: [
           {
             title: "我的",
-            manNumber:111
+            manNumber: null
           },
           {
             title: "一级代理",
-            manNumber:111
+            manNumber: null
           },
           {
             title: "二级代理",
-            manNumber:111
+            manNumber: null
           },
         ],
-        orderFormInd: 0
+        orderFormInd: 0,
+        footlineTitle: "下拉加载更多"
       }
     },
 
@@ -165,40 +48,74 @@
       rebateList
     },
 
-    computed: {},
+    computed: {
+      rakeBackInfo:{
+        get(){
+          return this.$store.state.rakeBackInfo
+        },
+        set(){}
+      }
+    },
+    created() {
+      this.$store.dispatch("getRakeBackInfo", {
+        id:"",
+        size:10,
+        level: this.orderFormInd
+      }).then(() => {
+        this.orderFormTapDatas[this.orderFormInd].manNumber = this.rakeBackInfo.total
+      })
+    },
+    mounted() {
 
-    mounted(){
-      /*let sign = this.__getBack()*/
-      /*if (sign) {
-       //        removeEventListener("popstate",this.__callback)
-       }*/
     },
 
     methods: {
 //      点击变色
-      changeColor(ind){
+      changeColor(ind) {
+        this.footlineTitle = '查看更多'
         this.orderFormInd = ind
+        this.$store.dispatch("getRakeBackInfo", {
+          id:"",
+          level: ind,
+          size:10
+        }).then(() => {
+          this.orderFormTapDatas[this.orderFormInd].manNumber = this.rakeBackInfo.total
+        })
+      },
+      //滑动加载
+      loadData() {
+        let that = this
+        if (this.footlineTitle === "没有啦") {
+          return
+        } else {
+          this.footlineTitle = "加载中"
+          this.$store.dispatch("getRakeBackInfo", {
+            id: that.rakeBackInfo.result[that.rakeBackInfo.result.length - 1].id,
+            level:that.orderFormInd,
+            size: 10
+          }).then((res) => {
+            if (res.length > 0) {
+              let time = setTimeout(() => {
+                this.rakeBackInfo.result.push(...res)
+                this.footlineTitle = '查看更多'
+                clearTimeout(time)
+              }, 1000)
+            } else {
+              let time = setTimeout(() => {
+                this.footlineTitle = "没有啦"
+                clearTimeout(time)
+              }, 1000)
+            }
+          })
+        }
       }
-      /*__callback(e){
-       let bool = true
-       if (bool) {
-       alert("我监听到了浏览器的返回按钮事件啦");
-       //根据自己的需求实现自己的功能
-       bool = false
-       }
-       bool = true
-       },
-       __getBack(){
-       console.log(666)
-       window.addEventListener("popstate", this.__callback)
-       return true
-       }*/
     }
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .orderFormTap
+    background-color #ffffff
     height (110 /$rem)
     width (1080 /$rem)
     border-bottom 1px solid #f2f2f2
@@ -213,10 +130,12 @@
       line-height (110 /$rem)
       transition all 0.5s
       .manNumber
-        font-size (34/$rem)
+        font-size (34 /$rem)
         color #333
       &.active
         color #efca7d
         .manNumber
           color #efca7d
+  .wrapper
+    overflow hidden
 </style>

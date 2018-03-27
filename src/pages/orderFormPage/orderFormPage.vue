@@ -106,6 +106,8 @@
         products: "",
         id: "",
         size: 10
+      }).then(()=>{
+        this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1.total
       })
       this.$store.dispatch("getUserRelated", {
         level: that.orderFormInd
@@ -113,18 +115,14 @@
     },
     watch: {
       orderFormInd(val) {
-        let that = this
         this.$store.dispatch("getUserRelated", {
-          level: that.orderFormInd
+          level: val
         })
       }
     },
     mounted() {
     },
     updated() {
-      if (this.orderListFor1) {
-        this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1.total
-      }
     },
     methods: {
       //赛选弹框
@@ -133,7 +131,7 @@
         let code = ""
         let products = ""
         if (flag) {
-          this.checkboxListDatas1.forEach((item, index, input) => {
+          this.checkboxListDatas1.forEach((item) => {
             if (item.imgShow) {
               code += item.code + ","
             }
@@ -168,6 +166,8 @@
           products: "",
           id: "",
           size: 10
+        }).then(()=>{
+          this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1.total
         })
       },
       //下拉加载
@@ -190,7 +190,6 @@
                 this.footlineTitle = '查看更多'
                 clearTimeout(time)
               }, 1000)
-
             } else {
               let time = setTimeout(() => {
                 this.footlineTitle = "没有更多"
@@ -209,6 +208,7 @@
   .orderFormHeader
     height (110 /$rem)
     width (1080 /$rem)
+    background-color #ffffff
     a
       box-sizing border-box
       border-bottom 1px solid #f2f2f2
@@ -225,6 +225,8 @@
       &.active
         color #efca7d
 
+  .wrapper
+    overflow hidden
   .blankBox
     height (10 /$rem)
 

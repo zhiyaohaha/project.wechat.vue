@@ -146,7 +146,7 @@ const router = new Router({
             {
               path: 'generalizeErPage',
               component: generalizeErPage,
-              meta: {keepAlive: false, isTop: false, title: '我的二级代理'},
+              meta: {keepAlive: false, cache: true,isTop: false, title: '我的二级代理'},
             }
           ]
         },
