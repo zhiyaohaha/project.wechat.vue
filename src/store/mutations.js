@@ -4,11 +4,6 @@ export default {
     //用户是否登陆
     state.openID = result.success
   },
-  POST_SENDMSG(state,{result}){
-    console.log(result)
-    //验证码
-    state.verification = result
-  },
   POST_PHONE(state,{result}){
     console.log(result)
     //手机认证
@@ -75,6 +70,11 @@ export default {
     //赛选列表
     state.newsList = result.data
   },
+  CREDITCARDNEWS(state,{result}){
+    console.log(result)
+    //赛选列表
+    state.creditCardNews = result.data
+  },
   GET_DETAILFORAPP(state,{result}){
     console.log(result)
     //文章详情
@@ -120,4 +120,13 @@ export default {
     //我的二级推广列表
     state.erSubordinateUserList = result.data
   },
+  //时间戳
+  CHANGETIME(state){
+    state.time = new Date().getTime()
+  },
+
+  GET_LISTSCHEDULEFORAPP(state,{result}){
+    //办卡进度列表
+    state.listScheduleFor = result.data
+  }
 }

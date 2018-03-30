@@ -7,7 +7,8 @@
       <header class="materialHeader" v-if="authenticationListDatas">
         <ul class="authenticationList">
           <li v-for="(authenticationListData, index) in authenticationListDatas" :key="index">
-            <router-link :to="{path:'/homePage/strategyListPage',query:{name:authenticationListData.name,code:authenticationListData.code}}">
+            <router-link
+              :to="{path:'/homePage/strategyListPage',query:{name:authenticationListData.name,code:authenticationListData.code,scene}}">
               <img :src="authenticationListData.imgUrl">
               <span>{{authenticationListData.name}}</span>
             </router-link>
@@ -28,8 +29,14 @@
   export default {
     data() {
       return {
-        authenticationListDatas: null,
-        footLineTitle: "查看更多"
+        authenticationListDatas:[
+          "../../../static/img/strategyImg/jiaoxue.png",
+          "../../../static/img/strategyImg/tuiguang.png",
+          "../../../static/img/strategyImg/kouzi.png",
+          "../../../static/img/strategyImg/qita.png"
+        ],
+        footLineTitle: "查看更多",
+        scene: 'Scene.Spead'
       }
     },
 
@@ -47,28 +54,30 @@
       }
     },
     created() {
+      let that = this
       this.$store.dispatch("getSelectDataSource", {
         codes: "SpreadNewsCategory"
       }).then((res) => {
-        let imgArr = [
-          "../../../static/img/strategyImg/jiaoxue.png",
-          "../../../static/img/strategyImg/tuiguang.png",
-          "../../../static/img/strategyImg/kouzi.png",
-          "../../../static/img/strategyImg/qita.png"
-        ]
-        res.forEach((item) => {
-          item.childrens.forEach((item, index, input) => {
-            input[index].imgUrl = imgArr[index]
-            this.authenticationListDatas = input
+        if (res.success) {
+          res.data.forEach((item) => {
+            this.authenticationListDatas = item.childrens.map((it, index, Arr) => {
+              it.imgUrl = this.authenticationListDatas[index]
+              return it
+            })
           })
-
-        })
+        } else {
+          this.MessageBox({
+            title: '错误',
+            message: res.message,
+            showCancelButton: false
+          })
+        }
       })
       this.$store.dispatch("getNewsListFor", {
-        scene: 'Scene.Spead',
+        scene:that.scene,
         type: "",
         id: "",
-        size: 1
+        size: 10
       })
     },
     mounted() {
@@ -91,7 +100,7 @@
           }).then((res) => {
             if (res.length < 1) {
               that.footLineTitle = "没有啦"
-            }else {
+            } else {
               let time = setTimeout(() => {
                 that.newsListFor.push(...res)
                 that.footLineTitle = "查看更多"

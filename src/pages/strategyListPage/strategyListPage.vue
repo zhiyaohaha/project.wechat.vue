@@ -35,10 +35,10 @@
     },
     created() {
       this.$store.dispatch("getNewsListFor", {
-        scene: 'Scene.Spead',
+        scene: this.$route.query.scene,
         type: this.$route.query.code,
         id: "",
-        size: 1
+        size: 10
       })
     },
     mounted() {
@@ -56,22 +56,28 @@
           return
         }
         let that = this
-        if (that.footLineTitle === "没有啦") {
+        if (that.footLineTitle === "没有啦"||that.footLineTitle==="加载中") {
           return
-        } else {
+        } else if(that.footLineTitle === "查看更多") {
           this.footLineTitle = "加载中"
           that.$store.dispatch("getNewsListFor", {
-            scene: 'Scene.Spead',
+            scene: that.$route.query.scene ,
             type: that.$route.query.code,
             id: that.newsList[that.newsList.length - 1].id,
-            size: 1
+            size: 10
           }).then((res) => {
-            let time = setTimeout(() => {
-              that.newsList.push(...res)
-              clearTimeout(time)
-            }, 1000)
+            let time
             if (res.length < 1) {
-              that.footLineTitle = "没有啦"
+              time = setTimeout(() => {
+                that.footLineTitle = "没有啦"
+                clearTimeout(time)
+              }, 1000)
+            }else {
+              time = setTimeout(() => {
+                that.newsList.push(...res)
+                that.footLineTitle = "查看更多"
+                clearTimeout(time)
+              }, 1000)
             }
           })
         }

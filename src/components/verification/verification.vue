@@ -13,39 +13,55 @@
                name="verification">
       </div>
       <div class="verificationFooter">
-        <div class="verificationFooterLeft" @click.stop="verificationCancel(false)">取消</div>
-        <div class="verificationFooterRight" @click.stop="verificationCancel(true,validateCode)">确定</div>
+        <div class="verificationFooterLeft" @touchstart.stop="verificationCancel(false)">取消</div>
+        <div class="verificationFooterRight" @touchstart.stop="verificationCancel(true,validateCode)">确定</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import {mapState} from "vuex"
+
   export default {
-    props: ["changeShow","verificationCancel","time"],
-    data () {
+    props: ["changeShow", "verificationCancel"],
+    data() {
       return {
-        validateCode:""
+        validateCode: "",
       }
     },
 
-    components: {
-
+    components: {},
+    watch: {
+      __newGuid(val) {
+        console.log(1)
+      }
     },
-
     computed: {
-      verification(){
-        let url = "http://211.94.137.70:8001/api/OfficialAccounts/ValidateCode?time="
-        let src = url+ this.time
+      ...mapState(["time"]),
+      key: {
+        get() {
+          return this.$store.getters.key
+        },
+        set() {
+
+        }
+      },
+
+      verification() {
+        let url = "http://211.94.137.70:8001/api/OfficialAccounts/ValidateCode?key="
+        let src = url + this.key + this.time
         return src
       },
+
     },
 
-    mounted(){},
+    mounted() {
+    },
 
     methods: {
-      touchstartMap(){
-        this.time = new Date().getTime()
+      touchstartMap() {
+        this.$store.dispatch("changeTime")
       },
     }
   }
@@ -77,37 +93,37 @@
         color #333
         font-weight 500
       .verificationMessage
-        width (864/$rem)
-        height (228/$rem)
+        width (864 /$rem)
+        height (228 /$rem)
         .verificationImg
-          margin-top (70/$rem)
-          margin-left (184.5/$rem)
+          margin-top (70 /$rem)
+          margin-left (184.5 /$rem)
           float left
           img
-            width (250/$rem)
+            width (250 /$rem)
         input
-          margin-top (70/$rem)
+          margin-top (70 /$rem)
           box-sizing border-box
           float left
           outline: none
-          margin-left (45/$rem)
+          margin-left (45 /$rem)
           border 2px solid #bbb
-          font-size (36/$rem)
-          height (87.5/$rem)
-          width (200/$rem)
+          font-size (36 /$rem)
+          height (87.5 /$rem)
+          width (200 /$rem)
       .verificationFooter
         box-sizing border-box
-        width (864/$rem)
-        height (136/$rem)
+        width (864 /$rem)
+        height (136 /$rem)
         border-top 1px solid #bbbbbb
-        font-size (46/$rem)
+        font-size (46 /$rem)
         background-color: #efca7d;
         div
           float left
           width 50%
           height 100%
           text-align center
-          line-height (136/$rem)
+          line-height (136 /$rem)
           &.verificationFooterLeft
             color #fff
           &.verificationFooterRight

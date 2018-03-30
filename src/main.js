@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { Popup, Picker, Swipe, SwipeItem ,Loadmore } from 'mint-ui'
+import { Popup, Swipe, SwipeItem ,Loadmore,MessageBox,Toast} from 'mint-ui'
 import store from './store'
 import BScroll from 'better-scroll'
 import headline from './components/headline/headline.vue'
@@ -13,7 +13,8 @@ import scroll from './components/scroll/scroll.vue'
 
 import {
   __boxheight,
-  __GetRequest
+  __GetRequest,
+  __newGuid
 } from '../static/js/viewportWidth.js'
 import {
   getCookie,
@@ -37,10 +38,14 @@ Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.prototype.__boxheight = __boxheight
 Vue.prototype.__GetRequest = __GetRequest
+Vue.prototype.__newGuid = __newGuid
 Vue.prototype.getCookie = getCookie
 Vue.prototype.setCookie = setCookie
 Vue.prototype.saveTodos = storageUtil.saveTodos
 Vue.prototype.readTodos = storageUtil.readTodos
+Vue.prototype.MessageBox = MessageBox
+Vue.prototype.Toast = Toast
+// Vue.prototype.apiPrefix = 'http://192.168.6.66:8001/'
 Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
 
 Vue.prototype.BScroll = BScroll

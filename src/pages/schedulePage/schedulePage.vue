@@ -1,154 +1,93 @@
 <template>
   <div>
-    <header class="scheduleTab">
-      <a href="javascript:;" v-for="(item,index) in scheduleTabs" :key="index" :class="{active:index===scheduleTabInd}" @click="changeColor(index)">
-        {{item.text}}
-      </a>
-    </header>
-    <div ref="scheduleWrap">
+    <scroll class="wrapper"
+            :data="listScheduleFor"
+            :pullup="true"
+            @scrollToEnd="loadData" v-if="listScheduleFor">
       <div>
-        <scheduleList :scheduleListDatas="scheduleListDatas" v-show="scheduleTabInd===0"/>
-        <div class="bankBox" v-show="!(scheduleTabInd===0)">
-          <div class="blankBox"></div>
-          <headline :headlineData="{title:'请选择银行卡查询办卡进度'}"/>
-          <bankInquireMod :allBankListDatas="allBankListDatas" />
+        <headline :headlineData="{title:'我的办卡进度',line:true}"/>
+        <div>
+          <scheduleList :scheduleListDatas="listScheduleFor"/>
         </div>
-
+        <footline :title="footlineTitle"/>
       </div>
-    </div>
+    </scroll>
   </div>
+
 </template>
 
 <script>
   import scheduleList from '../../components/scheduleList/scheduleList.vue'
   import bankInquireMod from '../../components/bankInquireMod/bankInquireMod.vue'
+
   export default {
-    data () {
+    data() {
       return {
-        scheduleListDatas: [
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行白金IC航旅卡',
-            time: '2013年3月13日 12:04:33',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-          {
-            bankCard: '交通银行卡标准信用卡',
-            time: '2013年3月13日',
-            messageName: '程建',
-            messageNum: '22028198208260001',
-          },
-        ],
-        scheduleTabs: [
-          {
-            text: '我的进度'
-          },
-          {
-            text: '银行查询'
-          },
-        ],
-        scheduleTabInd:0,
-        allBankListDatas: [
-          {
-            imgUrl: "../../../static/img/creditCardImg/communications.png",
-            title: "交通银行",
-            url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "交通银行"}}
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/industrialbank.png",
-            title: "兴业银行",
-            url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "兴业银行"}}
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/generalbanks.png",
-            title: "光大银行",
-            url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "光大银行"}}
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/pudongdevelopmentbank.png",
-            title: "浦发银行",
-            url:{path:'/homePage/creditCardPage/zhongXinCardPage',query: {name: "浦发银行"}}
-          },
-        ],
+        scheduleTabInd: 0,
+        footlineTitle: "查看更多"
       }
     },
 
     components: {
-      scheduleList,bankInquireMod
+      scheduleList, bankInquireMod
     },
 
-    computed: {},
+    computed: {
+      listScheduleFor: {
+        get() {
+          return this.$store.state.listScheduleFor
+        },
+        set() {
 
-    mounted () {
-      this.__boxheight(this.$refs.scheduleWrap) //执行函数
-      window.onresize = this.__boxheight(this.$refs.scheduleWrap) //窗口或框架被调整大小时执行
-      this.scheduleWrap = new this.BScroll(this.$refs.scheduleWrap, {click: true,})
-      this.scheduleWrap.refresh()
+        }
+      }
+    },
+    created() {
+      this.$store.dispatch("getListScheduleForApp", {
+        scene: "Scene.DJQCreditCard",
+        id: "",
+        size: 10
+      })
+    },
+    mounted() {
+
     },
 
     methods: {
-      changeColor(index){
+      changeColor(index) {
         this.scheduleTabInd = index
+      },
+      //下拉刷新逻辑
+      loadData() {
+        if (this.listScheduleFor.length < 1) {
+          this.footLineTitle = "暂无内容"
+          return
+        }
+        if (this.footlineTitle === "没有跟多数据拉" || this.footlineTitle === "加载中") {
+          return
+        } else if (this.footlineTitle === "查看更多") {
+          this.footlineTitle = "加载中"
+          this.$store.dispatch("getListScheduleForApp", {
+            scene: "Scene.DJQCreditCard",
+            id: this.listScheduleFor[this.listScheduleFor.length - 1].id,
+            size: 10,
+          }).then(res => {
+            console.log(res);
+            let time
+            if (res.length > 0) {
+              time = setTimeout(() => {
+                this.listScheduleFor.push(...res)
+                this.footlineTitle = "查看更多"
+                clearTimeout(time)
+              }, 1000)
+            } else {
+              time = setTimeout(() => {
+                this.footlineTitle = "没有跟多数据拉"
+                clearTimeout(time)
+              }, 1000)
+            }
+          })
+        }
       }
     }
   }
@@ -160,15 +99,12 @@
     border-bottom 1px solid #f2f2f2
     a
       text-align center
-      line-height (110/$rem)
-      float left
-      width (50%)
-      font-size (46/$rem)
+      line-height (110 /$rem)
+      font-size (46 /$rem)
       color #333333
       transition color 0.3s
-      &.active
-        color #efca7d
+
   .bankBox
     .blankBox
-      height (10/$rem)
+      height (10 /$rem)
 </style>

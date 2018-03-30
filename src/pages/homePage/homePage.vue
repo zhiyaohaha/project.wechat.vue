@@ -106,7 +106,7 @@
             {
               imgUrl: "../../static/img/homeImg/content_icon_xinyongkadaihuan.png",
               title: "信用卡代还",
-              url: "/homePage/productPage"
+              url: {path:'/homePage/productDetailsPage',query:{id:'5a4edc1a41ab1c25009da5a0'}}
             }
           ]
         },
@@ -181,8 +181,8 @@
     height (146 /$rem)
 
   .homePageHeader
-    width 100%
     height (520 /$rem)
+    width (1080/$rem)
     .mint-swipe-items-wrap
       transform translateZ(0)
     img

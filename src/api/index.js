@@ -9,6 +9,8 @@ export const postSendVerifyCode = (apiPrefix, data) => ajax(apiPrefix, data, "po
 export const postLoanDemand = (apiPrefix, data) => ajax(apiPrefix, data, "post")
 export const postRecordForApp = (apiPrefix, data) => ajax(apiPrefix, data, "post")
 export const postLoginout = (apiPrefix,data) => ajax(apiPrefix, data, "post")
+export const postPeopleFiveReal = (apiPrefix,data) => ajax(apiPrefix, data, "post")
+export const postFiveRealVerifyCode = (apiPrefix,data) => ajax(apiPrefix, data, "post")
 export const getUserinfo = (apiPrefix, data) => ajax(apiPrefix, data)
 export const getLoanAmount = (apiPrefix, data) => ajax(apiPrefix, data)
 export const getListForApp = (apiPrefix, data) => ajax(apiPrefix, data)
@@ -25,5 +27,9 @@ export const getUserRelated = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getRakeBackInfo = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getSubordinateNum = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getSubordinateUserList = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getBanks = (apiPrefix) => ajax(apiPrefix)
+export const getAdCodes = (apiPrefix) => ajax(apiPrefix)
+export const getListScheduleForApp = (apiPrefix,data) => ajax(apiPrefix,data)
+
 
 

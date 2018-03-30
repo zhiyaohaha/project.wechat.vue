@@ -44,7 +44,7 @@
             确定
           </span>
       </div>
-      <pickerMod :pickerModDatas="pickerModDatas" :shadeIsShow="shadeIsShow" :onValuesChange="onValuesChange"/>
+      <pickerMod :pickerModDatas="pickerModDatas" :shadeIsShow="shadeIsShowInd" :onValuesChange="onValuesChange"/>
     </mt-popup>
     <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"
                   :time="time"/>
@@ -58,7 +58,6 @@
   import propertyMod from '../../components/propertyMod/propertyMod.vue'
   import verification from '../../components/verification/verification.vue'
   import {getLoanAmount, postSendVerifyCode, postLoanDemand} from '../../api'
-  import {MessageBox, Toast} from 'mint-ui'
 
   export default {
     data() {
@@ -180,7 +179,7 @@
         simulationSubmitIsShow: true,
         verificationShow: false,
         time: new Date().getTime(),
-        num: null
+        num: null,
       }
     },
 
@@ -203,27 +202,37 @@
         }
       }
     },
-    computed: {},
+    computed: {
+      shadeIsShowInd(){
+        return this.shadeIsShow ? 3 : null
+      }
+    },
     created() {
-      this.getLoanAmount("LoanAmount").then(() => {
-        this.moneyArr = this.Arr
+      this.getLoanAmount("LoanAmount").then((res) => {
+        this.moneyArr = res
       })
-      this.getLoanAmount("LoanTerm").then(() => {
-        this.deadlineArr = this.Arr
+
+      this.getLoanAmount("LoanTerm").then((res) => {
+        this.deadlineArr = res
       })
-      this.getLoanAmount("LoanUse").then(() => {
-        this.consumeArr = this.Arr
+      this.getLoanAmount("LoanUse").then((res) => {
+        this.consumeArr = res
       })
     },
     // 滑动事件
     mounted() {
 
       this.__boxheight(this.$refs.loanWrap) //执行函数
-      window.onresize = this.__boxheight(this.$refs.loanWrap) //窗口或框架被调整大小时执行
       this.$nextTick(() => {
         this.loanWrap = new this.BScroll(this.$refs.loanWrap, {click: true, touchstart: true, momentum: true})
         this.loanWrap.refresh()
       })
+      window.onresize = ()=>{
+        console.log(this);
+        this.__boxheight(this.$refs.loanWrap)
+        this.loanWrap.refresh()
+      } //窗口或框架被调整大小时执行
+
     }
     ,
     updated() {
@@ -231,12 +240,6 @@
     }
     ,
     methods: {
-      //获取用户输入的资产情况
-      __propertyCase(price){
-        return this.propertyModDatas.filter((item)=>{
-          return item.imgUrlIsShow
-        })
-      },
       //获取用户输入的内容
       __findModel(value){
         let mformDatas = this.mformDatas
@@ -253,13 +256,13 @@
         }).then((res) => {
           if (res.success) {
             this.num = 60
-            MessageBox({
+            this.MessageBox({
               title: '提示',
               message: '短信验证码已发送，有效时间5分钟',
               showCancelButton: false
             })
           } else {
-            MessageBox({
+            this.MessageBox({
               title: '提交失败',
               message: '图片验证码输入错误',
               showCancelButton: false
@@ -269,8 +272,7 @@
       },
       //下拉列表数据
       async getLoanAmount(codes) {
-        let apiPrefix = 'http://192.168.6.66:8001'
-        let url = apiPrefix + '/api/Values/GetSelectDataSourceLogin'
+        let url = this.apiPrefix + '/api/Values/GetSelectDataSourceLogin'
         this.Arr = await
           getLoanAmount(url, {codes: codes})
         let Arr = []
@@ -278,8 +280,9 @@
           return item.childrens
         })
         Arr.forEach((item) => {
-          this.Arr = item
+          Arr = item
         })
+        return Arr
       },
       //提交
       submit(){
@@ -317,7 +320,7 @@
             }else {
               MessageBox({
                 title: '提交失败',
-                message: '对不起网络延迟，请重新提交',
+                message: res.message,
                 showCancelButton: false
               })
             }
@@ -364,7 +367,7 @@
           this.mformDatas[index].model = ''
         }
         if (!reg.test(flag)) {
-          Toast({
+          this.Toast({
             message: '格式错误',
             className: 'ToastStyle'
           })
@@ -463,7 +466,7 @@
       li
         box-sizing border-box
         position relative
-        line-height (120 /$rem)
+        line-height (119 /$rem)
         width (1020 /$rem)
         height (121 /$rem)
         font-size (42 /$rem)
@@ -472,6 +475,7 @@
         span
           color #333333
         .description
+          margin-left 0
           float left
         input
           font-size (42 /$rem)

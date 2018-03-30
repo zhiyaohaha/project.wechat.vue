@@ -1,10 +1,10 @@
 <template>
   <div class="pickerMod">
-    <div class="pickerWrap" ref="pickerWrap">
+    <div class="pickerWrap" ref="pickerWrap" v-if="pickerModDatas">
       <ul class="pickerModList">
         <li v-for="(pickerModData, index) in pickerModDatas" :key="index"
             :class="{select:index===select}" ref="pickerSingle">
-          {{pickerModData.name}}
+          {{pickerModData.name||pickerModData.text}}
         </li>
       </ul>
     </div>
@@ -14,8 +14,8 @@
 
 <script>
   export default {
-    props: ['pickerModDatas','shadeIsShow',"onValuesChange"],
-    data () {
+    props: ['pickerModDatas', 'shadeIsShow', "onValuesChange"],
+    data() {
       return {
         select: 0,
       }
@@ -24,40 +24,42 @@
     components: {},
 
     computed: {},
-    watch:{
-      shadeIsShow (val){
-        if(val){
-          this.pickerWrap = new this.BScroll(this.$refs.pickerWrap, {touchstart: true,touchend:true, momentum:false,probeType:1})
+    watch: {
+      shadeIsShow(val) {
+        if (val === 3) {
+          this.pickerWrap = new this.BScroll(this.$refs.pickerWrap, {
+            touchstart: true,
+            touchend: true,
+            momentum: false,
+            probeType: 1
+          })
           this.pickerWrap.refresh()
-          this.pickerWrap.on("touchEnd",(pos)=>{
+          this.pickerWrap.on("touchEnd", (pos) => {
             let a = this.$refs.pickerSingle[0].clientHeight
             let b = Math.round(pos.y / a)
-            console.log(b)
-            console.log(pos.y)
-            this.pickerWrap.scrollTo(0, a*b,100)
-            if(-b > this.pickerModDatas.length - 1){
+            this.pickerWrap.scrollTo(0, a * b, 100)
+            if (-b > this.pickerModDatas.length - 1) {
               this.select = this.pickerModDatas.length - 1
-            }else if(-b < 0 ){
+            } else if (-b < 0) {
               this.select = 0
-            }else {
+            } else {
               this.select = -b
             }
-            console.log(this.select)
             this.onValuesChange(this.select)
           })
           this.onValuesChange(this.select)
-        }else {
-          this.pickerWrap.destroy()
+        } else {
+          this.pickerWrap && this.pickerWrap.destroy()
           this.select = 0
         }
       }
     },
-    mounted () {
+    mounted() {
+      this.pickerModData&&this.onValuesChange(this.select)
     },
-
-    methods: {
-
-    }
+    updated() {
+    },
+    methods: {}
   }
 
 </script>

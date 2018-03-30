@@ -46,15 +46,15 @@
       }).then(()=>{
         let userinfo = this.readTodos()
         let data = {
-          openId: "undefined",
+          openId:"undefined",
           thirdLoginType: 'ThirdPlatForm.WeChat',
-          nickName: "",
-          head: ""
+          nickName: userinfo.nickname,
+          head: userinfo.headimgurl
         }
         this.$store.dispatch('postOpenid', {
           data,
           cb: (va1, whether) => {
-            this.setCookie('openId', va1, 7)
+            this.setCookie('token', va1, 7)
             //存入cookie 判断是否实名
             this.setCookie('whether', whether, 7)
           }
