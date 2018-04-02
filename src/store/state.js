@@ -1,4 +1,5 @@
 export default {
+  time:new Date().getTime(),
   verification:null,
   openID:null,
   phoneNote:null,
@@ -14,6 +15,7 @@ export default {
   bankCardDetail:null,
   inviteurl:null,
   newsListFor:null,
+  creditCardNews:null,
   newsList:null,
   detailForApp:null,
   orderListFor1:null,
@@ -23,5 +25,5 @@ export default {
   erSubordinateNum:null,
   subordinateUserList:null,
   erSubordinateUserList:null,
-
+  listScheduleFor:null,
 }

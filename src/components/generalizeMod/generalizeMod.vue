@@ -14,7 +14,6 @@
 </template>
 
 <script>
-  import headline from "../../components/headline/headline.vue"
   export default {
     props: ["generalizeModData"],
     data () {
@@ -22,7 +21,6 @@
     },
 
     components: {
-      headline
     },
 
     computed: {},

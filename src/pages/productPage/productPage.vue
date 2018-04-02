@@ -63,9 +63,9 @@
     methods: {
       //下拉刷新逻辑
       loadData() {
-        if (this.footlineTitle === "没有跟多数据拉") {
+        if (this.footlineTitle === "没有跟多数据拉"||this.footlineTitle === "加载中") {
           return
-        } else {
+        } else if(this.footlineTitle === "查看更多"){
           this.footlineTitle = "加载中"
           this.$store.dispatch("getListForApp", {
             name: 'LoanProductType.Speed',
@@ -76,6 +76,7 @@
             if (res.length > 1) {
               let time = setTimeout(() => {
                 this.recommendDatas.push(...res)
+                this.footlineTitle = "查看更多"
                 clearTimeout(time)
               }, 1000)
             } else {

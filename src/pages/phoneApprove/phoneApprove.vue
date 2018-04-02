@@ -33,7 +33,7 @@
         <div class="footerOccupied"></div>
       </div>
     </div>
-    <verification v-show="verificationShow" :changeShow="changeShow" :time="time"
+    <verification v-show="verificationShow" :changeShow="changeShow"
                   :verificationCancel="verificationCancel"/>
     <footer class="myFooter" v-show="myFooterIsShow">
       <span>
@@ -46,7 +46,7 @@
 </template>
 <script>
   import { MessageBox, Toast } from 'mint-ui'
-  import { mapState } from 'vuex'
+  import { mapState, mapGetters } from 'vuex'
   import verification from '../../components/verification/verification.vue'
 
   export default {
@@ -83,7 +83,6 @@
         imgIsShow: true,
         myFooterIsShow: true,
         verificationShow: false,
-        time: new Date().getTime(),
         isFlag: null
       }
     },
@@ -91,7 +90,8 @@
       verification
     },
     computed: {
-      ...mapState(['verification', 'phoneNote', 'openID'])
+      ...mapState(['verification', 'phoneNote', 'openID',"time"]),
+      ...mapGetters(["key"])
     },
     beforeMount () {
 
@@ -103,14 +103,13 @@
     },
     methods: {
       //      发送短信验证码请求
-      __phoneNote () {
-        if (this.verification.success) {
+      __phoneNote (res) {
+        if (res.success) {
           MessageBox({
             title: '提示',
-            message: '短信验证码已发送，有效时间5分钟',
+            message: "短信验证码已发送，5分钟内有效",
             showCancelButton: false
           })
-          clearInterval(this.timer1)
           this.num = 60
           let timer = setInterval(() => {
             this.num--
@@ -127,10 +126,9 @@
         } else {
           MessageBox({
             title: '提交失败',
-            message: '图片验证码输入错误',
+            message: res.message,
             showCancelButton: false
           })
-          clearInterval(this.timer1)
         }
       },
 //      底部消失
@@ -155,7 +153,8 @@
           }
           this.$store.dispatch('postPhone', {
             data,
-            cb: (whether) => {
+            cb: (flag,whether) => {
+              this.setCookie('myToken', flag, 7)
               this.setCookie('whether', whether, 7)
             }
           })
@@ -190,19 +189,20 @@
       //发送图片验证码核实请求
       verificationCancel (flag, validateCode) {
         this.isFlag = flag
-        this.time = new Date().getTime()
         this.verificationShow = false
         if (flag) {
-          let data = {
+          this.$store.dispatch('postSendMsg',{
             code: 'SMS_123738830',
+            validateKey: this.key + this.time,
             mobilePhone: this.mformDatas[0].model,
             validateCode: validateCode,
             needvalidateCode: true
-          }
-          this.$store.dispatch('postSendMsg', {data})
-          this.timer1 = setTimeout(() => {
-            this.__phoneNote()
-          }, 500)
+          }).then((res)=>{
+            this.__phoneNote(res)
+            this.$store.dispatch("changeTime")
+          })
+        }else {
+          this.$store.dispatch("changeTime")
         }
       },
 //      选中切换

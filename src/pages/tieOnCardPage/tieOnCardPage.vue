@@ -34,7 +34,10 @@
             确定
           </span>
       </div>
-      <pickerMod :shadeIsShow="shadeIsShow" :pickerModDatas="bankArr" :onValuesChange="onValuesChange"/>
+      <pickerMod :shadeIsShow="mformDatasInd" :pickerModDatas="bankArr" :onValuesChange="onValuesChange"
+                 v-show="mformDatasInd === 3"/>
+      <linkageMod :linkageModDatas="provinceAndCity" :mformDatasInd="mformDatasInd" :onValuesChange="ValuesChange"
+                  v-show="mformDatasInd === 4"/>
     </mt-popup>
     <footer class="tieOnCardFooter" v-show="tieOnFooterIsShow">
       实名认证仅用来确保您提交的需求真实有效，绝不泄露
@@ -42,9 +45,11 @@
   </div>
 </template>
 <script>
-  import { Toast, MessageBox } from "mint-ui"
+  import {Toast, MessageBox} from "mint-ui"
+  import linkageMod from "../../components/linkageMod/linkageMod.vue"
+
   export default {
-    data () {
+    data() {
       return {
         mformDatas: [
           {
@@ -56,6 +61,7 @@
             sendMsg: false,
             units: "",
             reg: /^[\u4e00-\u9fa5_A-Za-z]{1,}$/,
+            regular: /^[A-Za-z\u4e00-\u9fa5]{1,}$/,
           },
           {
             description: "身份证号：",
@@ -66,6 +72,7 @@
             sendMsg: false,
             units: "",
             reg: /^[0-9_xX]{1,18}$/,
+            regular: /^\d{17}[\d|x]|\d{15}$/,
             maxlength: "18"
           },
           {
@@ -77,17 +84,30 @@
             sendMsg: false,
             units: "",
             reg: /^[0-9]{1,21}$/,
+            regular: /^[0-9]{1,21}$/,
             maxlength: "21"
           },
           {
             description: "所属银行：",
-            placeholder: "请输入所属银行",
+            placeholder: "请选择所属银行",
             name: "bank",
             model: "",
             purposeList: true,
             sendMsg: false,
             units: "",
             reg: /^[\u4e00-\u9fa5]{0,}$/,
+            regular: /[\s\S]/,
+          },
+          {
+            description: "开户行省市",
+            placeholder: "请选择开户行省市",
+            name: "bankCity",
+            model: "",
+            purposeList: true,
+            sendMsg: false,
+            units: "",
+            reg: /^[\u4e00-\u9fa5]{0,}$/,
+            regular: /[\s\S]/,
           },
           {
             description: "银行预留手机号：",
@@ -98,37 +118,48 @@
             sendMsg: false,
             units: "",
             reg: /^[0-9]{1,11}$/,
+            regular: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9]|17[0-9])\d{8}$/,
+            maxlength: 11
           },
         ],
-        mformDatasInd:0,
+        mformDatasInd: 0,
         shadeIsShow: false,
-        bankArr: [
-          {name:"中信银行",code:1},
-          {name:"工商银行",code:2},
-          {name:"农业银行",code:3},
-          {name:"邮政银行",code:4},
-          {name:"建设银行",code:5},
-          {name:"兴业银行",code:6},
-          {name:"北京银行",code:7},
-        ],
-        tieOnFooterIsShow:true
+        bankArr: [],
+        provinceAndCity: [],
+        tieOnFooterIsShow: true
       }
     },
 
-    components: {},
+    components: {
+      linkageMod
+    },
 
     computed: {},
+    created() {
+      this.$store.dispatch("getBanks").then((res) => {
+        this.bankArr.push(...res)
+      })
+      this.$store.dispatch("getAdCodes").then((res) => {
+        this.provinceAndCity.push(...res)
+      })
 
-    mounted(){
+    },
+    mounted() {
 
     },
 
     methods: {
-      loseFocus(){
+      //用户输入
+      __findModel(val) {
+        let mformDatas = this.mformDatas
+        return mformDatas.find((n) => n.name === val).model
+      },
+      //底部显示逻辑失去焦点事件
+      loseFocus() {
         this.tieOnFooterIsShow = true
       },
-      goodInput(reg, flag, index){
-        if (index == 3) {
+      goodInput(reg, flag, index) {
+        if (index === 3 || index === 4) {
           this.mformDatas[index].model = ""
         }
         if (!reg.test(flag)) {
@@ -136,33 +167,73 @@
             message: "格式错误",
             className: "ToastStyle"
           })
-          this.mformDatas[index].model = flag.substring(0,flag.length - 1)
+          this.mformDatas[index].model = flag.substring(0, flag.length - 1)
         }
       },
-      pullDown(flag, index, inputVal){
+      //弹窗挑起事件
+      pullDown(flag, index, inputVal) {
         this.mformDatasInd = index
-        if (index === 3) {
-          inputVal ? '' : this.mformDatas[index].model = ""
+        if (index === 3 || index === 4) {
+          inputVal ? null : this.mformDatas[index].model = ""
+          if (inputVal && index === 4 && this.mformDatas[4].model === "") {
+            this.ValuesChange()
+          }
           this.shadeIsShow = flag
         }
       },
+      //弹框选择
       onValuesChange(index) {
-        this.mformDatas[this.mformDatasInd].model = this.bankArr[index].name
+        this.mformDatas[3].model = this.bankArr[index].text
       },
-      approve(){
-        let Arr = this.mformDatas.filter((item)=>{
-          return item.reg.test(item.model)
+      ValuesChange(select1 = 0, pitchOn = 0) {
+        let city
+        this.provinceAndCity[select1].c[pitchOn] ?
+          city = this.provinceAndCity[select1].c[pitchOn].b
+          : city = this.provinceAndCity[select1].c[0].b
+        this.mformDatas[4].model = this.provinceAndCity[select1].b + " " + city
+
+      },
+      approve() {
+        let that = this
+        let Arr = this.mformDatas.filter((item) => {
+          return item.regular.test(item.model)
         })
-        Array.from(Arr)
-        console.log(Arr)
-        if(Arr.length < 5){
+        let a = that.__findModel("bankCity")
+        console.log(Arr);
+        if (Arr.length === this.mformDatas.length) {
+          this.$store.dispatch("postPeopleFiveReal", {
+            name: that.__findModel("userName"),//真实姓名
+            idCard: that.__findModel("IDnumber"),//身份证号
+            bankCard: that.__findModel("bankCard"),//银行卡号
+            fuiouBankArea: that.provinceAndCity.find((n) => {
+              return n.b === a.substr(0, a.indexOf(' ') + 1).trim()
+            }).c.find((m) => {
+              return m.b === a.substr(a.indexOf(' ') + 1).trim()
+            }).a,//开户行所在地编号
+            fuiouBank: that.bankArr.find((n) => {
+              return n.text === that.__findModel("bank")
+            }).value,//开户行编号
+            mobilePhone: that.__findModel("phoneNum")//手机号
+          }).then((res) => {
+            if(!res.success){
+              MessageBox({
+                title: '提示',
+                message: res.message,
+                showCancelButton: false
+              })
+              if(!res.data.real){
+
+              }
+            }
+            console.log(res)
+          })
+        } else {
           MessageBox({
             title: '提示',
             message: '请正确输入信息',
             showCancelButton: false
           })
-        }else {
-          this.$router.replace("/myPage/verifyPage")
+
         }
       }
     }

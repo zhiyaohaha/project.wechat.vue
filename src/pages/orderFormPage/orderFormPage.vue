@@ -135,17 +135,16 @@
             if (item.imgShow) {
               code += item.code + ","
             }
-            if (code === "") {
-              code += item.code + ","
-            }
           })
           this.userrelated.forEach((item) => {
             if (item.imgShow) {
               products += item.product + ","
             }
           })
-          code = code.substring(0, code.length - 1)
+
+          code = code.substring(0, code.length - 1)||'Apply, Auditing, Loan, UserGiveUp, Refuse'
           products = products.substring(0, products.length - 1)
+          console.log(products)
           this.$store.dispatch("getOrderListFor", {
             status: code,
             level: this.orderFormInd,

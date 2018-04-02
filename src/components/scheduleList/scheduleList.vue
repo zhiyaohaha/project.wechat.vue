@@ -1,16 +1,16 @@
 <template>
   <div>
-    <ul class="scheduleList">
-      <li v-for="(scheduleListData, index) in scheduleListDatas">
+    <ul class="scheduleList" v-if="scheduleListDatas">
+      <li v-for="(scheduleListData, index) in scheduleListDatas" :key="index">
         <div class="up">
-          <span class="bankCard">{{scheduleListData.bankCard}}</span>
-          <span class="time">{{scheduleListData.time}}</span>
+          <span class="bankCard">{{scheduleListData.card}}</span>
+          <span class="time">{{scheduleListData.createdDate}}</span>
         </div>
         <div class="down">
-          <span>{{scheduleListData.messageName}}</span>
-          <span>{{scheduleListData.messageNum}}</span>
+          <span>{{scheduleListData.name}}</span>
+          <span>{{scheduleListData.idCard}}</span>
         </div>
-        <a href="javascript:;" class="button">查看进度</a>
+        <a :href="scheduleListData.url" class="button">查看进度</a>
       </li>
     </ul>
   </div>
@@ -31,7 +31,8 @@
 
     mounted(){},
 
-    methods: {}
+    methods: {
+    }
   }
 
 </script>

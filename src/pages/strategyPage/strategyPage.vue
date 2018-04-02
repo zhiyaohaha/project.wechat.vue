@@ -1,120 +1,131 @@
 <template>
-  <div ref="strategyWrap">
+  <scroll class="wrapper"
+          :data="creditCardNews"
+          :pullup="true"
+          @scrollToEnd="loadData" v-if="creditCardNews">
     <div>
       <header class="strategyHeader">
         <ul class="authenticationList">
           <li v-for="(authenticationListData, index) in authenticationListDatas" :key="index">
-            <router-link to="/homePage/strategyListPage">
+            <router-link :to="{path:'/homePage/strategyListPage',query:{name:authenticationListData.name,code:authenticationListData.code,scene}}">
               <img :src="authenticationListData.imgUrl">
-              <span>{{authenticationListData.character}}</span>
+              <span>{{authenticationListData.name}}</span>
             </router-link>
           </li>
         </ul>
       </header>
       <div class="strategyContent">
-        <strategyList :strategyListDatas="strategyListDatas"/>
+        <strategyList :strategyListDatas="creditCardNews"/>
+        <footline :title="footLineTitle"/>
       </div>
     </div>
-  </div>
+  </scroll>
 </template>
 
 <script>
   import strategyList from "../../components/strategyList/strategyList.vue"
   export default {
-    data () {
+    data() {
       return {
         authenticationListDatas: [
           {
             imgUrl: "../../../static/img/strategyImg/banka.png",
-            character: "办卡"
           },
           {
             imgUrl: "../../../static/img/strategyImg/tie.png",
-            character: "提额"
           },
           {
             imgUrl: "../../../static/img/strategyImg/fenqi.png",
-            character: "分期"
           },
           {
             imgUrl: "../../../static/img/strategyImg/qita.png",
-            character: "其他"
           },
         ],
-        strategyListDatas:[
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard02.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard03.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-          {
-            title:"告急！大批信用卡被降额，被封卡！年底封杀潮",
-            time:"2017-12-12",
-            url:"http://mp.weixin.qq.com/s/WfT_NMEQ2o6b2b1xrDYwag",
-            imgUrl:"../../../static/img/strategyImg/creditcard01.png"
-          },
-
-        ]
+        scene: 'Scene.DJQCreditCardNews',
+        footLineTitle:"查看更多"
       }
     },
-
     components: {
       strategyList
     },
 
-    computed: {},
-
-    mounted(){
-      this.__boxheight(this.$refs.strategyWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.strategyWrap); //窗口或框架被调整大小时执行
-      this.strategyWrap = new this.BScroll(this.$refs.strategyWrap, {click: true,})
-      this.strategyWrap.refresh()
+    computed: {
+      creditCardNews: {
+        get() {
+          return this.$store.state.creditCardNews
+        },
+        set() {
+        }
+      }
+    },
+    created() {
+      let that = this
+      this.$store.dispatch("getSelectDataSource", {
+        codes: "CreditCardNewsCategory"
+      }).then((res) => {
+        if (res.success) {
+          res.data.forEach((item) => {
+            this.authenticationListDatas=item.childrens.map((it, index, Arr) => {
+              it.imgUrl = this.authenticationListDatas[index].imgUrl
+              return it
+            })
+          })
+        } else {
+          this.MessageBox({
+            title: '错误',
+            message: res.message,
+            showCancelButton: false
+          })
+        }
+      })
+      this.$store.dispatch("getNewsListFor", {
+        scene: that.scene,
+        type: "",
+        id: "",
+        size: 10
+      })
+    },
+    mounted() {
+      if (this.creditCardNews.length < 1) {
+        this.footLineTitle = "暂无内容"
+      }
     },
 
-    methods: {}
+    methods: {
+      loadData() {
+        if (this.creditCardNews.length < 1) {
+          this.footLineTitle = "暂无内容"
+          return
+        }
+        let that = this
+        if (that.footLineTitle === "没有啦"||that.footLineTitle==="加载中") {
+          return
+        } else if(that.footLineTitle === "查看更多") {
+          this.footLineTitle = "加载中"
+          that.$store.dispatch("getNewsListFor", {
+            scene: that.scene ,
+            type:"",
+            id: that.creditCardNews[that.creditCardNews.length - 1].id,
+            size: 10
+          }).then((res) => {
+            let time
+            if (res.length < 1) {
+              time = setTimeout(() => {
+                that.footLineTitle = "没有啦"
+                clearTimeout(time)
+              }, 1000)
+            }else {
+              time = setTimeout(() => {
+                that.creditCardNews.push(...res)
+                that.footLineTitle = "查看更多"
+                clearTimeout(time)
+              }, 1000)
+            }
+          })
+        }
+
+      }
+    }
   }
 
 </script>
@@ -128,7 +139,7 @@
       display -webkit-flex
       display flex
       justify-content: space-around
-      padding (50/$rem) 0
+      padding (50 /$rem) 0
       border-bottom 1px solid #f2f2f2
       li
         a
@@ -139,5 +150,5 @@
             height (96 /$rem)
           span
             display block
-            margin-top (28/$rem)
+            margin-top (28 /$rem)
 </style>

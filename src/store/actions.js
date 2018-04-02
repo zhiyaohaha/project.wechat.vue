@@ -18,42 +18,57 @@ import {
   getUserRelated,
   getRakeBackInfo,
   getSubordinateNum,
-  getSubordinateUserList
+  getSubordinateUserList,
+  postPeopleFiveReal,
+  getBanks,
+  getAdCodes,
+  postFiveRealVerifyCode,
+  getListScheduleForApp
 } from '../api'
 
 let apiPrefix = 'http://211.94.137.70:8001/'
 let apiWeChat = 'http://api2.cpf360.com/'
 export default {
   //验证码
-  async postSendMsg({commit}, {data,}) {
+  async postSendMsg({commit}, data) {
     // debugger
     let url = apiPrefix + 'api/SMS/SendVerifyCode'
     const result = await postSendMsg(url, data)
-    if (result) {
-      commit('POST_SENDMSG', {result})
-    }
+    return result
   },
   //验证用户石否注册
   async postOpenid({commit}, {data, cb}) {
     // debugger
     let url = apiPrefix + 'api/OfficialAccounts/ThridPlatFormLogin'
     const result = await postOpenid(url, data)
-    if (result) {
+    let flag
+    let whether = null
+    if (result.success) {
       commit('GET_OPENID', {result})
-      let flag = data.openId
-      let whether = null
-      result.success ? whether = 1 : whether = 0
-      cb && cb(flag, whether)
+      flag = result.data.id
+      whether = 1
+    } else {
+      flag = ""
+      whether = 0
     }
+    cb && cb(flag, whether)
   },
   //手机登陆
   async postPhone({commit}, {data, cb}) {
     // debugger
     let url = apiPrefix + 'api/OfficialAccounts/LoginByVerifyCode'
     const result = await postPhone(url, data)
-    let whether = null
-    result.success ? whether = 1 : whether = 0
-    cb && cb(whether)
+    let whether
+    let flag
+    console.log(result)
+    if (result.success) {
+      flag = result.data.id
+      whether = 1
+    } else {
+      flag = ""
+      whether = 0
+    }
+    cb && cb(flag, whether)
     commit('POST_PHONE', {result})
   },
   //信用卡申请
@@ -69,6 +84,19 @@ export default {
     let url = apiPrefix + 'api/Auth/Loginout'
     cb && cb()
     const result = await postLoginout(url, data)
+    return result
+  },
+  //绑卡
+  async postPeopleFiveReal({commit}, data) {
+    // debugger
+    let url = apiPrefix + 'api/OfficialAccounts/PeopleFiveReal'
+    const result = await postPeopleFiveReal(url, data)
+    return result
+  },
+  async postFiveRealVerifyCode({commit}, data) {
+    // debugger
+    let url = apiPrefix + 'api/OfficialAccounts/FiveRealVerifyCode'
+    const result = await postFiveRealVerifyCode(url, data)
     return result
   },
   //获取用户信息
@@ -100,6 +128,7 @@ export default {
     let url = apiPrefix + 'api/LoanProduct/DetailedForApp'
     const result = await getDetailedFor(url, data)
     commit('GET_DETAILEDFOR', {result})
+    // alert(JSON.stringify(result))
   },
   //银行列表
   async getListBanks({commit},) {
@@ -137,26 +166,33 @@ export default {
     const result = await getInviteUrl(url)
     commit('GET_INVITEURL', {result})
   },
-  //获取推广素材分类
+  //获取推广素材分类 攻略专区分类
   async getSelectDataSource({commit}, data) {
     let url = apiPrefix + "api/Values/GetSelectDataSource"
     const result = await getSelectDataSource(url, data)
-    return result.data
+    return result
   },
-  //获取推广素材列表
+  //获取推广素材列表 攻略专区列表
   async getNewsListFor({commit}, data) {
     let url = apiPrefix + "api/News/ListForApp"
     const result = await getNewsListFor(url, data)
     if (data.id) {
       return result.data
     } else {
+      // 推广素材列表
       if (data.type) {
         commit('GET_NEWSLIST', {result})
       } else {
-        commit('GET_NEWSLISTFOR', {result})
+        if (data.scene === "Scene.DJQCreditCardNews") {
+          //攻略专区列表
+          commit('CREDITCARDNEWS', {result})
+        } else {
+          commit('GET_NEWSLISTFOR', {result})
+        }
       }
-
     }
+
+
   },
   //获取文章详情
   async getDetailForApp({commit}, data) {
@@ -194,9 +230,9 @@ export default {
   async getSubordinateNum({commit}, data) {
     let url = apiPrefix + "api/OfficialAccounts/GetSubordinateNum"
     const result = await getSubordinateNum(url, data)
-    if(data.userId){
+    if (data.userId) {
       commit('GET_ERSUBORDINATENUM', {result})
-    }else {
+    } else {
       commit('GET_SUBORDINATENUM', {result})
     }
   },
@@ -204,12 +240,37 @@ export default {
   async getSubordinateUserList({commit}, data) {
     let url = apiPrefix + "api/OfficialAccounts/GetSubordinateUserList"
     const result = await getSubordinateUserList(url, data)
-    if(data.userId){
+    if (data.userId) {
       commit('GET_ERSUBORDINATEUSERLIST', {result})
-    }else {
+    } else {
       commit('GET_SUBORDINATEUSERLIST', {result})
     }
-
   },
+  //银行卡列表
+  async getBanks() {
+    let url = apiPrefix + "api/ThirdAPI/Fuiou/GetBanks"
+    const result = await getBanks(url,)
+    return result.data
+  },
+  //城市列表
+  async getAdCodes() {
+    let url = apiPrefix + "api/ThirdAPI/Fuiou/GetAdCodes"
+    const result = await getAdCodes(url)
+    return result.data
+  },
+  //办卡进度
+  async getListScheduleForApp({commit},data) {
+    let url = apiPrefix + "api/CreditCardOrder/ListScheduleForApp"
+    const result = await getListScheduleForApp(url,data)
+    if (data.id) {
+      return result.data
+    }else {
+      commit('GET_LISTSCHEDULEFORAPP', {result})
+    }
+  },
+  //改变时间
+  changeTime({commit}) {
+    commit("CHANGETIME")
+  }
 }
 

@@ -3,7 +3,7 @@
     <div class="articlePage" v-if="detailForApp">
       <header class="articlePageHeader">
         <p class="headerTitle">
-          {{detailForApp.title}}奥斯打击打击乐不拿手机大家考虑离开撒娇的就！大陆上空。
+          {{detailForApp.title}}
         </p>
         <div class="articleDescribe">
           <div class="timeAddress">
@@ -17,8 +17,8 @@
         </div>
       </header>
       <div class="detailForAppContent" v-html="detailForApp.content"></div>
-      <headline :headlineData="{line:true,title:'相关资讯'}"/>
-      <strategyList :strategyListDatas="detailForApp.news"/>
+      <!--<headline :headlineData="{line:true,title:'相关资讯'}"/>
+      <strategyList :strategyListDatas="detailForApp.news"/>-->
     </div>
   </div>
 </template>
@@ -30,7 +30,8 @@
   export default {
     name: "articlePage",
     data() {
-      return {}
+      return {
+      }
     },
 
     components: {
@@ -38,7 +39,9 @@
     },
 
     computed: {
-      ...mapState(["detailForApp"])
+      ...mapState(["detailForApp"]),
+    },
+    watch:{
     },
     created() {
       this.$store.dispatch("getDetailForApp", {
@@ -100,7 +103,7 @@
       p
         font-size (40 /$rem)
         color #666 !important
-
+        line-height (42/$rem) !important
       img
         width 100%
 </style>

@@ -4,7 +4,8 @@ import Qs from 'qs'
 /**
  * Created by Administrator on 2018/1/25.
  */
-export const __boxheight = function (ele) { //函数：获取尺寸
+export const __boxheight = function (ele) {
+  //函数：获取尺寸
   //获取浏览器窗口高度
   let winHeight = 0
   if (window.innerHeight){
@@ -21,15 +22,18 @@ export const __boxheight = function (ele) { //函数：获取尺寸
     ele.style.height = winHeight + 'px'
   }
 }
-export const postAuth = function (param) {
+//post请求鉴权
+export const postAuth = function (param,a) {
   let _param = {}
   let str = param
   let timestamp = (new Date().getTime()).toString().substr(0, 10)
   _param.data = str
   _param.timestamp = timestamp
   _param.sign = md5(str + timestamp + '84qudMIhOkX5JMQXVd0f4jneqfP2Lp')
+  _param.weChatUserIdHanLi=a
   return Qs.stringify(_param)
 }
+
 export const __GetRequest = function () {
   let url = location.search //获取url中"?"符后的字串
   let theRequest = {}
@@ -41,4 +45,16 @@ export const __GetRequest = function () {
     }
   }
   return theRequest
+}
+// JUID
+export const __newGuid = function (time){
+  let guid = ""
+  for (let i = 1; i <= 32; i++){
+    let n = Math.floor(Math.random()*16.0).toString(16);
+    guid += n;
+    if((i==8)||(i==12)||(i==16)||(i==20))
+      guid += "-"
+  }
+  console.log(guid)
+  return guid
 }
