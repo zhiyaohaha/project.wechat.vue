@@ -21,10 +21,6 @@
       /**
        * 点击列表是否派发click事件
        */
-      tap:{
-        type: Boolean,
-        default: false
-      },
       click: {
         type: Boolean,
         default: true
@@ -81,6 +77,7 @@
     },
     mounted() {
       this.__boxheight(this.$refs.wrapper)
+      window.onresize = this.__boxheight(this.$refs.wrapper)
       // 保证在DOM渲染完毕后初始化better-scroll
       setTimeout(() => {
         this._initScroll()
@@ -96,7 +93,6 @@
           probeType: this.probeType,
           click: this.click,
           scrollX: this.scrollX,
-          tap:this.tap
         })
 
         // 是否派发滚动事件
@@ -158,6 +154,8 @@
       // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
       data() {
         setTimeout(() => {
+          this.__boxheight(this.$refs.wrapper)
+          window.onresize = this.__boxheight(this.$refs.wrapper)
           this.refresh()
         }, this.refreshDelay)
       }

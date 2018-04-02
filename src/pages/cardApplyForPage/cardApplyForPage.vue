@@ -79,22 +79,28 @@
     components: {},
 
     computed: {},
-
+    beforeCreate() {
+      let that = this
+      if(this.getCookie("whether")*1 < 1){
+        this.$router.replace({name: "phoneApprove", query: {id: that.$route.query.id},params: {name1: that.$route.name}})
+      }
+      that = null
+    },
     mounted() {
     },
 
     methods: {
       //提交逻辑
       applyFor() {
-        let judge = this.mformDatas.filter((item)=>{
+        let judge = this.mformDatas.filter((item) => {
           return item.regular.test(item.model)
         })
         console.log(judge);
-        if(judge.length === this.mformDatas.length){
+        if (judge.length === this.mformDatas.length) {
           let that = this
           this.$store.dispatch("postRecordForApp", {
             creditCard: that.$route.query.id,//信用卡Id
-            applyFormData:[
+            applyFormData: [
               {
                 key: "name",
                 value: that.mformDatas[0].model
@@ -109,19 +115,19 @@
               },
             ],
             source: 'OfficialAccounts'//来源
-          }).then((res)=>{
-            if(res.success){
+          }).then((res) => {
+            if (res.success) {
               window.location.href = res.data.url
-            }else {
+            } else {
               MessageBox({
                 title: '提示',
-                message: '网络不正常请稍后再试',
+                message:res.message,
                 showCancelButton: false
               })
             }
 
           })
-        }else {
+        } else {
           MessageBox({
             title: '提示',
             message: '请正确输入信息',

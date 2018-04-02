@@ -1,8 +1,8 @@
 export default {
   time:new Date().getTime(),
   verification:null,
-  openID:null,
-  phoneNote:null,
+  // openID:null,
+  // phoneNote:null,
   userinfo:null,
   recommendModDatas:null,
   recommendDatas:null,
@@ -26,4 +26,5 @@ export default {
   subordinateUserList:null,
   erSubordinateUserList:null,
   listScheduleFor:null,
+  binBankCard:null
 }

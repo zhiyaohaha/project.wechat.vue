@@ -4,9 +4,9 @@
       <router-view v-if="!$route.meta.cache"/>
     </keep-alive>
     <router-view v-if="$route.meta.cache"/>
-    <div class="homePageWrap" ref="homePageWrap" v-show="$route.meta.keepAlive">
+    <div class="homePageWrap" ref="homePageWrap" v-if="$route.meta.keepAlive">
       <div @click="changeTop">
-        <header class="homePageHeader" v-if="$route.meta.keepAlive">
+        <header class="homePageHeader">
           <mt-swipe :auto="2000" :prevent="true" :stopPropagation="true" :showIndicators="false">
             <mt-swipe-item><img src="./img/xinyongkabanner.png"></mt-swipe-item>
             <mt-swipe-item><img src="./img/banner1.png"></mt-swipe-item>
@@ -106,7 +106,7 @@
             {
               imgUrl: "../../static/img/homeImg/content_icon_xinyongkadaihuan.png",
               title: "信用卡代还",
-              url: {path:'/homePage/productDetailsPage',query:{id:'5a4edc1a41ab1c25009da5a0'}}
+              url: {path: '/homePage/productDetailsPage', query: {id: '5a4edc1a41ab1c25009da5a0'}}
             }
           ]
         },
@@ -121,13 +121,9 @@
     computed: {
       ...mapState(["openID", "recommendModDatas", "listBanks", "homeListBankCard"]),
     },
+    watch: {}
+    ,
     created() {
-      let data = {
-        name: 'LoanProductType.Speed',
-        id: "",
-        size: 2,
-        hot: true
-      }
       this.$store.dispatch("getListForApp", {
         name: 'LoanProductType.Speed',
         id: "",
@@ -148,28 +144,49 @@
           site: "home"
         })
       })
-
     },
     mounted() {
-      this.__boxheight(this.$refs.homePageWrap); //执行函数
-      window.onresize = this.__boxheight(this.$refs.homePageWrap); //窗口或框架被调整大小时执行
-      this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {
-        click: true,
-        startY: this.top
+
+      this.$nextTick(() => {
+        if(this.$route.meta.homeShow&&this.$route.meta.keepAlive){
+          this.__initScroll(this.$refs.homePageWrap)
+        }
       })
-      this.homePageWrap.refresh()
-    },
+
+    }
+    ,
     updated() {
-      if (this.$route.meta.homeShow) {
-        this.homePageWrap = new this.BScroll(this.$refs.homePageWrap, {
-          click: true,
-          startY: this.top,
-        })
-      }
-    },
+      this.$nextTick(() => {
+        if (this.$route.meta.homeShow&&this.$route.meta.keepAlive) {
+          if (this.scroll) {
+            this.scroll.destroy()
+            this.__initScroll(this.$refs.homePageWrap)
+          } else {
+            this.scroll = new this.BScroll(this.$refs.homePageWrap, {
+              click: true,
+              startY: this.top
+            })
+            this.scroll.refresh()
+          }
+        } else {
+          this.scroll&&this.scroll.destroy()
+        }
+      })
+
+    }
+    ,
     methods: {
-      changeTop(){
-        this.top = this.homePageWrap.y
+      changeTop() {
+        this.top = this.scroll.y
+      },
+      __initScroll(ele) {
+        this.__boxheight(ele); //执行函数
+        window.onresize = this.__boxheight(ele); //窗口或框架被调整大小时执行
+        this.scroll = new this.BScroll(ele, {
+          click: true,
+          startY: this.top
+        })
+        this.scroll.refresh()
       }
     }
   }
@@ -182,7 +199,7 @@
 
   .homePageHeader
     height (520 /$rem)
-    width (1080/$rem)
+    width (1080 /$rem)
     .mint-swipe-items-wrap
       transform translateZ(0)
     img

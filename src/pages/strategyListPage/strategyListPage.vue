@@ -56,26 +56,27 @@
           return
         }
         let that = this
-        if (that.footLineTitle === "没有啦"||that.footLineTitle==="加载中") {
+        if (this.footLineTitle === "没有啦"||this.footLineTitle==="加载中") {
           return
-        } else if(that.footLineTitle === "查看更多") {
+        } else if(this.footLineTitle === "查看更多") {
           this.footLineTitle = "加载中"
-          that.$store.dispatch("getNewsListFor", {
+          this.$store.dispatch("getNewsListFor", {
             scene: that.$route.query.scene ,
             type: that.$route.query.code,
             id: that.newsList[that.newsList.length - 1].id,
             size: 10
           }).then((res) => {
+            that = null
             let time
             if (res.length < 1) {
               time = setTimeout(() => {
-                that.footLineTitle = "没有啦"
+                this.footLineTitle = "没有啦"
                 clearTimeout(time)
               }, 1000)
             }else {
               time = setTimeout(() => {
-                that.newsList.push(...res)
-                that.footLineTitle = "查看更多"
+                this.newsList.push(...res)
+                this.footLineTitle = "查看更多"
                 clearTimeout(time)
               }, 1000)
             }

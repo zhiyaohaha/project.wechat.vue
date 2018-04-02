@@ -42,9 +42,9 @@ export default function ajax(url = '', data = {}, type = 'GET') {
     }
     promise.then(response => {
       resolve(response.data)
-      if(!response.data.success&&!response.data.errcode&&!response.data.subscribe&&response.data.message!==("未绑定")){
+     /* if(!response.data.success&&!response.data.errcode&&!response.data.subscribe&&response.data.message!==("未绑定")){
         alert(response.data.message)
-      }
+      }*/
       // alert(JSON.stringify(response.data))
     })
       .catch(error => {

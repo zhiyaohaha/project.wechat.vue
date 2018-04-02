@@ -55,6 +55,5 @@ export const __newGuid = function (time){
     if((i==8)||(i==12)||(i==16)||(i==20))
       guid += "-"
   }
-  console.log(guid)
   return guid
 }

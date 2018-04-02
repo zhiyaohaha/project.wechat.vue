@@ -86,9 +86,11 @@
       })
     },
     mounted() {
-      if (this.creditCardNews.length < 1) {
-        this.footLineTitle = "暂无内容"
-      }
+      this.$nextTick(()=>{
+        if (this.creditCardNews&&this.creditCardNews.length < 1) {
+          this.footLineTitle = "暂无内容"
+        }
+      })
     },
 
     methods: {

@@ -1,39 +1,43 @@
 <template>
   <div>
-    <header class="generalizeHeader">
-      <img src="../../../static/img/homeImg/banner.png">
-    </header>
-    <headline :headlineData="{title:'赚佣金规则'}"/>
-    <div class="generalizeContent">
-      <p>
-        <span>我们假设有ABCD4个人，返佣总金额100元，看看他们赚佣金的模式。</span>
-      </p>
-      <p>
-        <span>A关注公众平台，实名认证，获得专属推广二维码；A申请办理业务，成功下卡/放款，可赚取50元佣金。</span><br>
-        <span>A分享二维码给B，B扫码，申请办理业务，成功下卡/放款后，B可赚取50元佣金，A可赚取30元佣金；</span><br>
-        <span>C扫B的二维码，申请办理业务，成功下卡/放款后，C赚取50元佣金，B可赚取30元佣金， A赚取20元佣金；</span><br>
-        <span>D扫C的二维码，申请办理业务，成功下卡/放款后，D赚取50元佣金，C赚取30元佣金，B赚取20元佣金，A不赚取佣金。</span><br>
-        <span>(部分放款需要提现才能获得佣金)</span>
-      </p>
-    </div>
-    <div class="QRcodeWrap">
-      <transition name="fade">
-        <img :src="inviteurl" class="QRcode" v-show="QRcodeShow">
-      </transition>
-      <transition name="tran">
-        <footer class="generalizeFooter" v-show="!QRcodeShow">
-          <a href="javascript:;" @click="$router.push('/authenticationPage')">
-            获取我的推广二维码
-          </a>
-        </footer>
-      </transition>
-
-    </div>
+    <scroll>
+      <div>
+        <header class="generalizeHeader">
+          <img src="../../../static/img/homeImg/banner.png">
+        </header>
+        <headline :headlineData="{title:'赚佣金规则'}"/>
+        <div class="generalizeContent">
+          <p>
+            <span>我们假设有ABCD4个人，返佣总金额100元，看看他们赚佣金的模式。</span>
+          </p>
+          <p>
+            <span>A关注公众平台，实名认证，获得专属推广二维码；A申请办理业务，成功下卡/放款，可赚取50元佣金。</span><br>
+            <span>A分享二维码给B，B扫码，申请办理业务，成功下卡/放款后，B可赚取50元佣金，A可赚取30元佣金；</span><br>
+            <span>C扫B的二维码，申请办理业务，成功下卡/放款后，C赚取50元佣金，B可赚取30元佣金， A赚取20元佣金；</span><br>
+            <span>D扫C的二维码，申请办理业务，成功下卡/放款后，D赚取50元佣金，C赚取30元佣金，B赚取20元佣金，A不赚取佣金。</span><br>
+            <span>(部分放款需要提现才能获得佣金)</span>
+          </p>
+        </div>
+        <div class="QRcodeWrap">
+          <transition name="fade">
+            <img :src="inviteurl" class="QRcode" v-show="QRcodeShow">
+          </transition>
+          <transition name="tran">
+            <footer class="generalizeFooter" v-show="!QRcodeShow">
+              <a href="javascript:;" @click="skip">
+                获取我的推广二维码
+              </a>
+            </footer>
+          </transition>
+        </div>
+      </div>
+    </scroll>
   </div>
 </template>
 
 <script>
   import {mapState} from "vuex"
+
   export default {
     data() {
       return {
@@ -45,23 +49,26 @@
 
     computed: {
       ...mapState(["inviteurl"]),
-      cookikeIf() {
-        return this.getCookie('whether') === '1'
-      }
     },
     watch: {},
     created() {
       this.$store.dispatch("getInviteUrl")
-
     },
     mounted() {
       // console.log(this.getCookie('whether') === '1') ? this.QRcodeShow = true : this.QRcodeShow = false
-      this.QRcodeShow = this.cookikeIf
+      this.QRcodeShow = (this.getCookie('whether') === "1")
     },
     updated() {
     },
 
-    methods: {}
+    methods: {
+      skip() {
+        let that = this
+        if (this.getCookie('whether')*1 < 1) {
+          this.$router.push({name: "phoneApprove", params: {name1:that.$route.name,name2:""}})
+        }
+      }
+    }
   }
 
 </script>

@@ -27,10 +27,10 @@
     watch: {
       shadeIsShow(val) {
         if (val === 3) {
+          console.log(2)
           this.pickerWrap = new this.BScroll(this.$refs.pickerWrap, {
-            touchstart: true,
-            touchend: true,
             momentum: false,
+            stopPropagation:true,
             probeType: 1
           })
           this.pickerWrap.refresh()

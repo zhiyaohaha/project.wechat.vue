@@ -2,20 +2,20 @@
   <div v-if="recommendModDatas">
     <ul class="recommendMod">
       <li v-for="(recommend, index) in recommendModDatas" :key="index" :class="{recommendModTop: index != 0 }">
-        <a href="javascript:;" @click="goToMain(recommend.id)">
+        <router-link :to="{name:'productDetailsPage',query: {id: recommend.id}}">
           <div class="recommendModLogo">
             <img :src="recommend.basic._logo">
           </div>
           <img class="fanyonglog" src="../../../static/img/homeImg/content_fanyong.png">
           <div class="recommendModDescribe">
-            <span class="title">{{recommend.basic.name}}</span>
+            <span class="title">{{recommend.summary}}</span>
             <div class="describe">
-              <span>额度：<span
+              <span><span
                 class="price">{{recommend.filter.amount_min + '-'+ recommend.filter.amount_max}}</span></span>
             </div>
-            <span class="asSecondLine">{{recommend.summary}}</span>
+            <span class="asSecondLine">{{recommend.basic.name}}</span>
           </div>
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -39,13 +39,7 @@
     },
 
     methods: {
-      goToMain(id) {
-        if(this.getCookie('whether') === "1"){
-          this.$router.push({path:'/homePage/productDetailsPage',query:{id}})
-        }else {
-          this.$router.push("/phoneApprove")
-        }
-      }
+
     }
   }
 
@@ -57,7 +51,7 @@
       box-sizing border-box
       border-bottom 1px solid #f2f2f2
       width (1080 /$rem)
-      height (286 /$rem)
+      height (280 /$rem)
       &.recommendModTop
         margin-top (30 /$rem)
       a
@@ -67,33 +61,40 @@
           position absolute
           top (10 /$rem)
           left (30 /$rem)
+          width (180/$rem)
+          height (180/$rem)
+          border (1/$rem) solid #bbb
+          line-height (150/$rem)
+          text-align center
           img
-            width (150 /$rem)
+            margin (40/$rem)
+            width (100 /$rem)
+            height (100/$rem)
         .fanyonglog
           position absolute
-          left (130 /$rem)
+          left (160 /$rem)
           bottom (255 /$rem)
         .recommendModDescribe
           position absolute
           top (10 /$rem)
-          left (210 /$rem)
+          left (240 /$rem)
           .title
             display block
             font-size (42 /$rem)
             color #333
             line-height (42 /$rem)
           .describe
-            margin-top (40 /$rem)
+            display block
+            margin-top (30 /$rem)
             font-size (34 /$rem)
             .price
+              display block
               margin-right (55 /$rem)
-              font-size (42 /$rem)
+              font-size (40 /$rem)
               color #efca7d
-            .star
-              display inline-block
           .asSecondLine
             display block
-            margin-top (20 /$rem)
+            margin-top (30 /$rem)
             font-size (36 /$rem)
             color #bbb
 

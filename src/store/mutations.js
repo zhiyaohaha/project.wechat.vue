@@ -1,14 +1,14 @@
 export default {
-  GET_OPENID(state,{result}){
+ /* GET_OPENID(state,{result}){
     console.log(result)
     //用户是否登陆
     state.openID = result.success
-  },
-  POST_PHONE(state,{result}){
+  },*/
+  /*POST_PHONE(state,{result}){
     console.log(result)
     //手机认证
     state.phoneNote = result
-  },
+  },*/
   GET_USERINFO(state,{result}){
     result = JSON.stringify(result)
     console.log(result)
@@ -128,5 +128,10 @@ export default {
   GET_LISTSCHEDULEFORAPP(state,{result}){
     //办卡进度列表
     state.listScheduleFor = result.data
-  }
+  },
+  GET_BINBANKCARD(state,{result}){
+    console.log(result);
+    //绑卡数据
+    state.binBankCard = result.data
+  },
 }

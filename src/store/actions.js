@@ -23,7 +23,8 @@ import {
   getBanks,
   getAdCodes,
   postFiveRealVerifyCode,
-  getListScheduleForApp
+  getListScheduleForApp,
+  getBinBankCard
 } from '../api'
 
 let apiPrefix = 'http://211.94.137.70:8001/'
@@ -44,7 +45,7 @@ export default {
     let flag
     let whether = null
     if (result.success) {
-      commit('GET_OPENID', {result})
+      // commit('GET_OPENID', {result})
       flag = result.data.id
       whether = 1
     } else {
@@ -69,7 +70,7 @@ export default {
       whether = 0
     }
     cb && cb(flag, whether)
-    commit('POST_PHONE', {result})
+    return result
   },
   //信用卡申请
   async postRecordForApp({commit}, data) {
@@ -91,12 +92,17 @@ export default {
     // debugger
     let url = apiPrefix + 'api/OfficialAccounts/PeopleFiveReal'
     const result = await postPeopleFiveReal(url, data)
+    commit('GET_BINBANKCARD', {result})
     return result
   },
+
   async postFiveRealVerifyCode({commit}, data) {
     // debugger
     let url = apiPrefix + 'api/OfficialAccounts/FiveRealVerifyCode'
     const result = await postFiveRealVerifyCode(url, data)
+    if(result.success){
+      commit('GET_BINBANKCARD', {result})
+    }
     return result
   },
   //获取用户信息
@@ -107,6 +113,7 @@ export default {
     if (result) {
       data.cb && data.cb(result, obj.id)
       commit('GET_USERINFO', {result})
+      alert(JSON.stringify(result))
     }
   },
   //产品列表
@@ -259,14 +266,23 @@ export default {
     return result.data
   },
   //办卡进度
-  async getListScheduleForApp({commit},data) {
+  async getListScheduleForApp({commit}, data) {
     let url = apiPrefix + "api/CreditCardOrder/ListScheduleForApp"
-    const result = await getListScheduleForApp(url,data)
+    const result = await getListScheduleForApp(url, data)
     if (data.id) {
       return result.data
-    }else {
+    } else {
       commit('GET_LISTSCHEDULEFORAPP', {result})
     }
+  },
+  //是否实名
+  async getBinBankCard({commit},{cb}) {
+    let url = apiPrefix + "api/OfficialAccounts/BinBankCard"
+    const result = await getBinBankCard(url)
+    if(result.success){
+      cb&&cb(2)
+    }
+    commit('GET_BINBANKCARD', {result})
   },
   //改变时间
   changeTime({commit}) {

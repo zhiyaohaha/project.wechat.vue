@@ -1,10 +1,8 @@
 <template>
   <div>
-    <div class="content">
-      <keep-alive>
-        <router-view/>
-      </keep-alive>
-    </div>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
     <footer class="footerTap" v-if="$route.meta.keepAlive">
       <router-link to="/homePage">
         <img src="../static/img/homeImg/shouye1.png" v-show="$route.meta.footerShow">
@@ -33,34 +31,39 @@
     },
     beforeCreate() {
       //获取用户信息
-
     },
     created() {
       let obj = this.__GetRequest()
+      alert(JSON.stringify(obj))
       this.$store.dispatch('getUserinfo', {
         obj,
         cb: (userinfo, val) => {
           this.saveTodos(userinfo)
           this.setCookie('id', val, 7)
         }
-      }).then(()=>{
+      }).then(() => {
         let userinfo = this.readTodos()
-        let data = {
-          openId:"undefined",
-          thirdLoginType: 'ThirdPlatForm.WeChat',
-          nickName: userinfo.nickname,
-          head: userinfo.headimgurl
-        }
         this.$store.dispatch('postOpenid', {
-          data,
+          data: {
+            // openId: userinfo.openid,
+            openId: "undefined",
+            thirdLoginType: 'ThirdPlatForm.WeChat',
+            nickName: userinfo.nickname,
+            head: userinfo.headimgurl
+          },
           cb: (va1, whether) => {
             this.setCookie('token', va1, 7)
             //存入cookie 判断是否实名
             this.setCookie('whether', whether, 7)
           }
+        }).then(() => {
+          this.$store.dispatch('getBinBankCard', {
+            cb: (whether) => {
+              this.setCookie('whether', whether, 7)
+            }
+          })
         })
       })
-
 
     },
     mounted() {

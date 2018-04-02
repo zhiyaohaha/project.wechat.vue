@@ -91,8 +91,6 @@
     created() {
 
       let that = this
-      console.log(that.$route.query.id);
-
       this.$store.dispatch("getListBankCardDetail", {
         id: that.$route.query.id
       }).then(()=>{

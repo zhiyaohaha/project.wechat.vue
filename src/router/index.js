@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 const homePage = () => import('../pages/homePage/homePage.vue')
 const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
 const loanPage = () => import('../pages/loanPage/loanPage.vue')
@@ -24,7 +23,7 @@ const schedulePage = () => import('../pages/schedulePage/schedulePage.vue')
 const posterPage = () => import('../pages/posterPage/posterPage.vue')
 const generalizePage = () => import('../pages/generalizePage/generalizePage.vue')
 const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue')
-const authenticationPage = () => import('../pages/authenticationPage/authenticationPage.vue')
+// const authenticationPage = () => import('../pages/authenticationPage/authenticationPage.vue')
 const materialPage = () => import('../pages/materialPage/materialPage.vue')
 const articlePage = () => import('../pages/articlePage/articlePage.vue')
 
@@ -49,7 +48,8 @@ const router = new Router({
         {
           path: 'loanPage',
           component: loanPage,
-          meta: {keepAlive: false, isTop: true, title: '快速贷款'},
+          name:"loanPage",
+          meta: {keepAlive: false, cache: true, isTop: true, title: '快速贷款'},
         },
         {
           path: 'productPage',
@@ -59,6 +59,7 @@ const router = new Router({
         {
           path: 'productDetailsPage',
           component: productDetailsPage,
+          name:"productDetailsPage",
           meta: {keepAlive: false, cache: true, isTop: false, title: '产品详情'},
         },
         {
@@ -69,7 +70,7 @@ const router = new Router({
             {
               path: 'zhongXinCardPage',
               component: zhongXinCardPage,
-              name: "银行卡详情",
+              name: "zhongXinCardPage",
               meta: {keepAlive: false, isTop: false, title: ''},
             },
           ]
@@ -77,7 +78,8 @@ const router = new Router({
         {
           path: 'cardApplyForPage',
           component: cardApplyForPage,
-          meta: {keepAlive: false, isTop: false, title: '信用卡申请'},
+          name:"cardApplyForPage",
+          meta: {keepAlive: false, cache: true,isTop: false, title: '信用卡申请'},
         },
         {
           path: 'cardDetailsPage',
@@ -92,7 +94,7 @@ const router = new Router({
         {
           path: 'strategyListPage',
           component: strategyListPage,
-          name:"攻略列表",
+          name:"strategyListPage",
           meta: {keepAlive: false, cache: true,isTop: false, title: ''},
         },
         {
@@ -103,12 +105,13 @@ const router = new Router({
         {
           path: 'schedulePage',
           component: schedulePage,
-          meta: {keepAlive: false, isTop: false, title: '办卡进度'},
+          meta: {keepAlive: false,cache: true, isTop: false, title: '办卡进度'},
         },
         {
           path: 'posterPage',
           component: posterPage,
-          meta: {keepAlive: false, isTop: false, title: '推广海报'},
+          name:"posterPage",
+          meta: {keepAlive: false,cache: true, isTop: false, title: '推广海报'},
         },
         {
           path: 'materialPage',
@@ -119,6 +122,7 @@ const router = new Router({
         {
           path: 'generalizePage',
           component: generalizePage,
+          name:"generalizePage",
           meta: {keepAlive: false, cache: true, isTop: true, title: '赚佣金'},
         },
       ]
@@ -126,13 +130,14 @@ const router = new Router({
     {
       path: '/phoneApprove',
       component: phoneApprove,
+      name:"phoneApprove",
       meta: {keepAlive: false, isTop: true, title: '手机号认证'},
     },
-    {
+    /*{
       path: '/authenticationPage',
       component: authenticationPage,
       meta: {keepAlive: false, isTop: true, title: '认证选择'},
-    },
+    },*/
     {
       path: '/myPage',
       component: myPage,
@@ -163,32 +168,35 @@ const router = new Router({
         {
           path: 'depositPage',
           component: depositPage,
-          meta: {keepAlive: false, isTop: true, title: '提现明细'},
-        },
-        {
-          path: 'tieOnCardPage',
-          component: tieOnCardPage,
-          meta: {keepAlive: false, isTop: true, title: '实名绑卡'},
-        },
-        {
-          path: 'verifyPage',
-          component: verifyPage,
-          meta: {keepAlive: false, isTop: true, title: '实名认证'},
+          name:"depositPage",
+          meta: {keepAlive: false,isTop: true, title: '提现明细'},
         },
         {
           path: 'WithdrawalPage',
           component: WithdrawalPage,
+          name:"WithdrawalPage",
           meta: {keepAlive: false, isTop: true, title: '提现'},
         },
       ]
     },
-
+    {
+      path: '/tieOnCardPage',
+      component: tieOnCardPage,
+      name:"tieOnCardPage",
+      meta: {keepAlive: false, isTop: true, title: '实名绑卡'},
+    },
+    {
+      path: '/verifyPage',
+      component: verifyPage,
+      name:"verifyPage",
+      meta: {keepAlive: false, isTop: true, title: '实名认证'},
+    },
   ]
 })
 
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
-  if (to.name == "银行卡详情"||to.name == "攻略列表"){
+  if (to.name == "zhongXinCardPage"||to.name == "strategyListPage"){
     to.meta.title = to.query.name
   }
   if (to.meta.title) {

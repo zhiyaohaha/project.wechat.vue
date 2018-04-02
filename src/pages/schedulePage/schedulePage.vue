@@ -50,7 +50,9 @@
       })
     },
     mounted() {
-
+      if (this.listScheduleFor&&this.listScheduleFor.length < 1) {
+        this.footlineTitle = "暂无内容"
+      }
     },
 
     methods: {
@@ -60,7 +62,7 @@
       //下拉刷新逻辑
       loadData() {
         if (this.listScheduleFor.length < 1) {
-          this.footLineTitle = "暂无内容"
+          this.footlineTitle = "暂无内容"
           return
         }
         if (this.footlineTitle === "没有跟多数据拉" || this.footlineTitle === "加载中") {

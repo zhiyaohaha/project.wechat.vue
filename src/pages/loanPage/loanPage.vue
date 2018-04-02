@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="loanWrap" ref="loanWrap">
+    <scroll>
       <div>
         <div class="loanContent">
           <img src="./img/xinyongkabanner.png">
@@ -33,7 +33,7 @@
         <div class="footerOccupied">
         </div>
       </div>
-    </div>
+    </scroll>
     <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
               showToolbar="true">
       <div class="shadeIsShowHeader">
@@ -46,8 +46,7 @@
       </div>
       <pickerMod :pickerModDatas="pickerModDatas" :shadeIsShow="shadeIsShowInd" :onValuesChange="onValuesChange"/>
     </mt-popup>
-    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"
-                  :time="time"/>
+    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
     <footer class="simulationSubmit" v-show="simulationSubmitIsShow" @click="submit">
       <a href="javascript:"></a>
     </footer>
@@ -94,7 +93,7 @@
             sendMsg: false,
             units: '',
             reg: /[\s\S]/,
-            regular:/[\s\S]/,
+            regular: /[\s\S]/,
             errorColor: false,
           },
           {
@@ -106,7 +105,7 @@
             sendMsg: false,
             units: '',
             reg: /[\s\S]*/,
-            regular:/[\s\S]/,
+            regular: /[\s\S]/,
             errorColor: false
           },
           {
@@ -118,7 +117,7 @@
             sendMsg: false,
             units: '',
             reg: /[\s\S]*/,
-            regular:/[\s\S]/,
+            regular: /[\s\S]/,
             errorColor: false
           },
           {
@@ -130,7 +129,7 @@
             sendMsg: false,
             units: '',
             reg: /^[A-Za-z\u4e00-\u9fa5]{1,}$/,
-            regular:/^[A-Za-z\u4e00-\u9fa5]{1,}$/,
+            regular: /^[A-Za-z\u4e00-\u9fa5]{1,}$/,
             errorColor: false
           },
           {
@@ -142,7 +141,7 @@
             sendMsg: false,
             units: '',
             reg: /^[0-9xX]{1,}$/,
-            regular:/^\d{17}[\d|x]|\d{15}$/,
+            regular: /^\d{17}[\d|x]|\d{15}$/,
             errorColor: false,
             maxlength: '18'
           },
@@ -178,7 +177,6 @@
         pickerModDatas: [],
         simulationSubmitIsShow: true,
         verificationShow: false,
-        time: new Date().getTime(),
         num: null,
       }
     },
@@ -203,8 +201,15 @@
       }
     },
     computed: {
-      shadeIsShowInd(){
+      shadeIsShowInd() {
         return this.shadeIsShow ? 3 : null
+      }
+    },
+    beforeCreate(){
+      let that = this
+      if(this.getCookie("whether")*1 < 1){
+        this.$router.replace({name:"phoneApprove",params: {name1:that.$route.name}})
+        that =null
       }
     },
     created() {
@@ -222,17 +227,6 @@
     // 滑动事件
     mounted() {
 
-      this.__boxheight(this.$refs.loanWrap) //执行函数
-      this.$nextTick(() => {
-        this.loanWrap = new this.BScroll(this.$refs.loanWrap, {click: true, touchstart: true, momentum: true})
-        this.loanWrap.refresh()
-      })
-      window.onresize = ()=>{
-        console.log(this);
-        this.__boxheight(this.$refs.loanWrap)
-        this.loanWrap.refresh()
-      } //窗口或框架被调整大小时执行
-
     }
     ,
     updated() {
@@ -241,19 +235,21 @@
     ,
     methods: {
       //获取用户输入的内容
-      __findModel(value){
+      __findModel(value) {
         let mformDatas = this.mformDatas
         return mformDatas.find(val => val.name == value).model
       },
       //发送图形验证码检查
       __SendVerifyCode(validateCode) {
+        let that = this
         let url = this.apiPrefix + "api/SMS/SendVerifyCode"
         postSendVerifyCode(url, {
           code: "SMS_127153204",
-          mobilePhone: this.mformDatas.filter(item => item.name === "phoneNum")[0].model,
+          mobilePhone: that.__findModel("phoneNum"),
           validateCode: validateCode,
           needvalidateCode: true
         }).then((res) => {
+          console.log(res);
           if (res.success) {
             this.num = 60
             this.MessageBox({
@@ -262,10 +258,11 @@
               showCancelButton: false
             })
           } else {
-            this.MessageBox({
+            that.MessageBox({
               title: '提交失败',
-              message: '图片验证码输入错误',
-              showCancelButton: false
+              message: res.message,
+              showCancelButton: false,
+              closeOnClickModal:false
             })
           }
         })
@@ -285,20 +282,20 @@
         return Arr
       },
       //提交
-      submit(){
+      submit() {
         let propertyModDatas = this.propertyModDatas
-        let judge = this.mformDatas.filter((item)=>{
-          return  (item.regular.test(item.model)&&(item.model !== ''))
+        let judge = this.mformDatas.filter((item) => {
+          return (item.regular.test(item.model) && (item.model !== ''))
         })
-        if(judge.length == this.mformDatas.length){
+        if (judge.length == this.mformDatas.length) {
           let that = this
           let url = this.apiPrefix + "api/OfficialAccounts/InsertLoanDemand"
-          postLoanDemand(url,{
+          postLoanDemand(url, {
             loanDemand: {
-              applyAmount: this.applyAmount, //贷款金额编码
-              purpose: this.consume,//贷款用途编码
-              applyTerm: this.applyTerm, //贷款期限编码
-              name:that.__findModel("username") ,  //贷款人
+              applyAmount: that.applyAmount, //贷款金额编码
+              purpose: that.consume,//贷款用途编码
+              applyTerm: that.applyTerm, //贷款期限编码
+              name: that.__findModel("username"),  //贷款人
               idCard: that.__findModel("IDnumber"),  //身份证
               telphone: that.__findModel("phoneNum"),  //手机
               house: propertyModDatas[0].imgUrlIsShow, //有房
@@ -307,26 +304,26 @@
               providentFund: propertyModDatas[3].imgUrlIsShow, //有公积金
               socialSecurity: propertyModDatas[4].imgUrlIsShow //有社保
             },
-            phone:that.__findModel("phoneNum"),  //手机
-            verifyCode:that.__findModel("authCode"), //验证码
+            phone: that.__findModel("phoneNum"),  //手机
+            verifyCode: that.__findModel("authCode"), //验证码
             source: "OfficialAccounts"
-          }).then(res =>{
-            if(res.success){
-              MessageBox({
+          }).then(res => {
+            if (res.success) {
+              this.MessageBox({
                 title: '提示',
                 message: '恭喜您报单成功',
                 showCancelButton: false
               })
-            }else {
-              MessageBox({
+            } else {
+              this.MessageBox({
                 title: '提交失败',
                 message: res.message,
                 showCancelButton: false
               })
             }
           })
-        }else {
-          MessageBox({
+        } else {
+          this.MessageBox({
             title: '提示',
             message: '请正确输入您的信息',
             showCancelButton: false
@@ -346,19 +343,19 @@
       onValuesChange(index) {
 //        debugger
         this.mformDatas[this.mformDatasInd].model = this.pickerModDatas[index].name
-          switch (this.mformDatasInd) {
-            case 0:
-              this.applyAmount= this.moneyArr[index].code
-              break
-            case 1:
-              this.consume = this.consumeArr[index].code
-              break
-            case 2:
-              this.applyTerm = this.deadlineArr[index].code
-              break
-            default:
-              break
-          }
+        switch (this.mformDatasInd) {
+          case 0:
+            this.applyAmount = this.moneyArr[index].code
+            break
+          case 1:
+            this.consume = this.consumeArr[index].code
+            break
+          case 2:
+            this.applyTerm = this.deadlineArr[index].code
+            break
+          default:
+            break
+        }
       },
 //      输入正确变色
       goodInput(reg, flag, index) {
@@ -381,7 +378,7 @@
         if (mformData.model !== '' && mformData.model.length == 11) {
           this.verificationShow = true
         } else {
-          MessageBox({
+          this.MessageBox({
             title: '提示',
             message: '请正确输入手机号',
             showCancelButton: false
@@ -389,7 +386,7 @@
         }
         if (this.num > 0) {
           this.verificationShow = false
-          MessageBox({
+          this.MessageBox({
             title: '提示',
             message: '请60秒后在请求验证码',
             showCancelButton: false
@@ -430,7 +427,7 @@
       //倒计时
       verificationCancel(flag, validateCode) {
         this.verificationShow = false
-        this.time = new Date().getTime()
+        this.$store.dispatch("changeTime")
         if (flag) {
           this.__SendVerifyCode(validateCode)
         }

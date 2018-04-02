@@ -30,6 +30,7 @@ export const getSubordinateUserList = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getBanks = (apiPrefix) => ajax(apiPrefix)
 export const getAdCodes = (apiPrefix) => ajax(apiPrefix)
 export const getListScheduleForApp = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getBinBankCard = (apiPrefix) => ajax(apiPrefix)
 
 
 

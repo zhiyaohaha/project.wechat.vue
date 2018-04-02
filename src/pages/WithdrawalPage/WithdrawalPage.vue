@@ -1,12 +1,12 @@
 <template>
   <div>
-    <header class="WithdrawalHeader">
+    <header class="WithdrawalHeader" v-if="binBankCard">
       <div class="fakeBankCard">
         <div class="BankNameWrap">
-          <img src="./img/logo.png"><span class="BankName">中国工商银行</span>
+          <img src="./img/logo.png"><span class="BankName">{{binBankCard[0]._bank}}</span>
         </div>
         <div class="bankCardNumWrap">
-          <span class="bankCardNum">621700*********6341</span>
+          <span class="bankCardNum">{{binBankCard[0].number}}</span>
         </div>
       </div>
     </header>
@@ -26,7 +26,7 @@
       <div class="cost">
         提现费用 ：<span>100</span>元
       </div>
-      <a href="javascript:;" class="affirm">
+      <a href="javascript:;" class="affirm" @click="affirm">
         确认
       </a>
       <div class="notice">
@@ -41,10 +41,12 @@
 </template>
 
 <script>
+  import {mapState} from "vuex"
+
   export default {
-    data () {
+    data() {
       return {
-        mformDatas:[
+        mformDatas: [
           {
             description: '可提现金额：',
             placeholder: 'XXXXXX.XX',
@@ -55,7 +57,7 @@
             units: '元',
             reg: /[\s\S]*/,
             errorColor: false,
-            readonly:true
+            readonly: true
           },
           {
             description: '提现金额：',
@@ -71,57 +73,97 @@
         ]
       }
     },
+    watch:{
+      $route(val){
+        if(val.name === "WithdrawalPage"){
+          this.MessageBox({
+            title: '提示',
+            message: "功能未开放",
+            showCancelButton: false
+          }).then(() => {
+            this.$router.go(-1)
+          })
+        }
+      },
+    },
 
+    beforeCreate() {
+      /*let that = this
+      if (this.getCookie('whether') === "0") {
+        this.$router.replace({name: "phoneApprove", params: {name1: "tieOnCardPage",name2:that.$route.name}})
+      } else if (this.getCookie('whether') === "1") {
+        this.$router.replace({name: "tieOnCardPage",params: {name:that.$route.name}})
+      }else if(this.getCookie('whether') === "2"){*/
+        this.MessageBox({
+          title:"提示",
+          message:"暂未开放功能",
+          showCancelButton: false
+        }).then(()=>{
+          this.$router.go(-1)
+        })
+      // }
+      that = null
+    },
     components: {},
 
-    computed: {},
-
-    mounted(){},
-
-    methods: {}
+    computed: {
+      ...mapState(["binBankCard"])
+    },
+    mounted() {
+    },
+    methods: {
+      affirm(){
+        this.MessageBox({
+          title: '提示',
+          message: "功能未开放",
+          showCancelButton: false
+        })
+      }
+    }
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .WithdrawalHeader
     box-sizing border-box
-    height (442/$rem)
-    width (1080/$rem)
-    padding-top (120/$rem)
+    height (442 /$rem)
+    width (1080 /$rem)
+    padding-top (120 /$rem)
     .fakeBankCard
       position relative
       z-index 10
-      border-radius (12/$rem) (12/$rem) 0 0
-      width (880/$rem)
-      height (322/$rem)
+      border-radius (12 /$rem) (12 /$rem) 0 0
+      width (880 /$rem)
+      height (322 /$rem)
       background-color: #ef6355
       margin 0 auto
       box-sizing border-box
-      padding (40/$rem) 0 (88/$rem) (30/$rem)
+      padding (40 /$rem) 0 (88 /$rem) (30 /$rem)
       color #ffffff
       .BankNameWrap
-        line-height (60/$rem)
+        line-height (60 /$rem)
         img
           display inline-block
-          width (60/$rem)
+          width (60 /$rem)
           vertical-align middle
-          margin-right (20/$rem)
+          margin-right (20 /$rem)
         .BankName
-          font-size (42/$rem)
+          font-size (42 /$rem)
       .bankCardNumWrap
         position absolute
-        width (880/$rem)
+        width (880 /$rem)
         left (0)
-        bottom (88/$rem)
+        bottom (88 /$rem)
         text-align center
-        font-size (48/$rem)
+        font-size (48 /$rem)
+
   .WithdrawalContent
     .mform
       box-sizing border-box
       background-color: #fff;
-      padding 0 (30/$rem)
-      box-shadow: 0 (-30/$rem) (60/$rem) (10/$rem) rgba(51, 51, 51, 0.1);
-      li:first-child
+      padding 0 (30 /$rem)
+      box-shadow: 0 (-30 /$rem) (60 /$rem) (10 /$rem) rgba(51, 51, 51, 0.1);
+      li: first-child
       li
         box-sizing border-box
         position relative
@@ -155,38 +197,38 @@
           text-align right
           color #bbbbbb
         .purposeList
-          font-size (42/$rem)
+          font-size (42 /$rem)
           color #bbb
 
     .cost
-      margin-left (30/$rem)
-      height (116/$rem)
-      font-size (36/$rem)
+      margin-left (30 /$rem)
+      height (116 /$rem)
+      font-size (36 /$rem)
       color #bbbbbb
-      line-height (116/$rem)
+      line-height (116 /$rem)
     .affirm
-      width (1020/$rem)
-      height (146/$rem)
+      width (1020 /$rem)
+      height (146 /$rem)
       background-color: #efca7d
-      font-size (48/$rem)
+      font-size (48 /$rem)
       color #fff
-      border-radius (10/$rem)
+      border-radius (10 /$rem)
       margin 0 auto
-      line-height (146/$rem)
+      line-height (146 /$rem)
       text-align center
     .notice
       overflow hidden
       box-sizing border-box
-      padding (35/$rem) (30/$rem)
+      padding (35 /$rem) (30 /$rem)
       img
         display inline-block
-        width (30/$rem)
+        width (30 /$rem)
         vertical-align bottom
       span
-        font-size (30/$rem)
+        font-size (30 /$rem)
         color #efca7d
       div
-        width (800/$rem)
+        width (800 /$rem)
         float right
 
 </style>

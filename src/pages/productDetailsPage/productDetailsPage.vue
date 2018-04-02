@@ -93,6 +93,13 @@
     computed: {
       ...mapState(['productDetailsPageData'])
     },
+    beforeCreate(){
+      if(this.getCookie("whether")*1 < 1){
+        let that = this
+        this.$router.replace({name: "phoneApprove", query: {id: that.$route.query.id},params: {name1: that.$route.name}})
+        that = null
+      }
+    },
     created() {
       this.$store.dispatch("getDetailedFor", {id: this.$route.query.id})
     },
@@ -174,8 +181,9 @@
         box-sizing border-box
         border 1px solid #e4e4e4
         img
-          width 100%
-          height 100%
+          margin (35/$rem)
+          width (110/$rem)
+          height (110/$rem)
       &.describe
         color #333
         font-size (36 /$rem)

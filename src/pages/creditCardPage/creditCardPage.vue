@@ -5,7 +5,7 @@
             :data="creditListBankCard"
             :pullup="true"
             @scrollToEnd="loadData"
-            v-show="$route.meta.isTop">
+            v-if="creditListBankCard">
       <div>
         <div class="allBank">
           <allBankList :allBankListDatas="listBanks"/>
@@ -167,7 +167,9 @@
       //下拉加载逻辑
       loadData() {
         let that = this
-        if (this.footlineTitle !== "没有更多数据拉") {
+        if (this.footlineTitle === "没有更多数据拉"||this.footlineTitle === "加载中") {
+          return
+        }else if(this.footlineTitle === "下拉查看更多"){
           this.footlineTitle = "加载中"
           this.$store.dispatch("getListBankCard", {
             data: {
@@ -180,6 +182,7 @@
             if (res.length > 0) {
               let time = setTimeout(() => {
                 this.creditListBankCard.push(...res)
+                this.footlineTitle = "下拉查看更多"
                 clearTimeout(time)
               }, 1000)
             } else {

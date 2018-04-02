@@ -13,8 +13,8 @@
                name="verification">
       </div>
       <div class="verificationFooter">
-        <div class="verificationFooterLeft" @touchstart.stop="verificationCancel(false)">取消</div>
-        <div class="verificationFooterRight" @touchstart.stop="verificationCancel(true,validateCode)">确定</div>
+        <div class="verificationFooterLeft" @click.stop.self="verificationCancel(false)">取消</div>
+        <div class="verificationFooterRight" @click.stop.self="verificationCancel(true,validateCode)">确定</div>
       </div>
     </div>
   </div>

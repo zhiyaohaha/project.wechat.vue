@@ -23,7 +23,7 @@
 
         </a>
         <div class="line"></div>
-        <router-link to="/myPage/tieOnCardPage" class="withdrawDeposit">
+        <router-link to="tieOnCardPage" class="withdrawDeposit">
           <span class="describe">可提现</span>
           <span class="unit">￥<span class="price">0000.00元</span></span>
         </router-link>
@@ -59,8 +59,7 @@
           {
             imgUrl: '../../../static/img/myImg/wode_content_icon_tixian.png',
             title: '提现',
-            url: '/myPage/tieOnCardPage'
-
+            url: '/myPage/WithdrawalPage'
           },
           {
             imgUrl: '../../../static/img/myImg/wode_content_icon_tixianmingxi.png',

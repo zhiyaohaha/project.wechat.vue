@@ -26,7 +26,7 @@
         立即认证
       </a>
     </div>
-    <verification v-show="verificationShow" :changeShow="changeShow" :time="time" :verificationCancel="verificationCancel"/>
+    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
   </div>
 </template>
 
@@ -59,13 +59,30 @@
     methods: {
       //跳转逻辑
       skipDeposit(){
-        if(this.authCode){
-          this.$router.replace("/myPage/WithdrawalPage")
-        }else {
-          MessageBox({
-            title: '提示',
-            message: '请正确输入短信验证码',
-            showCancelButton: false
+        let that = this
+        this.$store.dispatch("postFiveRealVerifyCode",{
+          id:that.$route.query.id,
+          verifyCode:that.authCode
+        }).then((res)=>{
+          if(res.success){
+            this.$router.replace({name:that.$route.params.name})
+          }
+        })
+        if(this.reg.test(this.authCode)){
+          this.$store.dispatch("postFiveRealVerifyCode",{
+            id:that.$route.query.id,
+            verifyCode:that.authCode
+          }).then((res)=>{
+            if(res.success){
+              this.setCookie("whether",2,7)
+              this.$router.replace({name:that.$route.params.name})
+            }else {
+              this.MessageBox({
+                title: '提交失败',
+                message: res.message,
+                showCancelButton: false
+              })
+            }
           })
         }
       },
@@ -88,8 +105,8 @@
         }
       },
       verificationCancel(flag){
-        this.time = new Date().getTime()
         this.verificationShow = false
+        this.$store.dispatch("changeTime")
         if(flag){
           this.num = 60
           let timer = setInterval(()=>{

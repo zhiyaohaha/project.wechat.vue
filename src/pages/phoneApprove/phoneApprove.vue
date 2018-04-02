@@ -45,7 +45,6 @@
   </div>
 </template>
 <script>
-  import { MessageBox, Toast } from 'mint-ui'
   import { mapState, mapGetters } from 'vuex'
   import verification from '../../components/verification/verification.vue'
 
@@ -53,6 +52,19 @@
     data () {
       return {
         mformDatas: [
+          {
+            description: '贷款人姓名：',
+            placeholder: '请输入您的姓名',
+            name: 'username',
+            model: '',
+            purposeList: false,
+            sendMsg: false,
+            units: '',
+            reg: /^[\u4e00-\u9fa5]{1,}$/,
+            regular: /^[\u4e00-\u9fa5]{1,}$/,
+            errorColor: false,
+            maxlength:"15"
+          },
           {
             description: '手机号：',
             placeholder: '请输入您的手机号',
@@ -90,7 +102,7 @@
       verification
     },
     computed: {
-      ...mapState(['verification', 'phoneNote', 'openID',"time"]),
+      ...mapState(['verification',"time"]),
       ...mapGetters(["key"])
     },
     beforeMount () {
@@ -102,10 +114,15 @@
     updated () {
     },
     methods: {
+      //查找
+      __findModel(value) {
+        let mformDatas = this.mformDatas
+        return mformDatas.find(val => val.name == value)
+      },
       //      发送短信验证码请求
       __phoneNote (res) {
         if (res.success) {
-          MessageBox({
+          this.MessageBox({
             title: '提示',
             message: "短信验证码已发送，5分钟内有效",
             showCancelButton: false
@@ -114,17 +131,17 @@
           let timer = setInterval(() => {
             this.num--
             if (this.num == 0) {
-              this.mformDatas[1].units = '获取验证码'
+              this.__findModel('authCode').units = '获取验证码'
               clearInterval(timer)
               this.num = null
             } else {
               if (this.isFlag) {
-                this.mformDatas[1].units = this.num + 's后重发'
+                this.__findModel('authCode').units = this.num + 's后重发'
               }
             }
           }, 1000)
         } else {
-          MessageBox({
+          this.MessageBox({
             title: '提交失败',
             message: res.message,
             showCancelButton: false
@@ -138,18 +155,21 @@
 //    申请逻辑
       approve () {
         let userinfo = this.readTodos()
+        let that = this
         let Arr = this.mformDatas.filter(item => item.reg.test(item.model))
         if (Arr.length === this.mformDatas.length) {
+
           let data = {
-            phone: this.mformDatas[0].model,
-            verifyCode: this.mformDatas[1].model,
+            phone: that.__findModel("cellPhoneNum").model,
+            verifyCode: that.__findModel("authCode").model,
+            name: that.__findModel("username").model,
             firstLevelId: this.getCookie('id'),
             thirdPlatFormBind: true,//第三方绑定接口
             openId: userinfo.openid, //第三方OpenId
             thirdLoginType: 'ThirdPlatForm.WeChat',  //第三方登录代号
             head: userinfo.headimgurl,//第三方登录头像
             nickName: userinfo.nickname,//第三方登录昵称
-            source: 'OfficialAccounts'
+            source: 'OfficialAccounts',
           }
           this.$store.dispatch('postPhone', {
             data,
@@ -157,24 +177,21 @@
               this.setCookie('myToken', flag, 7)
               this.setCookie('whether', whether, 7)
             }
-          })
-
-          this.timer2 = setTimeout(() => {
-            //短信验证码
-            if (this.phoneNote.success) {
-              clearInterval(this.timer2)
-              this.$router.replace("/homePage/productPage/productDetailsPage")
+          }).then((res)=>{
+            let that = this
+            if (res.success) {
+              this.$router.replace({name:that.$route.params.name1,query:{id:that.$route.query.id},params:{name:that.$route.params.name2}})
+              that = null
             } else {
-              MessageBox({
+              this.MessageBox({
                 title: '提交失败',
-                message: '短信验证码输入错误',
+                message: res.message,
                 showCancelButton: false
               })
-              clearInterval(this.timer2)
             }
-          }, 2000)
+          })
         } else {
-          MessageBox({
+          this.MessageBox({
             title: '提交失败',
             message: '请正确输入信息',
             showCancelButton: false
@@ -190,11 +207,13 @@
       verificationCancel (flag, validateCode) {
         this.isFlag = flag
         this.verificationShow = false
+        let that = this
         if (flag) {
+          console.log(that.__findModel("cellPhoneNum").model)
           this.$store.dispatch('postSendMsg',{
             code: 'SMS_123738830',
-            validateKey: this.key + this.time,
-            mobilePhone: this.mformDatas[0].model,
+            validateKey: that.key + that.time,
+            mobilePhone: that.__findModel("cellPhoneNum").model,
             validateCode: validateCode,
             needvalidateCode: true
           }).then((res)=>{
@@ -219,10 +238,6 @@
 //      正确变色
       goodInput (reg, flag, index) {
         if (!reg.test(flag)) {
-          Toast({
-            message: '格式错误',
-            className: 'ToastStyle'
-          })
           this.mformDatas[index].model = flag.substring(0, flag.length - 1)
         }
       },
@@ -230,7 +245,7 @@
       sendMsg (index) {
         let mformData = this.mformDatas[index - 1]
         if (this.num > 0) {
-          MessageBox({
+          this.MessageBox({
             title: '提示',
             message: '60s后在从新获取验证码',
             showCancelButton: false
@@ -240,7 +255,7 @@
         if (mformData.model !== '' && mformData.regular.test(mformData.model)) {
           this.verificationShow = true
         } else {
-          MessageBox({
+          this.MessageBox({
             title: '提示',
             message: '手机号码输入不正确',
             showCancelButton: false

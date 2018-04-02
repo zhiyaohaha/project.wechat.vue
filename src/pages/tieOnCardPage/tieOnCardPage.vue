@@ -34,9 +34,9 @@
             确定
           </span>
       </div>
-      <pickerMod :shadeIsShow="mformDatasInd" :pickerModDatas="bankArr" :onValuesChange="onValuesChange"
+      <pickerMod :shadeIsShow="shadeIsShowInd" :pickerModDatas="bankArr" :onValuesChange="onValuesChange"
                  v-show="mformDatasInd === 3"/>
-      <linkageMod :linkageModDatas="provinceAndCity" :mformDatasInd="mformDatasInd" :onValuesChange="ValuesChange"
+      <linkageMod :linkageModDatas="provinceAndCity" :mformDatasInd="shadeIsShowInd" :onValuesChange="ValuesChange"
                   v-show="mformDatasInd === 4"/>
     </mt-popup>
     <footer class="tieOnCardFooter" v-show="tieOnFooterIsShow">
@@ -72,7 +72,7 @@
             sendMsg: false,
             units: "",
             reg: /^[0-9_xX]{1,18}$/,
-            regular: /^\d{17}[\d|x]|\d{15}$/,
+            regular: /^\d{17}[\d|xX]|\d{15}$/,
             maxlength: "18"
           },
           {
@@ -134,7 +134,11 @@
       linkageMod
     },
 
-    computed: {},
+    computed: {
+      shadeIsShowInd(){
+        return this.shadeIsShow ? this.mformDatasInd :null
+      }
+    },
     created() {
       this.$store.dispatch("getBanks").then((res) => {
         this.bankArr.push(...res)
@@ -175,23 +179,19 @@
         this.mformDatasInd = index
         if (index === 3 || index === 4) {
           inputVal ? null : this.mformDatas[index].model = ""
-          if (inputVal && index === 4 && this.mformDatas[4].model === "") {
-            this.ValuesChange()
-          }
           this.shadeIsShow = flag
         }
       },
       //弹框选择
       onValuesChange(index) {
-        this.mformDatas[3].model = this.bankArr[index].text
+        this.mformDatas[this.mformDatasInd].model = this.bankArr[index].text
       },
-      ValuesChange(select1 = 0, pitchOn = 0) {
+      ValuesChange(select1, pitchOn) {
         let city
         this.provinceAndCity[select1].c[pitchOn] ?
           city = this.provinceAndCity[select1].c[pitchOn].b
           : city = this.provinceAndCity[select1].c[0].b
-        this.mformDatas[4].model = this.provinceAndCity[select1].b + " " + city
-
+        this.mformDatas[this.mformDatasInd].model = this.provinceAndCity[select1].b + " " + city
       },
       approve() {
         let that = this
@@ -215,17 +215,21 @@
             }).value,//开户行编号
             mobilePhone: that.__findModel("phoneNum")//手机号
           }).then((res) => {
+            console.log(res)
             if(!res.success){
               MessageBox({
                 title: '提示',
                 message: res.message,
                 showCancelButton: false
               })
-              if(!res.data.real){
-
+            }else {
+              if(res.data.real){
+                this.setCookie("whether",2,7)
+                this.$router.replace({name:that.$route.params.name})
+              }else {
+                this.$router.push({name:"verifyPage",query:{id:res.data.id},params:{name:that.$route.params.name}})
               }
             }
-            console.log(res)
           })
         } else {
           MessageBox({

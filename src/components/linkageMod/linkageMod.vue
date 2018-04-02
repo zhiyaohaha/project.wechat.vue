@@ -46,16 +46,15 @@
     watch: {
       mformDatasInd(val) {
         if (val === 4) {
+          this.select1 = 0
+          this.pitchOn = 0
+          this.onValuesChange(this.select1, this.pitchOn)
           this.linkageWrap = new this.BScroll(this.$refs.linkageWrap, {
-            touchstart: true,
-            touchend: true,
             momentum: false,
             probeType: 1
           })
           this.linkageWrap.refresh()
           this.citiesWrap = new this.BScroll(this.$refs.citiesWrap, {
-            touchstart: true,
-            touchend: true,
             momentum: false,
             probeType: 1
           })
@@ -82,10 +81,10 @@
             } else {
               this.select1 = -b
             }
+            this.onValuesChange(this.select1, this.pitchOn)
           })
         } else {
           this.linkageWrap && this.linkageWrap.destroy()
-          this.select1 = 0
         }
       },
       cities(val) {
@@ -94,8 +93,6 @@
           let b = 0
           this.citiesWrap.destroy()
           this.citiesWrap = new this.BScroll(this.$refs.citiesWrap, {
-            touchstart: true,
-            touchend: true,
             momentum: false,
             probeType: 1
           })
@@ -112,7 +109,6 @@
             }
             this.onValuesChange(this.select1, this.pitchOn)
           })
-          this.onValuesChange(this.select1, this.pitchOn)
         } else {
           this.citiesWrap && this.citiesWrap.destroy()
           this.pitchOn = 0
@@ -121,6 +117,7 @@
       select1(val) {
         this.pitchOn = 0
         this.citiesWrap.refresh()
+        this.onValuesChange(val, this.pitchOn)
       }
     },
     created() {
