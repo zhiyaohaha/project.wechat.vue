@@ -67,7 +67,11 @@
             title: '提现明细',
             url: '/myPage/depositPage'
           },
-          {}
+          {
+            imgUrl: '../../../static/img/myImg/wode_content_icon_tixianmingxi.png',
+            title: '快速贷款历史',
+            url: '/myPage/creditHistoryPage'
+          }
         ]
       }
     },

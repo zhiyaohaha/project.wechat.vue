@@ -122,12 +122,12 @@
       ...mapState(["openID", "recommendModDatas", "listBanks", "homeListBankCard"]),
     },
     created() {
-      let data = {
-        name: 'LoanProductType.Speed',
-        id: "",
-        size: 2,
-        hot: true
-      }
+      // let data = {
+      //   name: 'LoanProductType.Speed',
+      //   id: "",
+      //   size: 2,
+      //   hot: true
+      // }
       this.$store.dispatch("getListForApp", {
         name: 'LoanProductType.Speed',
         id: "",

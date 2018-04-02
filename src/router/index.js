@@ -27,6 +27,12 @@ const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue'
 const authenticationPage = () => import('../pages/authenticationPage/authenticationPage.vue')
 const materialPage = () => import('../pages/materialPage/materialPage.vue')
 const articlePage = () => import('../pages/articlePage/articlePage.vue')
+const creditHistoryPage = () => import('../pages/creditHistoryPage/creditHistoryPage.vue')
+
+
+// keepAlive判断一级路由是否应该存在
+// isTop判断二级路由是否应该存在
+// cache判断是否需要缓存，多变的应应用缓存
 
 Vue.use(Router)
 const router = new Router({
@@ -156,8 +162,12 @@ const router = new Router({
           meta: {keepAlive: false, isTop: true, title: '订单明细'},
         },
         {
+          path:'creditHistoryPage',
+          component: creditHistoryPage,
+          meta: { keepAlive: false, isTop: true, title: '贷款历史'},
+        },
+        {
           path: 'rebatePage',
-          component: rebatePage,
           meta: {keepAlive: false, isTop: true, title: '返佣明细'},
         },
         {
