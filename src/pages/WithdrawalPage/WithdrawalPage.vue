@@ -102,7 +102,6 @@
           this.$router.go(-1)
         })
       // }
-      that = null
     },
     components: {},
 

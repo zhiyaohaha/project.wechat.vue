@@ -27,6 +27,7 @@
         </div>
       </div>
     </div>
+      <attentionMod :vanish="vanish" :erShow= "erShow"/>
   </div>
 </template>
 <script>
@@ -37,6 +38,7 @@
   import recommendMod from "../../components/recommendMod/recommendMod.vue"
   import footline from "../../components/footline/footline.vue"
   import recommendList from "../../components/recommendList/recommendList.vue"
+  import attentionMod from "../../components/attentionMod/attentionMod.vue"
   import {getListForApp} from '../../api'
 
   export default {
@@ -110,19 +112,24 @@
             }
           ]
         },
-        top: 0
+        top: 0,
+        erShow: false
       }
     },
 
     components: {
-      loanMod, generalizeMod, recommendMod, footline, recommendList
+      loanMod, generalizeMod, recommendMod, footline, recommendList, attentionMod
     },
-
     computed: {
       ...mapState(["openID", "recommendModDatas", "listBanks", "homeListBankCard"]),
     },
-    watch: {}
-    ,
+    watch: {
+      /*erShow(val){
+       setTimeout(()=>{
+         this.erShow =true
+       },500)
+      }*/
+    },
     created() {
       this.$store.dispatch("getListForApp", {
         name: 'LoanProductType.Speed',
@@ -146,9 +153,8 @@
       })
     },
     mounted() {
-
       this.$nextTick(() => {
-        if(this.$route.meta.homeShow&&this.$route.meta.keepAlive){
+        if (this.$route.meta.homeShow && this.$route.meta.keepAlive) {
           this.__initScroll(this.$refs.homePageWrap)
         }
       })
@@ -157,7 +163,7 @@
     ,
     updated() {
       this.$nextTick(() => {
-        if (this.$route.meta.homeShow&&this.$route.meta.keepAlive) {
+        if (this.$route.meta.homeShow && this.$route.meta.keepAlive) {
           if (this.scroll) {
             this.scroll.destroy()
             this.__initScroll(this.$refs.homePageWrap)
@@ -169,7 +175,7 @@
             this.scroll.refresh()
           }
         } else {
-          this.scroll&&this.scroll.destroy()
+          this.scroll && this.scroll.destroy()
         }
       })
 
@@ -187,6 +193,10 @@
           startY: this.top
         })
         this.scroll.refresh()
+      },
+      //二维码消失
+      vanish() {
+        this.erShow = false
       }
     }
   }
@@ -215,4 +225,5 @@
     transform translateZ(0)
     width (70 /$rem)
     height (34 /$rem)
+
 </style>

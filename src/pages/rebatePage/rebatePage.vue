@@ -4,17 +4,16 @@
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
-        {{orderFormTapData.title}}<span class="manNumber" v-show="orderFormTapData.manNumber">({{orderFormTapData.manNumber}})</span>
+        {{orderFormTapData.title}}<span class="manNumber" v-if="orderFormTapData.manNumber >= 0 ">({{orderFormTapData.manNumber}})</span>
       </a>
     </header>
     <scroll class="wrapper"
-            :data="rakeBackInfo.result"
+            :data="rakeBackInfo? rakeBackInfo.result :[]"
             :pullup="true"
-            @scrollToEnd="loadData" v-if="rakeBackInfo">
+            @scrollToEnd="loadData">
       <rebateList :rebateListDatas="rakeBackInfo"/>
       <footline :title="footlineTitle"/>
     </scroll>
-
   </div>
 </template>
 
@@ -62,32 +61,41 @@
         size:10,
         level: this.orderFormInd
       }).then(() => {
-        this.orderFormTapDatas[this.orderFormInd].manNumber = this.rakeBackInfo.total
+        this.orderFormTapDatas[this.orderFormInd].manNumber = this.rakeBackInfo ? this.rakeBackInfo.total : 0
       })
     },
     mounted() {
-
+      if(this.rakeBackInfo ? this.rakeBackInfo.result.length === 0 : true){
+        this.footlineTitle = "暂无数据"
+      }
     },
 
     methods: {
 //      点击变色
       changeColor(ind) {
-        this.footlineTitle = '查看更多'
+        this.footlineTitle = '下拉加载更多'
         this.orderFormInd = ind
         this.$store.dispatch("getRakeBackInfo", {
           id:"",
           level: ind,
           size:10
         }).then(() => {
-          this.orderFormTapDatas[this.orderFormInd].manNumber = this.rakeBackInfo.total
+          if(this.rakeBackInfo ? this.rakeBackInfo.result.length === 0 : true){
+            this.footlineTitle = "暂无数据"
+          }
+          this.orderFormTapDatas[this.orderFormInd].manNumber = this.rakeBackInfo ? this.rakeBackInfo.total : 0
         })
       },
       //滑动加载
       loadData() {
         let that = this
-        if (this.footlineTitle === "没有啦") {
+        if(this.rakeBackInfo ? this.rakeBackInfo.result.length === 0 : true){
+          this.footlineTitle = "暂无数据"
           return
-        } else {
+        }
+        if (this.footlineTitle === "没有啦"||this.footlineTitle === "加载中") {
+          return
+        } else if(this.footlineTitle === '下拉加载更多') {
           this.footlineTitle = "加载中"
           this.$store.dispatch("getRakeBackInfo", {
             id: that.rakeBackInfo.result[that.rakeBackInfo.result.length - 1].id,
@@ -97,7 +105,7 @@
             if (res.length > 0) {
               let time = setTimeout(() => {
                 this.rakeBackInfo.result.push(...res)
-                this.footlineTitle = '查看更多'
+                this.footlineTitle = '下拉加载更多'
                 clearTimeout(time)
               }, 1000)
             } else {

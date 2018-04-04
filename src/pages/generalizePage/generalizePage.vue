@@ -64,8 +64,9 @@
     methods: {
       skip() {
         let that = this
+        console.log(1)
         if (this.getCookie('whether')*1 < 1) {
-          this.$router.push({name: "phoneApprove", params: {name1:that.$route.name,name2:""}})
+          this.$router.replace({name: "phoneApprove", params: {name1:that.$route.name,name2:""}})
         }
       }
     }

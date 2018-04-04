@@ -2,10 +2,6 @@
   <div class="phoneApprove">
     <div>
       <div>
-        <!--<header class="myHeader">
-          <span class="iconLogo" @touchstart="$router.back()"><</span>
-          <span>手机认证</span>
-        </header>-->
         <div class="myContent">
           <img src="./img/xinyongkabanner.png">
           <ul class="mform">
@@ -158,7 +154,6 @@
         let that = this
         let Arr = this.mformDatas.filter(item => item.reg.test(item.model))
         if (Arr.length === this.mformDatas.length) {
-
           let data = {
             phone: that.__findModel("cellPhoneNum").model,
             verifyCode: that.__findModel("authCode").model,
@@ -174,7 +169,7 @@
           this.$store.dispatch('postPhone', {
             data,
             cb: (flag,whether) => {
-              this.setCookie('myToken', flag, 7)
+              this.setCookie('token', flag, 7)
               this.setCookie('whether', whether, 7)
             }
           }).then((res)=>{

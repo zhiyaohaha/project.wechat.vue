@@ -1,8 +1,6 @@
 <template>
   <div class="myPage">
-    <keep-alive>
-      <router-view/>
-    </keep-alive>
+    <router-view/>
     <div v-if="$route.meta.keepAlive">
       <header class="myPageHeader">
         <div class="headPortrait">
@@ -67,9 +65,9 @@
             url: '/myPage/depositPage'
           },
           {
-            imgUrl: '../../../static/img/myImg/wode_content_icon_tixianmingxi.png',
+            /*imgUrl: '../../../static/img/myImg/wode_content_icon_tixianmingxi.png',
             title: '快速贷款历史',
-            url: '/myPage/creditHistoryPage'
+            url: '/myPage/creditHistoryPage'*/
           }
         ]
       }
@@ -80,15 +78,31 @@
     },
 
     computed: {},
-
+    watch:{
+      $route(to, from){
+        if(to.name==="myPage"){
+          if(this.getCookie("whether")*1 < 1){
+            this.$router.replace({name: "phoneApprove", params: {name1:to.name}})
+          }
+        }
+      }
+    },
+    beforeCreate() {
+      let that = this
+      if(this.getCookie("whether")*1 < 1){
+        this.$router.replace({name: "phoneApprove", params: {name1:that.$route.name}})
+      }
+      that = null
+    },
     mounted() {
+
     },
 
     methods: {
       quit() {
         this.$store.dispatch('postLoginout', {
-          data:{},
-          cb:()=>{
+          data: {},
+          cb: () => {
             this.setCookie('whether', 0, 7)
           }
         })

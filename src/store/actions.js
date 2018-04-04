@@ -61,7 +61,6 @@ export default {
     const result = await postPhone(url, data)
     let whether
     let flag
-    console.log(result)
     if (result.success) {
       flag = result.data.id
       whether = 1
@@ -69,6 +68,7 @@ export default {
       flag = ""
       whether = 0
     }
+    console.log(flag)
     cb && cb(flag, whether)
     return result
   },
@@ -113,7 +113,7 @@ export default {
     if (result) {
       data.cb && data.cb(result, obj.id)
       commit('GET_USERINFO', {result})
-      alert(JSON.stringify(result))
+      // alert(JSON.stringify(result))
     }
   },
   //产品列表

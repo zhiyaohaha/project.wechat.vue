@@ -4,14 +4,13 @@
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
-        {{orderFormTapData.title}}<span class="manNumber" v-if="orderFormTapData.manNumber">({{orderFormTapData.manNumber}})</span>
+        {{orderFormTapData.title}}<span class="manNumber" v-if="orderFormTapData.manNumber >= 0">({{orderFormTapData.manNumber}})</span>
       </a>
     </header>
     <scroll class="wrapper"
-            :data="orderListFor1.data"
+            :data="orderListFor1?orderListFor1.data:[]"
             :pullup="true"
             @scrollToEnd="loadData"
-            v-if="orderListFor1"
     >
       <orderFormList :orderFormListDatas="orderListFor1" v-if="orderListFor1" :screenIsShow="screenIsShow"/>
       <footline :title="footlineTitle"/>
@@ -107,7 +106,7 @@
         id: "",
         size: 10
       }).then(()=>{
-        this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1.total
+        this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1&&this.orderListFor1.total
       })
       this.$store.dispatch("getUserRelated", {
         level: that.orderFormInd
@@ -121,6 +120,10 @@
       }
     },
     mounted() {
+
+      if(this.orderListFor1?this.orderListFor1.data.length === 0 : true){
+        this.footlineTitle = '暂无数据'
+      }
     },
     updated() {
     },
@@ -166,15 +169,18 @@
           id: "",
           size: 10
         }).then(()=>{
-          this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1.total
+          if(this.orderListFor1?this.orderListFor1.data.length === 0 : true){
+            this.footlineTitle = '暂无数据'
+          }
+          this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1 ? this.orderListFor1.total : 0
         })
       },
       //下拉加载
       loadData() {
         let that = this
-        if (this.footlineTitle === "没有更多") {
+        if (this.footlineTitle === "没有更多"||this.footlineTitle === "加载中") {
           return
-        } else {
+        } else if(this.footlineTitle === "查看更多"){
           this.footlineTitle = "加载中"
           this.$store.dispatch("getOrderListFor", {
             status: "Apply, Auditing, Loan, UserGiveUp, Refuse",

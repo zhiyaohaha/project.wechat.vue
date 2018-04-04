@@ -141,7 +141,7 @@
             sendMsg: false,
             units: '',
             reg: /^[0-9xX]{1,}$/,
-            regular: /^\d{17}[\d|x]|\d{15}$/,
+            regular: /^\d{17}[\d|xX]|\d{15}$/,
             errorColor: false,
             maxlength: '18'
           },
@@ -311,7 +311,7 @@
             if (res.success) {
               this.MessageBox({
                 title: '提示',
-                message: '恭喜您报单成功',
+                message: '恭喜您报单成功,等待审核',
                 showCancelButton: false
               })
             } else {
@@ -329,7 +329,6 @@
             showCancelButton: false
           })
         }
-
       },
 //      输入框焦点时底部消失
       isFooter() {

@@ -54,6 +54,22 @@
     computed: {
       ...mapState(["subordinateNum","subordinateUserList"])
     },
+    watch:{
+      $route(to ,from){
+        if(to.name === "generalizeYiPage"){
+          if(this.getCookie("whether")*1 < 1){
+            this.$router.replace({name: "phoneApprove", params: {name1:to.name}})
+          }
+        }
+      }
+    },
+    beforeCreate(){
+      let that = this
+      if(this.getCookie("whether")*1 < 1){
+        this.$router.replace({name: "phoneApprove", params: {name1:that.$route.name}})
+      }
+      that = null
+    },
     created() {
       this.$store.dispatch("getSubordinateNum", {
         thirdLoginType:"ThirdPlatForm.WeChat",

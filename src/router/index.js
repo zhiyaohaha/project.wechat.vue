@@ -147,12 +147,14 @@ const router = new Router({
     {
       path: '/myPage',
       component: myPage,
+      name:"myPage",
       meta: {keepAlive: true, isTop: true, footerShow: false, homeShow: false, title: '我的'},
       children: [
         {
           path: 'generalizeYiPage',
           component: generalizeYiPage,
-          meta: {keepAlive: false, isTop: true, title: '我的一级代理'},
+          name: "generalizeYiPage",
+          meta: {keepAlive: false,  cache: true,isTop: true, title: '我的一级代理'},
           children: [
             {
               path: 'generalizeErPage',
@@ -164,7 +166,7 @@ const router = new Router({
         {
           path: 'orderFormPage',
           component: orderFormPage,
-          meta: {keepAlive: false, isTop: true, title: '订单明细'},
+          meta: {keepAlive: false,cache: true ,isTop: true, title: '订单明细'},
         },
         {
           path:'creditHistoryPage',
@@ -173,19 +175,20 @@ const router = new Router({
         },
         {
           path: 'rebatePage',
-          meta: {keepAlive: false, isTop: true, title: '返佣明细'},
+          component: rebatePage,
+          meta: {keepAlive: false,cache: true, isTop: true, title: '返佣明细'},
         },
         {
           path: 'depositPage',
           component: depositPage,
           name:"depositPage",
-          meta: {keepAlive: false,isTop: true, title: '提现明细'},
+          meta: {keepAlive: false,cache: true,isTop: true, title: '提现明细'},
         },
         {
           path: 'WithdrawalPage',
           component: WithdrawalPage,
           name:"WithdrawalPage",
-          meta: {keepAlive: false, isTop: true, title: '提现'},
+          meta: {keepAlive: false, cache: true,isTop: true, title: '提现'},
         },
       ]
     },

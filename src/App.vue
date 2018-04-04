@@ -30,11 +30,11 @@
       ...mapState(['openID', 'userinfo'])
     },
     beforeCreate() {
-      //获取用户信息
+
     },
     created() {
       let obj = this.__GetRequest()
-      alert(JSON.stringify(obj))
+      console.log(obj)
       this.$store.dispatch('getUserinfo', {
         obj,
         cb: (userinfo, val) => {
@@ -45,8 +45,8 @@
         let userinfo = this.readTodos()
         this.$store.dispatch('postOpenid', {
           data: {
-            // openId: userinfo.openid,
-            openId: "undefined",
+            openId: userinfo.openid,
+            // openId: "undefined",
             thirdLoginType: 'ThirdPlatForm.WeChat',
             nickName: userinfo.nickname,
             head: userinfo.headimgurl

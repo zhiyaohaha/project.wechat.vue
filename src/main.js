@@ -50,9 +50,8 @@ Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
 
 Vue.prototype.BScroll = BScroll
 /*let code = __GetRequest().code
-console.log(code)
-if (code === undefined) {
-  window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=123&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+if (!code) {
+  window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`
 }*/
  // eslint-disable no-new
 
