@@ -45,7 +45,7 @@ export default function ajax(url = '', data = {}, type = 'GET') {
      // if(!response.data.success&&!response.data.errcode&&!response.data.subscribe&&response.data.message!==("未绑定")){
      //    alert(response.data.message)
      //  }
-      // alert(JSON.stringify(response.data))
+     //  alert(JSON.stringify(response.data))
     })
       .catch(error => {
         console.log(error)

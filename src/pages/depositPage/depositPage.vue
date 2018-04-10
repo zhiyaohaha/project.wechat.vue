@@ -91,19 +91,19 @@
     components: {
       drawMoney
     },
-watch:{
-   $route(val){
-     if(val.name === "depositPage"){
-       this.MessageBox({
-         title: '提示',
-         message: "功能未开放",
-         showCancelButton: false
-       }).then(() => {
-         this.$router.go(-1)
-       })
-     }
-   }
-},
+    watch: {
+      $route(val) {
+        if (val.name === "depositPage") {
+          this.MessageBox({
+            title: '提示',
+            message: "功能未开放",
+            showCancelButton: false
+          }).then(() => {
+            this.$router.go(-1)
+          })
+        }
+      }
+    },
     computed: {},
 
     mounted() {

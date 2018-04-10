@@ -3,7 +3,7 @@
     <div>
       <div>
         <div class="myContent">
-          <img src="./img/xinyongkabanner.png">
+          <img src="./img/banner.png">
           <ul class="mform">
             <li v-for="(mformData, index) in mformDatas" :key="index">
               <span class="description">{{mformData.description}}</span>
@@ -41,14 +41,15 @@
   </div>
 </template>
 <script>
-  import { mapState, mapGetters } from 'vuex'
+  import {mapState, mapGetters} from 'vuex'
   import verification from '../../components/verification/verification.vue'
 
   export default {
-    data () {
+    data() {
       return {
         mformDatas: [
           {
+            message:'请正确输入您的姓名',
             description: '贷款人姓名：',
             placeholder: '请输入您的姓名',
             name: 'username',
@@ -59,9 +60,10 @@
             reg: /^[\u4e00-\u9fa5]{1,}$/,
             regular: /^[\u4e00-\u9fa5]{1,}$/,
             errorColor: false,
-            maxlength:"15"
+            maxlength: "15"
           },
           {
+            message:'请正确输入您的手机号',
             description: '手机号：',
             placeholder: '请输入您的手机号',
             name: 'cellPhoneNum',
@@ -75,6 +77,7 @@
             maxlength: '11'
           },
           {
+            message:'请正确输入您的验证码',
             description: '验证码：',
             placeholder: '请输入验证码',
             name: 'authCode',
@@ -98,16 +101,16 @@
       verification
     },
     computed: {
-      ...mapState(['verification',"time"]),
+      ...mapState(["time"]),
       ...mapGetters(["key"])
     },
-    beforeMount () {
+    beforeMount() {
 
     },
-    mounted () {
+    mounted() {
 
     },
-    updated () {
+    updated() {
     },
     methods: {
       //查找
@@ -116,7 +119,7 @@
         return mformDatas.find(val => val.name == value)
       },
       //      发送短信验证码请求
-      __phoneNote (res) {
+      __phoneNote(res) {
         if (res.success) {
           this.MessageBox({
             title: '提示',
@@ -145,99 +148,114 @@
         }
       },
 //      底部消失
-      pullDown () {
+      pullDown() {
         this.myFooterIsShow = false
       },
 //    申请逻辑
-      approve () {
+      approve() {
         let userinfo = this.readTodos()
         let that = this
-        let Arr = this.mformDatas.filter(item => item.reg.test(item.model))
-        if (Arr.length === this.mformDatas.length) {
-          let data = {
-            phone: that.__findModel("cellPhoneNum").model,
-            verifyCode: that.__findModel("authCode").model,
-            name: that.__findModel("username").model,
-            firstLevelId: this.getCookie('id'),
-            thirdPlatFormBind: true,//第三方绑定接口
-            openId: userinfo.openid, //第三方OpenId
-            thirdLoginType: 'ThirdPlatForm.WeChat',  //第三方登录代号
-            head: userinfo.headimgurl,//第三方登录头像
-            nickName: userinfo.nickname,//第三方登录昵称
-            source: 'OfficialAccounts',
+        for (let i = 0; i < this.mformDatas.length; i++) {
+          let item = this.mformDatas[i]
+          if (item.model === "") {
+            this.MessageBox({
+              title: '提交失败',
+              message: item.placeholder,
+              showCancelButton: false
+            })
+            return
+          } else if (!item.regular.test(item.model)) {
+            this.MessageBox({
+              title: '提交失败',
+              message: item.message,
+              showCancelButton: false
+            })
+            return
           }
-          this.$store.dispatch('postPhone', {
-            data,
-            cb: (flag,whether) => {
-              this.setCookie('token', flag, 7)
-              this.setCookie('whether', whether, 7)
-            }
-          }).then((res)=>{
-            let that = this
-            if (res.success) {
-              this.$router.replace({name:that.$route.params.name1,query:{id:that.$route.query.id},params:{name:that.$route.params.name2}})
-              that = null
-            } else {
-              this.MessageBox({
-                title: '提交失败',
-                message: res.message,
-                showCancelButton: false
-              })
-            }
-          })
-        } else {
-          this.MessageBox({
-            title: '提交失败',
-            message: '请正确输入信息',
-            showCancelButton: false
-          })
         }
+        let data = {
+          phone: that.__findModel("cellPhoneNum").model,
+          verifyCode: that.__findModel("authCode").model,
+          name: that.__findModel("username").model,
+          firstLevelId: that.getCookie('id'),
+          thirdPlatFormBind: true,//第三方绑定接口
+          openId: userinfo.openid, //第三方OpenId
+          // openId: "16573", //第三方OpenId
+          thirdLoginType: 'ThirdPlatForm.WeChat',  //第三方登录代号
+          head: userinfo.headimgurl,//第三方登录头像
+          nickName: userinfo.nickname,//第三方登录昵称
+          source: 'OfficialAccounts',
+        }
+        // alert(JSON.stringify(data))
+        this.$store.dispatch('postPhone', {
+          data,
+          cb: (flag, whether) => {
+            this.setCookie('token', flag, 7)
+            this.setCookie('whether', whether, 7)
+          }
+        }).then((res) => {
+          let that = this
+          if (res.success) {
+            this.$router.replace({
+              name: that.$route.params.name1,
+              query: {id: that.$route.query.id},
+              params: {name: that.$route.params.name2}
+            })
+            that = null
+          } else {
+            this.MessageBox({
+              title: '提交失败',
+              message: res.message,
+              showCancelButton: false
+            })
+          }
+        })
+
       },
 //      验证码
-      changeShow () {
+      changeShow() {
         this.verificationShow = false
       },
 
       //发送图片验证码核实请求
-      verificationCancel (flag, validateCode) {
+      verificationCancel(flag, validateCode) {
         this.isFlag = flag
         this.verificationShow = false
         let that = this
         if (flag) {
-          console.log(that.__findModel("cellPhoneNum").model)
-          this.$store.dispatch('postSendMsg',{
+          this.$store.dispatch('postSendMsg', {
             code: 'SMS_123738830',
             validateKey: that.key + that.time,
             mobilePhone: that.__findModel("cellPhoneNum").model,
             validateCode: validateCode,
             needvalidateCode: true
-          }).then((res)=>{
+          }).then((res) => {
             this.__phoneNote(res)
             this.$store.dispatch("changeTime")
           })
-        }else {
+        } else {
           this.$store.dispatch("changeTime")
         }
       },
 //      选中切换
-      notarize () {
+      notarize() {
         this.imgIsShow = !this.imgIsShow
       },
 //      错误变红
-      loseFocus () {
+      loseFocus() {
         this.myFooterIsShow = true
       },
-      isFooter () {
+      isFooter() {
         this.myFooterIsShow = false
       },
 //      正确变色
-      goodInput (reg, flag, index) {
+      goodInput(reg, flag, index) {
         if (!reg.test(flag)) {
           this.mformDatas[index].model = flag.substring(0, flag.length - 1)
         }
       },
 //      验证码逻辑
-      sendMsg (index) {
+      sendMsg(index) {
         let mformData = this.mformDatas[index - 1]
         if (this.num > 0) {
           this.MessageBox({
@@ -263,15 +281,6 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .phoneApprove
     background-color: #fff
-
-  .ToastStyle
-    width (200 /$rem)
-    height (70 /$rem)
-    font-size (40 /$rem)
-    color #ffffff
-    background-color #8a8a8a
-    text-align center
-    line-height (70 /$rem)
 
   .footerOccupied
     width (1080 /$rem)

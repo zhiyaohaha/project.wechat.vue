@@ -52,6 +52,7 @@
         this.$nextTick(() => {
           this.articlePageWrap = new this.BScroll(this.$refs.articlePageWrap, {
             click: true,
+            bounce:false
           })
           this.articlePageWrap.refresh()
         })

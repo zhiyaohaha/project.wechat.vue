@@ -4,10 +4,10 @@
     <div v-show="$route.meta.isTop"  v-if="subordinateNum">
       <header class="generalizePageHeader">
         <div class="headPortrait">
-          <img :src="subordinateNum.head||'../../../static/img/myImg/touxiang.png'">
+          <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
         </div>
         <div class="userDescription">
-          <span class="petName">{{subordinateNum.nickName||'微信昵称'}}</span>
+          <span class="petName">{{readTodos().nickname||'微信昵称'}}</span>
           <span class="individual">个人代理</span>
         </div>
         <div class="agencyNum">

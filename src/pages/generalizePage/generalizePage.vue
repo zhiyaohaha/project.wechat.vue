@@ -1,37 +1,52 @@
 <template>
-  <div>
-    <scroll>
+  <div class="generalizePage" ref="generalizePageWrap">
       <div>
         <header class="generalizeHeader">
-          <img src="../../../static/img/homeImg/banner.png">
+          <img src="./img/banner.png">
         </header>
-        <headline :headlineData="{title:'赚佣金规则'}"/>
         <div class="generalizeContent">
-          <p>
-            <span>我们假设有ABCD4个人，返佣总金额100元，看看他们赚佣金的模式。</span>
-          </p>
-          <p>
-            <span>A关注公众平台，实名认证，获得专属推广二维码；A申请办理业务，成功下卡/放款，可赚取50元佣金。</span><br>
-            <span>A分享二维码给B，B扫码，申请办理业务，成功下卡/放款后，B可赚取50元佣金，A可赚取30元佣金；</span><br>
-            <span>C扫B的二维码，申请办理业务，成功下卡/放款后，C赚取50元佣金，B可赚取30元佣金， A赚取20元佣金；</span><br>
-            <span>D扫C的二维码，申请办理业务，成功下卡/放款后，D赚取50元佣金，C赚取30元佣金，B赚取20元佣金，A不赚取佣金。</span><br>
-            <span>(部分放款需要提现才能获得佣金)</span>
-          </p>
-        </div>
-        <div class="QRcodeWrap">
-          <transition name="fade">
-            <img :src="inviteurl" class="QRcode" v-show="QRcodeShow">
-          </transition>
-          <transition name="tran">
-            <footer class="generalizeFooter" v-show="!QRcodeShow">
-              <a href="javascript:;" @click="skip">
-                获取我的推广二维码
-              </a>
-            </footer>
-          </transition>
+          <headline :headlineData = "{title:'三级分销规则',line:true}"/>
+          <div class="rule">
+            <p>
+              分销返佣只限向上三级，超过三级不再获得提成。
+            </p>
+            <p>
+              一级分销商获得总佣金70%；二级分销商获得总佣金20%；三级分销商获得总佣金10%。
+            </p>
+          </div>
+          <headline :headlineData = "{title:'客户成为分销商的规则：',line:true}"/>
+          <div class="rule">
+            <p>
+              自然获客，认证真实姓名、手机号，系统则自动生成其推广二维码。
+              分销获客，扫描上级分销商二维码，认证真实姓名、手机号，系统则自动生成其推广二维码
+            </p>
+          </div>
+          <headline :headlineData = "{title:'分销返佣举例说明',line:true}"/>
+          <div class="rule">
+            <p>
+              总部自然获客A客户，A客户发展B客户，B客户发展C客户，C客户发展D客户，D客户发展E客户。
+              D客户成单，总提成100元，C客户获取70元佣金，B客户获取20元佣金，A客户获取10元佣金。
+              E 客户成单，总提成100元，D客户获取70元佣金，C客户获取20元佣金，B客户获取10元佣金，A客户不再获取提成。
+            </p>
+          </div>
+          <headline :headlineData = "{title:'三级分销流程图',line:true}"/>
+          <div class="rule">
+            <img src="./img/liuchengtu.png">
+          </div>
+          <div class="QRcodeWrap">
+            <transition name="fade">
+              <img :src="inviteurl" class="QRcode" v-show="QRcodeShow">
+            </transition>
+            <transition name="tran">
+              <footer class="generalizeFooter" v-show="!QRcodeShow">
+                <a href="javascript:;" @click="skip">
+                  获取我的推广二维码
+                </a>
+              </footer>
+            </transition>
+          </div>
         </div>
       </div>
-    </scroll>
   </div>
 </template>
 
@@ -57,6 +72,16 @@
     mounted() {
       // console.log(this.getCookie('whether') === '1') ? this.QRcodeShow = true : this.QRcodeShow = false
       this.QRcodeShow = (this.getCookie('whether') === "1")
+      this.__boxheight(this.$refs.generalizePageWrap) //执行函数
+      window.onresize = this.__boxheight(this.$refs.generalizePageWrap);
+      this.$nextTick(()=>{
+         //窗口或框架被调整大小时执行
+        this.generalizePageWrap = new this.BScroll(this.$refs.generalizePageWrap, {
+          click: true,
+          preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|IMG)$/}
+        })
+        this.generalizePageWrap.refresh()
+      })
     },
     updated() {
     },
@@ -64,10 +89,10 @@
     methods: {
       skip() {
         let that = this
-        console.log(1)
         if (this.getCookie('whether')*1 < 1) {
           this.$router.replace({name: "phoneApprove", params: {name1:that.$route.name,name2:""}})
         }
+        that = null
       }
     }
   }
@@ -85,57 +110,51 @@
 
   .tran-enter, .tran-leave-to /* .fade-leave-active below version 2.1.8 */
     transform translateY(100%)
-
-  .generalizeHeader
-    height (520 /$rem)
-    margin-bottom (10 /$rem)
-    img
-      width 100%
-      height 100%
-
-  .generalizeContent
-    box-sizing border-box
-    padding 0 (30 /$rem)
-    color #999999
-    .introduceHeadline
-      height (130 /$rem)
-      line-height (130 /$rem)
-      border-bottom 1px solid #f4f4f4
-    p
-      line-height 0.75em
-      margin: 0; /*去掉默认的段间距*/
-      span
-        font-size (40 /$rem)
-        &:last-child
-          font-size (36 /$rem)
-      &:first-child
-        text-indent: 1em
-      &:last-child
-        text-indent: 1em
-
-  .QRcodeWrap
-    overflow hidden
-    box-sizing border-box
-    position relative
-    padding (50 /$rem) 0
-    .generalizeFooter
+  .generalizePage
+    .generalizeHeader
+      width 100/$rem
+      height (520 /$rem)
+      img
+        width 100%
+        height 100%
+    .generalizeContent
+      .rule
+        border-bottom 1px solid #f2f2f2
+        p
+          padding 0 (30/$rem)
+          text-indent (126/$rem)
+          font-size (40/$rem)
+          color #bbb
+          line-height (70/$rem)
+        img
+          display inline-block
+          width 100%
+          margin (50/$rem) 0
+    .QRcodeWrap
+      overflow hidden
       box-sizing border-box
-      height (262 /$rem)
-      width (1080 /$rem)
-      padding (58 /$rem) 0
-      a
-        height (146 /$rem)
-        width (1020 /$rem)
-        background-color: #efca7d;
-        color #ffffff
-        text-align center
-        line-height (146 /$rem)
-        font-size (48 /$rem)
-        border-radius (15 /$rem)
+      position relative
+      padding (50 /$rem) 0
+      .generalizeFooter
+        box-sizing border-box
+        height (262 /$rem)
+        width (1080 /$rem)
+        padding (58 /$rem) 0
+        a
+          height (146 /$rem)
+          width (1020 /$rem)
+          background-color: #efca7d;
+          color #ffffff
+          text-align center
+          line-height (146 /$rem)
+          font-size (48 /$rem)
+          border-radius (15 /$rem)
+          margin 0 auto
+      .QRcode
+        position relative
+        z-index 3000
         margin 0 auto
-    .QRcode
-      margin 0 auto
-      width (300 /$rem)
-      height (300 /$rem)
+        width (300 /$rem)
+        height (300 /$rem)
 
 </style>

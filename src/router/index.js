@@ -1,5 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import {
+  getCookie,
+} from '../util/cookieUtil.js'
+import {
+  pushHistory,
+  __GetRequest
+} from "../../static/js/viewportWidth.js"
+
 const homePage = () => import('../pages/homePage/homePage.vue')
 const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
 const loanPage = () => import('../pages/loanPage/loanPage.vue')
@@ -23,7 +31,6 @@ const schedulePage = () => import('../pages/schedulePage/schedulePage.vue')
 const posterPage = () => import('../pages/posterPage/posterPage.vue')
 const generalizePage = () => import('../pages/generalizePage/generalizePage.vue')
 const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue')
-// const authenticationPage = () => import('../pages/authenticationPage/authenticationPage.vue')
 const materialPage = () => import('../pages/materialPage/materialPage.vue')
 const articlePage = () => import('../pages/articlePage/articlePage.vue')
 const creditHistoryPage = () => import('../pages/creditHistoryPage/creditHistoryPage.vue')
@@ -31,18 +38,20 @@ const creditHistoryPage = () => import('../pages/creditHistoryPage/creditHistory
 
 // keepAlive判断一级路由是否应该存在
 // isTop判断二级路由是否应该存在
-// cache判断是否需要缓存，多变的应应用缓存
-
+// cache判断是否需要缓存，不变的应应用缓存
+//register判断需要验证用户登录的页面
+let obj = __GetRequest()
 Vue.use(Router)
 const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/homePage',
+      redirect: {name:obj.state}
     },
     {
       path: '/homePage',
       component: homePage,
+      name: "homePage",
       meta: {
         keepAlive: true,
         isTop: true,
@@ -54,23 +63,25 @@ const router = new Router({
         {
           path: 'loanPage',
           component: loanPage,
-          name:"loanPage",
-          meta: {keepAlive: false, cache: true, isTop: true, title: '快速贷款'},
+          name: "loanPage",
+          meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '快速贷款'},
         },
         {
           path: 'productPage',
           component: productPage,
+          name: "productPage",
           meta: {keepAlive: false, isTop: true, title: '贷款产品'},
         },
         {
           path: 'productDetailsPage',
           component: productDetailsPage,
-          name:"productDetailsPage",
-          meta: {keepAlive: false, cache: true, isTop: false, title: '产品详情'},
+          name: "productDetailsPage",
+          meta: {keepAlive: false, cache: true, register: true, isTop: false, title: '产品详情'},
         },
         {
           path: 'creditCardPage',
           component: creditCardPage,
+          name: "creditCardPage",
           meta: {keepAlive: false, isTop: true, title: '办信用卡'},
           children: [
             {
@@ -84,40 +95,42 @@ const router = new Router({
         {
           path: 'cardApplyForPage',
           component: cardApplyForPage,
-          name:"cardApplyForPage",
-          meta: {keepAlive: false, cache: true,isTop: false, title: '信用卡申请'},
+          name: "cardApplyForPage",
+          meta: {keepAlive: false, cache: true, register: true, isTop: false, title: '信用卡申请'},
         },
         {
           path: 'cardDetailsPage',
           component: cardDetailsPage,
-          meta: {keepAlive: false, cache: true,isTop: false, title: '信用卡详情'},
+          meta: {keepAlive: false, cache: true, isTop: false, title: '信用卡详情'},
         },
         {
           path: 'strategyPage',
           component: strategyPage,
+          name: "strategyPage",
           meta: {keepAlive: false, isTop: false, title: '用卡攻略'},
         },
         {
           path: 'strategyListPage',
           component: strategyListPage,
-          name:"strategyListPage",
-          meta: {keepAlive: false, cache: true,isTop: false, title: ''},
+          name: "strategyListPage",
+          meta: {keepAlive: false, cache: true, isTop: false, title: ''},
         },
         {
           path: 'articlePage',
           component: articlePage,
-          meta: {keepAlive: false,cache: true, isTop: false, title: '文章详情'},
+          meta: {keepAlive: false, cache: true, isTop: false, title: '文章详情'},
         },
         {
           path: 'schedulePage',
           component: schedulePage,
-          meta: {keepAlive: false,cache: true, isTop: false, title: '办卡进度'},
+          name: 'schedulePage',
+          meta: {keepAlive: false, cache: true, isTop: false, title: '办卡进度'},
         },
         {
           path: 'posterPage',
           component: posterPage,
-          name:"posterPage",
-          meta: {keepAlive: false,cache: true, isTop: false, title: '推广海报'},
+          name: "posterPage",
+          meta: {keepAlive: false, register: true, isTop: false, title: '推广海报'},
         },
         {
           path: 'materialPage',
@@ -128,15 +141,15 @@ const router = new Router({
         {
           path: 'generalizePage',
           component: generalizePage,
-          name:"generalizePage",
-          meta: {keepAlive: false, cache: true, isTop: true, title: '赚佣金'},
+          name: "generalizePage",
+          meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '赚佣金'},
         },
       ]
     },
     {
       path: '/phoneApprove',
       component: phoneApprove,
-      name:"phoneApprove",
+      name: "phoneApprove",
       meta: {keepAlive: false, isTop: true, title: '手机号认证'},
     },
     /*{
@@ -147,69 +160,95 @@ const router = new Router({
     {
       path: '/myPage',
       component: myPage,
-      name:"myPage",
-      meta: {keepAlive: true, isTop: true, footerShow: false, homeShow: false, title: '我的'},
+      name: "myPage",
+      meta: {keepAlive: true, isTop: true, register: true, cache: true, title: '我的'},
       children: [
         {
           path: 'generalizeYiPage',
           component: generalizeYiPage,
           name: "generalizeYiPage",
-          meta: {keepAlive: false,  cache: true,isTop: true, title: '我的一级代理'},
+          meta: {keepAlive: false, cache: true, isTop: true, title: '我的一级代理'},
           children: [
             {
               path: 'generalizeErPage',
               component: generalizeErPage,
-              meta: {keepAlive: false, cache: true,isTop: false, title: '我的二级代理'},
+              meta: {keepAlive: false, cache: true, isTop: false, title: '我的二级代理'},
             }
           ]
         },
         {
           path: 'orderFormPage',
           component: orderFormPage,
-          meta: {keepAlive: false,cache: true ,isTop: true, title: '订单明细'},
+          meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '订单明细'},
         },
         {
-          path:'creditHistoryPage',
+          path: 'creditHistoryPage',
           component: creditHistoryPage,
-          meta: { keepAlive: false, isTop: true, title: '贷款历史'},
+          meta: {keepAlive: false, isTop: true, register: true, title: '贷款历史'},
         },
         {
           path: 'rebatePage',
+          name: 'rebatePage',
           component: rebatePage,
-          meta: {keepAlive: false,cache: true, isTop: true, title: '返佣明细'},
+          meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '返佣明细'},
         },
         {
           path: 'depositPage',
           component: depositPage,
-          name:"depositPage",
-          meta: {keepAlive: false,cache: true,isTop: true, title: '提现明细'},
+          name: "depositPage",
+          meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '提现明细'},
         },
         {
           path: 'WithdrawalPage',
           component: WithdrawalPage,
-          name:"WithdrawalPage",
-          meta: {keepAlive: false, cache: true,isTop: true, title: '提现'},
+          name: "WithdrawalPage",
+          meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '提现'},
         },
       ]
     },
     {
       path: '/tieOnCardPage',
       component: tieOnCardPage,
-      name:"tieOnCardPage",
+      name: "tieOnCardPage",
       meta: {keepAlive: false, isTop: true, title: '实名绑卡'},
     },
     {
       path: '/verifyPage',
       component: verifyPage,
-      name:"verifyPage",
+      name: "verifyPage",
       meta: {keepAlive: false, isTop: true, title: '实名认证'},
     },
   ]
 })
-
+let goBack = function (e) {
+  let ua = navigator.userAgent.toLowerCase()
+  if (ua) {
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+      WeixinJSBridge.call('closeWindow') //微信
+    } else if (ua.indexOf("alipay") != -1) {
+      AlipayJSBridge.call('closeWebview') //支付宝
+    } else if (ua.indexOf("baidu") != -1) {
+      BLightApp.closeWindow() //百度
+    } else {
+      window.close() //普通浏览器
+    }
+  }
+}
 router.beforeEach((to, from, next) => {
+
+  //首页退出浏览器
+  if (to.name === "homePage"||to.name === obj.state) {
+    pushHistory()
+    window.addEventListener("popstate", goBack, false)
+  } else {
+    window.removeEventListener("popstate", goBack, false)
+  }
+  //判断用户是否注册
+  if (to.meta.register && (getCookie('whether') * 1 < 1)) {
+    next({name: "phoneApprove", params: {name1: to.name, name2: ""}, query: {id: to.query.id}})
+  }
   /* 路由发生变化修改页面title */
-  if (to.name == "zhongXinCardPage"||to.name == "strategyListPage"){
+  if (to.name == "zhongXinCardPage" || to.name == "strategyListPage") {
     to.meta.title = to.query.name
   }
   if (to.meta.title) {

@@ -85,11 +85,9 @@
         )
 
         return Arr
-
       }
     },
     created() {
-
       let that = this
       this.$store.dispatch("getListBankCardDetail", {
         id: that.$route.query.id
@@ -110,7 +108,6 @@
     methods: {
       __slide() {
         console.log(this.bankCardDetail)
-
       }
     }
   }

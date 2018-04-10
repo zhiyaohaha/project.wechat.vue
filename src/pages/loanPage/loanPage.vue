@@ -3,28 +3,30 @@
     <scroll>
       <div>
         <div class="loanContent">
-          <img src="./img/xinyongkabanner.png">
+          <img src="./img/banner.png">
           <headline :headlineData="{title:'立刻申请贷款'}"/>
-          <ul class="mform">
-            <li v-for="(mformData, index) in mformDatas" :key="index">
-              <span class="description">{{mformData.description}}</span>
-              <input type="text" v-model="mformData.model"
-                     @blur="loseFocus" :readonly="mformData.purposeList"
-                     @input="goodInput(mformData.reg,mformData.model,index)"
-                     @focus="pullDown(true,index)"
-                     :placeholder="mformData.placeholder"
-                     :maxlength="mformData.maxlength"
-                     :name="mformData.name">
-              <span :class="{purposeList:mformData.purposeList}" v-if="!mformData.sendMsg && !mformData.units"
-                    @touchstart="pullDown(true,index)">
+          <keep-alive>
+            <ul class="mform">
+              <li v-for="(mformData, index) in mformDatas" :key="index">
+                <span class="description">{{mformData.description}}</span>
+                <input type="text" v-model="mformData.model"
+                       @blur="loseFocus" :readonly="mformData.purposeList"
+                       @input="goodInput(mformData.reg,mformData.model,index)"
+                       @focus="pullDown(true,index)"
+                       :placeholder="mformData.placeholder"
+                       :maxlength="mformData.maxlength"
+                       :name="mformData.name">
+                <span :class="{purposeList:mformData.purposeList}" v-if="!mformData.sendMsg && !mformData.units"
+                      @touchstart="pullDown(true,index)">
                 {{mformData.units}}
               </span>
-              <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
-                 @click="sendMsg()">
-                {{mformData.units}}
-              </a>
-            </li>
-          </ul>
+                <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
+                   @click="sendMsg()">
+                  {{mformData.units}}
+                </a>
+              </li>
+            </ul>
+          </keep-alive>
           <div class="propertyCase">
             <span>资产情况</span>
             <propertyMod :propertyModDatas="propertyModDatas"/>
@@ -37,7 +39,7 @@
     <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
               showToolbar="true">
       <div class="shadeIsShowHeader">
-          <span @touchstart="pullDown(false,mformDatasInd,false )" class="cancel">
+          <span @touchstart="pullDown(false,mformDatasInd,false)" class="cancel">
             取消
           </span>
         <span @touchstart="pullDown(false,mformDatasInd,true)" class="ascertain">
@@ -57,6 +59,7 @@
   import propertyMod from '../../components/propertyMod/propertyMod.vue'
   import verification from '../../components/verification/verification.vue'
   import {getLoanAmount, postSendVerifyCode, postLoanDemand} from '../../api'
+  import {mapState, mapGetters} from "vuex"
 
   export default {
     data() {
@@ -86,7 +89,7 @@
         mformDatas: [
           {
             description: '贷款金额：',
-            placeholder: '请输入贷款金额',
+            placeholder: '请选择贷款金额',
             name: 'money',
             model: '',
             purposeList: true,
@@ -98,7 +101,7 @@
           },
           {
             description: '贷款用途：',
-            placeholder: '请输入贷款用途',
+            placeholder: '请选择贷款用途',
             name: 'purpose',
             model: '',
             purposeList: true,
@@ -110,7 +113,7 @@
           },
           {
             description: '贷款期限：',
-            placeholder: '请输入贷款期限',
+            placeholder: '请选择贷款期限',
             name: 'timeLimit',
             model: '',
             purposeList: true,
@@ -121,6 +124,7 @@
             errorColor: false
           },
           {
+            message: "请正确输入您的姓名",
             description: '贷款人姓名：',
             placeholder: '请输入您的姓名',
             name: 'username',
@@ -128,11 +132,13 @@
             purposeList: false,
             sendMsg: false,
             units: '',
-            reg: /^[A-Za-z\u4e00-\u9fa5]{1,}$/,
-            regular: /^[A-Za-z\u4e00-\u9fa5]{1,}$/,
-            errorColor: false
+            reg: /^[\u4e00-\u9fa5]{1,15}$/,
+            regular: /^[\u4e00-\u9fa5]{1,15}$/,
+            errorColor: false,
+            maxlength: '15'
           },
           {
+            message: "请正确输入您的身份证号",
             description: '身份证号：',
             placeholder: '请输入您的身份证号',
             name: 'IDnumber',
@@ -146,6 +152,7 @@
             maxlength: '18'
           },
           {
+            message: "请正确输入您的手机号",
             description: '手机号：',
             placeholder: '请输入您的手机号',
             name: 'phoneNum',
@@ -159,6 +166,7 @@
             maxlength: '11'
           },
           {
+            message: "请正确输入您的验证码",
             description: '验证码：',
             placeholder: '请输入验证码',
             name: 'authCode',
@@ -169,7 +177,7 @@
             reg: /^\d{1,}$/,
             regular: /^\d{4}$/,
             errorColor: false,
-            maxlength: '4'
+            maxlength: 4
           },
         ],
         shadeIsShow: false,
@@ -178,6 +186,8 @@
         simulationSubmitIsShow: true,
         verificationShow: false,
         num: null,
+        reveal: false,
+        windowChange: 0
       }
     },
 
@@ -198,35 +208,52 @@
             }
           }, 1000)
         }
+      },
+      shadeIsShow(val) {
+        if (!val && !this.reveal) {
+          this.mformDatas[this.mformDatasInd].model = ""
+        }
+      },
+      windowChange(val){
+        if(val > 140){
+          this.simulationSubmitIsShow = false
+        }else {
+          this.simulationSubmitIsShow = true
+        }
       }
     },
     computed: {
+      ...mapState(["time"]),
+      ...mapGetters(["key"]),
       shadeIsShowInd() {
         return this.shadeIsShow ? 3 : null
       }
     },
-    beforeCreate(){
-      let that = this
-      if(this.getCookie("whether")*1 < 1){
-        this.$router.replace({name:"phoneApprove",params: {name1:that.$route.name}})
-        that =null
-      }
+    beforeCreate() {
+
     },
     created() {
-      this.getLoanAmount("LoanAmount").then((res) => {
-        this.moneyArr = res
-      })
+      if (this.getCookie("whether") * 1 > 0) {
+        this.getLoanAmount("LoanAmount").then((res) => {
+          this.moneyArr = res
+        })
 
-      this.getLoanAmount("LoanTerm").then((res) => {
-        this.deadlineArr = res
-      })
-      this.getLoanAmount("LoanUse").then((res) => {
-        this.consumeArr = res
-      })
+        this.getLoanAmount("LoanTerm").then((res) => {
+          this.deadlineArr = res
+        })
+        this.getLoanAmount("LoanUse").then((res) => {
+          this.consumeArr = res
+        })
+      }
     },
     // 滑动事件
     mounted() {
-
+      let that = this
+      let winHeight = document.body.clientHeight
+      window.onresize = function (e) {
+        let thisHeight = document.body.clientHeight
+        that.windowChange = winHeight - thisHeight
+      }
     }
     ,
     updated() {
@@ -262,7 +289,7 @@
               title: '提交失败',
               message: res.message,
               showCancelButton: false,
-              closeOnClickModal:false
+              closeOnClickModal: false
             })
           }
         })
@@ -284,51 +311,61 @@
       //提交
       submit() {
         let propertyModDatas = this.propertyModDatas
-        let judge = this.mformDatas.filter((item) => {
-          return (item.regular.test(item.model) && (item.model !== ''))
-        })
-        if (judge.length == this.mformDatas.length) {
-          let that = this
-          let url = this.apiPrefix + "api/OfficialAccounts/InsertLoanDemand"
-          postLoanDemand(url, {
-            loanDemand: {
-              applyAmount: that.applyAmount, //贷款金额编码
-              purpose: that.consume,//贷款用途编码
-              applyTerm: that.applyTerm, //贷款期限编码
-              name: that.__findModel("username"),  //贷款人
-              idCard: that.__findModel("IDnumber"),  //身份证
-              telphone: that.__findModel("phoneNum"),  //手机
-              house: propertyModDatas[0].imgUrlIsShow, //有房
-              car: propertyModDatas[1].imgUrlIsShow,  //有车
-              creditCard: propertyModDatas[2].imgUrlIsShow,//有信用卡
-              providentFund: propertyModDatas[3].imgUrlIsShow, //有公积金
-              socialSecurity: propertyModDatas[4].imgUrlIsShow //有社保
-            },
-            phone: that.__findModel("phoneNum"),  //手机
-            verifyCode: that.__findModel("authCode"), //验证码
-            source: "OfficialAccounts"
-          }).then(res => {
-            if (res.success) {
-              this.MessageBox({
-                title: '提示',
-                message: '恭喜您报单成功,等待审核',
-                showCancelButton: false
-              })
-            } else {
-              this.MessageBox({
-                title: '提交失败',
-                message: res.message,
-                showCancelButton: false
-              })
-            }
-          })
-        } else {
-          this.MessageBox({
-            title: '提示',
-            message: '请正确输入您的信息',
-            showCancelButton: false
-          })
+        for (let i = 0; i < this.mformDatas.length; i++) {
+          let item = this.mformDatas[i]
+          if (item.model === "") {
+            this.MessageBox({
+              title: '提交失败',
+              message: item.placeholder,
+              showCancelButton: false
+            })
+            return
+          } else if (!item.regular.test(item.model)) {
+            this.MessageBox({
+              title: '提交失败',
+              message: item.message,
+              showCancelButton: false
+            })
+            return
+          }
         }
+        let that = this
+        let url = this.apiPrefix + "api/OfficialAccounts/InsertLoanDemand"
+        postLoanDemand(url, {
+          loanDemand: {
+            applyAmount: that.applyAmount, //贷款金额编码
+            purpose: that.consume,//贷款用途编码
+            applyTerm: that.applyTerm, //贷款期限编码
+            name: that.__findModel("username"),  //贷款人
+            idCard: that.__findModel("IDnumber"),  //身份证
+            telphone: that.__findModel("phoneNum"),  //手机
+            house: propertyModDatas[0].imgUrlIsShow, //有房
+            car: propertyModDatas[1].imgUrlIsShow,  //有车
+            creditCard: propertyModDatas[2].imgUrlIsShow,//有信用卡
+            providentFund: propertyModDatas[3].imgUrlIsShow, //有公积金
+            socialSecurity: propertyModDatas[4].imgUrlIsShow //有社保
+          },
+          phone: that.__findModel("phoneNum"),  //手机
+          verifyCode: that.__findModel("authCode"), //验证码
+          source: "OfficialAccounts"
+        }).then(res => {
+          if (res.success) {
+            this.MessageBox({
+              title: '提示',
+              message: '您的申请已提交,我们会立刻开始处理',
+              showCancelButton: false
+            }).then(() => {
+              this.$router.replace("/homePage")
+            })
+          } else {
+            this.MessageBox({
+              title: '提交失败',
+              message: res.message,
+              showCancelButton: false
+            })
+          }
+        })
+
       },
 //      输入框焦点时底部消失
       isFooter() {
@@ -358,19 +395,13 @@
       },
 //      输入正确变色
       goodInput(reg, flag, index) {
-//        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (index < 3) {
           this.mformDatas[index].model = ''
         }
         if (!reg.test(flag)) {
-          this.Toast({
-            message: '格式错误',
-            className: 'ToastStyle'
-          })
           this.mformDatas[index].model = flag.substring(0, flag.length - 1)
         }
-      }
-      ,
+      },
 //      验证码逻辑
       sendMsg() {
         let mformData = this.mformDatas[5]
@@ -395,8 +426,10 @@
       ,
 //      三角点击
       pullDown(flag, index, inputValue) {
+
         this.mformDatasInd = index
         if (index < 3) {
+          this.reveal = inputValue
           switch (index) {
             case 0:
               this.pickerModDatas = this.moneyArr

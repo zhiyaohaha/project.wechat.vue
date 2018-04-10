@@ -24,7 +24,8 @@ import {
   getAdCodes,
   postFiveRealVerifyCode,
   getListScheduleForApp,
-  getBinBankCard
+  getBinBankCard,
+  getAccountInfo
 } from '../api'
 
 let apiPrefix = 'http://211.94.137.70:8001/'
@@ -68,7 +69,6 @@ export default {
       flag = ""
       whether = 0
     }
-    console.log(flag)
     cb && cb(flag, whether)
     return result
   },
@@ -108,8 +108,11 @@ export default {
   //获取用户信息
   async getUserinfo({commit}, data) {
     let url = apiWeChat + 'api/OfficialAccounts/GetWeChatInfo'
+    // alert(JSON.stringify(url))
     let obj = data.obj
+    // alert(JSON.stringify(obj))
     const result = await getUserinfo(url, {code: obj.code})
+    // alert(JSON.stringify(result))
     if (result) {
       data.cb && data.cb(result, obj.id)
       commit('GET_USERINFO', {result})
@@ -283,6 +286,11 @@ export default {
       cb&&cb(2)
     }
     commit('GET_BINBANKCARD', {result})
+  },
+  async getAccountInfo({commit}) {
+    let url = apiPrefix + "api/OfficialAccounts/GetAccountInfo"
+    const result = await getAccountInfo(url)
+    return result
   },
   //改变时间
   changeTime({commit}) {

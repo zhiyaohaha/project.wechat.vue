@@ -4,27 +4,25 @@
     <div v-if="$route.meta.keepAlive">
       <header class="myPageHeader">
         <div class="headPortrait">
-          <img :src="this.readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
+          <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
         </div>
         <div class="userDescription">
-          <span class="petName">{{this.readTodos().nickname||'微信昵称'}}</span>
+          <span class="petName">{{readTodos().nickname||'微信昵称'}}</span>
           <span class="individual">个人代理</span>
         </div>
         <div class="brokerage">
           <router-link to="/homePage/generalizePage">我要赚佣金</router-link>
         </div>
       </header>
-      <div class="myPageContent">
+      <div class="myPageContent" v-if="income">
         <a href="javascript:;" class="generalIncome">
           <span class="describe">总收入</span>
-          <span class="unit">￥<span class="price">0000.00元</span></span>
-
+          <span class="unit">￥<span class="price">{{income.balance}}元</span></span>
         </a>
-        <div class="line"></div>
-        <router-link to="tieOnCardPage" class="withdrawDeposit">
+        <a href="javascript:;" class="withdrawDeposit">
           <span class="describe">可提现</span>
-          <span class="unit">￥<span class="price">0000.00元</span></span>
-        </router-link>
+          <span class="unit">￥<span class="price">{{income.withdrawBalance}}元</span></span>
+        </a>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
       <div class="feignButton" @click="quit">退出</div>
@@ -69,7 +67,8 @@
             title: '快速贷款历史',
             url: '/myPage/creditHistoryPage'*/
           }
-        ]
+        ],
+        income:null
       }
     },
 
@@ -79,20 +78,15 @@
 
     computed: {},
     watch:{
-      $route(to, from){
-        if(to.name==="myPage"){
-          if(this.getCookie("whether")*1 < 1){
-            this.$router.replace({name: "phoneApprove", params: {name1:to.name}})
-          }
-        }
-      }
+
     },
     beforeCreate() {
-      let that = this
-      if(this.getCookie("whether")*1 < 1){
-        this.$router.replace({name: "phoneApprove", params: {name1:that.$route.name}})
-      }
-      that = null
+
+    },
+    created(){
+      this.$store.dispatch("getAccountInfo").then((res)=>{
+        this.income = res.data
+      })
     },
     mounted() {
 
@@ -153,7 +147,6 @@
         a
           font-size (43 /$rem)
           color #ffffff
-
     .myPageContent
       box-sizing border-box
       position absolute
@@ -166,11 +159,11 @@
       border-radius (10 /$rem)
       box-shadow 0 0 (64 /$rem) rgba(0, 0, 0, 0.19)
       z-index 1
-
       a
         box-sizing border-box
         float left
         text-align center
+        width (289/$rem)
         margin-top (60 /$rem)
         span
           font-size (34 /$rem)
@@ -183,12 +176,6 @@
             margin-top (30 /$rem)
             font-size (42 /$rem)
             color #efca7d
-      .line
-        float left
-        margin (65 /$rem) (54 /$rem)
-        height (100 /$rem)
-        width 1px
-        background-color: #f2f2f2;
     .feignButton
       border-radius (15 /$rem)
       width (985 /$rem)

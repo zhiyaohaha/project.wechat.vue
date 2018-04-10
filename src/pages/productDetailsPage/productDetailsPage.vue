@@ -16,7 +16,8 @@
       <headline :headlineData="{title:'申请条件',line:true}"/>
       <div class="applyForCondition">
         <ul class="applyForList">
-          <li v-for="(applyForListData, index) in (productDetailsPageData.filter.applicationConditions.split('\n'))">
+          <li v-for="(applyForListData, index) in (productDetailsPageData.filter.applicationConditions.split('\n'))"
+              :key="index">
             <span>{{applyForListData}}</span>
           </li>
         </ul>
@@ -36,7 +37,6 @@
         </li>
       </ul>
     </div>
-
     <footer class="productDetailsFooter" v-show="FooterShow" @click="applyFor">
       <a href="javascript:">
         立即申请
@@ -56,23 +56,27 @@
       return {
         mformDatas: [
           {
+            message: "请正确输入姓名",
             description: "姓名：",
             placeholder: "请输入姓名",
             name: "userName",
             model: "",
-            reg: /^[\u4e00-\u9fa5_a-zA-Z]{0,}$/,
-            regular: /^[\u4e00-\u9fa5_a-zA-Z]{1,}$/
+            reg: /^[\u4e00-\u9fa5]{1,}$/,
+            regular: /^[\u4e00-\u9fa5]{1,}$/,
+            maxlength: "15"
           },
           {
+            message: "请正确输入身份证号",
             description: "身份证号：",
             placeholder: "请输入身份证号",
             name: "IDnumber",
             model: "",
             reg: /^[0-9xX]{0,18}$/,
-            regular: /^[0-9xX]{15,18}$/,
+            regular: /^\d{17}[\d|xX]|\d{15}$/,
             maxlength: "18"
           },
           {
+            message: "请正确输入手机号",
             description: "手机号：",
             placeholder: "请输入手机号",
             name: "phoneNum",
@@ -82,7 +86,8 @@
             maxlength: "11"
           },
         ],
-        FooterShow: true
+        FooterShow: true,
+        winHeight: document.body.clientHeight
       }
     },
 
@@ -91,47 +96,59 @@
     },
 
     computed: {
-      ...mapState(['productDetailsPageData'])
+      ...mapState(['productDetailsPageData']),
     },
-    beforeCreate(){
-      if(this.getCookie("whether")*1 < 1){
-        let that = this
-        this.$router.replace({name: "phoneApprove", query: {id: that.$route.query.id},params: {name1: that.$route.name}})
-        that = null
-      }
-    },
+    watch: {},
     created() {
       this.$store.dispatch("getDetailedFor", {id: this.$route.query.id})
     },
     mounted() {
-    },
 
+    },
+    updated() {
+      let that =this
+      window.onresize = function (e) {
+        let thisHeight = document.body.clientHeight
+        if (that.winHeight - thisHeight > 140) {
+          that.FooterShow = false
+        } else {
+          that.FooterShow = true
+        }
+      }
+    },
     methods: {
       //申请
       applyFor() {
-        let judge = this.mformDatas.filter((item) => {
-          return item.regular.test(item.model)
-        })
-        if (judge.length === this.mformDatas.length) {
-          let data = {
-            mobilePhone: this.mformDatas[2].model,//手机
-            idCard: this.mformDatas[1].model,  //身份证
-            name: this.mformDatas[0].model,   //姓名
-            product: this.productDetailsPageData.id, //产品Id
-            source: 'OfficialAccounts'  //来源
+        for (let i = 0; i < this.mformDatas.length; i++) {
+          let item = this.mformDatas[i]
+          if (item.model === "") {
+            this.MessageBox({
+              title: '提交失败',
+              message: item.placeholder,
+              showCancelButton: false
+            })
+            return
+          } else if (!item.regular.test(item.model)) {
+            this.MessageBox({
+              title: '提交失败',
+              message: item.message,
+              showCancelButton: false
+            })
+            return
           }
-          let url = this.apiPrefix + "/api/LoanOrder/SpeedOrderRecordForApp"
-          postSpeedOrder(url, data).then((res) => {
-            window.location.href = res.data.url
-          })
-        } else {
-          MessageBox({
-            title: '提示',
-            message: '请正确输入信息',
-            showCancelButton: false
-          })
         }
-
+        let data = {
+          mobilePhone: this.mformDatas[2].model,//手机
+          idCard: this.mformDatas[1].model,  //身份证
+          name: this.mformDatas[0].model,   //姓名
+          product: this.productDetailsPageData.id, //产品Id
+          source: 'OfficialAccounts'  //来源
+        }
+        // alert(JSON.stringify(data))
+        let url = this.apiPrefix + "api/LoanOrder/SpeedOrderRecordForApp"
+        postSpeedOrder(url, data).then((res) => {
+          window.location.href = res.data.url
+        })
       },
       isFooter() {
         this.FooterShow = false
@@ -141,12 +158,6 @@
       },
       goodInput(reg, flag, index) {
         if (!reg.test(flag)) {
-          Toast({
-            message: "格式错误",
-            className: "ToastStyle",
-            duration: 2000,
-            position: "bottom"
-          })
           for (let i = 0; i < this.mformDatas.length; i++) {
             this.mformDatas[index].model = ""
           }
@@ -181,9 +192,9 @@
         box-sizing border-box
         border 1px solid #e4e4e4
         img
-          margin (35/$rem)
-          width (110/$rem)
-          height (110/$rem)
+          margin (35 /$rem)
+          width (110 /$rem)
+          height (110 /$rem)
       &.describe
         color #333
         font-size (36 /$rem)

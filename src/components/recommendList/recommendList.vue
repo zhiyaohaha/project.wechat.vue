@@ -10,9 +10,6 @@
                @touchstart.stop="$router.push({path:'/homePage/cardApplyForPage',query:{id:recommendListData.id}})">
             </a>
           </div>
-          <div class="smallLog" v-if="index < 3">
-            <img :src="`../../../static/img/creditCardImg/redu0${index+1}.png`">
-          </div>
         </router-link>
       </li>
     </ul>
@@ -72,14 +69,5 @@
           background-image url("./img/shenqinganniu.png")
           background-repeat no-repeat
           background-size 100%
-      .smallLog
-        position absolute
-        right (30 /$rem)
-        top (50 /$rem)
-        width (64 /$rem)
-        height (62 /$rem)
-        img
-          width 100%
-          height 100%
 
 </style>

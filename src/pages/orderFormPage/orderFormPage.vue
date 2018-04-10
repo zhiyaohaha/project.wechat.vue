@@ -8,12 +8,14 @@
       </a>
     </header>
     <scroll class="wrapper"
-            :data="orderListFor1?orderListFor1.data:[]"
+            :data="orderListFor1?orderListFor1.data : []"
             :pullup="true"
             @scrollToEnd="loadData"
     >
-      <orderFormList :orderFormListDatas="orderListFor1" v-if="orderListFor1" :screenIsShow="screenIsShow"/>
-      <footline :title="footlineTitle"/>
+      <div>
+        <orderFormList :orderFormListDatas="orderListFor1" :screenIsShow="screenIsShow"/>
+        <footline :title="footlineTitle"/>
+      </div>
     </scroll>
     <mt-popup v-model="screenShow" position="bottom">
       <header class="mintPopupHeader">
@@ -64,7 +66,7 @@
         footlineTitle: "查看更多",
         checkboxListDatas1: [
           {
-            name: "待处理",
+            name: "申请中",
             imgShow: false,
             code: "Apply"
           },
@@ -117,13 +119,18 @@
         this.$store.dispatch("getUserRelated", {
           level: val
         })
+      },
+      orderListFor1(val){
+        let a = val? val.data.length === 0 : true
+        if(a){
+          this.footlineTitle = '暂无数据'
+        }else {
+          this.footlineTitle = '查看更多'
+        }
       }
     },
     mounted() {
 
-      if(this.orderListFor1?this.orderListFor1.data.length === 0 : true){
-        this.footlineTitle = '暂无数据'
-      }
     },
     updated() {
     },

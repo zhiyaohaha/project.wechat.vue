@@ -39,30 +39,32 @@
 </template>
 
 <script>
-  import {MessageBox, Toast} from "mint-ui"
-
   export default {
     data() {
       return {
         mformDatas: [
           {
+            message: "请正确输入姓名",
             description: "姓名：",
             placeholder: "请输入姓名",
             name: "userName",
             model: "",
-            reg: /^[\u4e00-\u9fa5_a-zA-Z]{0,}$/,
-            regular: /^[\u4e00-\u9fa5_a-zA-Z]{1,}$/
+            reg: /^[\u4e00-\u9fa5]{1,}$/,
+            regular: /^[\u4e00-\u9fa5]{1,}$/,
+            maxlength: "15"
           },
           {
+            message: "请正确输入身份证号",
             description: "身份证号：",
             placeholder: "请输入身份证号",
             name: "IDnumber",
             model: "",
             reg: /^[0-9xX]{0,18}$/,
-            regular: /^[0-9xX]{15,18}$/,
+            regular: /^\d{17}[\d|xX]|\d{15}$/,
             maxlength: "18"
           },
           {
+            message: "请正确输入手机号",
             description: "手机号：",
             placeholder: "请输入手机号",
             name: "userName",
@@ -72,7 +74,8 @@
             maxlength: "11"
           },
         ],
-        applyForFooterShow: true
+        applyForFooterShow: true,
+        winHeight:document.body.clientHeight
       }
     },
 
@@ -81,59 +84,81 @@
     computed: {},
     beforeCreate() {
       let that = this
-      if(this.getCookie("whether")*1 < 1){
-        this.$router.replace({name: "phoneApprove", query: {id: that.$route.query.id},params: {name1: that.$route.name}})
+      if (this.getCookie("whether") * 1 < 1) {
+        this.$router.replace({
+          name: "phoneApprove",
+          query: {id: that.$route.query.id},
+          params: {name1: that.$route.name}
+        })
       }
       that = null
     },
     mounted() {
-    },
 
+    },
+    updated() {
+      let that = this
+      window.onresize = function (e) {
+        let thisHeight = document.body.clientHeight
+        if(that.winHeight - thisHeight > 140) {
+          that.applyForFooterShow = false
+        } else {
+          that.applyForFooterShow = true
+        }
+      }
+    },
     methods: {
       //提交逻辑
       applyFor() {
-        let judge = this.mformDatas.filter((item) => {
-          return item.regular.test(item.model)
-        })
-        console.log(judge);
-        if (judge.length === this.mformDatas.length) {
-          let that = this
-          this.$store.dispatch("postRecordForApp", {
-            creditCard: that.$route.query.id,//信用卡Id
-            applyFormData: [
-              {
-                key: "name",
-                value: that.mformDatas[0].model
-              },
-              {
-                key: "idCard",
-                value: that.mformDatas[1].model
-              },
-              {
-                key: "mobilePhone",
-                value: that.mformDatas[2].model
-              },
-            ],
-            source: 'OfficialAccounts'//来源
-          }).then((res) => {
-            if (res.success) {
-              window.location.href = res.data.url
-            } else {
-              MessageBox({
-                title: '提示',
-                message:res.message,
-                showCancelButton: false
-              })
-            }
-
-          })
-        } else {
-          MessageBox({
-            title: '提示',
-            message: '请正确输入信息',
-            showCancelButton: false
-          })
+        for (let i = 0; i < this.mformDatas.length; i++) {
+          let item = this.mformDatas[i]
+          if (item.model === "") {
+            this.MessageBox({
+              title: '提交失败',
+              message: item.placeholder,
+              showCancelButton: false
+            })
+            return
+          } else if (!item.regular.test(item.model)) {
+            this.MessageBox({
+              title: '提交失败',
+              message: item.message,
+              showCancelButton: false
+            })
+            return
+          }
         }
+
+        let that = this
+        this.$store.dispatch("postRecordForApp", {
+          creditCard: that.$route.query.id,//信用卡Id
+          applyFormData: [
+            {
+              key: "name",
+              value: that.mformDatas[0].model
+            },
+            {
+              key: "idCard",
+              value: that.mformDatas[1].model
+            },
+            {
+              key: "mobilePhone",
+              value: that.mformDatas[2].model
+            },
+          ],
+          source: 'OfficialAccounts'//来源
+        }).then((res) => {
+          if (res.success) {
+            window.location.href = res.data.url
+          } else {
+            this.MessageBox({
+              title: '提示',
+              message: res.message,
+              showCancelButton: false
+            })
+          }
+        })
+
       },
       //      输入框焦点时底部消失
       isFooter() {
@@ -143,19 +168,10 @@
       loseFocus(reg, flag, index) {
         this.applyForFooterShow = true
       },
-//      输入框值
-      onValuesChange(picker, values) {
-        this.mformDatas[this.mformDatasInd].model = picker.getValues()
-      },
 //      输入正确变色
       goodInput(reg, flag, index) {
 //        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
         if (!reg.test(flag)) {
-          Toast({
-            message: "格式错误",
-            className: "ToastStyle",
-            duration: 2000
-          })
           for (let i = 0; i < this.mformDatas.length; i++) {
             this.mformDatas[index].model = ""
           }

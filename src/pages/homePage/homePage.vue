@@ -7,10 +7,22 @@
     <div class="homePageWrap" ref="homePageWrap" v-if="$route.meta.keepAlive">
       <div @click="changeTop">
         <header class="homePageHeader">
-          <mt-swipe :auto="2000" :prevent="true" :stopPropagation="true" :showIndicators="false">
-            <mt-swipe-item><img src="./img/xinyongkabanner.png"></mt-swipe-item>
-            <mt-swipe-item><img src="./img/banner1.png"></mt-swipe-item>
-            <mt-swipe-item><img src="./img/banner2.png"></mt-swipe-item>
+          <mt-swipe :auto="3000" :showIndicators="false">
+            <mt-swipe-item>
+              <router-link :to="{name:'productPage'}">
+                <img src="./img/renzhengbanner.png">
+              </router-link>
+            </mt-swipe-item>
+            <mt-swipe-item>
+              <router-link :to="{name:'generalizePage'}">
+                <img src="./img/tuiguangbanner.png">
+              </router-link>
+            </mt-swipe-item>
+            <mt-swipe-item>
+              <router-link :to="{name:'creditCardPage'}">
+                <img src="./img/xinyongbanner.png">
+              </router-link>
+            </mt-swipe-item>
           </mt-swipe>
         </header>
         <div class="homePageContent">
@@ -26,8 +38,9 @@
         <div class="footerOccupied">
         </div>
       </div>
-    </div>
       <attentionMod :vanish="vanish" :erShow= "erShow"/>
+    </div>
+
   </div>
 </template>
 <script>
@@ -134,7 +147,7 @@
       this.$store.dispatch("getListForApp", {
         name: 'LoanProductType.Speed',
         id: "",
-        size: 2,
+        size: "3",
         hot: true
       })
       this.$store.dispatch("getListBanks").then((res) => {
@@ -153,10 +166,12 @@
       })
     },
     mounted() {
+
       this.$nextTick(() => {
         if (this.$route.meta.homeShow && this.$route.meta.keepAlive) {
           this.__initScroll(this.$refs.homePageWrap)
         }
+        this.erShow = this.readTodos().subscribe === 1 ? false : true
       })
 
     }
@@ -168,11 +183,14 @@
             this.scroll.destroy()
             this.__initScroll(this.$refs.homePageWrap)
           } else {
-            this.scroll = new this.BScroll(this.$refs.homePageWrap, {
-              click: true,
-              startY: this.top
-            })
-            this.scroll.refresh()
+            if(this.$refs.homePageWrap){
+              this.scroll = new this.BScroll(this.$refs.homePageWrap, {
+                click: true,
+                startY: this.top,
+                bounce:false
+              })
+              this.scroll.refresh()
+            }
           }
         } else {
           this.scroll && this.scroll.destroy()
@@ -190,7 +208,8 @@
         window.onresize = this.__boxheight(ele); //窗口或框架被调整大小时执行
         this.scroll = new this.BScroll(ele, {
           click: true,
-          startY: this.top
+          startY: this.top,
+          bounce:false
         })
         this.scroll.refresh()
       },

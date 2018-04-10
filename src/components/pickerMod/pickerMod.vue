@@ -27,7 +27,6 @@
     watch: {
       shadeIsShow(val) {
         if (val === 3) {
-          console.log(2)
           this.pickerWrap = new this.BScroll(this.$refs.pickerWrap, {
             momentum: false,
             stopPropagation:true,

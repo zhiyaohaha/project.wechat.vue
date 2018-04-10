@@ -57,3 +57,13 @@ export const __newGuid = function (time){
   }
   return guid
 }
+
+//清空历史记录
+export const pushHistory = function () {
+  let url = "#";
+  let state = {
+    title: "title",
+    url: "#"
+  };
+  window.history.pushState(state, "title", "#");
+}

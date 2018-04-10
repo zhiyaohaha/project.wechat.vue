@@ -1,8 +1,9 @@
 <template>
   <div>
     <keep-alive>
-      <router-view/>
+      <router-view v-if="!$route.meta.cache"/>
     </keep-alive>
+    <router-view v-if="$route.meta.cache"/>
     <footer class="footerTap" v-if="$route.meta.keepAlive">
       <router-link to="/homePage">
         <img src="../static/img/homeImg/shouye1.png" v-show="$route.meta.footerShow">
@@ -17,7 +18,6 @@
 </template>
 <script>
   import {mapState} from 'vuex'
-  import {getInviteUrl} from './api'
 
   export default {
     data() {
@@ -30,31 +30,26 @@
       ...mapState(['openID', 'userinfo'])
     },
     beforeCreate() {
-
     },
     created() {
       let obj = this.__GetRequest()
-      console.log(obj)
-      this.$store.dispatch('getUserinfo', {
-        obj,
-        cb: (userinfo, val) => {
-          this.saveTodos(userinfo)
-          this.setCookie('id', val, 7)
-        }
-      }).then(() => {
-        let userinfo = this.readTodos()
+      let userinfo = this.readTodos()
+      // alert(JSON.stringify(userinfo))
+      if(userinfo.nickname){
+        // alert(1)
         this.$store.dispatch('postOpenid', {
           data: {
             openId: userinfo.openid,
-            // openId: "undefined",
+            // openId: "16573",
             thirdLoginType: 'ThirdPlatForm.WeChat',
             nickName: userinfo.nickname,
-            head: userinfo.headimgurl
+            head: userinfo.headimgurl,
           },
           cb: (va1, whether) => {
             this.setCookie('token', va1, 7)
             //存入cookie 判断是否实名
             this.setCookie('whether', whether, 7)
+            this.setCookie('id', obj.id , 7)
           }
         }).then(() => {
           this.$store.dispatch('getBinBankCard', {
@@ -63,11 +58,44 @@
             }
           })
         })
-      })
-
+      }else {
+        // alert(2)
+        // alert(JSON.stringify(obj))
+        this.$store.dispatch('getUserinfo', {
+          obj,
+          cb: (userinfo, id) => {
+            this.saveTodos(userinfo)
+            this.setCookie('id', id, 7)
+          }
+        }).then(() => {
+          userinfo = this.readTodos()
+          this.$store.dispatch('postOpenid', {
+            data: {
+              openId: userinfo.openid,
+              // openId: "16573",
+              thirdLoginType: 'ThirdPlatForm.WeChat',
+              nickName: userinfo.nickname,
+              head: userinfo.headimgurl
+            },
+            cb: (va1, whether) => {
+              this.setCookie('token', va1, 7)
+              //存入cookie 判断是否实名
+              this.setCookie('whether', whether, 7)
+            }
+          }).then(() => {
+            this.$store.dispatch('getBinBankCard', {
+              cb: (whether) => {
+                this.setCookie('whether', whether, 7)
+              }
+            })
+          })
+        })
+      }
     },
     mounted() {
 
+    },
+    updated(){
 
     },
     methods: {}

@@ -77,7 +77,6 @@
     },
     mounted() {
       this.__boxheight(this.$refs.wrapper)
-      window.onresize = this.__boxheight(this.$refs.wrapper)
       // 保证在DOM渲染完毕后初始化better-scroll
       setTimeout(() => {
         this._initScroll()
@@ -93,6 +92,7 @@
           probeType: this.probeType,
           click: this.click,
           scrollX: this.scrollX,
+          bounce:false
         })
 
         // 是否派发滚动事件
@@ -158,6 +158,11 @@
           window.onresize = this.__boxheight(this.$refs.wrapper)
           this.refresh()
         }, this.refreshDelay)
+      },
+      $route(to,form){
+        if(to.name === "productPage"||to.name==="creditCardPage"){
+          this.refresh()
+        }
       }
     }
   }

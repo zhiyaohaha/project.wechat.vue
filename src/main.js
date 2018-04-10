@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { Popup, Swipe, SwipeItem ,Loadmore,MessageBox,Toast} from 'mint-ui'
+import {Popup, Swipe, SwipeItem, MessageBox, Toast} from 'mint-ui'
 import store from './store'
 import BScroll from 'better-scroll'
 import headline from './components/headline/headline.vue'
@@ -24,9 +24,17 @@ import storageUtil from './util/storageUtil.js'
 import '../static/css/reset.styl'
 import '../static/js/adaptive'
 import 'mint-ui/lib/style.css'
+
+const pushHistory = () => {
+  let state = {
+    title: 'myCenter',
+    url: '__SELF__'
+  }
+  window.history.pushState(state, state.title, state.url)
+}
 // import 'vue-ydui/dist/ydui.base.css'
-Vue.component(Loadmore.name, Loadmore);
-Vue.component("scroll",scroll);
+// Vue.component(Loadmore.name, Loadmore);
+Vue.component("scroll", scroll);
 Vue.component('headline', headline)
 Vue.component('pickerMod', pickerMod)
 Vue.component('footline', footline)
@@ -49,11 +57,13 @@ Vue.prototype.Toast = Toast
 Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
 
 Vue.prototype.BScroll = BScroll
-/*let code = __GetRequest().code
-if (!code) {
-  window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`
+/*let obj = __GetRequest()
+let num  = obj.id ? obj.id : ""
+console.log(num);
+if (!obj.code) {
+  window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=${num}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`)
 }*/
- // eslint-disable no-new
+// eslint-disable no-new
 
 new Vue({
   el: '#app',

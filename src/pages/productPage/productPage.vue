@@ -5,10 +5,11 @@
             :data="recommendDatas"
             :pullup="true"
             @scrollToEnd="loadData"
+            ref="wrapper"
     >
       <div v-show="$route.meta.isTop">
         <header class="productPageHeader">
-          <img src="./img/xinyongkabanner.png">
+          <img src="./img/banner.png">
         </header>
         <headline :headlineData="{title:'贷款产品',line:true}"/>
         <div class="inanition"></div>
@@ -63,7 +64,7 @@
     methods: {
       //下拉刷新逻辑
       loadData() {
-        if (this.footlineTitle === "没有跟多数据拉"||this.footlineTitle === "加载中") {
+        if (this.footlineTitle === "没有更多数据啦"||this.footlineTitle === "加载中") {
           return
         } else if(this.footlineTitle === "查看更多"){
           this.footlineTitle = "加载中"
@@ -81,7 +82,7 @@
               }, 1000)
             } else {
               let time = setTimeout(() => {
-                this.footlineTitle = "没有跟多数据拉"
+                this.footlineTitle = "没有更多数据啦"
                 clearTimeout(time)
               }, 1000)
             }
