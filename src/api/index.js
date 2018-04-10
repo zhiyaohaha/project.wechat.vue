@@ -32,6 +32,6 @@ export const getAdCodes = (apiPrefix) => ajax(apiPrefix)
 export const getListScheduleForApp = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getBinBankCard = (apiPrefix) => ajax(apiPrefix)
 export const getAccountInfo = (apiPrefix) => ajax(apiPrefix)
-
+export const getPosters = (apiPrefix) => ajax(apiPrefix)
 
 

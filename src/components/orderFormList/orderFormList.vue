@@ -22,8 +22,7 @@
           </div>
           <div class="state">
             <span class="form">{{orderFormListData._product.name}}</span>
-            <span class="stateDescribe">{{orderFormListData._status}}</span>
-
+            <span class="stateDescribe">{{orderFormListData._status}}({{orderFormListData._rakeBack}})</span>
           </div>
         </li>
       </ul>

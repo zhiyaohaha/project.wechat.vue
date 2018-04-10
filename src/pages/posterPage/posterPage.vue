@@ -1,13 +1,10 @@
 <template>
   <div class="posterPage" ref="posterWrap">
     <div class="posterContent">
-      <img :src="imgUrl" class="bGI">
+      <img :src="imgUrl[num]" class="bGI">
       <div class="switchoverImg" @click="switchoverImg">
         <span>换一种海报</span>
         <img src="./img/sanjiao.png">
-      </div>
-      <div class="QRcode">
-        <img :src="inviteurl">
       </div>
     </div>
   </div>
@@ -19,7 +16,8 @@
   export default {
     data() {
       return {
-        num: 1,
+        imgUrl:[],
+        imgShow:false
       }
     },
 
@@ -28,20 +26,17 @@
 
     },
     computed: {
-      ...mapState(["inviteurl"]),
-      imgUrl() {
-        return `../../../static/img/posterImg/haibao${this.num}.png`
+      num(){
+        return this.imgShow ? 1 : 0
       }
     },
     beforeCreate() {
-      let that = this
-      if (this.getCookie('whether') * 1 < 1) {
-        this.$router.replace({name: "phoneApprove", params: {name1: that.$route.name, name2: ""}})
-      }
-      that = null
+
     },
     created() {
-      this.$store.dispatch("getInviteUrl")
+      this.$store.dispatch("getPosters").then((res)=>{
+        this.imgUrl = res.data.posterUrls
+      })
     },
     mounted() {
       this.__boxheight(this.$refs.posterWrap)
@@ -49,10 +44,7 @@
 
     methods: {
       switchoverImg() {
-        this.num++
-        if (this.num > 2) {
-          this.num = 1
-        }
+        this.imgShow = !this.imgShow
       }
     }
   }

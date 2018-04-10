@@ -71,8 +71,8 @@
           userinfo = this.readTodos()
           this.$store.dispatch('postOpenid', {
             data: {
-              openId: userinfo.openid,
-              // openId: "16573",
+              // openId: userinfo.openid,
+              openId: "16573",
               thirdLoginType: 'ThirdPlatForm.WeChat',
               nickName: userinfo.nickname,
               head: userinfo.headimgurl

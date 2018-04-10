@@ -25,7 +25,8 @@ import {
   postFiveRealVerifyCode,
   getListScheduleForApp,
   getBinBankCard,
-  getAccountInfo
+  getAccountInfo,
+  getPosters
 } from '../api'
 
 let apiPrefix = 'http://211.94.137.70:8001/'
@@ -290,6 +291,11 @@ export default {
   async getAccountInfo({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetAccountInfo"
     const result = await getAccountInfo(url)
+    return result
+  },
+  async getPosters({commit}) {
+    let url = apiPrefix + "api/OfficialAccounts/GetPosters"
+    const result = await getPosters(url)
     return result
   },
   //改变时间

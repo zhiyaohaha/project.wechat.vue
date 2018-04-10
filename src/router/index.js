@@ -41,6 +41,9 @@ const creditHistoryPage = () => import('../pages/creditHistoryPage/creditHistory
 // cache判断是否需要缓存，不变的应应用缓存
 //register判断需要验证用户登录的页面
 let obj = __GetRequest()
+if(!obj.state){
+  obj.state = "homePage"
+}
 Vue.use(Router)
 const router = new Router({
   routes: [
@@ -142,7 +145,7 @@ const router = new Router({
           path: 'generalizePage',
           component: generalizePage,
           name: "generalizePage",
-          meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '赚佣金'},
+          meta: {keepAlive: false, cache: true, isTop: true, title: '赚佣金'},
         },
       ]
     },
