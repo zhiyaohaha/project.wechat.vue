@@ -26,7 +26,8 @@ import {
   getListScheduleForApp,
   getBinBankCard,
   getAccountInfo,
-  getPosters
+  getPosters,
+  getLastOrderInfo
 } from '../api'
 
 let apiPrefix = 'http://211.94.137.70:8001/'
@@ -96,7 +97,7 @@ export default {
     commit('GET_BINBANKCARD', {result})
     return result
   },
-
+//绑卡验证码
   async postFiveRealVerifyCode({commit}, data) {
     // debugger
     let url = apiPrefix + 'api/OfficialAccounts/FiveRealVerifyCode'
@@ -293,10 +294,19 @@ export default {
     const result = await getAccountInfo(url)
     return result
   },
+  //推广海报图的地址
   async getPosters({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetPosters"
     const result = await getPosters(url)
     return result
+  },
+  async getLastOrderInfo({commit}) {
+    let url = apiPrefix + "api/OfficialAccounts/GetLastOrderInfo"
+    const result = await getLastOrderInfo(url)
+    if(result.success){
+      commit("GET_LASTORDERINFO",{result})
+    }
+
   },
   //改变时间
   changeTime({commit}) {

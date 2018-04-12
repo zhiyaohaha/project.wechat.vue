@@ -10,6 +10,7 @@ import headline from './components/headline/headline.vue'
 import footline from './components/footline/footline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
 import scroll from './components/scroll/scroll.vue'
+import vConsole from 'vconsole'
 
 import {
   __boxheight,
@@ -57,6 +58,7 @@ Vue.prototype.Toast = Toast
 Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
 
 Vue.prototype.BScroll = BScroll
+
 /*let obj = __GetRequest()
 let num  = obj.id ? obj.id : ""
 console.log(num);
@@ -64,7 +66,7 @@ if (!obj.code) {
   window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=${num}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`)
 }*/
 // eslint-disable no-new
-
+new vConsole
 new Vue({
   el: '#app',
   render: h => h(App),

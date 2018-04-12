@@ -27,4 +27,5 @@ export default {
   erSubordinateUserList:null,
   listScheduleFor:null,
   binBankCard:null,
+  lastOrderInfo:null
 }

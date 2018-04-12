@@ -1,14 +1,4 @@
 export default {
- /* GET_OPENID(state,{result}){
-    console.log(result)
-    //用户是否登陆
-    state.openID = result.success
-  },*/
-  /*POST_PHONE(state,{result}){
-    console.log(result)
-    //手机认证
-    state.phoneNote = result
-  },*/
   GET_USERINFO(state,{result}){
     result = JSON.stringify(result)
     console.log(result)
@@ -133,5 +123,10 @@ export default {
     console.log(result);
     //绑卡数据
     state.binBankCard = result.data
+  },
+  GET_LASTORDERINFO(state,{result}){
+    console.log(result);
+    //绑卡数据
+    state.lastOrderInfo = result.data
   },
 }

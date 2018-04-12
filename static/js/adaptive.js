@@ -6,7 +6,7 @@
 //375px
 //获取meta标签
   let metaNode = document.querySelector('meta[name="viewport"]');
-  metaNode.setAttribute('content','width=device-width,initial-scale='+ scale +',user-scalable=0,maximum-scale=1.0,user-scalable=no')
+  metaNode.setAttribute('content',`width=device-width,initial-scale=${scale},user-scalable=0,maximum-scale=1.0,user-scalable=no`)
 //以rem单位为元素，需要把缩小的比例乘回来 （2）
   let width = document.documentElement.clientWidth/16;
   let styleNode = document.createElement('style');

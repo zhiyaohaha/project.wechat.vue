@@ -39,6 +39,7 @@
 </template>
 
 <script>
+  import {mapState} from "vuex"
   export default {
     data() {
       return {
@@ -67,7 +68,7 @@
             message: "请正确输入手机号",
             description: "手机号：",
             placeholder: "请输入手机号",
-            name: "userName",
+            name: "phoneNum",
             model: "",
             reg: /^[0-9]{0,11}$/,
             regular: /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
@@ -81,17 +82,20 @@
 
     components: {},
 
-    computed: {},
+    computed: {
+      ...mapState(["lastOrderInfo"])
+    },
     beforeCreate() {
-      let that = this
-      if (this.getCookie("whether") * 1 < 1) {
-        this.$router.replace({
-          name: "phoneApprove",
-          query: {id: that.$route.query.id},
-          params: {name1: that.$route.name}
-        })
-      }
-      that = null
+
+    },
+    created(){
+      this.$store.dispatch("getLastOrderInfo").then(()=>{
+        if(this.lastOrderInfo){
+          this.__findModel("userName").model = this.lastOrderInfo.name
+          this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
+          this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
+        }
+      })
     },
     mounted() {
 
@@ -108,6 +112,11 @@
       }
     },
     methods: {
+      //input的model
+      __findModel(value) {
+        let mformDatas = this.mformDatas
+        return mformDatas.find(val => val.name == value)
+      },
       //提交逻辑
       applyFor() {
         for (let i = 0; i < this.mformDatas.length; i++) {
@@ -135,15 +144,15 @@
           applyFormData: [
             {
               key: "name",
-              value: that.mformDatas[0].model
+              value: that.__findModel("userName").model
             },
             {
               key: "idCard",
-              value: that.mformDatas[1].model
+              value: that.__findModel("IDnumber").model
             },
             {
               key: "mobilePhone",
-              value: that.mformDatas[2].model
+              value: that.__findModel("phoneNum").model
             },
           ],
           source: 'OfficialAccounts'//来源

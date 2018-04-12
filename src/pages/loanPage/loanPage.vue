@@ -58,7 +58,7 @@
 <script>
   import propertyMod from '../../components/propertyMod/propertyMod.vue'
   import verification from '../../components/verification/verification.vue'
-  import {getLoanAmount, postSendVerifyCode, postLoanDemand} from '../../api'
+  import {getLoanAmount, postLoanDemand} from '../../api'
   import {mapState, mapGetters} from "vuex"
 
   export default {
@@ -223,7 +223,7 @@
       }
     },
     computed: {
-      ...mapState(["time"]),
+      ...mapState(["time","lastOrderInfo"]),
       ...mapGetters(["key"]),
       shadeIsShowInd() {
         return this.shadeIsShow ? 3 : null
@@ -245,6 +245,13 @@
           this.consumeArr = res
         })
       }
+      this.$store.dispatch("getLastOrderInfo").then(()=>{
+        if(this.lastOrderInfo){
+          this.__findModel("username").model = this.lastOrderInfo.name
+          this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
+          this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
+        }
+      })
     },
     // 滑动事件
     mounted() {
@@ -264,15 +271,15 @@
       //获取用户输入的内容
       __findModel(value) {
         let mformDatas = this.mformDatas
-        return mformDatas.find(val => val.name == value).model
+        return mformDatas.find(val => val.name == value)
       },
       //发送图形验证码检查
       __SendVerifyCode(validateCode) {
         let that = this
-        let url = this.apiPrefix + "api/SMS/SendVerifyCode"
-        postSendVerifyCode(url, {
-          code: "SMS_127153204",
-          mobilePhone: that.__findModel("phoneNum"),
+        this.$store.dispatch('postSendMsg', {
+          code: 'SMS_127153204',
+          validateKey: that.key + that.time,
+          mobilePhone: that.__findModel("phoneNum").model,
           validateCode: validateCode,
           needvalidateCode: true
         }).then((res) => {
@@ -336,17 +343,17 @@
             applyAmount: that.applyAmount, //贷款金额编码
             purpose: that.consume,//贷款用途编码
             applyTerm: that.applyTerm, //贷款期限编码
-            name: that.__findModel("username"),  //贷款人
-            idCard: that.__findModel("IDnumber"),  //身份证
-            telphone: that.__findModel("phoneNum"),  //手机
+            name: that.__findModel("username").model,  //贷款人
+            idCard: that.__findModel("IDnumber").model,  //身份证
+            telphone: that.__findModel("phoneNum").model,  //手机
             house: propertyModDatas[0].imgUrlIsShow, //有房
             car: propertyModDatas[1].imgUrlIsShow,  //有车
             creditCard: propertyModDatas[2].imgUrlIsShow,//有信用卡
             providentFund: propertyModDatas[3].imgUrlIsShow, //有公积金
             socialSecurity: propertyModDatas[4].imgUrlIsShow //有社保
           },
-          phone: that.__findModel("phoneNum"),  //手机
-          verifyCode: that.__findModel("authCode"), //验证码
+          phone: that.__findModel("phoneNum").model,  //手机
+          verifyCode: that.__findModel("authCode").model, //验证码
           source: "OfficialAccounts"
         }).then(res => {
           if (res.success) {
@@ -459,9 +466,12 @@
       //倒计时
       verificationCancel(flag, validateCode) {
         this.verificationShow = false
-        this.$store.dispatch("changeTime")
+
         if (flag) {
           this.__SendVerifyCode(validateCode)
+          this.$store.dispatch("changeTime")
+        }else {
+          this.$store.dispatch("changeTime")
         }
       },
     }

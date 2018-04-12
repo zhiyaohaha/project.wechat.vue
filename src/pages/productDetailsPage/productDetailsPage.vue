@@ -96,14 +96,20 @@
     },
 
     computed: {
-      ...mapState(['productDetailsPageData']),
+      ...mapState(['productDetailsPageData','lastOrderInfo']),
     },
     watch: {},
     created() {
       this.$store.dispatch("getDetailedFor", {id: this.$route.query.id})
+      this.$store.dispatch("getLastOrderInfo").then(()=>{
+        if(this.lastOrderInfo){
+          this.__findModel("userName").model = this.lastOrderInfo.name
+          this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
+          this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
+        }
+      })
     },
     mounted() {
-
     },
     updated() {
       let that =this
@@ -117,8 +123,14 @@
       }
     },
     methods: {
+      //input的model
+      __findModel(value) {
+        let mformDatas = this.mformDatas
+        return mformDatas.find(val => val.name == value)
+      },
       //申请
       applyFor() {
+        let that = this
         for (let i = 0; i < this.mformDatas.length; i++) {
           let item = this.mformDatas[i]
           if (item.model === "") {
@@ -138,16 +150,25 @@
           }
         }
         let data = {
-          mobilePhone: this.mformDatas[2].model,//手机
-          idCard: this.mformDatas[1].model,  //身份证
-          name: this.mformDatas[0].model,   //姓名
-          product: this.productDetailsPageData.id, //产品Id
+          mobilePhone: that.__findModel("phoneNum").model,//手机
+          idCard: that.__findModel("IDnumber").model,//身份证
+          name: that.__findModel("userName").model,//姓名
+          product: that.productDetailsPageData.id,//产品Id
           source: 'OfficialAccounts'  //来源
         }
         // alert(JSON.stringify(data))
         let url = this.apiPrefix + "api/LoanOrder/SpeedOrderRecordForApp"
         postSpeedOrder(url, data).then((res) => {
-          window.location.href = res.data.url
+          if(res.success){
+            window.location.href = res.data.url
+          }else {
+            this.MessageBox({
+              title: '提交失败',
+              message: res.message,
+              showCancelButton: false
+            })
+          }
+
         })
       },
       isFooter() {

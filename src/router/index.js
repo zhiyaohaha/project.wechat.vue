@@ -226,7 +226,7 @@ const router = new Router({
 let goBack = function (e) {
   let ua = navigator.userAgent.toLowerCase()
   if (ua) {
-    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+    if (ua.match(/MicroMessenger/i) == "micromessenger"){
       WeixinJSBridge.call('closeWindow') //微信
     } else if (ua.indexOf("alipay") != -1) {
       AlipayJSBridge.call('closeWebview') //支付宝

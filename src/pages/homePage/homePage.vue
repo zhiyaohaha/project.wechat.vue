@@ -137,11 +137,6 @@
       ...mapState(["openID", "recommendModDatas", "listBanks", "homeListBankCard"]),
     },
     watch: {
-      /*erShow(val){
-       setTimeout(()=>{
-         this.erShow =true
-       },500)
-      }*/
     },
     created() {
       this.$store.dispatch("getListForApp", {
@@ -166,7 +161,6 @@
       })
     },
     mounted() {
-
       this.$nextTick(() => {
         if (this.$route.meta.homeShow && this.$route.meta.keepAlive) {
           this.__initScroll(this.$refs.homePageWrap)

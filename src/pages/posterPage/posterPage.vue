@@ -11,13 +11,12 @@
 </template>
 
 <script>
-  import {mapState} from "vuex"
 
   export default {
     data() {
       return {
         imgUrl:[],
-        imgShow:false
+        num:0
       }
     },
 
@@ -26,9 +25,7 @@
 
     },
     computed: {
-      num(){
-        return this.imgShow ? 1 : 0
-      }
+
     },
     beforeCreate() {
 
@@ -44,7 +41,10 @@
 
     methods: {
       switchoverImg() {
-        this.imgShow = !this.imgShow
+        this.num ++
+        if(this.num > 1){
+          this.num = 0
+        }
       }
     }
   }
