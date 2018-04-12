@@ -1,9 +1,8 @@
 export default {
-  GET_USERINFO(state,{result}){
-    result = JSON.stringify(result)
+  SUBSCRIBE(state,{result}){
     console.log(result)
     //用户基本信息
-    state.userinfo = result
+    state.subscribe = result
   },
   GET_LISTFORAPP(state,{result}){
     console.log(result)

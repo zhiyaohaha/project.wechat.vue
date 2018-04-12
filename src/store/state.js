@@ -3,7 +3,7 @@ export default {
   verification:null,
   // openID:null,
   // phoneNote:null,
-  userinfo:null,
+  subscribe:1,
   recommendModDatas:null,
   recommendDatas:null,
   productDetailsPageData:null,

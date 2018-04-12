@@ -109,16 +109,12 @@ export default {
   },
   //获取用户信息
   async getUserinfo({commit}, data) {
-    let url = apiWeChat + 'api/OfficialAccounts/GetWeChatInfo'
-    // alert(JSON.stringify(url))
+    let url = apiPrefix + 'api/OfficialAccounts/GetWeChatInfo'
     let obj = data.obj
-    // alert(JSON.stringify(obj))
     const result = await getUserinfo(url, {code: obj.code})
-    // alert(JSON.stringify(result))
     if (result) {
-      data.cb && data.cb(result, obj.id)
-      commit('GET_USERINFO', {result})
-      // alert(JSON.stringify(result))
+      data.cb && data.cb(result.data, obj.id)
+      commit('SUBSCRIBE', {result:result.data.subscribe})
     }
   },
   //产品列表
@@ -311,6 +307,6 @@ export default {
   //改变时间
   changeTime({commit}) {
     commit("CHANGETIME")
-  }
+  },
 }
 

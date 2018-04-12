@@ -38,9 +38,8 @@
         <div class="footerOccupied">
         </div>
       </div>
-      <attentionMod :vanish="vanish" :erShow= "erShow"/>
     </div>
-
+    <attentionMod :vanish="vanish" :erShow= "erShow"/>
   </div>
 </template>
 <script>
@@ -126,7 +125,6 @@
           ]
         },
         top: 0,
-        erShow: false
       }
     },
 
@@ -135,6 +133,14 @@
     },
     computed: {
       ...mapState(["openID", "recommendModDatas", "listBanks", "homeListBankCard"]),
+      erShow:{
+        get(){
+          return this.$store.state.subscribe === 1 ? false : true
+        },
+        set(){
+
+        }
+      }
     },
     watch: {
     },
@@ -165,8 +171,6 @@
         if (this.$route.meta.homeShow && this.$route.meta.keepAlive) {
           this.__initScroll(this.$refs.homePageWrap)
         }
-        this.erShow = this.readTodos().subscribe === 1 ? false : true
-        console.log( this.erShow );
       })
 
     }
@@ -210,7 +214,7 @@
       },
       //二维码消失
       vanish() {
-        this.erShow = false
+        this.$store.commit("SUBSCRIBE",{result:1})
       }
     }
   }

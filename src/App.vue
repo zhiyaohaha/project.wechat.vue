@@ -34,9 +34,7 @@
     created() {
       let obj = this.__GetRequest()
       let userinfo = this.readTodos()
-      // alert(JSON.stringify(userinfo))
       if (userinfo.openid) {
-        // alert(1)
         this.$store.dispatch('postOpenid', {
           data: {
             openId: userinfo.openid,
@@ -49,13 +47,7 @@
             this.setCookie('token', va1, 7)
             //存入cookie 判断是否实名
             this.setCookie('whether', whether, 7)
-            if (JSON.parse(this.getCookie("id")) && whether < 1) {
-              console.log("这里是cookie里有但没注册")
-              this.setCookie('id', obj.id, 7)
-            } else {
-              console.log("cookie里没有id")
-              this.setCookie('id', obj.id, 7)
-            }
+            this.setCookie('id', obj.id, 7)
           }
         }).then(() => {
           this.$store.dispatch('getBinBankCard', {
@@ -89,9 +81,6 @@
               this.setCookie('whether', whether, 7)
             }
           }).then(() => {
-            if (this.getCookie("whether") * 1 > 0) {
-              this.$store.dispatch("getLastOrderInfo")
-            }
             this.$store.dispatch('getBinBankCard', {
               cb: (whether) => {
                 this.setCookie('whether', whether, 7)
