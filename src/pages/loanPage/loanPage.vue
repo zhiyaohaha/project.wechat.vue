@@ -479,17 +479,6 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .ToastStyle
-    width (200 /$rem)
-    height (70 /$rem)
-    font-size (36 /$rem)
-    border-radius (15 /$rem)
-    color #ffffff
-    background-color #000
-    text-align center
-    line-height (70 /$rem)
-    overflow: hidden
-
   .footerOccupied
     width (1080 /$rem)
     height (146 /$rem)

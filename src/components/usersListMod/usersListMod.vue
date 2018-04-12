@@ -6,7 +6,7 @@
           <router-link :to="{path:'/myPage/generalizeYiPage/generalizeErPage',query:{id:usersListData.id}}">
             <img :src="usersListData.head||'../../../static/img/myImg/touxiang.gif'">
             <div class="message">
-              <span class="userNum">{{usersListData.nickName||'用户'}}</span>
+              <span class="userNum">{{usersListData.nickName||usersListData.name}}</span>
               <div class="down">
                 <span class="scheduleTime">{{usersListData.createdDate}}</span>
                 <span class="fixation">成为我的代理</span>

@@ -34,6 +34,7 @@
     created() {
       let obj = this.__GetRequest()
       let userinfo = this.readTodos()
+      let that = this
       if (userinfo.openid) {
         this.$store.dispatch('postOpenid', {
           data: {
@@ -73,7 +74,8 @@
               // openId: "16573",
               thirdLoginType: 'ThirdPlatForm.WeChat',
               nickName: userinfo.nickname,
-              head: userinfo.headimgurl
+              head: userinfo.headimgurl,
+              firstLevelId:that.getCookie("id")
             },
             cb: (va1, whether) => {
               this.setCookie('token', va1, 7)

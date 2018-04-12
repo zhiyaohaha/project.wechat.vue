@@ -25,50 +25,7 @@
   export default {
     data() {
       return {
-        usersListDatas: [
-          {
-            imgUrl: "../../../static/img/myImg/touxiang.gif",
-            userNum: "用户名1",
-            userTime: "20XX-XX-XX XX:XX:XX",
-            agencyNum: "XXX",
-            url: "/myPage/generalizeYiPage/generalizeErPage"
-          },
-          {
-            imgUrl: "../../../static/img/myImg/touxiang.gif",
-            userNum: "用户名1",
-            userTime: "20XX-XX-XX XX:XX:XX",
-            agencyNum: "XXX",
-            url: "/myPage/generalizeYiPage/generalizeErPage"
-          },
-          {
-            imgUrl: "../../../static/img/myImg/touxiang.gif",
-            userNum: "用户名1",
-            userTime: "20XX-XX-XX XX:XX:XX",
-            agencyNum: "XXX",
-            url: "/myPage/generalizeYiPage/generalizeErPage"
-          },
-          {
-            imgUrl: "../../../static/img/myImg/touxiang.gif",
-            userNum: "用户名1",
-            userTime: "20XX-XX-XX XX:XX:XX",
-            agencyNum: "XXX",
-            url: "/myPage/generalizeYiPage/generalizeErPage"
-          },
-          {
-            imgUrl: "../../../static/img/myImg/touxiang.gif",
-            userNum: "用户名1",
-            userTime: "20XX-XX-XX XX:XX:XX",
-            agencyNum: "XXX",
-            url: "/myPage/generalizeYiPage/generalizeErPage"
-          },
-          {
-            imgUrl: "../../../static/img/myImg/touxiang.gif",
-            userNum: "用户名1",
-            userTime: "20XX-XX-XX XX:XX:XX",
-            agencyNum: "XXX",
-            url: "/myPage/generalizeYiPage/generalizeErPage"
-          },
-        ]
+
       }
     },
 

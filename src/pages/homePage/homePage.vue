@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-    <attentionMod :vanish="vanish" :erShow= "erShow"/>
+    <attentionMod :vanish="vanish" :erShow= "erShow" v-if="$route.meta.keepAlive"/>
   </div>
 </template>
 <script>

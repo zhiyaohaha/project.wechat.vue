@@ -43,7 +43,7 @@ export default {
   //验证用户石否注册
   async postOpenid({commit}, {data, cb}) {
     // debugger
-    let url = apiPrefix + 'api/OfficialAccounts/ThridPlatFormLogin'
+    let url = apiPrefix + 'api/OfficialAccounts/FuThridPlatFormLogin'
     const result = await postOpenid(url, data)
     let flag
     let whether = null
@@ -60,7 +60,7 @@ export default {
   //手机登陆
   async postPhone({commit}, {data, cb}) {
     // debugger
-    let url = apiPrefix + 'api/OfficialAccounts/LoginByVerifyCode'
+    let url = apiPrefix + 'api/OfficialAccounts/FuLoginByVerifyCode'
     const result = await postPhone(url, data)
     let whether
     let flag
@@ -302,7 +302,6 @@ export default {
     if(result.success){
       commit("GET_LASTORDERINFO",{result})
     }
-
   },
   //改变时间
   changeTime({commit}) {

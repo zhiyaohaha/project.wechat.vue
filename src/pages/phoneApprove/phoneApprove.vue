@@ -1,33 +1,31 @@
 <template>
   <div class="phoneApprove">
     <div>
-      <div>
-        <div class="myContent">
-          <img src="./img/banner.png">
-          <ul class="mform">
-            <li v-for="(mformData, index) in mformDatas" :key="index">
-              <span class="description">{{mformData.description}}</span>
-              <input type="text" v-model="mformData.model"
-                     @blur="loseFocus"
-                     @input="goodInput(mformData.reg,mformData.model,index)"
-                     @focus="pullDown"
-                     :placeholder="mformData.placeholder"
-                     :maxlength="mformData.maxlength"
-                     :name="mformData.name">
-              <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" @click="sendMsg(index)">
-                {{mformData.units}}
-              </a>
-            </li>
-          </ul>
-          <a href="javascript:;" class="protocol">
-            <img src="./img/xuanze.png" v-show="imgIsShow" @touchstart="notarize">
-            <img src="./img/huisekuang.png" v-show="!imgIsShow" @touchstart="notarize">
-            <span>我已阅读并同意《XXXXXX协议》</span>
-          </a>
-          <a href="javascript:;" class="approve" @click="approve"></a>
-        </div>
-        <div class="footerOccupied"></div>
+      <div class="myContent">
+        <img src="./img/banner.png">
+        <ul class="mform">
+          <li v-for="(mformData, index) in mformDatas" :key="index">
+            <span class="description">{{mformData.description}}</span>
+            <input type="text" v-model="mformData.model"
+                   @blur="loseFocus"
+                   @input="goodInput(mformData.reg,mformData.model,index)"
+                   @focus="pullDown"
+                   :placeholder="mformData.placeholder"
+                   :maxlength="mformData.maxlength"
+                   :name="mformData.name">
+            <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" @click="sendMsg(index)">
+              {{mformData.units}}
+            </a>
+          </li>
+        </ul>
+        <a href="javascript:;" class="protocol">
+          <img src="./img/xuanze.png" v-show="imgIsShow" @touchstart="notarize">
+          <img src="./img/huisekuang.png" v-show="!imgIsShow" @touchstart="notarize">
+          <span>我已阅读并同意《XXXXXX协议》</span>
+        </a>
+        <a href="javascript:;" class="approve" @click="approve"></a>
       </div>
+      <div class="footerOccupied"></div>
     </div>
     <verification v-show="verificationShow" :changeShow="changeShow"
                   :verificationCancel="verificationCancel"/>
@@ -49,7 +47,7 @@
       return {
         mformDatas: [
           {
-            message:'请正确输入您的姓名',
+            message: '请正确输入您的姓名',
             description: '贷款人姓名：',
             placeholder: '请输入您的姓名',
             name: 'username',
@@ -63,7 +61,7 @@
             maxlength: "15"
           },
           {
-            message:'请正确输入您的手机号',
+            message: '请正确输入您的手机号',
             description: '手机号：',
             placeholder: '请输入您的手机号',
             name: 'cellPhoneNum',
@@ -77,7 +75,7 @@
             maxlength: '11'
           },
           {
-            message:'请正确输入您的验证码',
+            message: '请正确输入您的验证码',
             description: '验证码：',
             placeholder: '请输入验证码',
             name: 'authCode',
@@ -94,7 +92,8 @@
         imgIsShow: true,
         myFooterIsShow: true,
         verificationShow: false,
-        isFlag: null
+        isFlag: null,
+        forbid:0
       }
     },
     components: {
@@ -108,6 +107,9 @@
 
     },
     mounted() {
+
+    },
+    watch:{
 
     },
     updated() {
@@ -153,6 +155,11 @@
       },
 //    申请逻辑
       approve() {
+        alert(this.forbid)
+        if(this.forbid > 0 ){
+          return
+        }
+        this.forbid++
         let userinfo = this.readTodos()
         let that = this
         for (let i = 0; i < this.mformDatas.length; i++) {
@@ -195,6 +202,7 @@
           }
         }).then((res) => {
           let that = this
+          this.forbid = 0
           if (res.success) {
             this.$router.replace({
               name: that.$route.params.name1,
@@ -308,9 +316,9 @@
       li
         box-sizing border-box
         position relative
-        line-height (120 /$rem)
+        line-height (116 /$rem)
         width (1020 /$rem)
-        height (120 /$rem)
+        height (121 /$rem)
         font-size (42 /$rem)
         border-bottom 1px solid #f2f2f2
         text-align right

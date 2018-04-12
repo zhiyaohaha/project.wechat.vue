@@ -25,7 +25,7 @@
         </a>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
-      <!-- <div class="feignButton" @click="quit">退出</div> -->
+       <!--<div class="feignButton" @click="quit">退出</div>-->
     </div>
   </div>
 </template>
@@ -91,7 +91,6 @@
     mounted() {
 
     },
-
     methods: {
       quit() {
         this.$store.dispatch('postLoginout', {
