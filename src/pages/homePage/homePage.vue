@@ -166,6 +166,7 @@
           this.__initScroll(this.$refs.homePageWrap)
         }
         this.erShow = this.readTodos().subscribe === 1 ? false : true
+        console.log( this.erShow );
       })
 
     }
