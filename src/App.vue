@@ -6,12 +6,12 @@
     <router-view v-if="$route.meta.cache"/>
     <footer class="footerTap" v-if="$route.meta.keepAlive">
       <router-link to="/homePage">
-        <img src="../static/img/homeImg/shouye1.png" v-show="$route.meta.footerShow">
-        <img src="../static/img/homeImg/shouye.png" v-show="!$route.meta.footerShow">
+        <img src="../static/img/homeImg/tab_icon_home_selected.png" v-show="$route.meta.footerShow">
+        <img src="../static/img/homeImg/tab_icon_home_normal.png" v-show="!$route.meta.footerShow">
       </router-link>
       <router-link to="/myPage">
-        <img src="../static/img/homeImg/wode.png" v-show="$route.meta.footerShow">
-        <img src="../static/img/homeImg/wode1.png" v-show="!$route.meta.footerShow">
+        <img src="../static/img/homeImg/tab_icon_mine_normal.png" v-show="$route.meta.footerShow">
+        <img src="../static/img/homeImg/tab_icon_mine_selected.png" v-show="!$route.meta.footerShow">
       </router-link>
     </footer>
   </div>

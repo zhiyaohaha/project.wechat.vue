@@ -25,7 +25,7 @@
         </a>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
-      <div class="feignButton" @click="quit">退出</div>
+      <!-- <div class="feignButton" @click="quit">退出</div> -->
     </div>
   </div>
 </template>
@@ -110,11 +110,11 @@
     position relative
     .myPageHeader
       box-sizing border-box
-      background-image url("../../../static/img/myImg/erjidaoli_banner.png")
+      background-image url("../../../static/img/myImg/wodde_banner.png")
       background-repeat no-repeat
       background-size: 100%
       width (1080 /$rem)
-      height (320 /$rem)
+      height (550 /$rem)
       padding (40 /$rem) (30 /$rem) 0
       .headPortrait
         float left
@@ -152,7 +152,7 @@
       position absolute
       width (790 /$rem)
       height (230 /$rem)
-      top (240 /$rem)
+      top (460 /$rem)
       left (145 /$rem)
       padding 0 (105 /$rem)
       background-color: #fff;

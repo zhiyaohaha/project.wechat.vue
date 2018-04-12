@@ -104,13 +104,13 @@
 <style lang='stylus' rel="stylesheet/stylus">
   .generalizeErPageHeader
     box-sizing border-box
-    background-image url("../../../static/img/generalizeImg/erjidaoli_banner.png")
+    background-image url("../../../static/img/generalizeImg/wodde_banner.png")
     background-repeat no-repeat
     background-size 100%
     position relative
     color #ffffff
     width (1080 /$rem)
-    height (320 /$rem)
+    height (550 /$rem)
     border-bottom 1px solid #bbbbbb
     padding (40 /$rem) (30 /$rem) 0
     .headPortrait

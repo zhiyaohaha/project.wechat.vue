@@ -95,12 +95,12 @@
     background-color #ffffff
     position relative
     .generalizePageHeader
-      background-image url("../../../static/img/generalizeImg/erjidaoli_banner.png")
+      background-image url("../../../static/img/generalizeImg/wodde_banner.png")
       background-repeat no-repeat
       background-size 100%
       position relative
       width (1080 /$rem)
-      height (320 /$rem)
+      height (550 /$rem)
       color #fff
       .headPortrait
         float left
@@ -132,7 +132,7 @@
     .generalizeYiContent
       position absolute
       background-color #ffffff
-      top (240 /$rem)
+      top (460 /$rem)
       left (146 /$rem)
       width (790 /$rem)
       height (230 /$rem)
