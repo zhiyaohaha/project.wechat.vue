@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-  import {mapState,mapActions} from 'vuex'
+  import {mapState, mapActions} from 'vuex'
 
   export default {
     data() {
@@ -35,8 +35,8 @@
       let obj = this.__GetRequest()
       let userinfo = this.readTodos()
       // alert(JSON.stringify(userinfo))
-      if (userinfo.nickname) {
-        alert(1)
+      if (userinfo.openid) {
+        // alert(1)
         this.$store.dispatch('postOpenid', {
           data: {
             openId: userinfo.openid,
@@ -49,7 +49,13 @@
             this.setCookie('token', va1, 7)
             //存入cookie 判断是否实名
             this.setCookie('whether', whether, 7)
-            this.setCookie('id', obj.id, 7)
+            if (JSON.parse(this.getCookie("id")) && whether < 1) {
+              console.log("这里是cookie里有但没注册")
+              this.setCookie('id', obj.id, 7)
+            } else {
+              console.log("cookie里没有id")
+              this.setCookie('id', obj.id, 7)
+            }
           }
         }).then(() => {
           this.$store.dispatch('getBinBankCard', {
@@ -59,7 +65,7 @@
           })
         })
       } else {
-        alert(2)
+        // alert(2)
         // alert(JSON.stringify(obj))
         this.$store.dispatch('getUserinfo', {
           obj,
