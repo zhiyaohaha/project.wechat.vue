@@ -20,7 +20,7 @@
                       @touchstart="pullDown(true,index)">
                 {{mformData.units}}
               </span>
-                <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" v-if="mformData.sendMsg && mformData.units"
+                <a href="javascript:;" :class="{sendMsg:mformData.sendMsg,color:!num}" v-if="mformData.sendMsg && mformData.units"
                    @click="sendMsg()">
                   {{mformData.units}}
                 </a>
@@ -540,6 +540,9 @@
           color #ffffff
           line-height (86 /$rem)
           text-align center
+          &.color
+            background-color #efca7d
+
     .propertyCase
       width (1030 /$rem)
       margin (40 /$rem) (30 /$rem) (40 /$rem)

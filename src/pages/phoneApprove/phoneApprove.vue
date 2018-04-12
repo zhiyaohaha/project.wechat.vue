@@ -12,7 +12,7 @@
                  :placeholder="mformData.placeholder"
                  :maxlength="mformData.maxlength"
                  :name="mformData.name">
-          <a href="javascript:;" :class="{sendMsg:mformData.sendMsg}" @click="sendMsg(index)">
+          <a href="javascript:;" :class="{sendMsg:mformData.sendMsg,color:!num}" @click="sendMsg(index)">
             {{mformData.units}}
           </a>
         </li>
@@ -525,6 +525,8 @@
           color #ffffff
           line-height (86 /$rem)
           text-align center
+          &.color
+            background-color #efca7d
     .protocol
       box-sizing border-box
       height (155 /$rem)
