@@ -1,13 +1,13 @@
 <template>
   <div class="myPage">
     <router-view/>
-    <div v-if="$route.meta.keepAlive">
+    <div v-if="$route.meta.keepAlive&&userName">
       <header class="myPageHeader">
         <div class="headPortrait">
           <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
         </div>
         <div class="userDescription">
-          <span class="petName">{{readTodos().nickname||'微信昵称'}}</span>
+          <span class="petName">{{readTodos().nickname||userName}}</span>
           <span class="individual">个人代理</span>
         </div>
         <div class="brokerage">
@@ -25,13 +25,13 @@
         </a>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
-       <!--<div class="feignButton" @click="quit">退出</div>-->
     </div>
   </div>
 </template>
 
 <script>
   import myParticulars from '../../components/myParticulars/myParticulars.vue'
+  import {mapState} from "vuex"
 
   export default {
     data() {
@@ -68,7 +68,7 @@
             url: '/myPage/creditHistoryPage'*/
           }
         ],
-        income:null
+        income: null
       }
     },
 
@@ -76,15 +76,15 @@
       myParticulars
     },
 
-    computed: {},
-    watch:{
-
+    computed: {
+      ...mapState(["userName"])
     },
+    watch: {},
     beforeCreate() {
 
     },
-    created(){
-      this.$store.dispatch("getAccountInfo").then((res)=>{
+    created() {
+      this.$store.dispatch("getAccountInfo").then((res) => {
         this.income = res.data
       })
     },
@@ -92,14 +92,6 @@
 
     },
     methods: {
-      quit() {
-        this.$store.dispatch('postLoginout', {
-          data: {},
-          cb: () => {
-            this.setCookie('whether', 0, 7)
-          }
-        })
-      }
     }
   }
 
@@ -162,7 +154,7 @@
         box-sizing border-box
         float left
         text-align center
-        width (289/$rem)
+        width (289 /$rem)
         margin-top (60 /$rem)
         span
           font-size (34 /$rem)
@@ -175,13 +167,4 @@
             margin-top (30 /$rem)
             font-size (42 /$rem)
             color #efca7d
-    .feignButton
-      border-radius (15 /$rem)
-      width (985 /$rem)
-      height (140 /$rem)
-      background-color #efca7d
-      color #fff
-      margin (100 /$rem) auto
-      text-align center
-      line-height (140 /$rem)
 </style>

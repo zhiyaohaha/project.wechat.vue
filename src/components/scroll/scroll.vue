@@ -13,11 +13,20 @@
        * 2 滚动的时候实时派发scroll事件，不会截流。
        * 3 除了实时派发scroll事件，在swipe的情况下仍然能实时派发scroll事件
        */
+      /*
+      * */
 
       probeType: {
         type: Number,
         default: 1
       },
+      //是否回弹
+      bounce: {
+        type: Boolean,
+        default: false
+      },
+      //是否是默认窗口高
+
       /**
        * 点击列表是否派发click事件
        */
@@ -92,7 +101,7 @@
           probeType: this.probeType,
           click: this.click,
           scrollX: this.scrollX,
-          bounce:false
+          bounce:this.bounce
         })
 
         // 是否派发滚动事件
@@ -154,8 +163,6 @@
       // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
       data() {
         setTimeout(() => {
-          this.__boxheight(this.$refs.wrapper)
-          window.onresize = this.__boxheight(this.$refs.wrapper)
           this.refresh()
         }, this.refreshDelay)
       },

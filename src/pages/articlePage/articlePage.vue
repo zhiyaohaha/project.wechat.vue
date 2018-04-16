@@ -75,9 +75,10 @@
       .headerTitle
         box-sizing border-box
         padding (60 /$rem) 0
-        font-size (72 /$rem)
+        font-size (71 /$rem)
         color #333
         line-height (100 /$rem)
+        word-wrap: break-word
     .articleDescribe
       font-size (36 /$rem)
       height (40 /$rem)
@@ -101,10 +102,13 @@
           margin-left (16 /$rem)
 
     .detailForAppContent
+      padding (50/$rem) (25/$rem) (60/$rem)
       p
-        font-size (40 /$rem)
+        font-size (50 /$rem) !important
         color #666 !important
-        line-height (42/$rem) !important
+        line-height (80/$rem) !important
       img
         width 100%
+      span
+        font-size (50/$rem) !important
 </style>

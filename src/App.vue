@@ -4,6 +4,9 @@
       <router-view v-if="!$route.meta.cache"/>
     </keep-alive>
     <router-view v-if="$route.meta.cache"/>
+    <transition name="awaitShow">
+      <awaitMod v-if="awaitShow"/>
+    </transition>
     <footer class="footerTap" v-if="$route.meta.keepAlive">
       <router-link to="/homePage">
         <img src="../static/img/homeImg/tab_icon_home_selected.png" v-show="$route.meta.footerShow">
@@ -18,6 +21,7 @@
 </template>
 <script>
   import {mapState, mapActions} from 'vuex'
+  import awaitMod from "./components/awaitMod/awaitMod"
 
   export default {
     data() {
@@ -25,9 +29,11 @@
         footerShow: true
       }
     },
-    components: {},
+    components: {
+      awaitMod
+    },
     computed: {
-      ...mapState(['openID', 'userinfo'])
+      ...mapState(['openID', 'userinfo', 'awaitShow'])
     },
     beforeCreate() {
     },
@@ -36,6 +42,7 @@
       let userinfo = this.readTodos()
       let that = this
       if (userinfo.openid) {
+        console.log("这里是浏览器有");
         this.$store.dispatch('postOpenid', {
           data: {
             openId: userinfo.openid,
@@ -60,6 +67,7 @@
       } else {
         // alert(2)
         // alert(JSON.stringify(obj))
+        console.log("这里是浏览器没有")
         this.$store.dispatch('getUserinfo', {
           obj,
           cb: (userinfo, id) => {
@@ -68,6 +76,7 @@
           }
         }).then(() => {
           userinfo = this.readTodos()
+          console.log(JSON.stringify(userinfo));
           this.$store.dispatch('postOpenid', {
             data: {
               openId: userinfo.openid,
@@ -75,7 +84,7 @@
               thirdLoginType: 'ThirdPlatForm.WeChat',
               nickName: userinfo.nickname,
               head: userinfo.headimgurl,
-              firstLevelId:that.getCookie("id")
+              firstLevelId: that.getCookie("id")
             },
             cb: (va1, whether) => {
               this.setCookie('token', va1, 7)
@@ -104,6 +113,12 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .fade-enter-active, .fade-leave-active {
+    transition: all .5s;
+  }
+  .fade-enter, .fade-leave-active {
+    transform: translate3d(0, -100%, 0)
+  }
   .footerTap
     position fixed
     bottom 0
@@ -142,9 +157,13 @@
     .mint-msgbox-content
       height (234 /$rem)
       text-align center
-      line-height (234 /$rem)
+      line-height (234/$rem)
+      padding 0 (30/$rem)
       .mint-msgbox-message
-        display inline
+        display inline-block
+        vertical-align: middle
+        text-align left
+        line-height (60/$rem)
         font-size (42 /$rem)
         color #333
     .mint-msgbox-btns

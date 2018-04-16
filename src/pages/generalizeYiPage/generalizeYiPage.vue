@@ -1,38 +1,48 @@
 <template>
   <div class="generalizeYiPage">
     <router-view/>
-    <div v-show="$route.meta.isTop"  v-if="subordinateNum">
-      <header class="generalizePageHeader">
-        <div class="headPortrait">
-          <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
-        </div>
-        <div class="userDescription">
-          <span class="petName">{{readTodos().nickname||'微信昵称'}}</span>
-          <span class="individual">个人代理</span>
-        </div>
-        <div class="agencyNum">
-          <span class="describe">代理总数:</span>
-          <span class="price">{{subordinateNum.totleSubordinateNum}}</span>
-          <span class="unit">个</span>
-        </div>
-      </header>
-      <div class="generalizeYiContent">
-        <a href="javascript:;" class="generalIncome">
-          <span class="describe">一级代理</span>
-          <div>
-            <span class="price">{{subordinateNum.subordinateNum}}</span>
+    <scroll class="wrapper"
+            :data="subordinateUserList||[]"
+            :pullup="true"
+            :windowHeight="false"
+            @scrollToEnd="loadData" v-if="subordinateNum">
+      <div v-show="$route.meta.isTop" v-if="subordinateNum">
+        <header class="generalizePageHeader">
+          <div class="headPortrait">
+            <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
+          </div>
+          <div class="userDescription">
+            <span class="petName" v-if="readTodos().nickname||userName">{{readTodos().nickname||userName}}</span>
+            <span class="individual">个人代理</span>
+          </div>
+          <div class="agencyNum">
+            <span class="describe">代理总数:</span>
+            <span class="price">{{subordinateNum.totleSubordinateNum}}</span>
             <span class="unit">人</span>
           </div>
-        </a>
-        <div class="line"></div>
-        <a href="javascript:;" class="withdrawDeposit">
-          <span class="describe">二级代理</span>
-          <span class="price">{{subordinateNum.supersubordinateNum}}</span>
-          <span class="unit">人</span>
-        </a>
+        </header>
+        <div class="generalizeYiContent">
+          <a href="javascript:;" class="generalIncome">
+            <span class="describe">一级代理</span>
+            <div>
+              <span class="price">{{subordinateNum.subordinateNum}}</span>
+              <span class="unit">人</span>
+            </div>
+          </a>
+          <div class="line"></div>
+          <a href="javascript:;" class="withdrawDeposit">
+            <span class="describe">二级代理</span>
+            <span class="price">{{subordinateNum.supersubordinateNum}}</span>
+            <span class="unit">人</span>
+          </a>
+        </div>
+        <div class="embezzlement"></div>
+        <div>
+          <usersListMod :usersListDatas="subordinateUserList" class="usersListMod"/>
+          <footline :title="footerTitle"/>
+        </div>
       </div>
-      <usersListMod :usersListDatas="subordinateUserList" class="usersListMod"/>
-    </div>
+    </scroll>
   </div>
 </template>
 
@@ -43,7 +53,7 @@
   export default {
     data() {
       return {
-
+        footerTitle: "查看更多"
       }
     },
 
@@ -52,41 +62,75 @@
     },
 
     computed: {
-      ...mapState(["subordinateNum","subordinateUserList"])
-    },
-    watch:{
-      $route(to ,from){
-        if(to.name === "generalizeYiPage"){
-          if(this.getCookie("whether")*1 < 1){
-            this.$router.replace({name: "phoneApprove", params: {name1:to.name}})
-          }
+      ...mapState(["subordinateNum", "userName"]),
+      subordinateUserList: {
+        get() {
+          return this.$store.state.subordinateUserList
+        },
+        set() {
+
         }
       }
     },
-    beforeCreate(){
-      let that = this
-      if(this.getCookie("whether")*1 < 1){
-        this.$router.replace({name: "phoneApprove", params: {name1:that.$route.name}})
+    watch: {
+      subordinateUserList(val) {
+        if (val.length > 0) {
+          this.footerTitle = "查看更多"
+        }
       }
-      that = null
+    },
+    beforeCreate() {
     },
     created() {
       this.$store.dispatch("getSubordinateNum", {
-        thirdLoginType:"ThirdPlatForm.WeChat",
+        thirdLoginType: "ThirdPlatForm.WeChat",
         userId: ""
       })
       this.$store.dispatch("getSubordinateUserList", {
-        thirdLoginType:"ThirdPlatForm.WeChat",
+        thirdLoginType: "ThirdPlatForm.WeChat",
         userId: "",//不传则获取登录人的信息，传则获取传入人的信息
         id: "",//第一次不用传，以后传最后一条Id
         size: 10,//每页数量
       })
     },
     mounted() {
+      if (!this.subordinateUserList || this.subordinateUserList.length < 1) {
+        this.footerTitle = "暂无数据"
+      }
     },
     updated() {
     },
-    methods: {}
+    methods: {
+      loadData() {
+        let that = this, time
+        if (this.footerTitle === "加载中" || this.footerTitle === "没有更多数据啦") {
+          return
+        } else if (this.footerTitle === "查看更多") {
+          this.footerTitle = "加载中"
+          this.$store.dispatch("getSubordinateUserList", {
+            thirdLoginType: "ThirdPlatForm.WeChat",
+            userId: "",//不传则获取登录人的信息，传则获取传入人的信息
+            id: that.subordinateUserList[that.subordinateUserList.length - 1].id,//第一次不用传，以后传最后一条Id
+            size: 10,//每页数量
+          }).then((res) => {
+            console.log(res)
+            if (res.length > 1) {
+              time = setTimeout(() => {
+                this.subordinateUserList.push(...res)
+                this.footerTitle = "查看更多"
+                clearTimeout(time)
+              }, 500)
+            } else {
+              time = setTimeout(() => {
+                this.footerTitle = "没有更多数据啦"
+                clearTimeout(time)
+              }, 500)
+            }
+
+          })
+        }
+      }
+    }
   }
 
 </script>
@@ -94,6 +138,9 @@
   .generalizeYiPage
     background-color #ffffff
     position relative
+    .embezzlement
+      width 100%
+      height (150 /$rem)
     .generalizePageHeader
       background-image url("../../../static/img/generalizeImg/wodde_banner.png")
       background-repeat no-repeat
@@ -143,14 +190,13 @@
         padding-left (152 /$rem)
       a:last-child
         padding-right (152 /$rem)
-        text-align right
       a
         box-sizing border-box
         float left
         width (394 /$rem)
         height 100%
         padding-top (67 /$rem)
-        div
+        text-align right
         span
           color #333
           &.describe
@@ -170,7 +216,4 @@
         width (1 /$rem)
         margin-top (65 /$rem)
         margin-left 0
-    .usersListMod
-      margin-top (150 /$rem)
-      background-color #ffffff
 </style>

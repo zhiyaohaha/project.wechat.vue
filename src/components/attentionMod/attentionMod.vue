@@ -1,7 +1,7 @@
 <template>
   <div class="attentionContent" @click.self="vanish" :class="{active:erShow}">
     <div class="box" @click.stop>
-      <div class="boxTitle">长按关注掌金超，及时知晓义务进度</div>
+      <div class="boxTitle">长按关注掌金超，及时知晓业务进度</div>
       <img src="./img/guanzuerweima.jpg" class="boxImg">
     </div>
   </div>
@@ -45,20 +45,19 @@
       transform-origin top left
     .box
       width (1020 /$rem)
-      height (666 /$rem)
+      height (890 /$rem)
       background-color #ffffff
       position absolute
-      top (510 /$rem)
+      top (350 /$rem)
       left (30 /$rem)
       border-radius (20 /$rem)
       .boxTitle
-        margin-top (60 /$rem)
-        font-size (36 /$rem)
+        margin-top (84 /$rem)
+        font-size (42 /$rem)
         color #333
         text-align center
       .boxImg
-        width (480 /$rem)
-        height (480 /$rem)
-        margin (30 /$rem) auto
-
+        width (600 /$rem)
+        height (600 /$rem)
+        margin (72 /$rem) auto 0
 </style>

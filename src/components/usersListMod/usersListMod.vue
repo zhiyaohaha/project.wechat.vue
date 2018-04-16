@@ -15,22 +15,21 @@
             <div class="agencyMessage">
               <span>他的代理</span>
               <span class="price">{{usersListData.totalSubordinateNum}}</span>
-              <span>个</span>
+              <span>人</span>
             </div>
-            <div class="triangle">
+            <div class="triangle" v-if="!icon">
               <img src="../../../static/img/generalizeImg/content_icon_more_normal.png">
             </div>
           </router-link>
         </li>
       </ul>
     </div>
-    <div class="footer"></div>
   </div>
 </template>
 
 <script>
   export default {
-    props:["usersListDatas"],
+    props:["usersListDatas","icon"],
     data () {
       return {}
     },

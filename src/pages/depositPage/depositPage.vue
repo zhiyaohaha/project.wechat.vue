@@ -94,11 +94,10 @@
     watch: {
       $route(val) {
         if (val.name === "depositPage") {
-          this.MessageBox({
-            title: '提示',
-            message: "功能未开放",
-            showCancelButton: false
-          }).then(() => {
+          this.MessageBox.alert(
+            "功能正在制作中，提现请联系客服。在公众号主页回复“提现”，会收到客服联系方式，加客服即可人工提现。",
+            '提示',
+          ).then(() => {
             this.$router.go(-1)
           })
         }
@@ -107,11 +106,10 @@
     computed: {},
 
     mounted() {
-      this.MessageBox({
-        title: '提示',
-        message: "功能未开放",
-        showCancelButton: false
-      }).then(() => {
+      this.MessageBox.alert(
+        "功能正在制作中，提现请联系客服。在公众号主页回复“提现”，会收到客服联系方式，加客服即可人工提现。",
+        '提示',
+      ).then(() => {
         this.$router.go(-1)
       })
     },

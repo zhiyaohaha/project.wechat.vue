@@ -1,4 +1,9 @@
 export default {
+  POST_OPENID(state,{result}){
+    console.log(result)
+    state.userName = result.data.name
+  }
+  ,
   SUBSCRIBE(state,{result}){
     console.log(result)
     //用户基本信息
@@ -75,7 +80,7 @@ export default {
     state.orderListFor1 = result
   },
   GET_USERRELATED(state,{result}){
-    // console.log(result)
+    console.log(result)
     //我的订单列表
     let data
     result.data.forEach((item,index,input)=>{
@@ -112,6 +117,14 @@ export default {
   //时间戳
   CHANGETIME(state){
     state.time = new Date().getTime()
+  },
+  //等待窗显示
+  AWAITTRUE(state){
+    state.awaitShow = true
+  },
+  //等待窗消失
+  AWAITFALSE(state){
+    state.awaitShow = false
   },
 
   GET_LISTSCHEDULEFORAPP(state,{result}){

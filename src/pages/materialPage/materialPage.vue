@@ -29,7 +29,7 @@
   export default {
     data() {
       return {
-        authenticationListDatas:[
+        authenticationListDatas: [
           "../../../static/img/strategyImg/jiaoxue.png",
           "../../../static/img/strategyImg/tuiguang.png",
           "../../../static/img/strategyImg/kouzi.png",
@@ -49,7 +49,7 @@
         get() {
           return this.$store.state.newsListFor
         },
-        set() {
+        set(){
         }
       }
     },
@@ -74,7 +74,7 @@
         }
       })
       this.$store.dispatch("getNewsListFor", {
-        scene:that.scene,
+        scene: that.scene,
         type: "",
         id: "",
         size: 10
@@ -90,19 +90,19 @@
         let that = this
         if (that.footLineTitle === "没有啦") {
           return
-        } else {
-          that.footLineTitle = "加载中"
+        } else if (this.footLineTitle === "查看更多") {
+          this.footLineTitle = "加载中"
           that.$store.dispatch("getNewsListFor", {
             scene: 'Scene.Spead',
             type: "",
             id: that.newsListFor[that.newsListFor.length - 1].id,
-            size: 1
+            size: 10
           }).then((res) => {
             if (res.length < 1) {
-              that.footLineTitle = "没有啦"
+              this.footLineTitle = "没有啦"
             } else {
               let time = setTimeout(() => {
-                that.newsListFor.push(...res)
+                this.newsListFor.push(...res)
                 that.footLineTitle = "查看更多"
                 clearTimeout(time)
               }, 1000)

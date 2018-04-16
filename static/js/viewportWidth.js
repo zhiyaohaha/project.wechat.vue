@@ -10,8 +10,7 @@ export const __boxheight = function (ele) {
   let winHeight = 0
   if (window.innerHeight){
     winHeight = window.innerHeight
-  }
-  else if ((document.body) && (document.body.clientHeight)){
+  } else if ((document.body) && (document.body.clientHeight)){
     winHeight = document.body.clientHeight
   }
   /*//通过Document对body进行检测，获取浏览器可视化高度

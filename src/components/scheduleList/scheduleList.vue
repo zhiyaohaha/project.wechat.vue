@@ -42,8 +42,8 @@
     padding 0 (30/$rem)
     li
       box-sizing border-box
-      height (200/$rem)
-      padding-top (32/$rem)
+      height (258/$rem)
+      padding-top (60/$rem)
       border-bottom 1px solid #f2f2f2
       position relative
       .up
@@ -63,7 +63,7 @@
         margin-top (62/$rem)
       .button
         position absolute
-        bottom (30/$rem)
+        bottom (60/$rem)
         right 0
         height (70/$rem)
         width (250/$rem)

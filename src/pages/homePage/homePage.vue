@@ -7,7 +7,7 @@
     <div class="homePageWrap" ref="homePageWrap" v-if="$route.meta.keepAlive">
       <div @click="changeTop">
         <header class="homePageHeader">
-          <mt-swipe :auto="3000" :showIndicators="false">
+          <mt-swipe :auto="2000" :showIndicators="false">
             <mt-swipe-item>
               <router-link :to="{name:'productPage'}">
                 <img src="./img/renzhengbanner.png">
@@ -23,6 +23,11 @@
                 <img src="./img/xinyongbanner.png">
               </router-link>
             </mt-swipe-item>
+            <mt-swipe-item>
+              <router-link :to="{name:'productDetailsPage', query: {id: '5a9e6f2651050e32204f3b0b'}}">
+                <img src="./img/baduyouqianhua.png">
+              </router-link>
+            </mt-swipe-item>
           </mt-swipe>
         </header>
         <div class="homePageContent">
@@ -30,6 +35,7 @@
           <generalizeMod :generalizeModData="generalizeModData"/>
           <generalizeMod :generalizeModData="visaDatas"/>
           <headline :headlineData="{title:'热门贷款推荐',more:'更多贷款推荐',url:'/homePage/productPage'}"/>
+          <div class="inanition"></div>
           <recommendMod :recommendModDatas="recommendModDatas"/>
           <headline :headlineData="{title:'热门信用卡推荐',more:'更多信用卡推荐',url:'/homePage/creditCardPage'}"/>
           <recommendList :recommendListDatas="homeListBankCard"/>
@@ -238,7 +244,8 @@
     background-color #fff
     position relative
     padding-top (266 /$rem)
-
+    .inanition
+      height (30/$rem)
   .fanyonglog
     transform translateZ(0)
     width (70 /$rem)

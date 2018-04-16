@@ -33,5 +33,6 @@ export const getBinBankCard = (apiPrefix) => ajax(apiPrefix)
 export const getAccountInfo = (apiPrefix) => ajax(apiPrefix)
 export const getPosters = (apiPrefix) => ajax(apiPrefix)
 export const getLastOrderInfo = (apiPrefix) => ajax(apiPrefix)
+export const getOrderCount = (apiPrefix) => ajax(apiPrefix)
 
 

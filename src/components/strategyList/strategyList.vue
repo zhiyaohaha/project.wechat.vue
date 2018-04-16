@@ -13,7 +13,6 @@
     </ul>
   </div>
 </template>
-
 <script>
   export default {
     props: ["strategyListDatas"],
@@ -22,9 +21,12 @@
     },
 
     components: {},
+    watch: {
 
+    },
     computed: {},
     mounted() {
+
     },
 
     methods: {}
@@ -42,6 +44,7 @@
       a
         height 100%
       .character
+        position relative
         float left
         width (610 /$rem)
         height (182 /$rem)
@@ -49,13 +52,18 @@
         span
           display block
           &.title
+            line-height (60/$rem)
             font-size (45 /$rem)
             color #515151
           &.time
+            position absolute
+            bottom 0
+            left 0
             margin-top (28 /$rem)
             font-size (36 /$rem)
             color #bfbfbf
       img
         float right
+        width (300 /$rem)
         height (186 /$rem)
 </style>

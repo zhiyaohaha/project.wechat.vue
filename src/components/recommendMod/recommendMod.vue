@@ -63,13 +63,9 @@
           left (30 /$rem)
           width (180/$rem)
           height (180/$rem)
-          border (1/$rem) solid #bbb
-          line-height (150/$rem)
-          text-align center
           img
-            margin (40/$rem)
-            width (100 /$rem)
-            height (100/$rem)
+            height 100%
+            width 100%
         .fanyonglog
           position absolute
           left (160 /$rem)

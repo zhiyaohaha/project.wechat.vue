@@ -49,9 +49,10 @@
       },
 
       verification() {
-        let url = "http://211.94.137.70:8001/api/OfficialAccounts/ValidateCode?key="
+        let url = this.apiPrefix + "api/OfficialAccounts/ValidateCode?key="
         let src = url + this.key + this.time
         return src
+
       },
 
     },
@@ -75,7 +76,7 @@
     width (1080 /$rem)
     height 100%
     background-color rgba(159, 159, 159, 0.7)
-    z-index 100
+    z-index 3000
     .verificationContent
       position absolute
       top 50%

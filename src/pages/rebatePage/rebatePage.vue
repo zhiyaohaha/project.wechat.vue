@@ -12,11 +12,10 @@
             :pullup="true"
             @scrollToEnd="loadData">
       <rebateList :rebateListDatas="rakeBackInfo"/>
-      <footline :title="footlineTitle"/>
+      <footline :title="footlineTitle" v-if="rakeBackInfo"/>
     </scroll>
   </div>
 </template>
-
 <script>
   import rebateList from "../../components/rebateList/rebateList.vue"
   import {mapState} from "vuex"
@@ -56,6 +55,11 @@
       }
     },
     created() {
+      this.$store.dispatch("getRakeCount").then((res)=>{
+        this.orderFormTapDatas[0].manNumber = res.myTotal
+        this.orderFormTapDatas[1].manNumber = res.level1Total
+        this.orderFormTapDatas[2].manNumber = res.level2Total
+      })
       this.$store.dispatch("getRakeBackInfo", {
         id:"",
         size:10,
@@ -138,7 +142,7 @@
       line-height (110 /$rem)
       transition all 0.5s
       .manNumber
-        font-size (34 /$rem)
+        font-size (46 /$rem)
         color #333
       &.active
         color #efca7d

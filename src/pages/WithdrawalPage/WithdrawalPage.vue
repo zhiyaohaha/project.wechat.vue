@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!--<div>
     <header class="WithdrawalHeader" v-if="binBankCard">
       <div class="fakeBankCard">
         <div class="BankNameWrap">
@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script>
@@ -73,14 +73,14 @@
         ]
       }
     },
-    watch:{
-      $route(val){
-        if(val.name === "WithdrawalPage"){
-          this.MessageBox({
-            title: '提示',
-            message: "功能未开放",
-            showCancelButton: false
-          }).then(() => {
+    watch: {
+      $route(val) {
+        console.log(val.name);
+        if (val.name === "WithdrawalPage") {
+          this.MessageBox.alert(
+            "功能正在制作中，提现请联系客服。在公众号主页回复“提现”，会收到客服联系方式，加客服即可人工提现。",
+            '提示',
+          ).then(() => {
             this.$router.go(-1)
           })
         }
@@ -88,19 +88,13 @@
     },
 
     beforeCreate() {
-      /*let that = this
-      if (this.getCookie('whether') === "0") {
-        this.$router.replace({name: "phoneApprove", params: {name1: "tieOnCardPage",name2:that.$route.name}})
-      } else if (this.getCookie('whether') === "1") {
-        this.$router.replace({name: "tieOnCardPage",params: {name:that.$route.name}})
-      }else if(this.getCookie('whether') === "2"){*/
-        this.MessageBox({
-          title:"提示",
-          message:"暂未开放功能",
-          showCancelButton: false
-        }).then(()=>{
-          this.$router.go(-1)
-        })
+      this.MessageBox.alert(
+        "功能正在制作中，提现请联系客服。在公众号主页回复“提现”，会收到客服联系方式，加客服即可人工提现。",
+        "提示",
+      ).then((res) => {
+        console.log(res);
+        this.$router.go(-1)
+      })
       // }
     },
     components: {},
@@ -111,7 +105,7 @@
     mounted() {
     },
     methods: {
-      affirm(){
+      affirm() {
         this.MessageBox({
           title: '提示',
           message: "功能未开放",

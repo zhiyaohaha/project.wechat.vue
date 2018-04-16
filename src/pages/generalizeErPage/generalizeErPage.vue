@@ -1,20 +1,29 @@
 <template>
   <div>
-    <header class="generalizeErPageHeader" v-if="erSubordinateNum">
-      <div class="headPortrait">
-        <img :src="erSubordinateNum.head||'../../../static/img/myImg/touxiang.png'">
+    <scroll class="wrapper"
+            :data="erSubordinateUserList||[]"
+            :pullup="true"
+            :windowHeight="false"
+            @scrollToEnd="loadData" v-if="erSubordinateUserList">
+      <div>
+        <header class="generalizeErPageHeader" v-if="erSubordinateNum">
+          <div class="headPortrait">
+            <img :src="erSubordinateNum.head||'../../../static/img/myImg/touxiang.png'">
+          </div>
+          <div class="userDescription">
+            <span class="petName">{{erSubordinateNum.nickName||'微信昵称 ( 我的一级代理 )'}}</span>
+            <span class="individual">个人代理</span>
+          </div>
+          <div class="agencyNum">
+            <span class="describe">代理总数:</span>
+            <span class="price">{{erSubordinateNum.totleSubordinateNum}}</span>
+            <span class="unit">人</span>
+          </div>
+        </header>
+        <usersListMod :usersListDatas="erSubordinateUserList" :icon="true"/>
+        <footline :title="footlineTitle"/>
       </div>
-      <div class="userDescription">
-        <span class="petName">{{erSubordinateNum.nickName||'微信昵称 ( 我的一级代理 )'}} </span>
-        <span class="individual">个人代理</span>
-      </div>
-      <div class="agencyNum">
-        <span class="describe">代理总数:</span>
-        <span class="price">{{erSubordinateNum.totleSubordinateNum}}</span>
-        <span class="unit">个</span>
-      </div>
-    </header>
-    <usersListMod :usersListDatas="erSubordinateUserList"/>
+    </scroll>
   </div>
 </template>
 
@@ -25,7 +34,7 @@
   export default {
     data() {
       return {
-
+        footlineTitle: "查看更多",
       }
     },
 
@@ -34,8 +43,24 @@
     },
 
     computed: {
-      ...mapState(["erSubordinateNum", "erSubordinateUserList"])
+      ...mapState(["erSubordinateNum"]),
+      erSubordinateUserList: {
+        get() {
+          return this.$store.state.erSubordinateUserList
+        },
+        set() {
 
+        }
+      }
+
+    },
+    watch: {
+      erSubordinateUserList(val) {
+        if (val.length > 0) {
+          this.footlineTitle = "查看更多"
+        }
+
+      }
     },
     created() {
       let that = this
@@ -43,7 +68,7 @@
         thirdLoginType: "ThirdPlatForm.WeChat",
         userId: that.$route.query.id
       })
-      this.$store.dispatch("getSubordinateUserList",{
+      this.$store.dispatch("getSubordinateUserList", {
         thirdLoginType: "ThirdPlatForm.WeChat",
         userId: that.$route.query.id,//不传则获取登录人的信息，传则获取传入人的信息
         id: "",//第一次不用传，以后传最后一条Id
@@ -51,10 +76,38 @@
       })
     },
     mounted() {
+      if (!this.erSubordinateUserList || this.erSubordinateUserList < 1) {
+        this.footlineTitle = "暂无数据"
+      }
     },
     updated() {
     },
-    methods: {}
+    methods: {
+      loadData() {
+        let that = this, time
+        if (this.footlineTitle === "查看更多") {
+          this.$store.dispatch("getSubordinateUserList", {
+            thirdLoginType: "ThirdPlatForm.WeChat",
+            userId: that.$route.query.id,//不传则获取登录人的信息，传则获取传入人的信息
+            id: that.erSubordinateUserList[that.erSubordinateUserList.length-1].id,//第一次不用传，以后传最后一条Id
+            size: 10,//每页数量
+          }).then((res) => {
+            if (res.length > 0) {
+              time = setTimeout(() => {
+                this.erSubordinateUserList.push(...res)
+                this.footlineTitle = "查看更多"
+                clearTimeout(time)
+              }, 500)
+            } else {
+              time = setTimeout(() => {
+                this.footlineTitle = "没有更多数据啦"
+                clearTimeout(time)
+              }, 500)
+            }
+          })
+        }
+      }
+    }
   }
 
 </script>

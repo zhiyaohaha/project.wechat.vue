@@ -7,7 +7,7 @@ import {
   pushHistory,
   __GetRequest
 } from "../../static/js/viewportWidth.js"
-
+import {MessageBox} from "mint-ui"
 const homePage = () => import('../pages/homePage/homePage.vue')
 const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
 const loanPage = () => import('../pages/loanPage/loanPage.vue')
@@ -127,7 +127,7 @@ const router = new Router({
           path: 'schedulePage',
           component: schedulePage,
           name: 'schedulePage',
-          meta: {keepAlive: false, cache: true, isTop: false, title: '办卡进度'},
+          meta: {keepAlive: false, register: true,cache: true, isTop: false, title: '办卡进度'},
         },
         {
           path: 'posterPage',
@@ -170,7 +170,7 @@ const router = new Router({
           path: 'generalizeYiPage',
           component: generalizeYiPage,
           name: "generalizeYiPage",
-          meta: {keepAlive: false, cache: true, isTop: true, title: '我的一级代理'},
+          meta: {keepAlive: false, register: true,cache: true, isTop: true, title: '我的一级代理'},
           children: [
             {
               path: 'generalizeErPage',
@@ -238,9 +238,12 @@ let goBack = function (e) {
   }
 }
 router.beforeEach((to, from, next) => {
+  if(to.name !== "loanPage"||to.name !== "WithdrawalPage"||to.name!=="depositPage"||to.name!=="productDetailsPage"||to.name !== "cardApplyForPage"||to.name!=="phoneApprove"){
+    MessageBox.close(false)
+  }
 
   //首页退出浏览器
-  if (to.name === "homePage"||to.name === obj.state) {
+  if (to.name === "homePage"||to.name === obj.state||to.params.name1 === obj.state) {
     pushHistory()
     window.addEventListener("popstate", goBack, false)
   } else {
@@ -248,7 +251,7 @@ router.beforeEach((to, from, next) => {
   }
   //判断用户是否注册
   if (to.meta.register && (getCookie('whether') * 1 < 1)) {
-    next({name: "phoneApprove", params: {name1: to.name, name2: ""}, query: {id: to.query.id}})
+    next({replace: true,name: "phoneApprove", params: {name1: to.name, name2: ""}, query: {id: to.query.id}})
   }
   /* 路由发生变化修改页面title */
   if (to.name == "zhongXinCardPage" || to.name == "strategyListPage") {

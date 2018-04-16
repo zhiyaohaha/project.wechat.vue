@@ -4,7 +4,7 @@
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
-        {{orderFormTapData.title}}<span class="manNumber" v-if="orderFormTapData.manNumber >= 0">({{orderFormTapData.manNumber}})</span>
+        {{orderFormTapData.title}}<span class="manNumber">({{orderFormTapData.manNumber}})</span>
       </a>
     </header>
     <scroll class="wrapper"
@@ -101,14 +101,19 @@
     },
     created() {
       let that = this
+      this.$store.dispatch("getOrderCount").then((res) => {
+        this.orderFormTapDatas[0].manNumber = res.myTotal
+        this.orderFormTapDatas[1].manNumber = res.level1Total
+        this.orderFormTapDatas[2].manNumber = res.level2Total
+      })
       this.$store.dispatch("getOrderListFor", {
-        status: "Apply, Auditing, Loan, UserGiveUp, Refuse",
+        status: "Apply,Auditing,Loan,UserGiveUp,Refuse",
         level: that.orderFormInd,
         products: "",
         id: "",
         size: 10
-      }).then(()=>{
-        this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1&&this.orderListFor1.total
+      }).then(() => {
+        this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1 && this.orderListFor1.total
       })
       this.$store.dispatch("getUserRelated", {
         level: that.orderFormInd
@@ -120,11 +125,11 @@
           level: val
         })
       },
-      orderListFor1(val){
-        let a = val? val.data.length === 0 : true
-        if(a){
+      orderListFor1(val) {
+        let a = val ? val.data.length === 0 : true
+        if (a) {
           this.footlineTitle = '暂无数据'
-        }else {
+        } else {
           this.footlineTitle = '查看更多'
         }
       }
@@ -152,7 +157,7 @@
             }
           })
 
-          code = code.substring(0, code.length - 1)||'Apply, Auditing, Loan, UserGiveUp, Refuse'
+          code = code.substring(0, code.length - 1) || 'Apply,Auditing,Loan,UserGiveUp,Refuse'
           products = products.substring(0, products.length - 1)
           console.log(products)
           this.$store.dispatch("getOrderListFor", {
@@ -170,13 +175,13 @@
         let that = this
         this.orderFormInd = index
         this.$store.dispatch("getOrderListFor", {
-          status: "Apply, Auditing, Loan, UserGiveUp, Refuse",
+          status: "Apply,Auditing,Loan,UserGiveUp,Refuse",
           level: that.orderFormInd,
           products: "",
           id: "",
           size: 10
-        }).then(()=>{
-          if(this.orderListFor1?this.orderListFor1.data.length === 0 : true){
+        }).then(() => {
+          if (this.orderListFor1 ? this.orderListFor1.data.length === 0 : true) {
             this.footlineTitle = '暂无数据'
           }
           this.orderFormTapDatas[this.orderFormInd].manNumber = this.orderListFor1 ? this.orderListFor1.total : 0
@@ -185,9 +190,9 @@
       //下拉加载
       loadData() {
         let that = this
-        if (this.footlineTitle === "没有更多"||this.footlineTitle === "加载中") {
+        if (this.footlineTitle === "没有更多" || this.footlineTitle === "加载中") {
           return
-        } else if(this.footlineTitle === "查看更多"){
+        } else if (this.footlineTitle === "查看更多") {
           this.footlineTitle = "加载中"
           this.$store.dispatch("getOrderListFor", {
             status: "Apply, Auditing, Loan, UserGiveUp, Refuse",
@@ -233,12 +238,13 @@
       line-height (110 /$rem)
       transition all 0.5s
       .manNumber
-        font-size (34 /$rem)
+        font-size (46 /$rem)
       &.active
         color #efca7d
 
   .wrapper
     overflow hidden
+
   .blankBox
     height (10 /$rem)
 

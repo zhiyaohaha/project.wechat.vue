@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="authenticationList">
+    <ul :class="{authenticationList: authenticationListDatas.length > 2,authenticationListFloat:authenticationListDatas.length<3}">
       <li v-for="(authenticationListData, index) in authenticationListDatas" :key="index">
         <img :src="authenticationListData._icon">
         <span>{{authenticationListData.name}}</span>
@@ -48,4 +48,19 @@
       span
         display block
         margin-top (30 /$rem)
+  .authenticationListFloat
+    width (1080/$rem)
+    height (246/$rem)
+    box-sizing border-box
+    padding (40/$rem) (66/$rem)
+    li
+      float left
+      font-size (36 /$rem)
+      margin-right (160/$rem)
+      text-align center
+      img
+        height (100/$rem)
+      span
+        display block
+        margin-top (30/$rem)
 </style>

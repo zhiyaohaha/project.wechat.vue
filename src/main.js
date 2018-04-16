@@ -3,15 +3,14 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import {Popup, Swipe, SwipeItem, MessageBox, Toast} from 'mint-ui'
+import {Popup, Swipe, SwipeItem, MessageBox} from 'mint-ui'
 import store from './store'
 import BScroll from 'better-scroll'
 import headline from './components/headline/headline.vue'
 import footline from './components/footline/footline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
 import scroll from './components/scroll/scroll.vue'
-import vConsole from 'vconsole'
-
+// import wx from 'weixin-js-sdk'
 import {
   __boxheight,
   __GetRequest,
@@ -26,13 +25,6 @@ import '../static/css/reset.styl'
 import '../static/js/adaptive'
 import 'mint-ui/lib/style.css'
 
-const pushHistory = () => {
-  let state = {
-    title: 'myCenter',
-    url: '__SELF__'
-  }
-  window.history.pushState(state, state.title, state.url)
-}
 // import 'vue-ydui/dist/ydui.base.css'
 // Vue.component(Loadmore.name, Loadmore);
 Vue.component("scroll", scroll);
@@ -53,9 +45,8 @@ Vue.prototype.setCookie = setCookie
 Vue.prototype.saveTodos = storageUtil.saveTodos
 Vue.prototype.readTodos = storageUtil.readTodos
 Vue.prototype.MessageBox = MessageBox
-Vue.prototype.Toast = Toast
-// Vue.prototype.apiPrefix = 'http://192.168.6.66:8001/'
-Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
+Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
+// Vue.prototype.apiPrefix = 'http://192.168.4.7:8001/'
 
 Vue.prototype.BScroll = BScroll
 
@@ -66,7 +57,7 @@ if (!obj.code) {
   window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=${num}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`)
 }*/
 // eslint-disable no-new
-new vConsole
+
 new Vue({
   el: '#app',
   render: h => h(App),

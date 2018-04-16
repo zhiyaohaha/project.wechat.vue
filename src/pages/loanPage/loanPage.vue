@@ -4,7 +4,6 @@
       <div>
         <div class="loanContent">
           <img src="./img/banner.png">
-          <headline :headlineData="{title:'立刻申请贷款'}"/>
           <keep-alive>
             <ul class="mform">
               <li v-for="(mformData, index) in mformDatas" :key="index">
@@ -20,7 +19,8 @@
                       @touchstart="pullDown(true,index)">
                 {{mformData.units}}
               </span>
-                <a href="javascript:;" :class="{sendMsg:mformData.sendMsg,color:!num}" v-if="mformData.sendMsg && mformData.units"
+                <a href="javascript:;" :class="{sendMsg:mformData.sendMsg,color:!num}"
+                   v-if="mformData.sendMsg && mformData.units"
                    @click="sendMsg()">
                   {{mformData.units}}
                 </a>
@@ -125,7 +125,7 @@
           },
           {
             message: "请正确输入您的姓名",
-            description: '贷款人姓名：',
+            description: '姓名：',
             placeholder: '请输入您的姓名',
             name: 'username',
             model: '',
@@ -147,7 +147,7 @@
             sendMsg: false,
             units: '',
             reg: /^[0-9xX]{1,}$/,
-            regular: /^\d{17}[\d|xX]|\d{15}$/,
+            regular: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
             errorColor: false,
             maxlength: '18'
           },
@@ -214,16 +214,16 @@
           this.mformDatas[this.mformDatasInd].model = ""
         }
       },
-      windowChange(val){
-        if(val > 140){
+      windowChange(val) {
+        if (val > 140) {
           this.simulationSubmitIsShow = false
-        }else {
+        } else {
           this.simulationSubmitIsShow = true
         }
       }
     },
     computed: {
-      ...mapState(["time","lastOrderInfo"]),
+      ...mapState(["time", "lastOrderInfo"]),
       ...mapGetters(["key"]),
       shadeIsShowInd() {
         return this.shadeIsShow ? 3 : null
@@ -245,8 +245,8 @@
           this.consumeArr = res
         })
       }
-      this.$store.dispatch("getLastOrderInfo").then(()=>{
-        if(this.lastOrderInfo){
+      this.$store.dispatch("getLastOrderInfo").then(() => {
+        if (this.lastOrderInfo) {
           this.__findModel("username").model = this.lastOrderInfo.name
           this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
           this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
@@ -275,29 +275,34 @@
       },
       //发送图形验证码检查
       __SendVerifyCode(validateCode) {
+        this.$store.commit("AWAITTRUE")
         let that = this
         this.$store.dispatch('postSendMsg', {
           code: 'SMS_127153204',
           validateKey: that.key + that.time,
           mobilePhone: that.__findModel("phoneNum").model,
           validateCode: validateCode,
+          smsSign: "掌金超",
           needvalidateCode: true
         }).then((res) => {
-          console.log(res);
+          this.$store.commit("AWAITFALSE")
           if (res.success) {
             this.num = 60
-            this.MessageBox({
-              title: '提示',
-              message: '短信验证码已发送，有效时间5分钟',
-              showCancelButton: false
-            })
+            this.MessageBox.alert(
+              '短信验证码已发送，有效时间5分钟',
+              '提示',
+              {
+                closeOnClickModal: true
+              }
+            )
           } else {
-            that.MessageBox({
-              title: '提交失败',
-              message: res.message,
-              showCancelButton: false,
-              closeOnClickModal: false
-            })
+            this.MessageBox.alert(
+              res.message,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
           }
         })
       },
@@ -321,21 +326,28 @@
         for (let i = 0; i < this.mformDatas.length; i++) {
           let item = this.mformDatas[i]
           if (item.model === "") {
-            this.MessageBox({
-              title: '提交失败',
-              message: item.placeholder,
-              showCancelButton: false
-            })
+            this.MessageBox.alert(
+              item.placeholder,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
+            console.log("这里是看看为空循环几次");
             return
           } else if (!item.regular.test(item.model)) {
-            this.MessageBox({
-              title: '提交失败',
-              message: item.message,
-              showCancelButton: false
-            })
+            this.MessageBox.alert(
+              item.message,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
+            console.log("这里是看看输错循环几次");
             return
           }
         }
+        this.$store.commit("AWAITTRUE")
         let that = this
         let url = this.apiPrefix + "api/OfficialAccounts/InsertLoanDemand"
         postLoanDemand(url, {
@@ -356,20 +368,25 @@
           verifyCode: that.__findModel("authCode").model, //验证码
           source: "OfficialAccounts"
         }).then(res => {
+          this.$store.commit("AWAITFALSE")
           if (res.success) {
-            this.MessageBox({
-              title: '提示',
-              message: '您的申请已提交,我们会立刻开始处理',
-              showCancelButton: false
-            }).then(() => {
+            this.MessageBox.alert(
+              '您的申请已提交,我们会立刻开始处理',
+              '提示',
+              {
+                closeOnClickModal: true
+              }
+            ).then(() => {
               this.$router.replace("/homePage")
             })
           } else {
-            this.MessageBox({
-              title: '提交失败',
-              message: res.message,
-              showCancelButton: false
-            })
+            this.MessageBox.alert(
+              res.message,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
           }
         })
 
@@ -415,19 +432,23 @@
         if (mformData.model !== '' && mformData.model.length == 11) {
           this.verificationShow = true
         } else {
-          this.MessageBox({
-            title: '提示',
-            message: '请正确输入手机号',
-            showCancelButton: false
-          })
+          this.MessageBox.alert(
+            '请正确输入手机号',
+            '提示',
+            {
+              closeOnClickModal: true
+            }
+          )
         }
         if (this.num > 0) {
           this.verificationShow = false
-          this.MessageBox({
-            title: '提示',
-            message: '请60秒后在请求验证码',
-            showCancelButton: false
-          })
+          this.MessageBox.alert(
+            '请60秒后在请求验证码',
+            '提示',
+            {
+              closeOnClickModal: true
+            }
+          )
         }
       }
       ,
@@ -466,11 +487,10 @@
       //倒计时
       verificationCancel(flag, validateCode) {
         this.verificationShow = false
-
         if (flag) {
           this.__SendVerifyCode(validateCode)
           this.$store.dispatch("changeTime")
-        }else {
+        } else {
           this.$store.dispatch("changeTime")
         }
       },

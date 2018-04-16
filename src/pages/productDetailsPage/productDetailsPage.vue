@@ -72,7 +72,7 @@
             name: "IDnumber",
             model: "",
             reg: /^[0-9xX]{0,18}$/,
-            regular: /^\d{17}[\d|xX]|\d{15}$/,
+            regular: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
             maxlength: "18"
           },
           {
@@ -149,6 +149,7 @@
             return
           }
         }
+        this.$store.commit("AWAITTRUE")
         let data = {
           mobilePhone: that.__findModel("phoneNum").model,//手机
           idCard: that.__findModel("IDnumber").model,//身份证
@@ -159,6 +160,7 @@
         // alert(JSON.stringify(data))
         let url = this.apiPrefix + "api/LoanOrder/SpeedOrderRecordForApp"
         postSpeedOrder(url, data).then((res) => {
+          this.$store.commit("AWAITFALSE")
           if(res.success){
             window.location.href = res.data.url
           }else {
@@ -211,11 +213,9 @@
         width (180 /$rem)
         height (180 /$rem)
         box-sizing border-box
-        border 1px solid #e4e4e4
         img
-          margin (35 /$rem)
-          width (110 /$rem)
-          height (110 /$rem)
+          width 100%
+          height 100%
       &.describe
         color #333
         font-size (36 /$rem)
@@ -269,7 +269,7 @@
 
     .applyForCondition
       box-sizing border-box
-      padding (30 /$rem) 0 (30 /$rem) (30 /$rem)
+      padding (30 /$rem) (30/$rem) (30 /$rem) (30 /$rem)
       border-bottom 1px solid #f2f2f2
       .applyForList
         font-size (36 /$rem)

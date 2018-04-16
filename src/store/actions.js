@@ -27,11 +27,12 @@ import {
   getBinBankCard,
   getAccountInfo,
   getPosters,
-  getLastOrderInfo
+  getLastOrderInfo,
+  getOrderCount,
 } from '../api'
 
-let apiPrefix = 'http://211.94.137.70:8001/'
-let apiWeChat = 'http://api2.cpf360.com/'
+let apiPrefix =  'http://api2.cpf360.com/' // 正式库
+// let apiWeChat = 'http://211.94.137.70:8001/'//测试库
 export default {
   //验证码
   async postSendMsg({commit}, data) {
@@ -51,6 +52,7 @@ export default {
       // commit('GET_OPENID', {result})
       flag = result.data.id
       whether = 1
+      commit('POST_OPENID', {result})
     } else {
       flag = ""
       whether = 0
@@ -67,6 +69,7 @@ export default {
     if (result.success) {
       flag = result.data.id
       whether = 1
+      commit('POST_OPENID', {result})
     } else {
       flag = ""
       whether = 0
@@ -184,6 +187,13 @@ export default {
   async getNewsListFor({commit}, data) {
     let url = apiPrefix + "api/News/ListForApp"
     const result = await getNewsListFor(url, data)
+    if(result.success){
+      result.data.forEach((item)=>{
+        if(item.title.length > 24){
+          item.title = item.title.substring(0, 24) + "..."
+        }
+      })
+    }
     if (data.id) {
       return result.data
     } else {
@@ -249,9 +259,17 @@ export default {
     let url = apiPrefix + "api/OfficialAccounts/GetSubordinateUserList"
     const result = await getSubordinateUserList(url, data)
     if (data.userId) {
-      commit('GET_ERSUBORDINATEUSERLIST', {result})
+      if(data.id){
+        return result.data
+      }else {
+        commit('GET_ERSUBORDINATEUSERLIST', {result})
+      }
     } else {
-      commit('GET_SUBORDINATEUSERLIST', {result})
+      if(data.id){
+        return result.data
+      }else {
+        commit('GET_SUBORDINATEUSERLIST', {result})
+      }
     }
   },
   //银行卡列表
@@ -302,6 +320,16 @@ export default {
     if(result.success){
       commit("GET_LASTORDERINFO",{result})
     }
+  },
+  async getOrderCount({commit}) {
+    let url = apiPrefix + "api/OfficialAccounts/GetOrderCount"
+    const result = await getOrderCount(url)
+    return result.data
+  },
+  async getRakeCount({commit}) {
+    let url = apiPrefix + "api/OfficialAccounts/GetRakeCount"
+    const result = await getOrderCount(url)
+    return result.data
   },
   //改变时间
   changeTime({commit}) {

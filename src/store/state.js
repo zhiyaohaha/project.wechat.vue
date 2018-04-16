@@ -1,7 +1,8 @@
 export default {
   time:new Date().getTime(),
   verification:null,
-  // openID:null,
+  userName:null,
+  awaitShow:false,
   // phoneNote:null,
   subscribe:1,
   recommendModDatas:null,

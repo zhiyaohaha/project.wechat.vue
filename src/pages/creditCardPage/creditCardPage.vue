@@ -11,7 +11,7 @@
           <allBankList :allBankListDatas="listBanks"/>
           <footer class="allBankFooter">
             <div class="line"></div>
-            <div class="character">即将开发更多信用卡</div>
+            <div class="character">即将开放更多信用卡</div>
             <div class="line"></div>
           </footer>
         </div>
@@ -143,29 +143,30 @@
       }
     },
     created() {
-      let bank = ""
-      if(this.listBanks){
+      this.bank = ""
+      let that =this
+      if (this.listBanks) {
         this.listBanks.forEach((item) => {
-          bank += item.id + ","
+          this.bank += item.id + ","
         })
         this.$store.dispatch("getListBankCard", {
           data: {
             id: '',//最后一条Id，第一次请求不用传
-            bank: bank,//银行id，多个则逗号分隔，不传则不进行筛选
+            bank: that.bank,//银行id，多个则逗号分隔，不传则不进行筛选
             size: 10//每页展示数量
           },
           site: "credit"
         })
-      }else {
+      } else {
         console.log("没有经过首页")
-        this.$store.dispatch("getListBanks").then((res)=>{
+        this.$store.dispatch("getListBanks").then((res) => {
           res.forEach((item) => {
-            bank += item.id + ","
+            this.bank += item.id + ","
           })
           this.$store.dispatch("getListBankCard", {
             data: {
               id: '',//最后一条Id，第一次请求不用传
-              bank: bank,//银行id，多个则逗号分隔，不传则不进行筛选
+              bank: that.bank,//银行id，多个则逗号分隔，不传则不进行筛选
               size: 10//每页展示数量
             },
             site: "credit"
@@ -184,9 +185,9 @@
       //下拉加载逻辑
       loadData() {
         let that = this
-        if (this.footlineTitle === "没有更多数据拉"||this.footlineTitle === "加载中") {
+        if (this.footlineTitle === "没有更多数据拉" || this.footlineTitle === "加载中") {
           return
-        }else if(this.footlineTitle === "下拉查看更多"){
+        } else if (this.footlineTitle === "下拉查看更多") {
           this.footlineTitle = "加载中"
           this.$store.dispatch("getListBankCard", {
             data: {

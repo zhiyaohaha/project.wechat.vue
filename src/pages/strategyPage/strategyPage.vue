@@ -118,7 +118,7 @@
               }, 1000)
             }else {
               time = setTimeout(() => {
-                that.creditCardNews.push(...res)
+                this.creditCardNews.push(...res)
                 that.footLineTitle = "查看更多"
                 clearTimeout(time)
               }, 1000)

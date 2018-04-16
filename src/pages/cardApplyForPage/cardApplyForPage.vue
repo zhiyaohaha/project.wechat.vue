@@ -61,7 +61,7 @@
             name: "IDnumber",
             model: "",
             reg: /^[0-9xX]{0,18}$/,
-            regular: /^\d{17}[\d|xX]|\d{15}$/,
+            regular: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
             maxlength: "18"
           },
           {
@@ -137,7 +137,7 @@
             return
           }
         }
-
+        this.$store.commit("AWAITTRUE")
         let that = this
         this.$store.dispatch("postRecordForApp", {
           creditCard: that.$route.query.id,//信用卡Id
@@ -157,6 +157,7 @@
           ],
           source: 'OfficialAccounts'//来源
         }).then((res) => {
+          this.$store.commit("AWAITFALSE")
           if (res.success) {
             window.location.href = res.data.url
           } else {
@@ -248,7 +249,7 @@
       height (6 /$rem)
       background-image url("../../../static/img/creditCardImg/huangxian.png")
       background-repeat no-repeat
-
+      background-size 100%
   .applyForContent
     width (1080 /$rem)
     .firstTrialHeader

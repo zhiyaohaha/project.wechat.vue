@@ -5,7 +5,6 @@
             :pullup="true"
             @scrollToEnd="loadData" v-if="listScheduleFor">
       <div>
-        <headline :headlineData="{title:'我的办卡进度',line:true}"/>
         <div>
           <scheduleList :scheduleListDatas="listScheduleFor"/>
         </div>
@@ -31,7 +30,13 @@
     components: {
       scheduleList, bankInquireMod
     },
-
+    watch: {
+      listScheduleFor(val) {
+        if (val.length > 0) {
+          this.footlineTitle = "查看更多"
+        }
+      }
+    },
     computed: {
       listScheduleFor: {
         get() {
@@ -50,7 +55,7 @@
       })
     },
     mounted() {
-      if (this.listScheduleFor&&this.listScheduleFor.length < 1) {
+      if (!this.listScheduleFor || this.listScheduleFor.length < 1) {
         this.footlineTitle = "暂无内容"
       }
     },

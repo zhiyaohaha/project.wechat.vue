@@ -245,38 +245,6 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .mint-msgbox
-    height (450 /$rem)
-    font-size (46 /$rem)
-    border-radius (20 /$rem)
-    .mint-msgbox-header
-      padding: (40 /$rem) 0 0
-      .mint-msgbox-title
-        font-size (46 /$rem)
-    .mint-msgbox-content
-      height (228 /$rem)
-      text-align center
-      line-height (228 /$rem)
-      .mint-msgbox-message
-        font-size (42 /$rem)
-    .mint-msgbox-btns
-      height (136 /$rem)
-      line-height (136 /$rem)
-      .mint-msgbox-confirm
-        font-size (46 /$rem)
-      .mint-msgbox-cancel
-        font-size (46 /$rem)
-        color #333
-
-  .ToastStyle
-    width (200 /$rem)
-    height (70 /$rem)
-    font-size (40 /$rem)
-    color #ffffff
-    background-color #333
-    text-align center
-    line-height (70 /$rem)
-
   .tieOnCardHeader
     width (1080 /$rem)
     height (520 /$rem)
