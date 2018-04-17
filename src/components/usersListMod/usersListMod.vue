@@ -8,12 +8,13 @@
             <div class="message">
               <span class="userNum">{{usersListData.nickName||usersListData.name}}</span>
               <div class="down">
-                <span class="scheduleTime">{{usersListData.createdDate}}</span>
-                <span class="fixation">成为我的代理</span>
+                <span class="scheduleTime">{{usersListData.connectedTime}}</span>
+                <span class="fixation" v-if="!icon">成为我的代理</span>
+                <span class="fixation" v-if="icon">成为Ta的代理</span>
               </div>
             </div>
-            <div class="agencyMessage">
-              <span>他的代理</span>
+            <div class="agencyMessage" v-if="!icon">
+              <span>Ta的代理</span>
               <span class="price">{{usersListData.totalSubordinateNum}}</span>
               <span>人</span>
             </div>

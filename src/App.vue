@@ -1,22 +1,27 @@
 <template>
   <div>
-    <keep-alive>
-      <router-view v-if="!$route.meta.cache"/>
-    </keep-alive>
-    <router-view v-if="$route.meta.cache"/>
-    <transition name="awaitShow">
-      <awaitMod v-if="awaitShow"/>
-    </transition>
-    <footer class="footerTap" v-if="$route.meta.keepAlive">
-      <router-link to="/homePage">
-        <img src="../static/img/homeImg/tab_icon_home_selected.png" v-show="$route.meta.footerShow">
-        <img src="../static/img/homeImg/tab_icon_home_normal.png" v-show="!$route.meta.footerShow">
-      </router-link>
-      <router-link to="/myPage">
-        <img src="../static/img/homeImg/tab_icon_mine_normal.png" v-show="$route.meta.footerShow">
-        <img src="../static/img/homeImg/tab_icon_mine_selected.png" v-show="!$route.meta.footerShow">
-      </router-link>
-    </footer>
+    <div v-if="allIsShow">
+      <keep-alive>
+        <router-view v-if="!$route.meta.cache"/>
+      </keep-alive>
+      <router-view v-if="$route.meta.cache"/>
+
+      <footer class="footerTap" v-if="$route.meta.keepAlive">
+        <router-link to="/homePage">
+          <img src="../static/img/homeImg/tab_icon_home_selected.png" v-show="$route.meta.footerShow">
+          <img src="../static/img/homeImg/tab_icon_home_normal.png" v-show="!$route.meta.footerShow">
+        </router-link>
+        <router-link to="/myPage">
+          <img src="../static/img/homeImg/tab_icon_mine_normal.png" v-show="$route.meta.footerShow">
+          <img src="../static/img/homeImg/tab_icon_mine_selected.png" v-show="!$route.meta.footerShow">
+        </router-link>
+      </footer>
+    </div>
+    <div>
+      <transition name="awaitShow">
+        <awaitMod v-if="awaitShow"/>
+      </transition>
+    </div>
   </div>
 </template>
 <script>
@@ -26,7 +31,8 @@
   export default {
     data() {
       return {
-        footerShow: true
+        footerShow: true,
+        allIsShow:false
       }
     },
     components: {
@@ -38,6 +44,7 @@
     beforeCreate() {
     },
     created() {
+      this.$store.commit("AWAITTRUE")
       let obj = this.__GetRequest()
       let userinfo = this.readTodos()
       let that = this
@@ -58,6 +65,8 @@
             this.setCookie('id', obj.id, 7)
           }
         }).then(() => {
+          this.allIsShow = true
+          this.$store.commit("AWAITFALSE")
           this.$store.dispatch('getBinBankCard', {
             cb: (whether) => {
               this.setCookie('whether', whether, 7)
@@ -92,6 +101,8 @@
               this.setCookie('whether', whether, 7)
             }
           }).then(() => {
+            this.allIsShow = true
+            this.$store.commit("AWAITFALSE")
             this.$store.dispatch('getBinBankCard', {
               cb: (whether) => {
                 this.setCookie('whether', whether, 7)
@@ -113,10 +124,10 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .fade-enter-active, .fade-leave-active {
+  .awaitShow-enter-active, .awaitShow-leave-active {
     transition: all .5s;
   }
-  .fade-enter, .fade-leave-active {
+  .awaitShow-enter, .awaitShow-leave-active {
     transform: translate3d(0, -100%, 0)
   }
   .footerTap

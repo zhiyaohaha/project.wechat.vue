@@ -4,6 +4,7 @@ import {postAuth} from '../../static/js/viewportWidth'
 import {
   getCookie,
 } from '../util/cookieUtil'
+import {MessageBox} from "mint-ui"
 
 axios.defaults.withCredentials = true
 export default function ajax(url = '', data = {}, type = 'GET') {
@@ -38,15 +39,15 @@ export default function ajax(url = '', data = {}, type = 'GET') {
       promise = axios({
         method: 'post',
         url: url,
-        data: postAuth(JSON.stringify(data),a),
+        data: postAuth(JSON.stringify(data), a),
       })
     }
     promise.then(response => {
       resolve(response.data)
-     // if(!response.data.success&&!response.data.errcode&&!response.data.subscribe&&response.data.message!==("未绑定")){
-     //    alert(response.data.message)
-     //  }
-     //  alert(JSON.stringify(response.data))
+      if (!response.data.success && response.data.code === "UnknownError") {
+        MessageBox.alert(response.data.message, "提示")
+      }
+      //  alert(JSON.stringify(response.data))
     })
       .catch(error => {
         console.log(error)

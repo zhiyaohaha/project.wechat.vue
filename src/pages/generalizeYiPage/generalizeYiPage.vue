@@ -5,8 +5,8 @@
             :data="subordinateUserList||[]"
             :pullup="true"
             :windowHeight="false"
-            @scrollToEnd="loadData" v-if="subordinateNum">
-      <div v-show="$route.meta.isTop" v-if="subordinateNum">
+            @scrollToEnd="loadData" ref="scroll" v-if="subordinateNum">
+      <div v-show="$route.meta.isTop&&subordinateNum">
         <header class="generalizePageHeader">
           <div class="headPortrait">
             <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
@@ -53,7 +53,8 @@
   export default {
     data() {
       return {
-        footerTitle: "查看更多"
+        footerTitle: "查看更多",
+        startY:0
       }
     },
 
@@ -82,6 +83,7 @@
     beforeCreate() {
     },
     created() {
+      console.log(this.subordinateUserList);
       this.$store.dispatch("getSubordinateNum", {
         thirdLoginType: "ThirdPlatForm.WeChat",
         userId: ""
@@ -112,11 +114,11 @@
             userId: "",//不传则获取登录人的信息，传则获取传入人的信息
             id: that.subordinateUserList[that.subordinateUserList.length - 1].id,//第一次不用传，以后传最后一条Id
             size: 10,//每页数量
-          }).then((res) => {
-            console.log(res)
-            if (res.length > 1) {
+          }).then((result) => {
+            console.log(result)
+            if (result.length > 1) {
               time = setTimeout(() => {
-                this.subordinateUserList.push(...res)
+                this.$store.commit("NEWERSUBORDINATEUSERLIST", {result})
                 this.footerTitle = "查看更多"
                 clearTimeout(time)
               }, 500)
@@ -126,7 +128,6 @@
                 clearTimeout(time)
               }, 500)
             }
-
           })
         }
       }

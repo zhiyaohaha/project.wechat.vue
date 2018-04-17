@@ -1,6 +1,9 @@
 <template>
   <div class="myPage">
-    <router-view/>
+    <keep-alive>
+      <router-view v-if="!$route.meta.cache"/>
+    </keep-alive>
+    <router-view v-if="$route.meta.cache"/>
     <div v-if="$route.meta.keepAlive&&userName">
       <header class="myPageHeader">
         <div class="headPortrait">

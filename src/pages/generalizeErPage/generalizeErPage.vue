@@ -8,7 +8,7 @@
       <div>
         <header class="generalizeErPageHeader" v-if="erSubordinateNum">
           <div class="headPortrait">
-            <img :src="erSubordinateNum.head||'../../../static/img/myImg/touxiang.png'">
+            <img :src="erSubordinateNum.head||'../../../static/img/myImg/touxiang.gif'">
           </div>
           <div class="userDescription">
             <span class="petName">{{erSubordinateNum.nickName||'微信昵称 ( 我的一级代理 )'}}</span>
@@ -55,11 +55,15 @@
 
     },
     watch: {
+      $route(val){
+        if(val.name === "generalizeErPage"){
+
+        }
+      },
       erSubordinateUserList(val) {
         if (val.length > 0) {
           this.footlineTitle = "查看更多"
         }
-
       }
     },
     created() {

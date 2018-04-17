@@ -22,7 +22,7 @@
           </div>
           <div class="state">
             <span class="form">{{orderFormListData._product.name}}</span>
-            <span class="stateDescribe">{{orderFormListData._status}}({{orderFormListData._rakeBack}})</span>
+            <span class="stateDescribe">({{orderFormListData._rakeBack}}){{orderFormListData._status}}</span>
           </div>
         </li>
       </ul>

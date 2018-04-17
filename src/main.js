@@ -10,6 +10,7 @@ import headline from './components/headline/headline.vue'
 import footline from './components/footline/footline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
 import scroll from './components/scroll/scroll.vue'
+// import vConsole from 'vconsole'
 // import wx from 'weixin-js-sdk'
 import {
   __boxheight,
@@ -49,7 +50,16 @@ Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
 // Vue.prototype.apiPrefix = 'http://192.168.4.7:8001/'
 
 Vue.prototype.BScroll = BScroll
+/*wx.config({
+  debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看
 
+  // 传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+  appId: '', // 必填，公众号的唯一标识
+  timestamp:'' , // 必填，生成签名的时间戳
+  nonceStr: '', // 必填，生成签名的随机串
+  signature: '',// 必填，签名，见附录1
+  jsApiList: [] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});*/
 /*let obj = __GetRequest()
 let num  = obj.id ? obj.id : ""
 console.log(num);
@@ -57,7 +67,7 @@ if (!obj.code) {
   window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=${num}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`)
 }*/
 // eslint-disable no-new
-
+// new vConsole
 new Vue({
   el: '#app',
   render: h => h(App),

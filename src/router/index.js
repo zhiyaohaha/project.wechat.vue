@@ -164,18 +164,19 @@ const router = new Router({
       path: '/myPage',
       component: myPage,
       name: "myPage",
-      meta: {keepAlive: true, isTop: true, register: true, cache: true, title: '我的'},
+      meta: {keepAlive: true, isTop: true,cache: true, register: true,title: '我的'},
       children: [
         {
           path: 'generalizeYiPage',
           component: generalizeYiPage,
           name: "generalizeYiPage",
-          meta: {keepAlive: false, register: true,cache: true, isTop: true, title: '我的一级代理'},
+          meta: {keepAlive: false, register: true, isTop: true, title: '我的一级代理'},
           children: [
             {
               path: 'generalizeErPage',
+              name: 'generalizeErPage',
               component: generalizeErPage,
-              meta: {keepAlive: false, cache: true, isTop: false, title: '我的二级代理'},
+              meta: {keepAlive: false, isTop: false, title: '我的二级代理'},
             }
           ]
         },

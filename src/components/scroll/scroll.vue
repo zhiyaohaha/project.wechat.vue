@@ -5,7 +5,6 @@
 </template>
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
-
   export default {
     props: {
       /**
@@ -15,7 +14,6 @@
        */
       /*
       * */
-
       probeType: {
         type: Number,
         default: 1
@@ -84,6 +82,7 @@
         default: 20
       }
     },
+    computed: {},
     mounted() {
       this.__boxheight(this.$refs.wrapper)
       // 保证在DOM渲染完毕后初始化better-scroll
@@ -101,7 +100,7 @@
           probeType: this.probeType,
           click: this.click,
           scrollX: this.scrollX,
-          bounce:this.bounce
+          bounce: this.bounce,
         })
 
         // 是否派发滚动事件
@@ -166,8 +165,8 @@
           this.refresh()
         }, this.refreshDelay)
       },
-      $route(to,form){
-        if(to.name === "productPage"||to.name==="creditCardPage"){
+      $route(to, form) {
+        if (to.name === "productPage" || to.name === "creditCardPage") {
           this.refresh()
         }
       }
