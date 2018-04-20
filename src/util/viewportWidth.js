@@ -4,7 +4,7 @@ import Qs from 'qs'
 /**
  * Created by Administrator on 2018/1/25.
  */
-export const __boxheight = function (ele) {
+export var __boxheight = function (ele) {
   //函数：获取尺寸
   //获取浏览器窗口高度
   let winHeight = 0
@@ -22,7 +22,7 @@ export const __boxheight = function (ele) {
   }
 }
 //post请求鉴权
-export const postAuth = function (param,a) {
+export var postAuth = function (param,a) {
   let _param = {}
   let str = param
   let timestamp = (new Date().getTime()).toString().substr(0, 10)
@@ -33,7 +33,7 @@ export const postAuth = function (param,a) {
   return Qs.stringify(_param)
 }
 
-export const __GetRequest = function () {
+export var __GetRequest = function () {
   let url = location.search //获取url中"?"符后的字串
   let theRequest = {}
   if (url.indexOf('?') != -1) {
@@ -46,7 +46,7 @@ export const __GetRequest = function () {
   return theRequest
 }
 // JUID
-export const __newGuid = function (time){
+export var __newGuid = function (time){
   let guid = ""
   for (let i = 1; i <= 32; i++){
     let n = Math.floor(Math.random()*16.0).toString(16);
@@ -58,7 +58,7 @@ export const __newGuid = function (time){
 }
 
 //清空历史记录
-export const pushHistory = function () {
+export var pushHistory = function () {
   let url = "#";
   let state = {
     title: "title",
