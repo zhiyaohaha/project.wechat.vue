@@ -52,7 +52,7 @@
         this.$store.dispatch('postOpenid', {
           data: {
             openId: userinfo.openid,
-            // openId: "16573",
+            // openId: "16573",//假帐号
             thirdLoginType: 'ThirdPlatForm.WeChat',
             nickName: userinfo.nickname,
             head: userinfo.headimgurl,

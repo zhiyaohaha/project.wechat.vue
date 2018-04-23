@@ -1,10 +1,10 @@
 import md5 from 'js-md5'
 import Qs from 'qs'
-
+import {getRect} from '../common/js/dom'
 /**
  * Created by Administrator on 2018/1/25.
  */
-export var __boxheight = function (ele) {
+export var __boxheight = function (ele,num=null) {
   //函数：获取尺寸
   //获取浏览器窗口高度
   let winHeight = 0
@@ -16,6 +16,10 @@ export var __boxheight = function (ele) {
   /*//通过Document对body进行检测，获取浏览器可视化高度
   if (document.documentElement && document.documentElement.clientHeight)
     winHeight = document.documentElement.clientHeight*/
+  if(winHeight > getRect(ele).top){
+    winHeight -= getRect(ele).top
+  }
+  console.log();
   //DIV高度为浏览器窗口高度
   if (ele) {
     ele.style.height = winHeight + 'px'

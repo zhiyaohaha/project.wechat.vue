@@ -88,6 +88,7 @@
       ...mapState(["generalizeYiPageY"])
     },
     mounted() {
+
       this.__boxheight(this.$refs.wrapper)
       // 保证在DOM渲染完毕后初始化better-scroll
       setTimeout(() => {
@@ -169,10 +170,10 @@
       }
     },
     updated() {
-      if(this.scroll){
+      if (this.scroll) {
         this.scrollTo(0, this.generalizeYiPageY)
         this.refresh()
-      }else {
+      } else {
         this.__boxheight(this.$refs.wrapper)
         // 保证在DOM渲染完毕后初始化better-scroll
         setTimeout(() => {
@@ -188,8 +189,8 @@
         }, this.refreshDelay)
       },
       $route(to, form) {
-        if(to.meta.keepAlive){
-          this.$store.commit("GENERALIZEYIPAGEY", {result:0})
+        if (to.meta.keepAlive) {
+          this.$store.commit("GENERALIZEYIPAGEY", {result: 0})
         }
         if (to.name === "productPage" || to.name === "creditCardPage") {
           this.refresh()
