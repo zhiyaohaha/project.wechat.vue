@@ -60,30 +60,33 @@
     },
     created() {
       let that = this
-      this.$store.dispatch("getSelectDataSource", {
-        codes: "CreditCardNewsCategory"
-      }).then((res) => {
-        if (res.success) {
-          res.data.forEach((item) => {
-            this.authenticationListDatas=item.childrens.map((it, index, Arr) => {
-              it.imgUrl = this.authenticationListDatas[index].imgUrl
-              return it
+      if(!this.creditCardNews){
+        this.$store.dispatch("getSelectDataSource", {
+          codes: "CreditCardNewsCategory"
+        }).then((res) => {
+          if (res.success){
+            res.data.forEach((item) => {
+              this.authenticationListDatas=item.childrens.map((it, index, Arr) => {
+                it.imgUrl = this.authenticationListDatas[index].imgUrl
+                return it
+              })
             })
-          })
-        } else {
-          this.MessageBox({
-            title: '错误',
-            message: res.message,
-            showCancelButton: false
-          })
-        }
-      })
-      this.$store.dispatch("getNewsListFor", {
-        scene: that.scene,
-        type: "",
-        id: "",
-        size: 10
-      })
+          } else {
+            this.MessageBox({
+              title: '错误',
+              message: res.message,
+              showCancelButton: false
+            })
+          }
+        })
+        this.$store.dispatch("getNewsListFor", {
+          scene: that.scene,
+          type: "",
+          id: "",
+          size: 10
+        })
+      }
+
     },
     mounted() {
       this.$nextTick(()=>{

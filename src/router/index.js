@@ -6,7 +6,7 @@ import {
 import {
   pushHistory,
   __GetRequest
-} from "../../static/js/viewportWidth.js"
+} from "../util/viewportWidth.js"
 import {MessageBox} from "mint-ui"
 const homePage = () => import('../pages/homePage/homePage.vue')
 const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
@@ -252,7 +252,7 @@ router.beforeEach((to, from, next) => {
   }
   //判断用户是否注册
   if (to.meta.register && (getCookie('whether') * 1 < 1)) {
-    next({replace: true,name: "phoneApprove", params: {name1: to.name, name2: ""}, query: {id: to.query.id}})
+    next({name: "phoneApprove", params: {name1: to.name, name2: ""}, query: {id: to.query.id}})
   }
   /* 路由发生变化修改页面title */
   if (to.name == "zhongXinCardPage" || to.name == "strategyListPage") {

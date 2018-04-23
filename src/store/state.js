@@ -29,4 +29,5 @@ export default {
   listScheduleFor:null,
   binBankCard:null,
   lastOrderInfo:null,
+  generalizeYiPageY:0
 }

@@ -5,7 +5,6 @@
         <router-view v-if="!$route.meta.cache"/>
       </keep-alive>
       <router-view v-if="$route.meta.cache"/>
-
       <footer class="footerTap" v-if="$route.meta.keepAlive">
         <router-link to="/homePage">
           <img src="../static/img/homeImg/tab_icon_home_selected.png" v-show="$route.meta.footerShow">
@@ -93,7 +92,7 @@
               thirdLoginType: 'ThirdPlatForm.WeChat',
               nickName: userinfo.nickname,
               head: userinfo.headimgurl,
-              firstLevelId: that.getCookie("id")
+              firstLevelId: that.getCookie("id")==="undefined"? "" :that.getCookie("id")
             },
             cb: (va1, whether) => {
               this.setCookie('token', va1, 7)

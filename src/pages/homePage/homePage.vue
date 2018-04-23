@@ -5,7 +5,23 @@
     </keep-alive>
     <router-view v-if="$route.meta.cache"/>
     <div class="homePageWrap" ref="homePageWrap" v-if="$route.meta.keepAlive">
-      <div @click="changeTop">
+      <div>
+        <!--<header class="homePageHeader">
+          <slider>
+            <div>
+              <router-link :to="{name:'productPage'}">
+                <img src="./img/renzhengbanner.png">
+              </router-link>
+            </div>
+            <div>
+              <router-link :to="{name:'generalizePage'}">
+                <img src="./img/tuiguangbanner.png">
+              </router-link>
+            </div>
+            <div class="slider-item">33</div>
+            <div class="slider-item">444</div>
+          </slider>
+        </header>-->
         <header class="homePageHeader">
           <mt-swipe :auto="2000" :showIndicators="false">
             <mt-swipe-item>
@@ -32,8 +48,8 @@
         </header>
         <div class="homePageContent">
           <loanMod :loanModDatas="loanModDatas"/>
-          <generalizeMod :generalizeModData="generalizeModData"/>
           <generalizeMod :generalizeModData="visaDatas"/>
+          <generalizeMod :generalizeModData="generalizeModData"/>
           <headline :headlineData="{title:'热门贷款推荐',more:'更多贷款推荐',url:'/homePage/productPage'}"/>
           <div class="inanition"></div>
           <recommendMod :recommendModDatas="recommendModDatas"/>
@@ -45,7 +61,7 @@
         </div>
       </div>
     </div>
-    <attentionMod :vanish="vanish" :erShow= "erShow" v-if="$route.meta.keepAlive"/>
+    <attentionMod :vanish="vanish" :erShow="erShow" v-if="$route.meta.keepAlive"/>
   </div>
 </template>
 <script>
@@ -57,6 +73,7 @@
   import footline from "../../components/footline/footline.vue"
   import recommendList from "../../components/recommendList/recommendList.vue"
   import attentionMod from "../../components/attentionMod/attentionMod.vue"
+  import slider from "../../components/slider/slider.vue"
   import {getListForApp} from '../../api'
 
   export default {
@@ -135,21 +152,20 @@
     },
 
     components: {
-      loanMod, generalizeMod, recommendMod, footline, recommendList, attentionMod
+      loanMod, generalizeMod, recommendMod, footline, recommendList, attentionMod, slider
     },
     computed: {
       ...mapState(["openID", "recommendModDatas", "listBanks", "homeListBankCard"]),
-      erShow:{
-        get(){
+      erShow: {
+        get() {
           return this.$store.state.subscribe === 1 ? false : true
         },
-        set(){
+        set() {
 
         }
       }
     },
-    watch: {
-    },
+    watch: {},
     created() {
       this.$store.dispatch("getListForApp", {
         name: 'LoanProductType.Speed',
@@ -174,26 +190,24 @@
     },
     mounted() {
       this.$nextTick(() => {
-        if (this.$route.meta.homeShow && this.$route.meta.keepAlive) {
+        if (this.$route.name === "homePage") {
           this.__initScroll(this.$refs.homePageWrap)
         }
       })
-
     }
     ,
     updated() {
       this.$nextTick(() => {
-        if (this.$route.meta.homeShow && this.$route.meta.keepAlive) {
+        if (this.$route.name === "homePage") {
           if (this.scroll) {
             this.scroll.destroy()
             this.__initScroll(this.$refs.homePageWrap)
+            this.scroll.scrollTo(0, this.top)
+            this.scroll.refresh()
           } else {
-            if(this.$refs.homePageWrap){
-              this.scroll = new this.BScroll(this.$refs.homePageWrap, {
-                click: true,
-                startY: this.top,
-                bounce:false
-              })
+            if (this.$refs.homePageWrap) {
+              this.__initScroll(this.$refs.homePageWrap)
+              this.scroll.scrollTo(0, this.top, 300)
               this.scroll.refresh()
             }
           }
@@ -201,26 +215,26 @@
           this.scroll && this.scroll.destroy()
         }
       })
-
     }
     ,
     methods: {
-      changeTop() {
+      /*changeTop() {
         this.top = this.scroll.y
-      },
+      },*/
       __initScroll(ele) {
-        this.__boxheight(ele); //执行函数
-        window.onresize = this.__boxheight(ele); //窗口或框架被调整大小时执行
+        this.__boxheight(ele) //执行函数
         this.scroll = new this.BScroll(ele, {
           click: true,
-          startY: this.top,
-          bounce:false
+          bounce: false
+        })
+        this.scroll.on('scrollEnd', () => {
+          this.top = this.scroll && this.scroll.y
         })
         this.scroll.refresh()
       },
       //二维码消失
       vanish() {
-        this.$store.commit("SUBSCRIBE",{result:1})
+        this.$store.commit("SUBSCRIBE", {result: 1})
       }
     }
   }
@@ -237,15 +251,16 @@
     .mint-swipe-items-wrap
       transform translateZ(0)
     img
-      width 100%
-      height 100%
+      height (520 /$rem)
+      width (1080 /$rem)
 
   .homePageContent
     background-color #fff
     position relative
     padding-top (266 /$rem)
     .inanition
-      height (30/$rem)
+      height (30 /$rem)
+
   .fanyonglog
     transform translateZ(0)
     width (70 /$rem)

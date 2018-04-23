@@ -50,12 +50,15 @@
       }
     },
     created() {
-      this.$store.dispatch("getListForApp", {
-        name: 'LoanProductType.Speed',
-        id: "",
-        size: 10,
-        hot: false
-      })
+      if(!this.recommendDatas){
+        this.$store.dispatch("getListForApp", {
+          name: 'LoanProductType.Speed',
+          id: "",
+          size: 10,
+          hot: false
+        })
+      }
+
     },
     mounted() {
     },

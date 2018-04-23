@@ -1,8 +1,8 @@
 <template>
   <scroll class="wrapper"
-          :data="newsListFor"
+          :data="newsListFor||[]"
           :pullup="true"
-          @scrollToEnd="loadData" v-if="newsListFor">
+          @scrollToEnd="loadData">
     <div>
       <header class="materialHeader" v-if="authenticationListDatas">
         <ul class="authenticationList">
