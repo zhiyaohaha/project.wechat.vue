@@ -55,15 +55,6 @@
       }
     },
     watch:{
-      rakeBackInfo(val){
-        if(val){
-          if(val.length>0){
-            this.footlineTitle="下拉加载更多"
-          }else {
-            this.footlineTitle = "暂无数据"
-          }
-        }
-      }
     },
     created() {
       this.$store.dispatch("getRakeCount").then((res)=>{
@@ -80,11 +71,12 @@
       })
     },
     mounted() {
-      if(this.rakeBackInfo ? this.rakeBackInfo.result.length === 0 : true){
-        this.footlineTitle = "暂无数据"
+      if(this.rakeBackInfo ) {
+        if(this.rakeBackInfo.result.length<1){
+          this.footlineTitle = "暂无数据"
+        }
       }
     },
-
     methods: {
 //      点击变色
       changeColor(ind) {
@@ -104,10 +96,6 @@
       //滑动加载
       loadData() {
         let that = this
-        if(this.rakeBackInfo ? this.rakeBackInfo.result.length === 0 : true){
-          this.footlineTitle = "暂无数据"
-          return
-        }
         if(this.footlineTitle === '上拉加载更多') {
           this.footlineTitle = "加载中"
           this.$store.dispatch("getRakeBackInfo", {

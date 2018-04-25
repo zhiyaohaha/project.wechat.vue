@@ -29,6 +29,11 @@
                  :placeholder="mformData.placeholder"
                  :maxlength="mformData.maxlength"
                  :name="mformData.name">
+          <a href="javascript:;" :class="{sendMsg:mformData.sendMsg,color:!num}"
+             v-if="mformData.sendMsg && mformData.units"
+             @click="sendMsg()">
+            {{mformData.units}}
+          </a>
         </li>
       </ul>
     </div>
@@ -74,9 +79,24 @@
             regular: /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
             maxlength: "11"
           },
+          {
+            message: "请正确输入您的验证码",
+            description: '验证码：',
+            placeholder: '请输入验证码',
+            name: 'authCode',
+            model: '',
+            purposeList: false,
+            sendMsg: true,
+            units: '获取验证码',
+            reg: /^\d{1,}$/,
+            regular: /^\d{4}$/,
+            errorColor: false,
+            maxlength: 4
+          },
         ],
         applyForFooterShow: true,
-        winHeight:document.body.clientHeight
+        winHeight:document.body.clientHeight,
+        num:0
       }
     },
 
@@ -112,6 +132,79 @@
       }
     },
     methods: {
+      //定时器
+      setTime() {
+        this.num = 60
+        let time = setInterval(() => {
+          this.num--
+          if (this.num === 0) {
+            this.__findModel("authCode").units = "获取验证码"
+            clearInterval(time)
+          } else {
+            this.__findModel("authCode").units = this.num + 's后重发'
+          }
+        }, 1000)
+      },
+      //获取验证码
+      sendMsg() {
+        let that = this
+        //判断输入手机号
+        if (this.__findModel("phoneNum").model === "") {
+          this.MessageBox.alert(
+            '请输入手机号',
+            '提示',
+            {
+              closeOnClickModal: true
+            }
+          )
+          return
+        }
+        if (!this.__findModel("phoneNum").regular.test(this.__findModel("phoneNum").model)) {
+          this.MessageBox.alert(
+            '请正确输入手机号',
+            '提示',
+            {
+              closeOnClickModal: true
+            }
+          )
+          return
+        }
+        if (this.num > 0) {
+          this.MessageBox.alert(
+            '请60秒后在请求验证码',
+            '提示',
+            {
+              closeOnClickModal: true
+            }
+          )
+          return
+        }
+        this.$store.dispatch('postSendMsg', {
+          code: 'SMS_123669047',
+          mobilePhone: that.__findModel("phoneNum").model,
+          smsSign: "掌金超",
+        }).then((res) => {
+          console.log(res.success)
+          if (res.success) {
+            this.MessageBox.alert(
+              '短信验证码已发送，有效时间5分钟',
+              '提示',
+              {
+                closeOnClickModal: true
+              }
+            )
+            this.setTime()
+          } else {
+            this.MessageBox.alert(
+              res.message,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
+          }
+        })
+      },
       //input的model
       __findModel(value) {
         let mformDatas = this.mformDatas
@@ -139,35 +232,55 @@
         }
         this.$store.commit("AWAITTRUE")
         let that = this
-        this.$store.dispatch("postRecordForApp", {
-          creditCard: that.$route.query.id,//信用卡Id
-          applyFormData: [
-            {
-              key: "name",
-              value: that.__findModel("userName").model
-            },
-            {
-              key: "idCard",
-              value: that.__findModel("IDnumber").model
-            },
-            {
-              key: "mobilePhone",
-              value: that.__findModel("phoneNum").model
-            },
-          ],
-          source: 'OfficialAccounts'//来源
-        }).then((res) => {
-          this.$store.commit("AWAITFALSE")
-          if (res.success) {
-            window.location.href = res.data.url
-          } else {
-            this.MessageBox({
-              title: '提示',
-              message: res.message,
-              showCancelButton: false
+        this.$store.dispatch("getIdentify2Auth", {
+          realName: that.__findModel("userName").model,
+          idCard: that.__findModel("IDnumber").model
+        }).then((res)=>{
+          if (res.data.isSame){
+            this.$store.dispatch("postRecordForApp", {
+              creditCard: that.$route.query.id,//信用卡Id
+              applyFormData: [
+                {
+                  key: "name",
+                  value: that.__findModel("userName").model
+                },
+                {
+                  key: "idCard",
+                  value: that.__findModel("IDnumber").model
+                },
+                {
+                  key: "mobilePhone",
+                  value: that.__findModel("phoneNum").model
+                },
+              ],
+              source: 'OfficialAccounts'//来源
+            }).then((result) => {
+              this.$store.commit("AWAITFALSE")
+              if (result.success) {
+                window.location.href = result.data.url
+              } else {
+                this.MessageBox.alert(
+                  result.message,
+                  "提示",
+                  {
+                    closeOnClickModal: true
+                  }
+                )
+              }
             })
+          }else {
+            this.$store.commit("AWAITFALSE")
+            this.MessageBox.alert(
+              res.message,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
           }
+
         })
+
 
       },
       //      输入框焦点时底部消失
@@ -294,6 +407,19 @@
         input:-ms-input-placeholder
           text-align right
           color #bbbbbb
+
+        .sendMsg
+          border-radius (20 /$rem)
+          float right
+          margin-top (17 /$rem)
+          width (290 /$rem)
+          height (86 /$rem)
+          background-color #bbb
+          color #ffffff
+          line-height (86 /$rem)
+          text-align center
+          &.color
+            background-color #efca7d
 
 
 </style>

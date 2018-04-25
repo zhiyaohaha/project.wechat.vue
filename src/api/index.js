@@ -34,5 +34,6 @@ export const getAccountInfo = (apiPrefix) => ajax(apiPrefix)
 export const getPosters = (apiPrefix) => ajax(apiPrefix)
 export const getLastOrderInfo = (apiPrefix) => ajax(apiPrefix)
 export const getOrderCount = (apiPrefix) => ajax(apiPrefix)
+export const getIdentify2Auth = (apiPrefix,data) => ajax(apiPrefix,data)
 
 

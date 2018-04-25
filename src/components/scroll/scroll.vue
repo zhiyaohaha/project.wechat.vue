@@ -88,7 +88,6 @@
       ...mapState(["generalizeYiPageY"])
     },
     mounted() {
-
       this.__boxheight(this.$refs.wrapper)
       // 保证在DOM渲染完毕后初始化better-scroll
       setTimeout(() => {
@@ -118,12 +117,14 @@
             this.$emit('scroll', pos)
           })
         }
-
         // 是否派发滚动到底部事件，用于上拉加载
         if (this.pullup) {
           this.scroll.on('scrollEnd', () => {
             let result = this.scroll && this.scroll.y
-            this.$store.commit("GENERALIZEYIPAGEY", {result})
+            console.log(this.$route.name)
+            if (this.$route.name !== "generalizeErPage") {
+              this.$store.commit("GENERALIZEYIPAGEY", {result})
+            }
             // 滚动到底部
             if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
               this.$emit('scrollToEnd')
@@ -171,7 +172,9 @@
     },
     updated() {
       if (this.scroll) {
-        this.scrollTo(0, this.generalizeYiPageY)
+        if(this.$route.name !== "generalizeErPage"){
+          this.scrollTo(0, this.generalizeYiPageY)
+        }
         this.refresh()
       } else {
         this.__boxheight(this.$refs.wrapper)

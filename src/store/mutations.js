@@ -26,7 +26,7 @@ export default {
   GET_LISTBANKS(state,{result}){
     console.log(result)
     //11大银行列表
-    state.listBanks = result
+    state.listBanks = result.data
   },
   GET_HOMELISTBANKCARD(state,{result}){
     console.log(result)
@@ -142,7 +142,7 @@ export default {
   },
   GET_LASTORDERINFO(state,{result}){
     console.log(result);
-    //绑卡数据
+    //获取上一次报单信息
     state.lastOrderInfo = result.data
   },
   //记录从一级代理跳转的y值
