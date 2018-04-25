@@ -1,7 +1,7 @@
 <template>
   <div class="slide_box">
     <div class="slide" ref="slider">
-      <div class="slide-group" ref='slideGroup'>
+      <div class="slideGroup" ref='slideGroup'>
         <slot>
         </slot>
       </div>
@@ -13,7 +13,7 @@
 </template>
 <script>
   import BScroll from 'better-scroll'
-
+  import {addClass} from '../../common/js/dom'
   export default {
     props: {
       loop: {
@@ -46,6 +46,7 @@
     methods: {
       setSliderWidth() {
         this.children = this.$refs.slideGroup.children;
+        addClass(this.children ,"slideItem")
         this.dots = new Array(this.children.length)
         let width = 0;
         let sliderWidth = this.$refs.slider.clientWidth;
@@ -65,8 +66,9 @@
           scrollY: false,
           momentum: false,   //关闭或者打开惯性运动的执行
           snap: {
-            loop: false,
-            threshold: 0.1,
+            loop: this.loop,
+            threshold: 0.3,
+            speed:400,
             easing: {
               style: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
               fn: function (t) {
@@ -77,7 +79,7 @@
         })
         this.slider.on('scrollEnd', () => {
           let pageIndex = this.slider.getCurrentPage().pageX
-          console.log(this.slider.getCurrentPage());
+          console.log(pageIndex);
           if (this.loop) {
             pageIndex -= 1;
           }
@@ -99,51 +101,41 @@
           pageIndex += 1
         }
         this.timer = setTimeout(() => {
-          this.scroll&&this.scroll.goToPage(pageIndex, 0, 400);//跳转到的页数 初始化页数 滑动总时间
+          this.slider&&this.slider.goToPage(pageIndex, 0, 400);//跳转到的页数 初始化页数 滑动总时间
         }, this.interval)
       }
     }
   }
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .slide {
-    width: 100%;
-    overflow: hidden;
-    height: 100%
-  }
-
-  .slide-group {
-    height: 100%;
-    background: red;
-    .slider-item {
+  .slide_box
+    height 100%
+    .slide
       width: 100%;
-      height: 100%;
-      background: yellowgreen;
-      float: left;
-      &:nth-type-of(1) {
-        background: red;
+      overflow: hidden;
+      height: 100%
+      .slideGroup
+        height 100%
+        .slideItem
+          float left
+      .dots {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 10px;
+        text-align: center;
+        .dot {
+          background: rgba(255, 255, 255, .5);
+          display: inline-block;
+          margin: 0 4px;
+          height: 8px;
+          width: 8px;
+          border-radius: 50%;
+          &.dotActive {
+            width: 20px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.8);
+          }
+        }
       }
-    }
-  }
-
-  .dots {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 10px;
-    text-align: center;
-    .dot {
-      background: rgba(255, 255, 255, .5);
-      display: inline-block;
-      margin: 0 4px;
-      height: 8px;
-      width: 8px;
-      border-radius: 50%;
-      &.dotActive {
-        width: 20px;
-        border-radius: 5px;
-        background: rgba(255, 255, 255, 0.8);
-      }
-    }
-  }
 </style>

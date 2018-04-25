@@ -23,7 +23,7 @@ import {
 } from './util/cookieUtil.js'
 import storageUtil from './util/storageUtil.js'
 import '../static/css/reset.styl'
-import './common/common/adaptive'
+import './common/js/adaptive'
 import 'mint-ui/lib/style.css'
 
 // import 'vue-ydui/dist/ydui.base.css'

@@ -6,8 +6,23 @@
     <router-view v-if="$route.meta.cache"/>
     <div class="homePageWrap" ref="homePageWrap" v-if="$route.meta.keepAlive">
       <div>
-        <!--<header class="homePageHeader">
+        <header class="homePageHeader">
           <slider>
+            <div>
+              <router-link :to="{name:'productPage'}">
+                <img src="./img/renzhengbanner.png">
+              </router-link>
+            </div>
+            <div>
+              <router-link :to="{name:'productPage'}">
+                <img src="./img/renzhengbanner.png">
+              </router-link>
+            </div>
+            <div>
+              <router-link :to="{name:'productPage'}">
+                <img src="./img/renzhengbanner.png">
+              </router-link>
+            </div>
             <div>
               <router-link :to="{name:'productPage'}">
                 <img src="./img/renzhengbanner.png">
@@ -18,11 +33,9 @@
                 <img src="./img/tuiguangbanner.png">
               </router-link>
             </div>
-            <div class="slider-item">33</div>
-            <div class="slider-item">444</div>
           </slider>
-        </header>-->
-        <header class="homePageHeader">
+        </header>
+        <!--<header class="homePageHeader">
           <mt-swipe :auto="2000" :showIndicators="false">
             <mt-swipe-item>
               <router-link :to="{name:'productPage'}">
@@ -45,7 +58,7 @@
               </router-link>
             </mt-swipe-item>
           </mt-swipe>
-        </header>
+        </header>-->
         <div class="homePageContent">
           <loanMod :loanModDatas="loanModDatas"/>
           <generalizeMod :generalizeModData="visaDatas"/>

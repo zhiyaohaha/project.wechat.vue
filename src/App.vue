@@ -156,7 +156,7 @@
     width (864 /$rem)
     height (450 /$rem)
     font-size (46 /$rem)
-    border-radius (20 /$rem)
+    border-radius (20 /$rem) !important
     .mint-msgbox-header
       box-sizing border-box
       height (86 /$rem)
@@ -182,6 +182,7 @@
       .mint-msgbox-confirm
         font-size (46 /$rem)
         background-color #efca7d
+        color #ffffff
       .mint-msgbox-cancel
         font-size (46 /$rem)
         color #333
