@@ -21,7 +21,7 @@
         <a href="javascript:;" class="protocol">
           <img src="./img/xuanze.png" v-show="imgIsShow" @touchstart="notarize">
           <img src="./img/huisekuang.png" v-show="!imgIsShow" @touchstart="notarize">
-          <span @click="openModal">我已阅读并同意 <span class="changeColor">《掌金超注册协议》</span></span>
+          <span @click="openModal">我已阅读并同意 <span class="changeColor">《掌金超平台服务协议》</span>的所有条款</span>
         </a>
         <a href="javascript:;" class="approve" @click="approve"></a>
       </div>
@@ -376,7 +376,7 @@
           font-size (36 /$rem)
           color #333333
           &.changeColor
-            color #7693BE
+            color #efca7d
       .approve
         width (996 /$rem)
         height (146 /$rem)

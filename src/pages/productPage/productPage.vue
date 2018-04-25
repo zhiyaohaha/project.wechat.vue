@@ -11,8 +11,9 @@
         <header class="productPageHeader">
           <img src="./img/banner.png">
         </header>
+        <headline :headlineData="{title:'抵押贷款',line:true}"/>
+        <mortgageMod :mortgageModDatas="mortgageModDatas"/>
         <headline :headlineData="{title:'贷款产品',line:true}"/>
-        <div class="inanition"></div>
         <recommendMod :recommendModDatas="recommendDatas"/>
         <footline :title="footlineTitle"/>
       </div>
@@ -22,21 +23,30 @@
 
 <script>
   import recommendMod from "../../components/recommendMod/recommendMod.vue"
+  import mortgageMod from "../../components/mortgageMod/mortgageMod.vue"
   import {mapState} from "vuex"
 
   export default {
     data() {
       return {
-        cardHeadLineData: {
-          title: "贷款产品",
-          aFont: ""
-        },
+        mortgageModDatas: [
+          {
+            url:{name:"loanPage"},
+            imgUrl: "../../../static/img/productImg/fangdidai.png",
+            name: "房抵贷"
+          },
+          {
+            url:{name:"loanPage"},
+            imgUrl: "../../../static/img/productImg/chedidai.png",
+            name: "车抵贷"
+          },
+        ],
         footlineTitle: "查看更多"
       }
     },
 
     components: {
-      recommendMod
+      recommendMod, mortgageMod
     },
 
     computed: {
@@ -50,7 +60,7 @@
       }
     },
     created() {
-      if(!this.recommendDatas){
+      if (!this.recommendDatas) {
         this.$store.dispatch("getListForApp", {
           name: 'LoanProductType.Speed',
           id: "",
@@ -67,9 +77,9 @@
     methods: {
       //下拉刷新逻辑
       loadData() {
-        if (this.footlineTitle === "没有更多数据啦"||this.footlineTitle === "加载中") {
+        if (this.footlineTitle === "没有更多数据啦" || this.footlineTitle === "加载中") {
           return
-        } else if(this.footlineTitle === "查看更多"){
+        } else if (this.footlineTitle === "查看更多") {
           this.footlineTitle = "加载中"
           this.$store.dispatch("getListForApp", {
             name: 'LoanProductType.Speed',
@@ -94,14 +104,10 @@
       }
     }
   }
-
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .productPageHeader
     img
       width 100%
       height (500 /$rem)
-
-  .inanition
-    height (30 /$rem)
 </style>

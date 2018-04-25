@@ -17,9 +17,7 @@
       </footer>
     </div>
     <div>
-      <transition name="awaitShow">
-        <awaitMod v-if="awaitShow"/>
-      </transition>
+      <awaitMod v-if="awaitShow"/>
     </div>
   </div>
 </template>
@@ -31,7 +29,7 @@
     data() {
       return {
         footerShow: true,
-        allIsShow:false
+        allIsShow: false
       }
     },
     components: {
@@ -92,7 +90,7 @@
               thirdLoginType: 'ThirdPlatForm.WeChat',
               nickName: userinfo.nickname,
               head: userinfo.headimgurl,
-              firstLevelId: that.getCookie("id")==="undefined"? "" :that.getCookie("id")
+              firstLevelId: that.getCookie("id") === "undefined" ? "" : that.getCookie("id")
             },
             cb: (va1, whether) => {
               this.setCookie('token', va1, 7)
@@ -107,7 +105,6 @@
                 this.setCookie('whether', whether, 7)
               }
             })
-
           })
         })
       }
@@ -123,12 +120,6 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .awaitShow-enter-active, .awaitShow-leave-active {
-    transition: all .5s;
-  }
-  .awaitShow-enter, .awaitShow-leave-active {
-    transform: translate3d(0, -100%, 0)
-  }
   .footerTap
     position fixed
     bottom 0
@@ -167,13 +158,13 @@
     .mint-msgbox-content
       height (234 /$rem)
       text-align center
-      line-height (234/$rem)
-      padding 0 (30/$rem)
+      line-height (234 /$rem)
+      padding 0 (30 /$rem)
       .mint-msgbox-message
         display inline-block
         vertical-align: middle
         text-align left
-        line-height (60/$rem)
+        line-height (60 /$rem)
         font-size (42 /$rem)
         color #333
     .mint-msgbox-btns

@@ -51,7 +51,6 @@
           <generalizeMod :generalizeModData="visaDatas"/>
           <generalizeMod :generalizeModData="generalizeModData"/>
           <headline :headlineData="{title:'热门贷款推荐',more:'更多贷款推荐',url:'/homePage/productPage'}"/>
-          <div class="inanition"></div>
           <recommendMod :recommendModDatas="recommendModDatas"/>
           <headline :headlineData="{title:'热门信用卡推荐',more:'更多信用卡推荐',url:'/homePage/creditCardPage'}"/>
           <recommendList :recommendListDatas="homeListBankCard"/>
@@ -258,8 +257,6 @@
     background-color #fff
     position relative
     padding-top (266 /$rem)
-    .inanition
-      height (30 /$rem)
 
   .fanyonglog
     transform translateZ(0)

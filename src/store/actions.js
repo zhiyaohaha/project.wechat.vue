@@ -34,8 +34,8 @@ import {
 
 let apiPrefix =   'http://api2.cpf360.com/' // 正式库
 let apiVersion1 = 'http://api.cpf360.com/' //1.0的正式库
-// let apiWeChat = 'http://211.94.137.70:8001/'//测试库
-// let apiWeChat = 'local.appapi.cpf360.com/'//1.0测试库
+// let apiPrefix = 'http://211.94.137.70:8001/'//测试库
+// let apiVersion1 = 'local.appapi.cpf360.com/'//1.0测试库
 export default {
   //验证码
   async postSendMsg({commit}, data) {

@@ -8,7 +8,6 @@
             <div class="up">
               <span class="userName">{{rebateListData.username.length > 3 ?rebateListData.username.slice(0,3)+"...":rebateListData.username}}</span>
               <span class="applyForTime">{{rebateListData.dealUserIdTime}}</span>
-              <span class="applyFor">返佣</span>
             </div>
             <div class="down">
               <span>返佣总额 ：</span>
@@ -104,8 +103,6 @@
               color #333
             .applyForTime
               margin-left (10/$rem)
-            .applyFor
-              margin-left (5/$rem)
           .down
             display block
             margin-top (52/$rem)
