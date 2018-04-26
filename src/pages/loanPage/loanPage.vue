@@ -350,36 +350,52 @@
         this.$store.commit("AWAITTRUE")
         let that = this
         let url = this.apiPrefix + "api/OfficialAccounts/InsertLoanDemand"
-        postLoanDemand(url, {
-          loanDemand: {
-            applyAmount: that.applyAmount, //贷款金额编码
-            purpose: that.consume,//贷款用途编码
-            applyTerm: that.applyTerm, //贷款期限编码
-            name: that.__findModel("username").model,  //贷款人
-            idCard: that.__findModel("IDnumber").model,  //身份证
-            telphone: that.__findModel("phoneNum").model,  //手机
-            house: propertyModDatas[0].imgUrlIsShow, //有房
-            car: propertyModDatas[1].imgUrlIsShow,  //有车
-            creditCard: propertyModDatas[2].imgUrlIsShow,//有信用卡
-            providentFund: propertyModDatas[3].imgUrlIsShow, //有公积金
-            socialSecurity: propertyModDatas[4].imgUrlIsShow //有社保
-          },
-          phone: that.__findModel("phoneNum").model,  //手机
-          verifyCode: that.__findModel("authCode").model, //验证码
-          source: "OfficialAccounts"
-        }).then(res => {
-          this.$store.commit("AWAITFALSE")
-          if (res.success) {
-            this.MessageBox.alert(
-              '您的申请已提交,我们会立刻开始处理',
-              '提示',
-              {
-                closeOnClickModal: true
+        this.$store.dispatch("getIdentify2Auth", {
+          realName: that.__findModel("username").model,
+          idCard: that.__findModel("IDnumber").model
+        }).then((res)=>{
+          if (res.data.isSame){
+            postLoanDemand(url, {
+              loanDemand: {
+                applyAmount: that.applyAmount, //贷款金额编码
+                purpose: that.consume,//贷款用途编码
+                applyTerm: that.applyTerm, //贷款期限编码
+                name: that.__findModel("username").model,  //贷款人
+                idCard: that.__findModel("IDnumber").model,  //身份证
+                telphone: that.__findModel("phoneNum").model,  //手机
+                house: propertyModDatas[0].imgUrlIsShow, //有房
+                car: propertyModDatas[1].imgUrlIsShow,  //有车
+                creditCard: propertyModDatas[2].imgUrlIsShow,//有信用卡
+                providentFund: propertyModDatas[3].imgUrlIsShow, //有公积金
+                socialSecurity: propertyModDatas[4].imgUrlIsShow //有社保
+              },
+              phone: that.__findModel("phoneNum").model,  //手机
+              verifyCode: that.__findModel("authCode").model, //验证码
+              source: "OfficialAccounts"
+            }).then(res => {
+              this.$store.commit("AWAITFALSE")
+              if (res.success) {
+                this.MessageBox.alert(
+                  '您的申请已提交,我们会立刻开始处理',
+                  '提示',
+                  {
+                    closeOnClickModal: true
+                  }
+                ).then(() => {
+                  this.$router.replace("/homePage")
+                })
+              } else {
+                this.MessageBox.alert(
+                  res.message,
+                  '提交失败',
+                  {
+                    closeOnClickModal: true
+                  }
+                )
               }
-            ).then(() => {
-              this.$router.replace("/homePage")
             })
-          } else {
+          }else {
+            this.$store.commit("AWAITFALSE")
             this.MessageBox.alert(
               res.message,
               '提交失败',
@@ -389,6 +405,7 @@
             )
           }
         })
+
 
       },
 //      输入框焦点时底部消失

@@ -1,48 +1,60 @@
 <template>
   <div v-if="productDetailsPageData">
-    <header class="productDetailsHeader">
-      <div class="imgWrap">
-        <img :src="productDetailsPageData.basic._logo">
-      </div>
-      <div class="describe">
-        <div class="productTitle">{{productDetailsPageData.basic.name}}</div>
-        <div class="limit">
-          额度范围:{{productDetailsPageData.filter.amount_min+'-'+productDetailsPageData.filter.amount_max}}
+    <scroll>
+      <div v-if="productDetailsPageData">
+        <header class="productDetailsHeader">
+          <div class="imgWrap">
+            <img :src="productDetailsPageData.basic._logo">
+          </div>
+          <div class="describe">
+            <div class="productTitle">{{productDetailsPageData.basic.name}}</div>
+            <div class="limit">
+              额度范围:{{productDetailsPageData.filter.amount_min+'-'+productDetailsPageData.filter.amount_max}}
+            </div>
+            <div class="lightspot">{{productDetailsPageData.summary}}</div>
+          </div>
+        </header>
+        <div class="productDetailContent">
+          <headline :headlineData="{title:'申请条件',line:true}"/>
+          <div class="applyForCondition">
+            <ul class="applyForList">
+              <li v-for="(applyForListData, index) in (productDetailsPageData.filter.applicationConditions.split('\n'))"
+                  :key="index">
+                <span>{{applyForListData}}</span>
+              </li>
+            </ul>
+          </div>
+          <headline :headlineData="{title:'认证材料',line:true}"/>
+          <authenticationList :authenticationListDatas="productDetailsPageData.attachment"/>
+          <ul class="mform">
+            <li v-for="(mformData, index) in mformDatas" :key="index">
+              <span class="description">{{mformData.description}}</span>
+              <input type="text" v-model="mformData.model"
+                     @blur="loseFocus()"
+                     @input="goodInput(mformData.reg,mformData.model,index)"
+                     @focus="isFooter"
+                     :placeholder="mformData.placeholder"
+                     :maxlength="mformData.maxlength"
+                     :name="mformData.name">
+              <a href="javascript:;" :class="{sendMsg:mformData.sendMsg,color:!num}"
+                 v-if="mformData.sendMsg && mformData.units"
+                 @click="sendMsg()">
+                {{mformData.units}}
+              </a>
+            </li>
+          </ul>
         </div>
-        <div class="lightspot">{{productDetailsPageData.summary}}</div>
+        <footer class="occupiedFooter"></footer>
       </div>
-    </header>
-    <div class="productDetailContent">
-      <headline :headlineData="{title:'申请条件',line:true}"/>
-      <div class="applyForCondition">
-        <ul class="applyForList">
-          <li v-for="(applyForListData, index) in (productDetailsPageData.filter.applicationConditions.split('\n'))"
-              :key="index">
-            <span>{{applyForListData}}</span>
-          </li>
-        </ul>
-      </div>
-      <headline :headlineData="{title:'认证材料',line:true}"/>
-      <authenticationList :authenticationListDatas="productDetailsPageData.attachment"/>
-      <ul class="mform">
-        <li v-for="(mformData, index) in mformDatas" :key="index">
-          <span class="description">{{mformData.description}}</span>
-          <input type="text" v-model="mformData.model"
-                 @blur="loseFocus()"
-                 @input="goodInput(mformData.reg,mformData.model,index)"
-                 @focus="isFooter"
-                 :placeholder="mformData.placeholder"
-                 :maxlength="mformData.maxlength"
-                 :name="mformData.name">
-        </li>
-      </ul>
-    </div>
+    </scroll>
     <footer class="productDetailsFooter" v-show="FooterShow" @click="applyFor">
       <a href="javascript:">
         立即申请
       </a>
     </footer>
   </div>
+
+
 </template>
 
 <script>
@@ -85,9 +97,24 @@
             regular: /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
             maxlength: "11"
           },
+          {
+            message: "请正确输入您的验证码",
+            description: '验证码：',
+            placeholder: '请输入验证码',
+            name: 'authCode',
+            model: '',
+            purposeList: false,
+            sendMsg: true,
+            units: '获取验证码',
+            reg: /^\d{1,}$/,
+            regular: /^\d{4}$/,
+            errorColor: false,
+            maxlength: 4
+          },
         ],
         FooterShow: true,
-        winHeight: document.body.clientHeight
+        winHeight: document.body.clientHeight,
+        num: 0
       }
     },
 
@@ -96,13 +123,13 @@
     },
 
     computed: {
-      ...mapState(['productDetailsPageData','lastOrderInfo']),
+      ...mapState(['productDetailsPageData', 'lastOrderInfo']),
     },
     watch: {},
     created() {
       this.$store.dispatch("getDetailedFor", {id: this.$route.query.id})
-      this.$store.dispatch("getLastOrderInfo").then(()=>{
-        if(this.lastOrderInfo){
+      this.$store.dispatch("getLastOrderInfo").then(() => {
+        if (this.lastOrderInfo) {
           this.__findModel("userName").model = this.lastOrderInfo.name
           this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
           this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
@@ -112,7 +139,7 @@
     mounted() {
     },
     updated() {
-      let that =this
+      let that = this
       window.onresize = function (e) {
         let thisHeight = document.body.clientHeight
         if (that.winHeight - thisHeight > 140) {
@@ -123,6 +150,79 @@
       }
     },
     methods: {
+      //定时器
+      setTime() {
+        this.num = 60
+        let time = setInterval(() => {
+          this.num--
+          if (this.num === 0) {
+            this.__findModel("authCode").units = "获取验证码"
+            clearInterval(time)
+          } else {
+            this.__findModel("authCode").units = this.num + 's后重发'
+          }
+        }, 1000)
+      },
+      //短信验证码
+      sendMsg() {
+        let that = this
+        //判断输入手机号
+        if (this.__findModel("phoneNum").model === "") {
+          this.MessageBox.alert(
+            '请输入手机号',
+            '提示',
+            {
+              closeOnClickModal: true
+            }
+          )
+          return
+        }
+        if (!this.__findModel("phoneNum").regular.test(this.__findModel("phoneNum").model)) {
+          this.MessageBox.alert(
+            '请正确输入手机号',
+            '提示',
+            {
+              closeOnClickModal: true
+            }
+          )
+          return
+        }
+        if (this.num > 0) {
+          this.MessageBox.alert(
+            '请60秒后在请求验证码',
+            '提示',
+            {
+              closeOnClickModal: true
+            }
+          )
+          return
+        }
+        this.$store.dispatch('postSendMsg', {
+          code: 'SMS_123669047',
+          mobilePhone: that.__findModel("phoneNum").model,
+          smsSign: "掌金超",
+        }).then((res) => {
+          console.log(res.success)
+          if (res.success) {
+            this.MessageBox.alert(
+              '短信验证码已发送，有效时间5分钟',
+              '提示',
+              {
+                closeOnClickModal: true
+              }
+            )
+            this.setTime()
+          } else {
+            this.MessageBox.alert(
+              res.message,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
+          }
+        })
+      },
       //input的model
       __findModel(value) {
         let mformDatas = this.mformDatas
@@ -150,27 +250,44 @@
           }
         }
         this.$store.commit("AWAITTRUE")
+        //请求
         let data = {
           mobilePhone: that.__findModel("phoneNum").model,//手机
           idCard: that.__findModel("IDnumber").model,//身份证
           name: that.__findModel("userName").model,//姓名
+          verifyCode: that.__findModel("authCode").model,//验证码
           product: that.productDetailsPageData.id,//产品Id
           source: 'OfficialAccounts'  //来源
         }
         // alert(JSON.stringify(data))
         let url = this.apiPrefix + "api/LoanOrder/SpeedOrderRecordForApp"
-        postSpeedOrder(url, data).then((res) => {
-          this.$store.commit("AWAITFALSE")
-          if(res.success){
-            window.location.href = res.data.url
-          }else {
-            this.MessageBox({
-              title: '提交失败',
-              message: res.message,
-              showCancelButton: false
+        this.$store.dispatch("getIdentify2Auth", {
+          realName: that.__findModel("userName").model,
+          idCard: that.__findModel("IDnumber").model
+        }).then((res) => {
+          if (res.data.isSame) {
+            postSpeedOrder(url, data).then((res) => {
+              this.$store.commit("AWAITFALSE")
+              if (res.success) {
+                window.location.href = res.data.url
+              } else {
+                this.MessageBox({
+                  title: '提交失败',
+                  message: res.message,
+                  showCancelButton: false
+                })
+              }
             })
+          } else {
+            this.$store.commit("AWAITFALSE")
+            this.MessageBox.alert(
+              res.message,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
           }
-
         })
       },
       isFooter() {
@@ -191,14 +308,6 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .ToastStyle
-    width (200 /$rem)
-    height (70 /$rem)
-    font-size (40 /$rem)
-    color #ffffff
-    background-color #333
-    text-align center
-    line-height (70 /$rem)
 
   .productDetailsHeader
     box-sizing border-box
@@ -266,10 +375,22 @@
         input:-ms-input-placeholder
           text-align right
           color #bbbbbb
+        .sendMsg
+          border-radius (20 /$rem)
+          float right
+          margin-top (17 /$rem)
+          width (290 /$rem)
+          height (86 /$rem)
+          background-color #bbb
+          color #ffffff
+          line-height (86 /$rem)
+          text-align center
+          &.color
+            background-color #efca7d
 
     .applyForCondition
       box-sizing border-box
-      padding (30 /$rem) (30/$rem) (30 /$rem) (30 /$rem)
+      padding (30 /$rem) (30 /$rem) (30 /$rem) (30 /$rem)
       border-bottom 1px solid #f2f2f2
       .applyForList
         font-size (36 /$rem)
@@ -280,6 +401,10 @@
   .setting
     height (600 /$rem)
     background-color: #f6f6f6
+
+  .occupiedFooter
+    width (1080 /$rem)
+    height (146 /$rem)
 
   .productDetailsFooter
     width (1080 /$rem)

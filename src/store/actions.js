@@ -29,10 +29,13 @@ import {
   getPosters,
   getLastOrderInfo,
   getOrderCount,
+  getIdentify2Auth
 } from '../api'
 
-let apiPrefix =  'http://api2.cpf360.com/' // 正式库
+let apiPrefix =   'http://api2.cpf360.com/' // 正式库
+let apiVersion1 = 'http://api.cpf360.com/' //1.0的正式库
 // let apiWeChat = 'http://211.94.137.70:8001/'//测试库
+// let apiWeChat = 'local.appapi.cpf360.com/'//1.0测试库
 export default {
   //验证码
   async postSendMsg({commit}, data) {
@@ -144,12 +147,9 @@ export default {
   //银行列表
   async getListBanks({commit},) {
     let url = apiPrefix + "api/CreditCard/ListBanksForApp"
-    let res = await getListBanks(url)
-    const result = res.data.filter((item) => {
-      return item.name === "交通银行" || item.name === "兴业银行" || item.name === "光大银行" || item.name === "浦发银行"
-    })
+    let result = await getListBanks(url)
     commit('GET_LISTBANKS', {result})
-    return result
+    return result.data
   },
   //信用卡列表
   async getListBankCard({commit}, {data, site}) {
@@ -303,6 +303,7 @@ export default {
     }
     commit('GET_BINBANKCARD', {result})
   },
+  //获取账户信息
   async getAccountInfo({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetAccountInfo"
     const result = await getAccountInfo(url)
@@ -314,6 +315,7 @@ export default {
     const result = await getPosters(url)
     return result
   },
+  // 获取上一次报单信息
   async getLastOrderInfo({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetLastOrderInfo"
     const result = await getLastOrderInfo(url)
@@ -321,15 +323,23 @@ export default {
       commit("GET_LASTORDERINFO",{result})
     }
   },
+  //获取订单的总数
   async getOrderCount({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetOrderCount"
     const result = await getOrderCount(url)
     return result.data
   },
+  // 获取分佣的总数
   async getRakeCount({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetRakeCount"
     const result = await getOrderCount(url)
     return result.data
+  },
+  // 二要素验证
+  async getIdentify2Auth({commit},data) {
+    let url = apiVersion1 + "OfficialAccounts/Identify2Auth"
+    const result = await getIdentify2Auth(url,data)
+    return result
   },
   //改变时间
   changeTime({commit}) {

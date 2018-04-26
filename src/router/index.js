@@ -7,6 +7,7 @@ import {
   pushHistory,
   __GetRequest
 } from "../util/viewportWidth.js"
+import store from '../store'
 import {MessageBox} from "mint-ui"
 const homePage = () => import('../pages/homePage/homePage.vue')
 const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
@@ -239,6 +240,7 @@ let goBack = function (e) {
   }
 }
 router.beforeEach((to, from, next) => {
+  store.commit("AWAITFALSE")
   if(to.name !== "loanPage"||to.name !== "WithdrawalPage"||to.name!=="depositPage"||to.name!=="productDetailsPage"||to.name !== "cardApplyForPage"||to.name!=="phoneApprove"){
     MessageBox.close(false)
   }

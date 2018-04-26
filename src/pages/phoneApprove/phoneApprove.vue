@@ -150,7 +150,6 @@
       approve() {
         let userinfo = this.readTodos()
         let that = this
-
         if(userinfo.openid === undefined){
           this.MessageBox.alert("请从公众号或者扫二维码进入","失败").then(()=>{
             WeixinJSBridge.call('closeWindow')
@@ -183,7 +182,6 @@
           })
           return
         }
-
         if (this.forbid > 0) {
           return
         }

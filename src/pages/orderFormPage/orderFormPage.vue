@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <header class="orderFormHeader" v-if="orderListFor1">
+  <div  v-if="orderListFor1">
+    <header class="orderFormHeader">
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
@@ -10,10 +10,15 @@
     <scroll class="wrapper"
             :data="orderListFor1?orderListFor1.data : []"
             :pullup="true"
-            @scrollToEnd="loadData"
-    >
+            @scrollToEnd="loadData">
       <div>
-        <orderFormList :orderFormListDatas="orderListFor1" :screenIsShow="screenIsShow"/>
+        <header class="orderFormListHeader">
+          <span class="font">订单列表</span>
+          <a href="javascript:;" @click="screenIsShow(false)">
+            <img src="../../../static/img/myImg/content_icon_shaixuan_normal.png"><span>筛选</span>
+          </a>
+        </header>
+        <orderFormList :orderFormListDatas="orderListFor1"/>
         <footline :title="footlineTitle"/>
       </div>
     </scroll>
@@ -156,7 +161,6 @@
               products += item.product + ","
             }
           })
-
           code = code.substring(0, code.length - 1) || 'Apply,Auditing,Loan,UserGiveUp,Refuse'
           products = products.substring(0, products.length - 1)
           console.log(products)
@@ -215,7 +219,6 @@
             }
           })
         }
-
       }
     }
   }
@@ -241,6 +244,35 @@
         font-size (46 /$rem)
       &.active
         color #efca7d
+
+  .orderFormListHeader
+    box-sizing border-box
+    height (92 /$rem)
+    background-color #fff
+    padding-top (50/$rem)
+    padding-left (30/$rem)
+    .font
+      float left
+      color #333
+      font-size (42 /$rem)
+    a
+      position relative
+      float right
+      width (122/$rem)
+      height (40/$rem)
+      margin-right (30/$rem)
+      img
+        display inline-block
+        width (40/$rem)
+        vertical-align: top
+      span
+        position absolute
+        top 0
+        left (50/$rem)
+        line-height (36/$rem)
+        font-size (36/$rem)
+        color #bbbbbb
+
 
   .wrapper
     overflow hidden

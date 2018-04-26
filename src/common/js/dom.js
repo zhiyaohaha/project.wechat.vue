@@ -49,7 +49,7 @@ export function getRect(el) {
       height: rect.height
     }
   } else {
-    //返回上下左右
+    //返回上左 高低
     return {
       top: el.offsetTop,
       left: el.offsetLeft,
