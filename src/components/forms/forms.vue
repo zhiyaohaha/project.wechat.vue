@@ -4,7 +4,7 @@
       <li v-for="(mformData, index) in mformDatas" :key="index">
         <span class="description">{{mformData.description}}</span>
         <input type="text" v-model="mformData.model"
-               @blur="loseFocus" :readonly="mformData.purposeList"
+               @blur="loseFocus" :readonly="mformData.readonly"
                @input="goodInput(mformData.reg,mformData.model,index)"
                @focus="pullDown(true,index)"
                :placeholder="mformData.placeholder"
@@ -21,28 +21,57 @@
         </a>
       </li>
     </ul>
-
-    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
+    <verification v-if="verificationShow" v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
+    <mt-popup v-if="pickerModDatas" v-model="shadeShow" position="bottom" @change="onValuesChange" class="maskLayer"
+              showToolbar="true">
+      <div class="shadeIsShowHeader">
+          <span @touchstart="pullDown(false,mformDatasInd,false)" class="cancel">
+            取消
+          </span>
+        <span @touchstart="pullDown(false,mformDatasInd,true)" class="ascertain">
+            确定
+          </span>
+      </div>
+      <pickerMod :pickerModDatas="pickerModDatas" :shadeIsShow="shadeIsShowInd" :onValuesChange="onValuesChange"/>
+    </mt-popup>
   </div>
 </template>
 <script>
   import verification from '../../components/verification/verification.vue'
+  import {mapState} from 'vuex'
+
   export default {
     name: "forms",
-    props:{
-      mformDatas:{
-        type: Object,
+    props: {
+      //输入框数组
+      mformDatas: {
+        type: Array,
         default: null
       },
-      footerShow:{
+      // 底部显示
+      footerShow: {
+        type: Boolean,
+        default: true
+      },
+      //底部弹窗
+      pickerModDatas: {
+        type: Array,
+        default: null
+      },
+      //是否开启图形验证码
+      verificationShow:{
         type:Boolean,
-        default:true
-      }
+        default:false
+      },
+
     },
     data() {
       return {
-        num:0,
-        verificationShow:false
+        num: 0,//倒计时
+        verificationShow: false,//图形二维码
+        mformDatasInd: 0,//选中的index
+        shadeShow: false,//弹窗的显示
+        reveal: false//弹窗点击确定和去消
       }
     },
 
@@ -50,13 +79,60 @@
       verification,
     },
 
-    computed: {},
-
+    computed: {
+      ...mapState(["time", "lastOrderInfo"]),
+      ...mapGetters(["key"]),
+      shadeIsShowInd() {
+        return this.shadeShow ? 3 : 0
+      }
+    },
+    created(){
+      this.mformDatas&&this.$store.dispatch("getLastOrderInfo").then(() => {
+        if (this.lastOrderInfo) {
+          this.__findModel("username").model = this.lastOrderInfo.name
+          this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
+          this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
+        }
+      })
+    },
     mounted() {
 
     },
 
     methods: {
+      //发送短信验证
+      __SendVerifyCode(validateCode) {
+        this.$store.commit("AWAITTRUE")
+        let that = this
+        this.$store.dispatch('postSendMsg', {
+          code: 'SMS_127153204',
+          validateKey: that.key + that.time,
+          mobilePhone: that.__findModel("phoneNum").model,
+          validateCode: validateCode,
+          smsSign: "掌金超",
+          needvalidateCode: true
+        }).then((res) => {
+          this.$store.commit("AWAITFALSE")
+          if (res.success) {
+            this.MessageBox.alert(
+              '短信验证码已发送，有效时间5分钟',
+              '提示',
+              {
+                closeOnClickModal: true
+              }
+            )
+            this.setTime()
+          } else {
+            this.MessageBox.alert(
+              res.message,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
+          }
+        })
+      },
       //查找数组
       __findModel(value) {
         let mformDatas = this.mformDatas
@@ -84,7 +160,7 @@
           this.mformDatas[index].model = flag.substring(0, flag.length - 1)
         }
       },
-      //下拉滑动弹窗谈起
+      //下拉滑动弹窗谈起||获取焦点
       pullDown(flag, index, inputValue) {
         this.mformDatasInd = index
         if (this.mformDatas[index].purposeList) {
@@ -95,8 +171,8 @@
           this.footerShow = false
         }
       },
-    //  苹果手机底部出现
-      loseFocus(){
+      //  苹果手机底部出现
+      loseFocus() {
         this.footerShow = true
       },
       changeShow() {
@@ -113,8 +189,12 @@
         }
       },
       //发送短信验证||调出图形验证码
-      sendMsg(){
+      sendMsg() {
         this.verificationShow = true
+      },
+      //  pik组件的选中值
+      onValuesChange(index) {
+        this.mformDatas[this.mformDatasInd].model = this.pickerModDatas[index].name
       }
     }
   }

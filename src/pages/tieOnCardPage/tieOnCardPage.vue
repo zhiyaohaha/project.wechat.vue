@@ -186,7 +186,7 @@
       onValuesChange(index) {
         this.mformDatas[this.mformDatasInd].model = this.bankArr[index].text
       },
-      ValuesChange(select1, pitchOn) {
+      ValuesChange(select, pitchOn) {
         let city
         this.provinceAndCity[select1].c[pitchOn] ?
           city = this.provinceAndCity[select1].c[pitchOn].b

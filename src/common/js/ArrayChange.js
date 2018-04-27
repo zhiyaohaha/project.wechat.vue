@@ -4,8 +4,7 @@ export const findModel = function (Arr, name, val) {
 }
 export const toPercent = function (num) {
   let str
-  str = Number(num*100).toFixed(4)
+  str = Number(num*100).toFixed(2)
   str = str + "%"
-  console.log(str);
   return str
 }

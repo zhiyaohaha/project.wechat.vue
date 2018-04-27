@@ -24,12 +24,13 @@ import {
   getAdCodes,
   postFiveRealVerifyCode,
   getListScheduleForApp,
-  getBinBankCard,
   getAccountInfo,
   getPosters,
   getLastOrderInfo,
   getOrderCount,
-  getIdentify2Auth
+  getIdentify2Auth,
+  postFillUserInfo,
+  getAllArea
 } from '../api'
 
 let apiPrefix =   'http://api2.cpf360.com/' // 正式库
@@ -56,6 +57,10 @@ export default {
       flag = result.data.id
       whether = 1
       commit('POST_OPENID', {result})
+      if(result.data.hasIdCard){
+        whether = 2
+      }
+
     } else {
       flag = ""
       whether = 0
@@ -71,7 +76,7 @@ export default {
     let flag
     if (result.success) {
       flag = result.data.id
-      whether = 1
+      whether = 2
       commit('POST_OPENID', {result})
     } else {
       flag = ""
@@ -111,6 +116,13 @@ export default {
     if(result.success){
       commit('GET_BINBANKCARD', {result})
     }
+    return result
+  },
+  //补充用户信息
+  async postFillUserInfo({commit},{data,cb}) {
+    // debugger
+    let url = apiPrefix + '/api/OfficialAccounts/FillUserInfo'
+    const result = await postFillUserInfo(url, data)
     return result
   },
   //获取用户信息
@@ -294,15 +306,6 @@ export default {
       commit('GET_LISTSCHEDULEFORAPP', {result})
     }
   },
-  //是否实名
-  async getBinBankCard({commit},{cb}) {
-    let url = apiPrefix + "api/OfficialAccounts/BinBankCard"
-    const result = await getBinBankCard(url)
-    if(result.success){
-      cb&&cb(2)
-    }
-    commit('GET_BINBANKCARD', {result})
-  },
   //获取账户信息
   async getAccountInfo({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetAccountInfo"
@@ -340,6 +343,11 @@ export default {
     let url = apiVersion1 + "OfficialAccounts/Identify2Auth"
     const result = await getIdentify2Auth(url,data)
     return result
+  },
+  async getAllArea({commit}) {
+    let url = apiPrefix + "api/Area/GetAllArea"
+    const result = await getAllArea(url)
+    return result.data
   },
   //改变时间
   changeTime({commit}) {

@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-  import {mapState, mapActions} from 'vuex'
+  import {mapState} from 'vuex'
   import awaitMod from "./components/awaitMod/awaitMod"
 
   export default {
@@ -100,11 +100,6 @@
           }).then(() => {
             this.allIsShow = true
             this.$store.commit("AWAITFALSE")
-            this.$store.dispatch('getBinBankCard', {
-              cb: (whether) => {
-                this.setCookie('whether', whether, 7)
-              }
-            })
           })
         })
       }
@@ -175,6 +170,7 @@
         background-color #efca7d
       .mint-msgbox-cancel
         font-size (46 /$rem)
-        color #333
+        color #fff
+        background-color #efca7d
 
 </style>

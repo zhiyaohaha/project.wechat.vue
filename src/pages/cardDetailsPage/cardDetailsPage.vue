@@ -18,7 +18,7 @@
    </scroll>
     <footer class="CardDetailsFooter">
       <a href="javascript:;"
-         @click.stop="$router.push({path:'/homePage/cardApplyForPage',query:{id:bankCardDetail.id}})">立即申请</a>
+         @click.stop="skip">立即申请</a>
     </footer>
   </div>
 </template>
@@ -98,6 +98,18 @@
     },
 
     methods: {
+      skip(){
+        let that = this
+        let num = this.getCookie('whether') * 1
+        console.log(num);
+        if(num === 1){
+          this.MessageBox.confirm('请确认个人信息后继续办理业务',"提示").then(() => {
+            this.$router.push({name:'personalDataPage',query:{id:that.$route.query.id},params:{name:"cardApplyForPage"}})
+          })
+        }else {
+          this.$router.push({path:'/homePage/cardApplyForPage',query:{id:that.$route.query.id}})
+        }
+      }
     }
   }
 
