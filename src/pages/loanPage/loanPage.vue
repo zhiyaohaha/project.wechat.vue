@@ -471,9 +471,8 @@
       ,
 //      三角点击
       pullDown(flag, index, inputValue) {
-
         this.mformDatasInd = index
-        if (index < 3) {
+        if (this.mformDatas[index].purposeList) {
           this.reveal = inputValue
           switch (index) {
             case 0:

@@ -155,8 +155,9 @@
         this.num = 60
         let time = setInterval(() => {
           this.num--
-          if (this.num === 0) {
+          if (this.num === 0||this.num < 0) {
             this.__findModel("authCode").units = "获取验证码"
+            this.num = 0
             clearInterval(time)
           } else {
             this.__findModel("authCode").units = this.num + 's后重发'

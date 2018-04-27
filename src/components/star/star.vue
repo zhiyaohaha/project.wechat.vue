@@ -20,13 +20,12 @@
         const scs = []
 
         const score = this.score
-        const integerScore = Math.floor(score)
+        const integerScore = Math.floor(score/20)
 
         // 向数组中添加CLASS_ON
         for (let i = 0; i < integerScore; i++) {
           scs.unshift(CLASS_ON)
         }
-        // 向数组中添加CLASS_HALF
         // 向数组中添加CLASS_OFF
         while(scs.length<5) {
           scs.unshift(CLASS_OFF)
@@ -47,11 +46,11 @@
       float right
       background-repeat no-repeat
       background-size 100% 100%
-      width (35/$rem)
-      height (30/$rem)
-      margin-right (7/$rem)
+      width (38/$rem)
+      height (38/$rem)
+      margin-right (6/$rem)
       &.on
-        background-image url("./img/content_icon_chenggonlv_normal.png")
+        background-image url("./img/huangse.png")
       &.off
-        background-image url("./img/content_icon_chenggonglv_disabled.png")
+        background-image url("./img/huise.png")
 </style>

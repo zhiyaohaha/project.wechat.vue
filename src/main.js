@@ -21,6 +21,10 @@ import {
   getCookie,
   setCookie
 } from './util/cookieUtil.js'
+import {
+  toPercent
+} from "./common/js/ArrayChange"
+
 import storageUtil from './util/storageUtil.js'
 import '../static/css/reset.styl'
 import './common/js/adaptive'
@@ -45,6 +49,7 @@ Vue.prototype.getCookie = getCookie
 Vue.prototype.setCookie = setCookie
 Vue.prototype.saveTodos = storageUtil.saveTodos
 Vue.prototype.readTodos = storageUtil.readTodos
+Vue.prototype.toPercent = toPercent
 Vue.prototype.MessageBox = MessageBox
 Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
 // Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
