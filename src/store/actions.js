@@ -30,12 +30,13 @@ import {
   getOrderCount,
   getIdentify2Auth,
   postFillUserInfo,
-  getAllArea
+  getAllArea,
+  getDemandList
 } from '../api'
 
-let apiPrefix =   'http://api2.cpf360.com/' // 正式库
+// let apiPrefix =   'http://api2.cpf360.com/' // 正式库
 let apiVersion1 = 'http://api.cpf360.com/' //1.0的正式库
-// let apiPrefix = 'http://211.94.137.70:8001/'//测试库
+let apiPrefix = 'http://211.94.137.70:8001/'//测试库
 // let apiVersion1 = 'local.appapi.cpf360.com/'//1.0测试库
 export default {
   //验证码
@@ -344,11 +345,24 @@ export default {
     const result = await getIdentify2Auth(url,data)
     return result
   },
+  //城市
   async getAllArea({commit}) {
     let url = apiPrefix + "api/Area/GetAllArea"
     const result = await getAllArea(url)
     return result.data
   },
+  //需求单
+  async getDemandList({commit},data) {
+    let url = apiPrefix + "api/OfficialAccounts/GeDemandList"
+    const result = await getDemandList(url,data)
+    if(data.id){
+      return result.data.list
+    }else {
+      commit("GETDEMANDLIST",{result})
+    }
+  },
+
+
   //改变时间
   changeTime({commit}) {
     commit("CHANGETIME")

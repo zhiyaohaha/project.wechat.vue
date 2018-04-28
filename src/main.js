@@ -51,8 +51,8 @@ Vue.prototype.saveTodos = storageUtil.saveTodos
 Vue.prototype.readTodos = storageUtil.readTodos
 Vue.prototype.toPercent = toPercent
 Vue.prototype.MessageBox = MessageBox
-Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
-// Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
+// Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
+Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
 
 Vue.prototype.BScroll = BScroll
 /*wx.config({

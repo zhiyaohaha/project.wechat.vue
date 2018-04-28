@@ -34,8 +34,9 @@ const generalizePage = () => import('../pages/generalizePage/generalizePage.vue'
 const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue')
 const materialPage = () => import('../pages/materialPage/materialPage.vue')
 const articlePage = () => import('../pages/articlePage/articlePage.vue')
-const creditHistoryPage = () => import('../pages/creditHistoryPage/creditHistoryPage.vue')
+const quickenLoansHistoryPage = () => import('../pages/quickenLoansHistoryPage/quickenLoansHistoryPage.vue')
 const personalDataPage = () => import('../pages/personalDataPage/personalDataPage.vue')
+const quickenLoansDetailPage = () => import('../pages/quickenLoansDetailPage/quickenLoansDetailPage.vue')
 
 
 // keepAlive判断一级路由是否应该存在
@@ -161,7 +162,7 @@ const router = new Router({
       path: '/personalDataPage',
       component: personalDataPage,
       name: "personalDataPage",
-      meta: {keepAlive: false, isTop: true, title: '个人信息'},
+      meta: {keepAlive: false, isTop: true,  cache: true,title: '个人信息'},
     },
     /*{
       path: '/authenticationPage',
@@ -193,11 +194,22 @@ const router = new Router({
           component: orderFormPage,
           meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '订单明细'},
         },
+
         {
-          path: 'creditHistoryPage',
-          component: creditHistoryPage,
+          path: 'quickenLoansHistoryPage',
+          name: 'quickenLoansHistoryPage',
+          component: quickenLoansHistoryPage,
           meta: {keepAlive: false, isTop: true, register: true, title: '贷款历史'},
+          children:[
+            {
+              path: 'quickenLoansDetailPage',
+              name: 'quickenLoansDetailPage',
+              component: quickenLoansDetailPage,
+              meta: {keepAlive: false, isTop: false, cache: true,register: true, title: '快速贷款信息'},
+            },
+          ],
         },
+
         {
           path: 'rebatePage',
           name: 'rebatePage',

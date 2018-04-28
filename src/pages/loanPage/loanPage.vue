@@ -2450,8 +2450,7 @@
       //下拉列表数据
       async getLoanAmount(codes) {
         let url = this.apiPrefix + '/api/Values/GetSelectDataSourceLogin'
-        this.Arr = await
-          getLoanAmount(url, {codes: codes})
+        this.Arr = await getLoanAmount(url, {codes: codes})
         let Arr = []
         Arr = this.Arr.data.map((item) => {
           return item.childrens
@@ -2561,10 +2560,11 @@
               this.pickerModDatas = this.moneyArr
               break
             case 1:
-              this.pickerModDatas = this.consumeArr
+
+              this.pickerModDatas = this.deadlineArr
               break
             case 2:
-              this.pickerModDatas = this.deadlineArr
+              this.pickerModDatas = this.consumeArr
               break
             default:
               this.pickerModDatas = []

@@ -108,10 +108,6 @@
     },
     methods: {
       //记录跳转
-      recordY(){
-        let result = this.$refs.scroll.scroll.y
-        this.$store.commit("GENERALIZEYIPAGEY",{result})
-      },
       loadData() {
         let that = this, time
         if (this.footerTitle === "加载中" || this.footerTitle === "没有更多数据啦") {

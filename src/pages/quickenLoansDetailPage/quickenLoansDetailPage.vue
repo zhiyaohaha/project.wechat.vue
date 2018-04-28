@@ -1,0 +1,26 @@
+<template>
+  <div>
+
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "quicken-loans-detail-page",
+    data() {
+      return {}
+    },
+
+    components: {},
+
+    computed: {},
+
+    mounted() {
+    },
+
+    methods: {}
+  }
+
+</script>
+<style lang='stylus' rel="stylesheet/stylus">
+</style>
