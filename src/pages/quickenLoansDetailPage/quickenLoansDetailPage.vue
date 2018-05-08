@@ -1,23 +1,37 @@
 <template>
-  <div>
-
+  <div class="quickenLoansDetailPage" v-if="demandDetail">
+    <messageList :items="demandDetail"/>
   </div>
 </template>
 
 <script>
+  import messageList from "../../components/messageList/messageList"
+  import {mapState} from "vuex"
+
   export default {
     name: "quicken-loans-detail-page",
     data() {
       return {}
     },
-
-    components: {},
-
-    computed: {},
-
-    mounted() {
+    components: {
+      messageList
     },
 
+    computed: {
+      ...mapState(["demandDetail"])
+    },
+    created() {
+      let that = this
+      this.$store.dispatch("getDemandDetail", {
+        id: that.$route.query.id
+      })
+
+    },
+    mounted() {
+    },
+    updated() {
+
+    },
     methods: {}
   }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="quickenLoansHistoryList" v-if="userInfos">
     <ul>
-      <li v-for="(userInfo, index) in userInfos" :key="index" @click="$router.push({name:'quickenLoansDetailPage',query:userInfo.id})">
+      <li v-for="(userInfo, index) in userInfos" :key="index" @click="$router.push({name:'quickenLoansDetailPage',query:{id:userInfo.id}})">
         <div class="pic">
           <img :src="userInfo.headhead||'../../../static/img/personalDataImg/gerenxinxi_touxiang.png'">
         </div>
@@ -15,6 +15,7 @@
             <img v-if="userInfo.creditCard" src="./img/youxinyongka.png">
             <img v-if="userInfo.providentFund" src="./img/yougongjijin.png">
             <img v-if="userInfo.policy" src="./img/youbaodan.png">
+            <img v-if="userInfo.socialSecurity" src="./img/youshebao.png"/>
           </div>
           <div class="down">
             {{userInfo.name}}
@@ -87,6 +88,7 @@
             margin-top (20/$rem)
             font-size (40/$rem)
         .contentRight
+          margin-top (9/$rem)
           float right
           text-align right
           .up
@@ -94,7 +96,7 @@
             color #bbb
           .down
             font-size (42/$rem)
-            margin-top (70/$rem)
+            margin-top (61/$rem)
             line-height (34/$rem)
             color #efca7d
             .unit

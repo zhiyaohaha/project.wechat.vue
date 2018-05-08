@@ -146,9 +146,69 @@ export default {
     state.generalizeYiPageY = result
   },
   //需求单
-  GETDEMANDLIST(state, {result, data}) {
+  GETDEMANDLIST(state, {result}) {
     console.log(result)
     let res = result.data.list
     state.demandList = res
-  }
+  },
+  //需求单详情
+  GETDEMANDDETAIL(state, {result}) {
+    console.log(result)
+    let res = result.data,Arr
+    Arr = [
+      {
+        title:"申请时间：",
+        message:res.createdDate+"申请"
+      },
+      {
+        title:"借款人姓名：",
+        message:res.name
+      },
+      {
+        title:"身份证号：",
+        message:res.idCard
+      },
+      {
+        title:"手机号码：",
+        message:res.telphone
+      },
+      {
+        title:"贷款金额：",
+        message:res._applyAmount
+      },
+      {
+        title:"贷款用途：",
+        message:res._purpose
+      },
+      {
+        title:"贷款期限：",
+        message:res._applyTerm
+      },
+      {
+        title:"是否有公积金：",
+        message:res.providentFund?"有":"没有"
+      },
+      {
+        title:"是否有社保：",
+        message:res.socialSecurity?"有":"没有"
+      },
+      {
+        title:"是否有房：",
+        message:res.house?"有":"没有"
+      },
+      {
+        title:"是否有车：",
+        message:res.car?"有":"没有"
+      },
+      {
+        title:"是否有信用卡：",
+        message:res.creditCard?"有":"没有"
+      },
+    ]
+    state.demandDetail = Arr
+  },
+//  客服二维码消失隐藏
+  QRCODEISSHOW(state,flag){
+    state.serviceQrCodeShow = flag
+  },
 }

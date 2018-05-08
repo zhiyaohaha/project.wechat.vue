@@ -29,5 +29,7 @@ export default {
   listScheduleFor:null,
   lastOrderInfo:null,
   generalizeYiPageY:0,
-  demandList:null
+  demandList:null,
+  demandDetail:null,
+  serviceQrCodeShow:false
 }

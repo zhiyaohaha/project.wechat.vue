@@ -21,21 +21,25 @@
       </header>
       <div class="myPageContent" v-if="income">
         <a href="javascript:;" class="generalIncome">
-          <span class="describe">总收入</span>
-          <span class="unit">￥<span class="price">{{income.balance}}元</span></span>
+          <span class="describe">累计收入</span>
+          <span class="unit">￥<span class="price">{{income.totalBalance}}元</span></span>
         </a>
         <a href="javascript:;" class="withdrawDeposit">
-          <span class="describe">可提现</span>
-          <span class="unit">￥<span class="price">{{income.withdrawBalance}}元</span></span>
+          <span class="describe">账户余额</span>
+          <span class="unit">￥<span class="price">{{income.balance}}元</span></span>
         </a>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
+      <transition name="fold">
+        <serviceQrCodeMod v-if="serviceQrCodeShow" :isShow="isShow"/>
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
   import myParticulars from '../../components/myParticulars/myParticulars.vue'
+  import serviceQrCodeMod from '../../components/serviceQrCodeMod/serviceQrCodeMod.vue'
   import {mapState} from "vuex"
 
   export default {
@@ -72,6 +76,11 @@
             title: '提现明细',
             url: '/myPage/depositPage'
           },
+          {
+            imgUrl: '../../../static/img/myImg/wode_content_icon_customer-service.png',
+            title: '客服',
+            url: '/myPage/customerServicePage'
+          },
 
         ],
         income: null
@@ -79,11 +88,11 @@
     },
 
     components: {
-      myParticulars
+      myParticulars, serviceQrCodeMod
     },
 
     computed: {
-      ...mapState(["userName"])
+      ...mapState(["userName", "serviceQrCodeShow"])
     },
     watch: {},
     beforeCreate() {
@@ -98,6 +107,9 @@
 
     },
     methods: {
+      isShow() {
+        this.$store.commit("QRCODEISSHOW", false)
+      }
     }
   }
 
@@ -176,4 +188,10 @@
             margin-top (30 /$rem)
             font-size (42 /$rem)
             color #efca7d
+    .fold-enter-active, .fold-leave-active {
+      transition: all .5s;
+    }
+    .fold-enter, .fold-leave-active {
+      transform: scale(0)
+    }
 </style>
