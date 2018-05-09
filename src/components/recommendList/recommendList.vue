@@ -7,7 +7,7 @@
           <div class="describe">
             <span class="up">{{recommendListData.name.length>=13?recommendListData.name.slice(0,13):recommendListData.name}}</span>
             <a href="javascript:;" class="button"
-               @touchstart.stop="$router.push({path:'/homePage/cardApplyForPage',query:{id:recommendListData.id}})">
+               @click.stop="skip(index)">
             </a>
           </div>
         </router-link>
@@ -32,6 +32,18 @@
     },
 
     methods: {
+      skip(ind){
+        let that = this
+        let num = this.getCookie('whether') * 1
+        console.log(num);
+        if(num === 1){
+          this.MessageBox.confirm('请确认个人信息后继续办理业务',"提示").then(() => {
+            this.$router.push({name:'personalDataPage',query:{id:that.recommendListDatas[ind].id},params:{name:"cardApplyForPage"}})
+          })
+        }else {
+          this.$router.push({path:'/homePage/cardApplyForPage',query:{id:that.recommendListDatas[ind].id}})
+        }
+      }
     }
   }
 

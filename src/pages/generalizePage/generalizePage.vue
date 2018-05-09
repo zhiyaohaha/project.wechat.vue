@@ -68,7 +68,7 @@
     },
     mounted() {
       // console.log(this.getCookie('whether') === '1') ? this.QRcodeShow = true : this.QRcodeShow = false
-      this.QRcodeShow = (this.getCookie('whether') === "1")
+      this.QRcodeShow = (this.getCookie('whether')*1 > 0)
       this.__boxheight(this.$refs.generalizePageWrap) //执行函数
       window.onresize = this.__boxheight(this.$refs.generalizePageWrap);
       this.$nextTick(() => {

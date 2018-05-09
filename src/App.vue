@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-  import {mapState, mapActions} from 'vuex'
+  import {mapState} from 'vuex'
   import awaitMod from "./components/awaitMod/awaitMod"
 
   export default {
@@ -85,8 +85,8 @@
           console.log(JSON.stringify(userinfo));
           this.$store.dispatch('postOpenid', {
             data: {
-              // openId: userinfo.openid,
-              openId: "16573",
+              openId: userinfo.openid,
+              // openId: "16573",
               thirdLoginType: 'ThirdPlatForm.WeChat',
               nickName: userinfo.nickname,
               head: userinfo.headimgurl,
@@ -100,11 +100,6 @@
           }).then(() => {
             this.allIsShow = true
             this.$store.commit("AWAITFALSE")
-            this.$store.dispatch('getBinBankCard', {
-              cb: (whether) => {
-                this.setCookie('whether', whether, 7)
-              }
-            })
           })
         })
       }
@@ -176,6 +171,7 @@
         color #ffffff
       .mint-msgbox-cancel
         font-size (46 /$rem)
-        color #333
+        color #fff
+        background-color #efca7d
 
 </style>

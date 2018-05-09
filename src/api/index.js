@@ -10,6 +10,7 @@ export const postRecordForApp = (apiPrefix, data) => ajax(apiPrefix, data, "post
 export const postLoginout = (apiPrefix,data) => ajax(apiPrefix, data, "post")
 export const postPeopleFiveReal = (apiPrefix,data) => ajax(apiPrefix, data, "post")
 export const postFiveRealVerifyCode = (apiPrefix,data) => ajax(apiPrefix, data, "post")
+export const postFillUserInfo = (apiPrefix,data) => ajax(apiPrefix, data, "post")
 export const getUserinfo = (apiPrefix, data) => ajax(apiPrefix, data)
 export const getLoanAmount = (apiPrefix, data) => ajax(apiPrefix, data)
 export const getListForApp = (apiPrefix, data) => ajax(apiPrefix, data)
@@ -35,5 +36,6 @@ export const getPosters = (apiPrefix) => ajax(apiPrefix)
 export const getLastOrderInfo = (apiPrefix) => ajax(apiPrefix)
 export const getOrderCount = (apiPrefix) => ajax(apiPrefix)
 export const getIdentify2Auth = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getAllArea = (apiPrefix) => ajax(apiPrefix)
 
 

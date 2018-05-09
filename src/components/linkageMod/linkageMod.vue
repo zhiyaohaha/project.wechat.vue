@@ -1,17 +1,17 @@
 <template>
-  <div class="linkageModDatas">
+  <div class="linkageModDatas" v-if="linkageModDatas.length">
     <div class="linkageWrap" ref="linkageWrap">
       <ul class="linkageModDatas">
         <li v-for="(province, ind) in linkageModDatas" :key="ind" class="province"
             ref="pickerSingle" :class="{select1:select1 === ind}">
-          {{province.b}}
+          {{province.text}}
         </li>
       </ul>
     </div>
     <div class="citiesWrap" ref="citiesWrap">
       <ul class="citiesList" >
         <li v-for="(city, index) in cities" :key="index" class="city" :class="{pitchOn:pitchOn === index}">
-          {{city.b}}
+          {{city.text}}
         </li>
       </ul>
     </div>
@@ -36,7 +36,7 @@
       cities() {
         let c = []
         if (this.linkageModDatas[this.select1]) {
-          c = this.linkageModDatas[this.select1].c
+          c = this.linkageModDatas[this.select1].childrens
         } else {
           c = []
         }
@@ -46,6 +46,7 @@
     watch: {
       mformDatasInd(val) {
         if (val === 4) {
+          let a = this.$refs.pickerSingle[0].clientHeight
           this.select1 = 0
           this.pitchOn = 0
           this.onValuesChange(this.select1, this.pitchOn)
@@ -58,7 +59,6 @@
             momentum: false,
             probeType: 1
           })
-          let a = this.$refs.pickerSingle[0].clientHeight
           this.citiesWrap.on("touchEnd", (pos) => {
             let b = Math.round(pos.y / a)
             this.citiesWrap.scrollTo(0, a * b, 100)
@@ -81,6 +81,7 @@
             } else {
               this.select1 = -b
             }
+            this.pitchOn > this.linkageModDatas[this.select1].childrens.length-1? this.pitchOn=0:null
             this.onValuesChange(this.select1, this.pitchOn)
           })
         } else {

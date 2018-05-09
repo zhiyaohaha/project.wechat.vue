@@ -27,7 +27,6 @@ export default {
   subordinateUserList:null,
   erSubordinateUserList:null,
   listScheduleFor:null,
-  binBankCard:null,
   lastOrderInfo:null,
   generalizeYiPageY:0
 }

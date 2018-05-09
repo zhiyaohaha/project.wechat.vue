@@ -7,7 +7,9 @@
     <div v-if="$route.meta.keepAlive&&userName">
       <header class="myPageHeader">
         <div class="headPortrait">
-          <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
+          <router-link :to="{name:'personalDataPage'}">
+            <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
+          </router-link>
         </div>
         <div class="userDescription">
           <span class="petName">{{readTodos().nickname||userName}}</span>
@@ -114,8 +116,11 @@
         float left
         width (140 /$rem)
         height (140 /$rem)
-        img
+        a
           width 100%
+          height 100%
+          img
+            width 100%
       .userDescription
         box-sizing border-box
         float left

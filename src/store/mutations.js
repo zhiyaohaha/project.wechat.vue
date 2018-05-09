@@ -135,11 +135,6 @@ export default {
     //办卡进度列表
     state.listScheduleFor = result.data
   },
-  GET_BINBANKCARD(state,{result}){
-    console.log(result);
-    //绑卡数据
-    state.binBankCard = result.data
-  },
   GET_LASTORDERINFO(state,{result}){
     console.log(result);
     //获取上一次报单信息

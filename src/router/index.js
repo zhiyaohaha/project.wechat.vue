@@ -9,6 +9,7 @@ import {
 } from "../util/viewportWidth.js"
 import store from '../store'
 import {MessageBox} from "mint-ui"
+
 const homePage = () => import('../pages/homePage/homePage.vue')
 const phoneApprove = () => import('../pages/phoneApprove/phoneApprove.vue')
 const loanPage = () => import('../pages/loanPage/loanPage.vue')
@@ -25,7 +26,6 @@ const cardDetailsPage = () => import('../pages/cardDetailsPage/cardDetailsPage.v
 const productDetailsPage = () => import('../pages/productDetailsPage/productDetailsPage.vue')
 const cardApplyForPage = () => import('../pages/cardApplyForPage/cardApplyForPage.vue')
 const tieOnCardPage = () => import('../pages/tieOnCardPage/tieOnCardPage.vue')
-const verifyPage = () => import('../pages/verifyPage/verifyPage.vue')
 const strategyPage = () => import('../pages/strategyPage/strategyPage.vue')
 const strategyListPage = () => import('../pages/strategyListPage/strategyListPage.vue')
 const schedulePage = () => import('../pages/schedulePage/schedulePage.vue')
@@ -35,6 +35,7 @@ const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue'
 const materialPage = () => import('../pages/materialPage/materialPage.vue')
 const articlePage = () => import('../pages/articlePage/articlePage.vue')
 const creditHistoryPage = () => import('../pages/creditHistoryPage/creditHistoryPage.vue')
+const personalDataPage = () => import('../pages/personalDataPage/personalDataPage.vue')
 
 
 // keepAlive判断一级路由是否应该存在
@@ -42,7 +43,7 @@ const creditHistoryPage = () => import('../pages/creditHistoryPage/creditHistory
 // cache判断是否需要缓存，不变的应应用缓存
 //register判断需要验证用户登录的页面
 let obj = __GetRequest()
-if(!obj.state){
+if (!obj.state) {
   obj.state = "homePage"
 }
 Vue.use(Router)
@@ -50,7 +51,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: {name:obj.state}
+      redirect: {name: obj.state}
     },
     {
       path: '/homePage',
@@ -128,7 +129,7 @@ const router = new Router({
           path: 'schedulePage',
           component: schedulePage,
           name: 'schedulePage',
-          meta: {keepAlive: false, register: true,cache: true, isTop: false, title: '办卡进度'},
+          meta: {keepAlive: false, register: true, cache: true, isTop: false, title: '办卡进度'},
         },
         {
           path: 'posterPage',
@@ -156,6 +157,12 @@ const router = new Router({
       name: "phoneApprove",
       meta: {keepAlive: false, isTop: true, title: '手机号认证'},
     },
+    {
+      path: '/personalDataPage',
+      component: personalDataPage,
+      name: "personalDataPage",
+      meta: {keepAlive: false, isTop: true, title: '个人信息'},
+    },
     /*{
       path: '/authenticationPage',
       component: authenticationPage,
@@ -165,7 +172,7 @@ const router = new Router({
       path: '/myPage',
       component: myPage,
       name: "myPage",
-      meta: {keepAlive: true, isTop: true,cache: true, register: true,title: '我的'},
+      meta: {keepAlive: true, isTop: true, cache: true, register: true, title: '我的'},
       children: [
         {
           path: 'generalizeYiPage',
@@ -217,18 +224,13 @@ const router = new Router({
       name: "tieOnCardPage",
       meta: {keepAlive: false, isTop: true, title: '实名绑卡'},
     },
-    {
-      path: '/verifyPage',
-      component: verifyPage,
-      name: "verifyPage",
-      meta: {keepAlive: false, isTop: true, title: '实名认证'},
-    },
+
   ]
 })
 let goBack = function (e) {
   let ua = navigator.userAgent.toLowerCase()
   if (ua) {
-    if (ua.match(/MicroMessenger/i) == "micromessenger"){
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
       WeixinJSBridge.call('closeWindow') //微信
     } else if (ua.indexOf("alipay") != -1) {
       AlipayJSBridge.call('closeWebview') //支付宝
@@ -239,14 +241,23 @@ let goBack = function (e) {
     }
   }
 }
+
+router.beforeResolve((to,from,next)=>{
+  if(to.name === "loanPage"&&getCookie('whether') * 1 === 1 ){
+    MessageBox.confirm('请确认个人信息后继续办理业务',"提示").then(()=>{
+      next({name:"personalDataPage",params:{name:"loanPage"}})
+    }).catch(()=>{
+      next(false)
+    })
+  }else {
+    next()
+  }
+})
 router.beforeEach((to, from, next) => {
   store.commit("AWAITFALSE")
-  if(to.name !== "loanPage"||to.name !== "WithdrawalPage"||to.name!=="depositPage"||to.name!=="productDetailsPage"||to.name !== "cardApplyForPage"||to.name!=="phoneApprove"){
-    MessageBox.close(false)
-  }
-
+  MessageBox.close(false)
   //首页退出浏览器
-  if (to.name === "homePage"||to.name === obj.state||to.params.name1 === obj.state) {
+  if (to.name === "homePage" || to.name === obj.state || to.params.name1 === obj.state) {
     pushHistory()
     window.addEventListener("popstate", goBack, false)
   } else {
