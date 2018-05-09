@@ -51,11 +51,11 @@
             title: '推广明细',
             url: '/myPage/generalizeYiPage'
           },
-          {
+          /*{
             imgUrl: '../../../static/img/myImg/wode_content_icon_tixianmingxi.png',
             title: '快速贷款历史',
             url: '/myPage/quickenLoansHistoryPage'
-          },
+          },*/
           {
             imgUrl: '../../../static/img/myImg/wode_content_icon_dingdanmingxi.png',
             title: '订单明细',

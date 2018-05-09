@@ -10,7 +10,7 @@ import headline from './components/headline/headline.vue'
 import footline from './components/footline/footline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
 import scroll from './components/scroll/scroll.vue'
-// import vConsole from 'vconsole'
+import vConsole from 'vconsole'
 // import wx from 'weixin-js-sdk'
 import {
   __boxheight,

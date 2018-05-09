@@ -26,72 +26,6 @@
           title: "全部信用卡",
           aFont: ""
         },
-        recommendListDatas: [
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian01.png",
-            bankName: "交通银行标准信用卡",
-            logImg: "../../../static/img/creditCardImg/redu01.png",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian02.png",
-            bankName: "交通银行凤凰之音金卡",
-            logImg: "../../../static/img/creditCardImg/redu02.png",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian03.png",
-            bankName: "交通银行东方航空金卡",
-            logImg: "../../../static/img/creditCardImg/redu03.png",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian04.png",
-            bankName: "交通银行凤凰之音普卡",
-            logImg: "",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian05.png",
-            bankName: "交通银行power黑卡",
-            logImg: "",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian01.png",
-            bankName: "广发淘宝联名信用卡",
-            logImg: "",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian02.png",
-            bankName: "广发淘宝联名信用卡",
-            logImg: "",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "广发淘宝联名信用卡",
-            logImg: "",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "广发淘宝联名信用卡",
-            logImg: "",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-
-        ],
         footlineTitle: "查看更多"
       }
     },
@@ -110,7 +44,15 @@
       }
     },
     created() {
-
+      let that = this
+      this.$store.dispatch("getListBankCard", {
+        data: {
+          id: "",//最后一条Id，第一次请求不用传
+          bank: that.$route.query.id,//银行id，多个则逗号分隔，不传则不进行筛选
+          size: 10//每页展示数量
+        },
+        site: "all"
+      })
     },
     mounted() {
     },

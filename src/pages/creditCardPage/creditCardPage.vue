@@ -1,6 +1,8 @@
 <template>
   <div class="creditCard">
-    <router-view/>
+    <transition name="action">
+      <router-view/>
+    </transition>
     <scroll class="wrapper"
             :data="creditListBankCard"
             :pullup="true"
@@ -75,8 +77,8 @@
     },
     created() {
       this.bank = ""
-      let that =this
-      if(!this.creditListBankCard){
+      let that = this
+      if (!this.creditListBankCard) {
         if (this.listBanks) {
           this.listBanks.forEach((item) => {
             this.bank += item.id + ","
@@ -151,6 +153,12 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .creditCard
+    .action-enter-active, .action-leave-active {
+      transition: all .3s;
+    }
+    .action-enter, .action-leave-active {
+      transform: translateX(100%)
+    }
     .creditCardPageHeader
       width (1080 /$rem)
       height (330 /$rem)

@@ -202,8 +202,7 @@ const router = new Router({
           component: orderFormPage,
           meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '订单明细'},
         },
-
-        {
+        /*{
           path: 'quickenLoansHistoryPage',
           name: 'quickenLoansHistoryPage',
           component: quickenLoansHistoryPage,
@@ -216,7 +215,7 @@ const router = new Router({
               meta: {keepAlive: false, isTop: false, cache: true, register: true, title: '快速贷款信息'},
             },
           ],
-        },
+        },*/
         {
           path: 'rebatePage',
           name: 'rebatePage',

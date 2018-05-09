@@ -26,14 +26,6 @@
 
     methods: {
       redirect(item) {
-        this.$store.dispatch("getListBankCard", {
-          data: {
-            id: "",//最后一条Id，第一次请求不用传
-            bank: item.id,//银行id，多个则逗号分隔，不传则不进行筛选
-            size: 10//每页展示数量
-          },
-          site: "all"
-        })
         this.$router.push({
           path: '/homePage/creditCardPage/zhongXinCardPage',
           query: {

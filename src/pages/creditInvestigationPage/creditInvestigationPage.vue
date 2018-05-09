@@ -2,7 +2,7 @@
   <scroll>
     <div class="creditInvestigation">
       <header class="creditInvestigationHeader">
-        <img src="./img/zhengxinbanner.jpg">
+        <img src="./img/zhengxinbanner.png">
       </header>
       <div class="creditInvestigationContent">
         <nav class="header">
@@ -57,9 +57,11 @@
     },
 
     methods: {
+      //切换Tab
       tabIsShow(flag){
         this.tabShow = flag
       },
+      //查询征询
       inquire(){
         const product = this.tabShow ? "ThirdProduct.TianxiaXinyong59":"ThirdProduct.TianxiaXinyong19"
         this.$store.commit("AWAITTRUE")
@@ -90,6 +92,7 @@
         width 100%
         vertical-align top
     .creditInvestigationContent
+      height (2577/$rem)
       .header
         height (120/$rem)
         a

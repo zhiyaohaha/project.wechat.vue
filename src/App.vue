@@ -82,11 +82,11 @@
           }
         }).then(() => {
           userinfo = this.readTodos()
-          console.log(JSON.stringify(userinfo));
+          console.log(JSON.stringify(userinfo))
           this.$store.dispatch('postOpenid', {
             data: {
-              openId: userinfo.openid,
-              // openId: "16573",
+              // openId: userinfo.openid,
+              openId: "16573",
               thirdLoginType: 'ThirdPlatForm.WeChat',
               nickName: userinfo.nickname,
               head: userinfo.headimgurl,
