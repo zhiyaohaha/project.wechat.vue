@@ -15,7 +15,7 @@
           </div>
           <div class="state">
             <span class="form">{{orderFormListData._product.name}}</span>
-            <span class="stateDescribe" v-if="orderFormListData._rakeBack !== '已返佣'">({{orderFormListData._rakeBack}}){{orderFormListData._status}}</span>
+            <!--<span class="stateDescribe" v-if="orderFormListData._rakeBack !== '已返佣'">({{orderFormListData._rakeBack}}){{orderFormListData._status}}</span>-->
             <span class="stateDescribe" v-if="orderFormListData._rakeBack === '已返佣'">{{orderFormListData._rakeBack}}</span>
           </div>
         </li>

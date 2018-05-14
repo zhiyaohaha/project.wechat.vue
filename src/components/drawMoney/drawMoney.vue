@@ -1,40 +1,33 @@
 <template>
-  <div>
-    <div class="drawMoney">
-      <ul class="drawMoneyList">
-        <li v-for="(drawMoneyData, index) in drawMoneyDatas" :key="index">
-          <div class="state">
-            <div class="up left">
-              <span>{{drawMoneyData.time}} </span>
-              <span class="appearance"> 申请提现</span>
-            </div>
-            <div class="down">
-              <span class="appearance">提现状态 : </span>
-              <span>{{drawMoneyData.state}}</span>
-            </div>
+  <div class="drawMoney" v-if="drawMoneyDatas">
+    <ul class="drawMoneyList">
+      <li v-for="(drawMoneyData, index) in drawMoneyDatas" :key="index">
+        <div class="state">
+          <div class="up left">
+            <span>{{drawMoneyData.createdDate}} </span>
+            <span class="appearance"> 申请提现</span>
           </div>
-          <div class="describe">
-            <div class="up right">
-              <span class="appearance">提现金额 : </span>
-              <span class="price">{{drawMoneyData.sum}}</span>
-              <span>元</span>
-            </div>
-            <div class="down right">
-              <span>提现费用 : </span>
-              <span>{{drawMoneyData.cost}}</span>
-              <span>元</span>
-            </div>
+          <div class="down">
+            <span class="appearance">提现状态 : </span>
+            <span>{{drawMoneyData._tradeState}}</span>
           </div>
-        </li>
-      </ul>
-    </div>
+        </div>
+        <div class="describe">
+          <div class="up right">
+            <span class="appearance">提现金额 : </span>
+            <span class="price">{{drawMoneyData.value}}</span>
+            <span class="unit">元</span>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
   export default {
     props: ['drawMoneyDatas'],
-    data () {
+    data() {
       return {}
     },
 
@@ -42,7 +35,8 @@
 
     computed: {},
 
-    mounted () {},
+    mounted() {
+    },
 
     methods: {}
   }
@@ -64,6 +58,9 @@
           float left
         .describe
           float right
+          .up
+            .appearance,.unit
+              color #333
         .up
           font-size (34 /$rem)
         .down

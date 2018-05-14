@@ -33,7 +33,9 @@ import {
   getAllArea,
   getDemandList,
   getDemandDetail,
-  getClickRecord
+  getClickRecord,
+  getWithDraw,
+  getWithDrawRecord
 } from '../api'
 
 let apiPrefix =   'http://api2.cpf360.com/' // 正式库
@@ -313,7 +315,7 @@ export default {
   async getAccountInfo({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetAccountInfo"
     const result = await getAccountInfo(url)
-    return result
+    commit("GET_ACCOUNTINFO", {result})
   },
   //推广海报图的地址
   async getPosters({commit}) {
@@ -360,23 +362,45 @@ export default {
     if (data.id) {
       return result.data.list
     } else {
-      commit("GETDEMANDLIST", {result})
+      commit("GET_DEMANDLIST", {result})
     }
   },
   //需求单详情
-  async getDemandDetail({commit}, data){
+  async getDemandDetail({commit}, data) {
     let url = apiPrefix + "api/OfficialAccounts/GeDemandDetail"
     const result = await getDemandDetail(url, data)
-    commit("GETDEMANDDETAIL", {result})
+    commit("GET_DEMANDDETAIL", {result})
   },
   //征信查询点击记录
-  async getClickRecord({commit}, data){
+  async getClickRecord({commit}, data) {
     let url = apiPrefix + "api/OfficialAccounts/ClickRecord"
     const result = await getClickRecord(url, data)
     return result
   },
-
-
+  //提现
+  async getWithDraw({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/WithDraw"
+    const result = await getWithDraw(url, data)
+    return result
+  },
+  //提现明细
+  async getWithDrawRecord({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/WithDrawRecord"
+    const result = await getWithDrawRecord(url, data)
+    if (data.tradeStatus === "TradeState.Success") {
+      if (data.id) {
+        return result.data
+      } else {
+        commit("GET_SUCCEEDWITHDRAWRECORD", {result})
+      }
+    } else if (data.tradeStatus === "TradeState.Fail") {
+      if (data.id) {
+        return result.data
+      } else {
+        commit("GET_DEFEATEDWITHDRAWRECORD", {result})
+      }
+    }
+  },
   //改变时间
   changeTime({commit}) {
     commit("CHANGETIME")

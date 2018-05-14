@@ -19,11 +19,10 @@
     _focusElem = e.target || e.srcElement
   }, true);
   //因为存在软键盘显示而屏幕大小还没被改变，所以以窗体（屏幕显示）大小改变为准
-
   window.addEventListener("resize", function() {
     if (_focusElem && document.body.clientHeight < clientHeight) {
       //焦点元素滚动到可视范围的底部(false为底部)
       _focusElem.scrollIntoView(false)
     }
-  });
+  })
 })()

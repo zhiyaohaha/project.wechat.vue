@@ -17,7 +17,7 @@ const productPage = () => import('../pages/productPage/productPage.vue')
 const myPage = () => import('../pages/myPage/myPage.vue')
 const generalizeYiPage = () => import('../pages/generalizeYiPage/generalizeYiPage.vue')
 const generalizeErPage = () => import('../pages/generalizeErPage/generalizeErPage.vue')
-const orderFormPage = () => import('../pages/orderFormPage/orderFormPage.vue')
+const orderFormPage = () => import('../pages/orderFormPage/orderFormPage.vue') //订单明细
 const rebatePage = () => import('../pages/rebatePage/rebatePage.vue')
 const depositPage = () => import('../pages/depositPage/depositPage.vue')
 const creditCardPage = () => import('../pages/creditCardPage/creditCardPage.vue')
@@ -34,9 +34,9 @@ const generalizePage = () => import('../pages/generalizePage/generalizePage.vue'
 const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue')
 const materialPage = () => import('../pages/materialPage/materialPage.vue')
 const articlePage = () => import('../pages/articlePage/articlePage.vue')
-const quickenLoansHistoryPage = () => import('../pages/quickenLoansHistoryPage/quickenLoansHistoryPage.vue')
+// const quickenLoansHistoryPage = () => import('../pages/quickenLoansHistoryPage/quickenLoansHistoryPage.vue')//快速贷款历史
 const personalDataPage = () => import('../pages/personalDataPage/personalDataPage.vue')
-const quickenLoansDetailPage = () => import('../pages/quickenLoansDetailPage/quickenLoansDetailPage.vue')
+// const quickenLoansDetailPage = () => import('../pages/quickenLoansDetailPage/quickenLoansDetailPage.vue')//快速贷款列表
 const creditInvestigationPage = () => import('../pages/creditInvestigationPage/creditInvestigationPage.vue')
 const customerServicePage = () => import('../pages/customerServicePage/customerServicePage.vue')
 
@@ -248,7 +248,6 @@ const router = new Router({
       name: "tieOnCardPage",
       meta: {keepAlive: false, isTop: true, title: '实名绑卡'},
     },
-
   ]
 })
 let goBack = function (e) {
@@ -267,16 +266,13 @@ let goBack = function (e) {
 }
 
 router.beforeResolve((to, from, next) => {
-  if ((to.name === "loanPage" || to.name === "creditInvestigationPage") && getCookie('whether') * 1 === 1) {
+  if ((to.name === "loanPage" || to.name === "creditInvestigationPage"||to.name === "WithdrawalPage") && getCookie('whether') * 1 === 1) {
+    let name = to.name
     MessageBox.confirm('请确认个人信息后继续办理业务', "提示").then(() => {
-      next({name: "personalDataPage", params: {name: "loanPage"}})
+      next({name: "personalDataPage", params: {name:name}})
     }).catch(() => {
       next(false)
     })
-    return
-  }
-  if (to.name === "depositPage" || to.name === "WithdrawalPage") {
-    store.commit("QRCODEISSHOW", true)
     return
   }
   if(to.name === "phoneApprove"){

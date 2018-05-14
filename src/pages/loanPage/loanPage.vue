@@ -342,7 +342,15 @@
             }).then(res => {
               this.$store.commit("AWAITFALSE")
               if (res.success) {
-                this.$router.push({name:"quickenLoansHistoryPage"})
+                this.MessageBox.alert(
+                  "您的贷款需求已提交，请等待业务经理跟您联系。",
+                  '申请成功',
+                  {
+                    closeOnClickModal: true
+                  }
+                ).then(()=>{
+                  this.$router.push({name:"homePage"})
+                })
               } else {
                 this.MessageBox.alert(
                   res.message,
@@ -364,8 +372,6 @@
             )
           }
         })
-
-
       },
 
 //      三角点击

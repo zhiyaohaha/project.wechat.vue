@@ -1,5 +1,5 @@
 <template>
-  <div class="phoneApprove">
+  <div class="phoneApprove" v-if="show">
     <div class="myContent">
       <img src="./img/banner.png">
       <ul class="mform">
@@ -24,8 +24,6 @@
       </a>
       <a href="javascript:;" class="approve" @click="approve"></a>
     </div>
-    <verification v-show="verificationShow" :changeShow="changeShow"
-                  :verificationCancel="verificationCancel"/>
     <transition name="fade">
       <agreementMod :closeModal="closeModal" v-if="!imgIsShow"/>
     </transition>
@@ -98,10 +96,9 @@
           },
         ],
         imgIsShow: true,
-        verificationShow: false,
-        isFlag: null,
         forbid: 0,
-        num: 0
+        num: 0,
+        show: 0
       }
     },
     components: {
@@ -118,6 +115,29 @@
 
     },
     watch: {},
+    created() {
+      let that = this, userinfo = this.readTodos()
+      this.$store.dispatch('postOpenid', {
+        data: {
+          openId: userinfo.openid,
+          // openId: "16573",
+          thirdLoginType: 'ThirdPlatForm.WeChat',
+          nickName: userinfo.nickname,
+          head: userinfo.headimgurl,
+          firstLevelId: that.getCookie("id") === "undefined" ? "" : that.getCookie("id")
+        },
+        cb: (va1, whether) => {
+          this.setCookie('token', va1, 7)
+          //存入cookie 判断是否实名
+          this.setCookie('whether', whether, 7)
+        }
+      }).then(() => {
+        this.show = 1
+      })
+    },
+    mounted() {
+
+    },
     updated() {
     },
     methods: {
@@ -141,11 +161,9 @@
             if (this.num == 0) {
               this.__findModel('authCode').units = '获取验证码'
               clearInterval(timer)
-              this.num = null
+              this.num = 0
             } else {
-              if (this.isFlag) {
-                this.__findModel('authCode').units = this.num + 's后重发'
-              }
+              this.__findModel('authCode').units = this.num + 's后重发'
             }
           }, 1000)
         } else {
@@ -157,17 +175,18 @@
         }
       },
 //      获取焦点
-      pullDown(){},
+      pullDown() {
+      },
 //    申请逻辑
       approve() {
         let userinfo = this.readTodos()
         let that = this
-        if(userinfo.openid === undefined){
-          this.MessageBox.alert("请从公众号或者扫二维码进入","失败").then(()=>{
+        /*if (userinfo.openid === undefined) {
+          this.MessageBox.alert("请从公众号或者扫二维码进入", "失败").then(() => {
             WeixinJSBridge.call('closeWindow')
           })
           return
-        }
+        }*/
         for (let i = 0; i < this.mformDatas.length; i++) {
           let item = this.mformDatas[i]
           if (item.model === "") {
@@ -207,7 +226,7 @@
           firstLevelId: that.getCookie('id'),
           thirdPlatFormBind: true,//第三方绑定接口
           openId: userinfo.openid, //第三方OpenId
-          // openId: "16573", //第三方OpenId
+          openId: "16573", //第三方OpenId
           thirdLoginType: 'ThirdPlatForm.WeChat',  //第三方登录代号
           head: userinfo.headimgurl,//第三方登录头像
           nickName: userinfo.nickname,//第三方登录昵称
@@ -230,7 +249,7 @@
               this.forbid = 0
               if (res.success) {
                 this.$router.replace({
-                  name: that.$route.params.name1||"homePage",
+                  name: that.$route.params.name1 || "homePage",
                   query: {id: that.$route.query.id},
                   params: {name: that.$route.params.name2}
                 })
@@ -259,34 +278,7 @@
         })
 
       },
-//      验证码
-      changeShow() {
-        this.verificationShow = false
-      },
 
-      //发送图片验证码核实请求
-      verificationCancel(flag, validateCode) {
-        this.isFlag = flag
-        this.verificationShow = false
-        let that = this
-        if (flag) {
-          this.$store.commit("AWAITTRUE")
-          this.$store.dispatch('postSendMsg', {
-            code: 'SMS_123738830',
-            validateKey: that.key + that.time,
-            mobilePhone: that.__findModel("cellPhoneNum").model,
-            validateCode: validateCode,
-            needvalidateCode: true,
-            smsSign: "掌金超"
-          }).then((res) => {
-            this.$store.commit("AWAITFALSE")
-            this.__phoneNote(res)
-            this.$store.dispatch("changeTime")
-          })
-        } else {
-          this.$store.dispatch("changeTime")
-        }
-      },
 //      选中切换
       notarize() {
         this.imgIsShow = !this.imgIsShow
@@ -304,8 +296,7 @@
       },
 //      验证码逻辑
       sendMsg(index) {
-        console.log(1);
-        let mformData = this.mformDatas[index - 1]
+        let mformData = this.mformDatas[index - 1], that = this
         if (this.num > 0) {
           this.MessageBox({
             title: '提示',
@@ -315,7 +306,16 @@
           return
         }
         if (mformData.model !== '' && mformData.regular.test(mformData.model)) {
-          this.verificationShow = true
+          this.$store.commit("AWAITTRUE")
+          this.$store.dispatch('postSendMsg', {
+            code: 'SMS_123738830',
+            mobilePhone: that.__findModel("cellPhoneNum").model,
+            needvalidateCode: false,
+            smsSign: "掌金超"
+          }).then((res) => {
+            this.$store.commit("AWAITFALSE")
+            this.__phoneNote(res)
+          })
         } else {
           this.MessageBox({
             title: '提示',

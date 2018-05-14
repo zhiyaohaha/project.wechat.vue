@@ -31,5 +31,8 @@ export default {
   generalizeYiPageY:0,
   demandList:null,
   demandDetail:null,
-  serviceQrCodeShow:false
+  serviceQrCodeShow:false,
+  income:null,
+  succeedWithDrawRecord:null,
+  defeatedWithDrawRecord:null
 }

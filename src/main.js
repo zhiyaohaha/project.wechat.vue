@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -71,13 +72,12 @@ if (!obj.code) {
   window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=${num}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`)
 }*/
 // eslint-disable no-new
-// new vConsole
+new vConsole
 new Vue({
   el: '#app',
   render: h => h(App),
   router,
   store,
 })
-console.log(Vue.config.errorHandler)
 
 

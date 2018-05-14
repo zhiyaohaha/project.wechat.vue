@@ -16,6 +16,10 @@
        */
       /*
       * */
+      scrollReset: {
+        type: Boolean,
+        default: true
+      },
       probeType: {
         type: Number,
         default: 1
@@ -198,6 +202,9 @@
         if (to.name === "productPage" || to.name === "creditCardPage") {
           this.refresh()
         }
+      },
+      scrollReset(val){
+        this.$store.commit("GENERALIZEYIPAGEY", {result: 0})
       }
     }
   }

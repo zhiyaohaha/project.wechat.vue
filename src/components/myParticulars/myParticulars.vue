@@ -39,7 +39,7 @@
       display flex
       padding 0 (150/$rem)
       justify-content: space-between
-      flex-wrap: wrap;
+      flex-wrap: wrap
       li
         position relative
         width (240/$rem)

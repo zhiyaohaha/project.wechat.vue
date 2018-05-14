@@ -40,5 +40,7 @@ export const getAllArea = (apiPrefix) => ajax(apiPrefix)
 export const getDemandList = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getDemandDetail = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getClickRecord = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getWithDraw = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getWithDrawRecord = (apiPrefix,data) => ajax(apiPrefix,data)
 
 
