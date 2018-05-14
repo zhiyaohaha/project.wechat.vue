@@ -57,6 +57,11 @@
                 <img src="./img/baduyouqianhua.png">
               </router-link>
             </mt-swipe-item>
+            <mt-swipe-item>
+              <router-link :to="{name:'creditInvestigationPage'}">
+                <img src="./img/zhengxinbanner.jpg">
+              </router-link>
+            </mt-swipe-item>
           </mt-swipe>
         </header>
         <div class="homePageContent">

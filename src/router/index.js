@@ -34,13 +34,16 @@ const generalizePage = () => import('../pages/generalizePage/generalizePage.vue'
 const WithdrawalPage = () => import('../pages/WithdrawalPage/WithdrawalPage.vue')
 const materialPage = () => import('../pages/materialPage/materialPage.vue')
 const articlePage = () => import('../pages/articlePage/articlePage.vue')
-const creditHistoryPage = () => import('../pages/creditHistoryPage/creditHistoryPage.vue')
+const quickenLoansHistoryPage = () => import('../pages/quickenLoansHistoryPage/quickenLoansHistoryPage.vue')
 const personalDataPage = () => import('../pages/personalDataPage/personalDataPage.vue')
+const quickenLoansDetailPage = () => import('../pages/quickenLoansDetailPage/quickenLoansDetailPage.vue')
+const creditInvestigationPage = () => import('../pages/creditInvestigationPage/creditInvestigationPage.vue')
+const customerServicePage = () => import('../pages/customerServicePage/customerServicePage.vue')
 
 
 // keepAlive判断一级路由是否应该存在
 // isTop判断二级路由是否应该存在
-// cache判断是否需要缓存，不变的应应用缓存
+// cache判断是否需要缓存，不变的应应用缓存 true 不缓存 false 缓存
 //register判断需要验证用户登录的页面
 let obj = __GetRequest()
 if (!obj.state) {
@@ -152,6 +155,12 @@ const router = new Router({
       ]
     },
     {
+      path: '/creditInvestigationPage',
+      component: creditInvestigationPage,
+      name: "creditInvestigationPage",
+      meta: {keepAlive: false, isTop: true, register: true, title: '个人征信查询'},
+    },
+    {
       path: '/phoneApprove',
       component: phoneApprove,
       name: "phoneApprove",
@@ -161,7 +170,7 @@ const router = new Router({
       path: '/personalDataPage',
       component: personalDataPage,
       name: "personalDataPage",
-      meta: {keepAlive: false, isTop: true, title: '个人信息'},
+      meta: {keepAlive: false, isTop: true, cache: true, title: '个人信息'},
     },
     /*{
       path: '/authenticationPage',
@@ -193,16 +202,31 @@ const router = new Router({
           component: orderFormPage,
           meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '订单明细'},
         },
-        {
-          path: 'creditHistoryPage',
-          component: creditHistoryPage,
+        /*{
+          path: 'quickenLoansHistoryPage',
+          name: 'quickenLoansHistoryPage',
+          component: quickenLoansHistoryPage,
           meta: {keepAlive: false, isTop: true, register: true, title: '贷款历史'},
-        },
+          children: [
+            {
+              path: 'quickenLoansDetailPage',
+              name: 'quickenLoansDetailPage',
+              component: quickenLoansDetailPage,
+              meta: {keepAlive: false, isTop: false, cache: true, register: true, title: '快速贷款信息'},
+            },
+          ],
+        },*/
         {
           path: 'rebatePage',
           name: 'rebatePage',
           component: rebatePage,
           meta: {keepAlive: false, cache: true, register: true, isTop: true, title: '返佣明细'},
+        },
+        {
+          path: 'customerServicePage',
+          name: 'customerServicePage',
+          component: customerServicePage,
+          meta: {keepAlive: false, register: true, isTop: true, title: '客服'},
         },
         {
           path: 'depositPage',
@@ -242,16 +266,25 @@ let goBack = function (e) {
   }
 }
 
-router.beforeResolve((to,from,next)=>{
-  if(to.name === "loanPage"&&getCookie('whether') * 1 === 1 ){
-    MessageBox.confirm('请确认个人信息后继续办理业务',"提示").then(()=>{
-      next({name:"personalDataPage",params:{name:"loanPage"}})
-    }).catch(()=>{
+router.beforeResolve((to, from, next) => {
+  if ((to.name === "loanPage" || to.name === "creditInvestigationPage") && getCookie('whether') * 1 === 1) {
+    MessageBox.confirm('请确认个人信息后继续办理业务', "提示").then(() => {
+      next({name: "personalDataPage", params: {name: "loanPage"}})
+    }).catch(() => {
       next(false)
     })
-  }else {
-    next()
+    return
   }
+  if (to.name === "depositPage" || to.name === "WithdrawalPage") {
+    store.commit("QRCODEISSHOW", true)
+    return
+  }
+  if(to.name === "phoneApprove"){
+    if(getCookie('whether') * 1 > 0){
+      next({name: "homePage"})
+    }
+  }
+  next()
 })
 router.beforeEach((to, from, next) => {
   store.commit("AWAITFALSE")

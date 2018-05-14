@@ -37,5 +37,8 @@ export const getLastOrderInfo = (apiPrefix) => ajax(apiPrefix)
 export const getOrderCount = (apiPrefix) => ajax(apiPrefix)
 export const getIdentify2Auth = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getAllArea = (apiPrefix) => ajax(apiPrefix)
+export const getDemandList = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getDemandDetail = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getClickRecord = (apiPrefix,data) => ajax(apiPrefix,data)
 
 

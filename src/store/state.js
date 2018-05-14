@@ -28,5 +28,8 @@ export default {
   erSubordinateUserList:null,
   listScheduleFor:null,
   lastOrderInfo:null,
-  generalizeYiPageY:0
+  generalizeYiPageY:0,
+  demandList:null,
+  demandDetail:null,
+  serviceQrCodeShow:false
 }

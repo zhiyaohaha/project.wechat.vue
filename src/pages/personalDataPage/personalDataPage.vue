@@ -1,13 +1,13 @@
 <template>
   <div class="personalDataPage">
     <header class="personalDataPageHeader">
-      <img src="./img/wodde_banner.png">
       <div class="head">
         <img :src="readTodos().headimgurl||'../../../static/img/personalDataImg/gerenxinxi_touxiang.png'" alt="">
-        <span class="userName">{{readTodos().nickname||userName}}</span>
       </div>
+      <span class="userName">{{readTodos().nickname||userName}}</span>
     </header>
-    <headline :headlineData="{title:'填写个人信息',line:true}"/>
+    <headline :headlineData="{title:'填写个人信息',line:true}" v-if="approveShow"/>
+    <headline :headlineData="{title:'个人信息',line:true}" v-if="!approveShow"/>
     <ul class="mform">
       <li v-for="(mformData, index) in mformDatas" :key="index">
         <span class="description">{{mformData.description}}</span>
@@ -18,12 +18,12 @@
                :name="mformData.name">
       </li>
     </ul>
-    <a href="javascript:;" class="protocol" v-if="getCookie('whether')*1 < 2">
+    <a href="javascript:;" class="protocol" v-if="approveShow">
       <img src="./img/xuanze.png" v-show="imgIsShow" @touchstart="notarize">
       <img src="./img/huisekuang.png" v-show="!imgIsShow" @touchstart="notarize">
       <span @click="openModal">我已阅读并同意 <span class="changeColor">《掌金超平台服务协议》</span>的所有条款</span>
     </a>
-    <a href="javascript:;" class="approve" @click="approve" v-if="getCookie('whether')*1 < 2">提交</a>
+    <a href="javascript:;" class="approve" @click="approve" v-if="approveShow">提交</a>
     <transition name="fade">
       <agreementMod :closeModal="closeModal" v-if="!imgIsShow"/>
     </transition>
@@ -57,7 +57,7 @@
             model: "",
             reg: /^[0-9xX]{0,18}$/,
             regular: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
-            maxlength: "18"
+            maxlength: "18",
           },
           {
             message: "请正确输入手机号",
@@ -80,7 +80,12 @@
     },
 
     computed: {
-      ...mapState(["userName", "lastOrderInfo"])
+      ...mapState(["userName", "lastOrderInfo"]),
+      approveShow(){
+        return this.getCookie('whether')*1 < 2
+      }
+    },
+    watch:{
     },
     created() {
       this.$store.dispatch("getLastOrderInfo").then(() => {
@@ -92,6 +97,11 @@
       })
     },
     mounted() {
+      if(!this.approveShow){
+        this.mformDatas.forEach((item,index)=>{
+          item.readonly  = true
+        })
+      }
     },
 
     methods: {
@@ -155,12 +165,16 @@
                       })
                     }
                   })
-                }else {
+                }else if(that.$route.params.name){
+                  this.$store.commit("AWAITFALSE")
                   this.setCookie('whether', 2, 7)
                   this.$router.replace({
                     name: that.$route.params.name,
                     query: {id: that.$route.query.id},
                   })
+                }else {
+                  this.$store.commit("AWAITFALSE")
+                  window.location.reload()
                 }
               }else {
                 this.$store.commit("AWAITFALSE")
@@ -194,25 +208,24 @@
 
   .personalDataPage
     .personalDataPageHeader
+      background-image url("./img/wodde_banner.png")
+      background-repeat no-repeat
+      background-size 100%
       position relative
       height (550 /$rem)
-      img
-        width 100%
-        height 100%
+      text-align center
+      box-sizing border-box
+      padding-top (120/$rem)
       .head
-        position absolute
-        top 50%
-        left 50%
-        margin-top (-120 /$rem)
-        margin-left (-80 /$rem)
+        margin-left (460/$rem)
+        margin-bottom (20/$rem)
         img
+          border-radius 50%
           width (160 /$rem)
           height (160 /$rem)
-        .userName
-          display block
-          margin-top (40 /$rem)
-          color #ffffff
-          font-size (40 /$rem)
+      .userName
+        color #ffffff
+        font-size (40 /$rem)
     .mform
       margin: 0 (30 /$rem)
       li

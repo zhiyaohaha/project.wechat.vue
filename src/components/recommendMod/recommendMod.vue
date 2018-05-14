@@ -11,6 +11,8 @@
             <span class="title">{{recommend.basic.name}}</span>
             <div class="rate">
               <span class="interest">月利率 ：{{
+                toPercent(recommend.basic.monthlyRate_min)===toPercent(recommend.basic.monthlyRate_max)?
+                toPercent(recommend.basic.monthlyRate_max):
                 toPercent(recommend.basic.monthlyRate_min)+"-"+toPercent(recommend.basic.monthlyRate_max)
                 }}</span>
             </div>

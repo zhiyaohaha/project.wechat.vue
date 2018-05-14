@@ -230,7 +230,7 @@
               this.forbid = 0
               if (res.success) {
                 this.$router.replace({
-                  name: that.$route.params.name1,
+                  name: that.$route.params.name1||"homePage",
                   query: {id: that.$route.query.id},
                   params: {name: that.$route.params.name2}
                 })

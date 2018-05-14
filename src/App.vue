@@ -82,7 +82,7 @@
           }
         }).then(() => {
           userinfo = this.readTodos()
-          console.log(JSON.stringify(userinfo));
+          console.log(JSON.stringify(userinfo))
           this.$store.dispatch('postOpenid', {
             data: {
               openId: userinfo.openid,

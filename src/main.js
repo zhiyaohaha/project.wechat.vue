@@ -10,7 +10,7 @@ import headline from './components/headline/headline.vue'
 import footline from './components/footline/footline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
 import scroll from './components/scroll/scroll.vue'
-// import vConsole from 'vconsole'
+import vConsole from 'vconsole'
 // import wx from 'weixin-js-sdk'
 import {
   __boxheight,
@@ -53,7 +53,6 @@ Vue.prototype.toPercent = toPercent
 Vue.prototype.MessageBox = MessageBox
 Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
 // Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
-
 Vue.prototype.BScroll = BScroll
 /*wx.config({
   debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看
@@ -79,4 +78,6 @@ new Vue({
   router,
   store,
 })
+console.log(Vue.config.errorHandler)
+
 
