@@ -1,12 +1,12 @@
 <template>
   <div class="customerService">
-    <header class="customerServiceHeader">
-      <img src="../../../static/img/myImg/kefu_yuantouxiang.png">
-      <span>掌金超客服多多</span>
-    </header>
+    <!--<header class="customerServiceHeader">
+      &lt;!&ndash;<img src="../../../static/img/myImg/kefu_yuantouxiang.png">
+      <span>掌金超客服多多</span>&ndash;&gt;
+    </header>-->
     <div class="customerServiceContent">
-      <h1 class="title">提现、咨询请扫码联系客服</h1>
-      <img src="./img/kefuerweima.jpg">
+      <h1 class="title">如需咨询请扫码联系客服</h1>
+      <img src="./img/kefuerweima.jpg" class="erweima">
     </div>
   </div>
 </template>
@@ -36,28 +36,21 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .customerService
-    .customerServiceHeader
-      box-sizing border-box
-      padding-top (110/$rem)
-      margin-bottom (244/$rem)
-      text-align center
-      img
-        width (160/$rem)
-        height (160/$rem)
-        border-radius 50%
-        margin 0 auto (10/$rem)
-      span
-        font-size (40/$rem)
-        color #333
+    position fixed
+    width 100%
+    height 100%
     .customerServiceContent
       h1
+        position absolute
+        top (354/$rem)
         width 100%
         text-align center
-        font-size (42/$rem)
-        margin-bottom (50/$rem)
-      img
+        font-size (50/$rem)
+      .erweima
         width (880/$rem)
         height (880/$rem)
-        margin 0 auto
-
+        position absolute
+        left 50%
+        top 50%
+        margin (-440/$rem) 0 0 (-440/$rem)
 </style>
