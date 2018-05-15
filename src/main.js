@@ -1,5 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -10,7 +11,7 @@ import headline from './components/headline/headline.vue'
 import footline from './components/footline/footline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
 import scroll from './components/scroll/scroll.vue'
-import vConsole from 'vconsole'
+// import vConsole from 'vconsole'
 // import wx from 'weixin-js-sdk'
 import {
   __boxheight,
@@ -52,6 +53,7 @@ Vue.prototype.readTodos = storageUtil.readTodos
 Vue.prototype.toPercent = toPercent
 Vue.prototype.MessageBox = MessageBox
 Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
+// Vue.prototype.apiPrefix = 'http://api4.cpf360.com/'
 // Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
 Vue.prototype.BScroll = BScroll
 /*wx.config({
@@ -78,6 +80,5 @@ new Vue({
   router,
   store,
 })
-console.log(Vue.config.errorHandler)
 
 

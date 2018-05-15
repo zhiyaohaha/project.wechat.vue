@@ -30,16 +30,16 @@
         </a>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
-      <transition name="fold">
+      <!--<transition name="fold">
         <serviceQrCodeMod v-if="serviceQrCodeShow" :isShow="isShow"/>
-      </transition>
+      </transition>-->
     </div>
   </div>
 </template>
 
 <script>
   import myParticulars from '../../components/myParticulars/myParticulars.vue'
-  import serviceQrCodeMod from '../../components/serviceQrCodeMod/serviceQrCodeMod.vue'
+  // import serviceQrCodeMod from '../../components/serviceQrCodeMod/serviceQrCodeMod.vue'
   import {mapState} from "vuex"
 
   export default {
@@ -81,27 +81,23 @@
             title: '客服',
             url: '/myPage/customerServicePage'
           },
-
         ],
-        income: null
       }
     },
 
     components: {
-      myParticulars, serviceQrCodeMod
+      myParticulars
     },
 
     computed: {
-      ...mapState(["userName", "serviceQrCodeShow"])
+      ...mapState(["userName", "serviceQrCodeShow","income"])
     },
     watch: {},
     beforeCreate() {
 
     },
     created() {
-      this.$store.dispatch("getAccountInfo").then((res) => {
-        this.income = res.data
-      })
+      this.$store.dispatch("getAccountInfo")
     },
     mounted() {
 
@@ -188,10 +184,4 @@
             margin-top (30 /$rem)
             font-size (42 /$rem)
             color #efca7d
-    .fold-enter-active, .fold-leave-active {
-      transition: all .5s;
-    }
-    .fold-enter, .fold-leave-active {
-      transform: scale(0)
-    }
 </style>

@@ -131,7 +131,7 @@
             },
             {
               imgUrl: "../../static/img/homeImg/content_icon_tuiguangjilu.png",
-              title: "推广记录",
+              title: "推广明细",
               url: "/myPage/generalizeYiPage"
             },
           ]

@@ -80,6 +80,7 @@
       let that = this
       if (!this.creditListBankCard) {
         if (this.listBanks) {
+          console.log("经过首页")
           this.listBanks.forEach((item) => {
             this.bank += item.id + ","
           })
