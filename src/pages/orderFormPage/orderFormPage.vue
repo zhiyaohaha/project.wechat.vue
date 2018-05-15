@@ -66,6 +66,10 @@
             title: "二级代理",
             manNumber: null
           },
+          {
+            title: "三级代理",
+            manNumber: null
+          },
         ],
         orderFormInd: 0,
         footlineTitle: "查看更多",
@@ -131,7 +135,12 @@
         })
       },
       orderListFor1(val) {
-        let a = val ? val.data.length === 0 : true
+        let a = false
+        if(val){
+          if(val.data.length<1){
+            a = true
+          }
+        }
         if (a) {
           this.footlineTitle = '暂无数据'
         } else {
@@ -226,14 +235,18 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .orderFormHeader
+    box-sizing border-box
     height (110 /$rem)
     width (1080 /$rem)
     background-color #ffffff
+    display flex
+    justify-content space-between
+    flex-wrap wrap
+    padding 0 (50/$rem)
     a
       box-sizing border-box
       border-bottom 1px solid #f2f2f2
       height 100%
-      width (360 /$rem)
       background-color #ffffff
       float left
       font-size (46 /$rem)

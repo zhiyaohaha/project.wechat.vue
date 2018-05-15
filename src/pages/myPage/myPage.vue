@@ -81,6 +81,11 @@
             title: '客服',
             url: '/myPage/customerServicePage'
           },
+          {
+            imgUrl: '../../../static/img/myImg/wode_content_icon_collection.png',
+            title: '收藏',
+            url: '/myPage/customerServicePage'
+          },
         ],
       }
     },
