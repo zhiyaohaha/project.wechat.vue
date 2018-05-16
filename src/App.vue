@@ -38,6 +38,10 @@
     computed: {
       ...mapState(['openID', 'userinfo', 'awaitShow'])
     },
+    watch:{
+      awaitShow(val){
+      }
+    },
     beforeCreate() {
     },
     created() {

@@ -34,5 +34,6 @@ export default {
   serviceQrCodeShow:false,
   income:null,
   succeedWithDrawRecord:null,
-  defeatedWithDrawRecord:null
+  defeatedWithDrawRecord:null,
+  mobilePhone:null
 }

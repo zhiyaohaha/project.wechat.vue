@@ -39,6 +39,7 @@ const personalDataPage = () => import('../pages/personalDataPage/personalDataPag
 // const quickenLoansDetailPage = () => import('../pages/quickenLoansDetailPage/quickenLoansDetailPage.vue')//快速贷款列表
 const creditInvestigationPage = () => import('../pages/creditInvestigationPage/creditInvestigationPage.vue')
 const customerServicePage = () => import('../pages/customerServicePage/customerServicePage.vue')
+const authenticationPage = () => import('../pages/authenticationPage/authenticationPage.vue')//提现手机认证码
 
 
 // keepAlive判断一级路由是否应该存在
@@ -172,11 +173,12 @@ const router = new Router({
       name: "personalDataPage",
       meta: {keepAlive: false, isTop: true, cache: true, title: '个人信息'},
     },
-    /*{
+    {
       path: '/authenticationPage',
+      name: "authenticationPage",
       component: authenticationPage,
-      meta: {keepAlive: false, isTop: true, title: '认证选择'},
-    },*/
+      meta: {keepAlive: false, isTop: true, title: '验证手机号'},
+    },
     {
       path: '/myPage',
       component: myPage,
