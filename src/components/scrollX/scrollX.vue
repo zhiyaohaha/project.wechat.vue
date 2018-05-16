@@ -1,11 +1,10 @@
 <template>
-  <div ref="wrapper">
+  <div ref="scrollXWrapper" class="scrollXWrapper">
     <slot></slot>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
-  import {mapState} from 'vuex'
 
   export default {
     props: {
@@ -16,10 +15,6 @@
        */
       /*
       * */
-      scrollReset: {
-        type: Boolean,
-        default: true
-      },
       probeType: {
         type: Number,
         default: 1
@@ -43,7 +38,7 @@
        */
       scrollX: {
         type: Boolean,
-        default: false
+        default: true
       },
       /**
        * 是否派发滚动事件
@@ -88,11 +83,8 @@
         default: 20
       }
     },
-    computed: {
-      ...mapState(["generalizeYiPageY"])
-    },
+    computed: {},
     mounted() {
-      this.__boxheight(this.$refs.wrapper)
       // 保证在DOM渲染完毕后初始化better-scroll
       setTimeout(() => {
         this._initScroll()
@@ -100,7 +92,7 @@
     },
     methods: {
       _initScroll() {
-        if (!this.$refs.wrapper) {
+        if (!this.$refs.scrollXWrapper) {
           return
         }
         let obj = {
@@ -113,98 +105,73 @@
           obj.startY = this.generalizeYiPageY
         }*/
         // better-scroll的初始化
-        this.scroll = new BScroll(this.$refs.wrapper, obj)
+        this.scrollX = new BScroll(this.$refs.scrollXWrapper, obj)
 
         // 是否派发滚动事件
         if (this.listenScroll) {
-          this.scroll.on('scroll', (pos) => {
+          this.scrollX.on('scroll', (pos) => {
             this.$emit('scroll', pos)
           })
         }
+        this.scrollX.on('scrollEnd', (pos) => {
+          console.log(pos);
+        })
         // 是否派发滚动到底部事件，用于上拉加载
-        if (this.pullup) {
+        /*if (this.pullup) {
           this.scroll.on('scrollEnd', () => {
-            let result = this.scroll && this.scroll.y
-            if (this.$route.name !== "generalizeErPage") {
-              this.$store.commit("GENERALIZEYIPAGEY", {result})
-            }
-            // 滚动到底部
             if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
               this.$emit('scrollToEnd')
             }
           })
-        }
+        }*/
 
         // 是否派发顶部下拉事件，用于下拉刷新
-        if (this.pulldown) {
+        /*if (this.pulldown) {
           this.scroll.on('touchend', (pos) => {
             // 下拉动作
             if (pos.y > 50) {
               this.$emit('pulldown')
             }
           })
-        }
+        }*/
 
         // 是否派发列表滚动开始的事件
         if (this.beforeScroll) {
-          this.scroll.on('beforeScrollStart', () => {
+          this.scrollX.on('beforeScrollStart', () => {
             this.$emit('beforeScroll')
           })
         }
       },
       disable() {
         // 代理better-scroll的disable方法
-        this.scroll && this.scroll.disable()
+        this.scrollX && this.scrollX.disable()
       },
       enable() {
         // 代理better-scroll的enable方法
-        this.scroll && this.scroll.enable()
+        this.scrollX && this.scrollX.enable()
       },
       refresh() {
         // 代理better-scroll的refresh方法
-        this.scroll && this.scroll.refresh()
+        this.scrollX && this.scrollX.refresh()
       },
       scrollTo() {
         // 代理better-scroll的scrollTo方法
-        this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
+        this.scrollX && this.scrollX.scrollTo.apply(this.scrollX, arguments)
       },
       scrollToElement() {
         // 代理better-scroll的scrollToElement方法
-        this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
+        this.scrollX && this.scrollX.scrollToElement.apply(this.scrollX, arguments)
       }
     },
     updated() {
-      if (this.scroll) {
-        if(this.$route.name !== "generalizeErPage"){
-          this.scrollTo(0, this.generalizeYiPageY)
-        }
-        this.refresh()
-      } else {
-        this.__boxheight(this.$refs.wrapper)
-        // 保证在DOM渲染完毕后初始化better-scroll
-        setTimeout(() => {
-          this._initScroll()
-        }, 20)
-      }
+
     },
-    watch: {
-      // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
-      data() {
-        setTimeout(() => {
-          this.refresh()
-        }, this.refreshDelay)
-      },
-      $route(to, form) {
-        if (to.meta.keepAlive) {
-          this.$store.commit("GENERALIZEYIPAGEY", {result: 0})
-        }
-        if (to.name === "productPage" || to.name === "creditCardPage") {
-          this.refresh()
-        }
-      },
-      scrollReset(val){
-        this.$store.commit("GENERALIZEYIPAGEY", {result: 0})
-      }
-    }
+    watch: {}
   }
 </script>
+<style lang='stylus' rel="stylesheet/stylus">
+  .scrollXWrapper
+    height 100%
+    overflow hidden
+
+</style>

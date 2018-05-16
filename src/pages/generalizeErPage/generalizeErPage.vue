@@ -24,6 +24,7 @@
         <footline :title="footlineTitle"/>
       </div>
     </scroll>
+
   </div>
 </template>
 

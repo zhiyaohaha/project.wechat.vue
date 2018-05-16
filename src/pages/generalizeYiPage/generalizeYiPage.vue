@@ -35,7 +35,7 @@
           </a>
           <a href="javascript:;" class="withdrawDeposit">
             <span class="describe">三级代理</span>
-            <span class="price">{{subordinateNum.totleSubordinateNum}}</span>
+            <span class="price">{{subordinateNum.supersubordinateNum}}</span>
             <span class="unit">人</span>
           </a>
         </div>

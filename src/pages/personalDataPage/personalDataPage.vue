@@ -231,7 +231,7 @@
       li
         box-sizing border-box
         position relative
-        line-height (120 /$rem)
+        line-height (118 /$rem)
         width (1020 /$rem)
         height (120 /$rem)
         font-size (42 /$rem)
