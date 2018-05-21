@@ -24,6 +24,8 @@
   import {mapState} from "vuex"
 
   export default {
+    //verificationCancel 发送事件
+    //changeShow 点击隐藏事件
     props: ["changeShow", "verificationCancel"],
     data() {
       return {

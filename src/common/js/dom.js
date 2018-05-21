@@ -1,5 +1,4 @@
 //这是一套操作dom类名的工具
-
 //检查是否有类名
 export function hasClass(el, className) {
   let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')//含有className 首尾有空白符或者什么都没有的的字符串

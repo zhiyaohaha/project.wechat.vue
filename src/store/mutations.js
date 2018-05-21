@@ -3,6 +3,7 @@ export default {
     console.log(result)
     //用户名
     state.userName = result.data.name
+    state.mobilePhone = result.data.mobilePhone
   },
   SUBSCRIBE(state, {result}) {
     console.log(result)

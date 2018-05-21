@@ -8,7 +8,6 @@
           <input type="text" v-model="mformData.model"
                  @blur="loseFocus"
                  @input="goodInput(mformData.reg,mformData.model,index)"
-                 @focus="pullDown"
                  :placeholder="mformData.placeholder"
                  :maxlength="mformData.maxlength"
                  :name="mformData.name">
@@ -24,6 +23,9 @@
       </a>
       <a href="javascript:;" class="approve" @click="approve"></a>
     </div>
+    <transition name="fade">
+      <verification :changeShow="changeShow" :verificationCancel="verificationCancel" v-show="verificationShow"/>
+    </transition>
     <transition name="fade">
       <agreementMod :closeModal="closeModal" v-if="!imgIsShow"/>
     </transition>
@@ -98,7 +100,8 @@
         imgIsShow: true,
         forbid: 0,
         num: 0,
-        show: 0
+        show: 0,
+        verificationShow: false //图形验证码显示
       }
     },
     components: {
@@ -141,7 +144,6 @@
     updated() {
     },
     methods: {
-
       //查找
       __findModel(value) {
         let mformDatas = this.mformDatas
@@ -174,9 +176,34 @@
           })
         }
       },
-//      获取焦点
-      pullDown() {
+//      图形验证码
+      changeShow() {
+        this.verificationShow = false
+        this.$store.dispatch("changeTime")
       },
+      verificationCancel(flag, code) {
+        this.verificationShow = false
+        let that = this
+        if (flag) {
+          //点击确定按钮
+          this.$store.commit("AWAITTRUE")
+          this.$store.dispatch('postSendMsg', {
+            code: 'SMS_123738830',
+            mobilePhone: that.__findModel("cellPhoneNum").model,
+            validateKey: that.key + that.time,
+            validateCode: code,
+            needvalidateCode: true,
+            smsSign: "掌金超"
+          }).then((res) => {
+            this.$store.commit("AWAITFALSE")
+            this.__phoneNote(res)
+          })
+        }
+        this.$store.dispatch("changeTime")
+      },
+//      获取焦点
+      /* pullDown() {
+       },*/
 //    申请逻辑
       approve() {
         let userinfo = this.readTodos()
@@ -226,7 +253,7 @@
           firstLevelId: that.getCookie('id'),
           thirdPlatFormBind: true,//第三方绑定接口
           openId: userinfo.openid, //第三方OpenId
-          // openId: "16573", //第三方OpenId
+          // openId: "16574", //第三方OpenId
           thirdLoginType: 'ThirdPlatForm.WeChat',  //第三方登录代号
           head: userinfo.headimgurl,//第三方登录头像
           nickName: userinfo.nickname,//第三方登录昵称
@@ -296,7 +323,7 @@
       },
 //      验证码逻辑
       sendMsg(index) {
-        let mformData = this.mformDatas[index - 1], that = this
+        let mformData = this.mformDatas[index - 1]
         if (this.num > 0) {
           this.MessageBox({
             title: '提示',
@@ -306,16 +333,7 @@
           return
         }
         if (mformData.model !== '' && mformData.regular.test(mformData.model)) {
-          this.$store.commit("AWAITTRUE")
-          this.$store.dispatch('postSendMsg', {
-            code: 'SMS_123738830',
-            mobilePhone: that.__findModel("cellPhoneNum").model,
-            needvalidateCode: false,
-            smsSign: "掌金超"
-          }).then((res) => {
-            this.$store.commit("AWAITFALSE")
-            this.__phoneNote(res)
-          })
+          this.verificationShow = true
         } else {
           this.MessageBox({
             title: '提示',
@@ -323,6 +341,7 @@
             showCancelButton: false
           })
         }
+
       },
       openModal() {
         this.imgIsShow = false

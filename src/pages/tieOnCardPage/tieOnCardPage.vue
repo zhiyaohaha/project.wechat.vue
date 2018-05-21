@@ -205,14 +205,6 @@
             name: that.__findModel("userName"),//真实姓名
             idCard: that.__findModel("IDnumber"),//身份证号
             bankCard: that.__findModel("bankCard"),//银行卡号
-            fuiouBankArea: that.provinceAndCity.find((n) => {
-              return n.b === a.substr(0, a.indexOf(' ') + 1).trim()
-            }).c.find((m) => {
-              return m.b === a.substr(a.indexOf(' ') + 1).trim()
-            }).a,//开户行所在地编号
-            fuiouBank: that.bankArr.find((n) => {
-              return n.text === that.__findModel("bank")
-            }).value,//开户行编号
             mobilePhone: that.__findModel("phoneNum")//手机号
           }).then((res) => {
             console.log(res)

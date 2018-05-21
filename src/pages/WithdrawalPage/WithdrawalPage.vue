@@ -74,6 +74,7 @@
           )
           return
         }
+        // this.$router.push({name:"authenticationPage",params:{money}})
         this.$store.commit("AWAITTRUE")
         this.$store.dispatch("getWithDraw",{
           openId:that.readTodos().openid,

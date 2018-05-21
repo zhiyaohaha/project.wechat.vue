@@ -14,12 +14,25 @@
               </router-link>
             </div>
             <div>
+              <router-link :to="{name:'productPage'}">
+                <img src="./img/renzhengbanner.png">
+              </router-link>
+            </div>
+            <div>
+              <router-link :to="{name:'productPage'}">
+                <img src="./img/renzhengbanner.png">
+              </router-link>
+            </div>
+            <div>
+              <router-link :to="{name:'productPage'}">
+                <img src="./img/renzhengbanner.png">
+              </router-link>
+            </div>
+            <div>
               <router-link :to="{name:'generalizePage'}">
                 <img src="./img/tuiguangbanner.png">
               </router-link>
             </div>
-            <div class="slider-item">33</div>
-            <div class="slider-item">444</div>
           </slider>
         </header>-->
         <header class="homePageHeader">
