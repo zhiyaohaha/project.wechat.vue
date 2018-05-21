@@ -7,7 +7,7 @@
     <div v-if="$route.meta.keepAlive&&userName">
       <header class="myPageHeader">
         <div class="headPortrait">
-          <router-link :to="{name:'personalDataPage'}">
+          <router-link :to="{name:'headChoicePage'}">
             <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
           </router-link>
         </div>
@@ -92,7 +92,14 @@
     computed: {
       ...mapState(["userName", "serviceQrCodeShow","income"])
     },
-    watch: {},
+    watch: {
+      $route(to,from){
+        if(to.name === "myPage"){
+            window.history.pushState(null, "", "#/homePage")
+            window.history.pushState(null, "", "#/myPage")
+        }
+      }
+    },
     beforeCreate() {
 
     },
@@ -100,9 +107,15 @@
       this.$store.dispatch("getAccountInfo")
     },
     mounted() {
-
+      if(this.$route.name === "myPage"){
+        window.history.pushState(null, "", "#/homePage")
+        window.history.pushState(null, "", "#/myPage")
+        console.log(this.$route.name)
+      }
     },
     methods: {
+
+      //返回事件
       isShow() {
         this.$store.commit("QRCODEISSHOW", false)
       }

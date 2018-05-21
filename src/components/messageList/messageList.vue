@@ -5,9 +5,10 @@
         <span class="title">
           {{it.title}}
         </span>
-        <span class="message">
+        <span class="message" v-if="it.message">
           {{it.message}}
         </span>
+        <img :src="it.imgUrl" v-if="it.imgUrl">
       </li>
     </ul>
   </div>
@@ -43,10 +44,16 @@
         border-bottom (1/$rem) solid #f2f2f2
         font-size (42/$rem)
         line-height (120/$rem)
+        overflow hidden
         .title
           color #333
           float left
         .message
           color #bbb
           float right
+        img
+          float right
+          width (25/$rem)
+          height (50/$rem)
+          margin-top (35/$rem)
 </style>

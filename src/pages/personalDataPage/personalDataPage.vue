@@ -9,7 +9,7 @@
     <headline :headlineData="{title:'填写个人信息',line:true}" v-if="approveShow"/>
     <headline :headlineData="{title:'个人信息',line:true}" v-if="!approveShow"/>
     <ul class="mform">
-      <li v-for="(mformData, index) in mformDatas" :key="index">
+      <li v-for="(mformData, index) in mformDatas" :key="index" v-if="!mformData.show">
         <span class="description">{{mformData.description}}</span>
         <input type="text" v-model="mformData.model"
                :readonly="mformData.readonly"
@@ -70,6 +70,16 @@
             maxlength: "11",
             readonly: true,
           },
+          {
+            message: "请正确输入手机号",
+            description: "银行卡号：",
+            placeholder: "请输入手机号",
+            name: "bankCard",
+            model: "",
+            maxlength: "11",
+            readonly: true,
+            show:true
+          },
         ],
         imgIsShow: true
       }
@@ -93,6 +103,10 @@
           this.__findModel("userName").model = this.lastOrderInfo.name
           this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
           this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
+          if(this.lastOrderInfo.identify4AuthBank){
+            this.__findModel("bankCard").model = this.lastOrderInfo.identify4AuthBank
+            this.__findModel("bankCard").show = false
+          }
         }
       })
     },
@@ -231,7 +245,7 @@
       li
         box-sizing border-box
         position relative
-        line-height (120 /$rem)
+        line-height (116 /$rem)
         width (1020 /$rem)
         height (120 /$rem)
         font-size (42 /$rem)

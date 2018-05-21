@@ -2,8 +2,13 @@ export default {
   POST_OPENID(state, {result}) {
     console.log(result)
     //用户名
-    state.userName = result.data.name
-    state.mobilePhone = result.data.mobilePhone
+    if(result.data.name){
+      state.userName = result.data.name
+    }
+    if(result.data.mobilePhone){
+      state.mobilePhone = result.data.mobilePhone
+    }
+    state.hasPayPassword = result.data.hasPayPassword
   },
   SUBSCRIBE(state, {result}) {
     console.log(result)

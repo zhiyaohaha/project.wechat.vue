@@ -40,6 +40,8 @@ const personalDataPage = () => import('../pages/personalDataPage/personalDataPag
 const creditInvestigationPage = () => import('../pages/creditInvestigationPage/creditInvestigationPage.vue')
 const customerServicePage = () => import('../pages/customerServicePage/customerServicePage.vue')
 const authenticationPage = () => import('../pages/authenticationPage/authenticationPage.vue')//提现手机认证码
+const setPasswordPage = () => import('../pages/setPasswordPage/setPasswordPage.vue')//支付密码
+const headChoicePage = () => import('../pages/headChoicePage/headChoicePage.vue')//头像选择页面
 
 
 // keepAlive判断一级路由是否应该存在
@@ -146,7 +148,6 @@ const router = new Router({
           component: materialPage,
           meta: {keepAlive: false, isTop: false, title: '推广素材'},
         },
-
         {
           path: 'generalizePage',
           component: generalizePage,
@@ -174,10 +175,22 @@ const router = new Router({
       meta: {keepAlive: false, isTop: true, cache: true, title: '个人信息'},
     },
     {
+      path: '/headChoicePage',
+      component: headChoicePage,
+      name: "headChoicePage",
+      meta: {keepAlive: false, isTop: true, title: '账户管理'},
+    },
+    {
       path: '/authenticationPage',
       name: "authenticationPage",
       component: authenticationPage,
-      meta: {keepAlive: false, isTop: true, title: '验证手机号'},
+      meta: {keepAlive: false, cache: true, isTop: true, title: '验证手机号'},
+    },
+    {
+      path: '/setPasswordPage',
+      name: "setPasswordPage",
+      component: setPasswordPage,
+      meta: {keepAlive: false, cache: true, isTop: true, title: '设置提现密码'},
     },
     {
       path: '/myPage',
@@ -248,7 +261,7 @@ const router = new Router({
       path: '/tieOnCardPage',
       component: tieOnCardPage,
       name: "tieOnCardPage",
-      meta: {keepAlive: false, isTop: true, title: '实名绑卡'},
+      meta: {keepAlive: false,isTop: true, title: '实名绑卡'},
     },
   ]
 })
@@ -266,20 +279,27 @@ let goBack = function (e) {
     }
   }
 }
-
+let getBack=function (e) {
+  console.log("哈啊")
+}
 router.beforeResolve((to, from, next) => {
-  if ((to.name === "loanPage" || to.name === "creditInvestigationPage"||to.name === "WithdrawalPage") && getCookie('whether') * 1 === 1) {
+  if ((to.name === "loanPage" || to.name === "creditInvestigationPage") && getCookie('whether') * 1 === 1) {
     let name = to.name
     MessageBox.confirm('请确认个人信息后继续办理业务', "提示").then(() => {
-      next({name: "personalDataPage", params: {name:name}})
+      next({name: "personalDataPage", params: {name: name}})
     }).catch(() => {
       next(false)
     })
     return
   }
-  if(to.name === "phoneApprove"){
-    if(getCookie('whether') * 1 > 0){
-      next({name: "homePage"})
+  if (to.name === "phoneApprove" && getCookie('whether') * 1 > 0) {
+    next({name: "homePage"})
+  }
+  //判断用户是否是要素注册和支付密码设置
+  if(store.state.hasPayPassword !== null){
+    if ((to.name === "WithdrawalPage"&& getCookie('whether') * 1 < 3 )||(to.name === "WithdrawalPage"&&!store.state.hasPayPassword)){
+      next({name:"tieOnCardPage"})
+      return
     }
   }
   next()
@@ -298,6 +318,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.register && (getCookie('whether') * 1 < 1)) {
     next({name: "phoneApprove", params: {name1: to.name, name2: ""}, query: {id: to.query.id}})
   }
+
   /* 路由发生变化修改页面title */
   if (to.name == "zhongXinCardPage" || to.name == "strategyListPage") {
     to.meta.title = to.query.name

@@ -11,12 +11,13 @@ import headline from './components/headline/headline.vue'
 import footline from './components/footline/footline.vue'
 import pickerMod from './components/pickerMod/pickerMod.vue'
 import scroll from './components/scroll/scroll.vue'
-// import vConsole from 'vconsole'
+import vConsole from 'vconsole'
 // import wx from 'weixin-js-sdk'
 import {
   __boxheight,
   __GetRequest,
-  __newGuid
+  __newGuid,
+  pushHistory
 } from './util/viewportWidth.js'
 import {
   getCookie,
@@ -52,9 +53,10 @@ Vue.prototype.saveTodos = storageUtil.saveTodos
 Vue.prototype.readTodos = storageUtil.readTodos
 Vue.prototype.toPercent = toPercent
 Vue.prototype.MessageBox = MessageBox
-Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
+Vue.prototype.pushHistory = pushHistory
+// Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
+Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
 // Vue.prototype.apiPrefix = 'http://api4.cpf360.com/'
-// Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
 Vue.prototype.BScroll = BScroll
 /*wx.config({
   debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看
@@ -73,7 +75,7 @@ if (!obj.code) {
   window.location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3e7e9692d8fc4a4b&redirect_uri=http://wechat.cpf360.com/index.html?id=${num}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`)
 }*/
 // eslint-disable no-new
-// new vConsole
+new vConsole
 new Vue({
   el: '#app',
   render: h => h(App),

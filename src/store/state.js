@@ -35,5 +35,6 @@ export default {
   income:null,
   succeedWithDrawRecord:null,
   defeatedWithDrawRecord:null,
-  mobilePhone:null
+  mobilePhone:null,
+  hasPayPassword:null
 }

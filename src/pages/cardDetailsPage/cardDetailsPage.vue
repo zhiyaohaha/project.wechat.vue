@@ -101,7 +101,6 @@
       skip(){
         let that = this
         let num = this.getCookie('whether') * 1
-        console.log(num);
         if(num === 1){
           this.MessageBox.confirm('请确认个人信息后继续办理业务',"提示").then(() => {
             this.$router.push({name:'personalDataPage',query:{id:that.$route.query.id},params:{name:"cardApplyForPage"}})

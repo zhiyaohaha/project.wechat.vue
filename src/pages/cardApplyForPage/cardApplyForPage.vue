@@ -29,6 +29,7 @@
                  :name="mformData.name">
         </li>
       </ul>
+
     </div>
     <footer class="applyForFooter" @click="applyFor">
       <a href="javascript:;">立即提交</a>
@@ -89,7 +90,6 @@
 
     },
     created() {
-      let that = this
       this.$store.dispatch("getLastOrderInfo").then(() => {
         if (this.lastOrderInfo) {
           this.__findModel("userName").model = this.lastOrderInfo.name
