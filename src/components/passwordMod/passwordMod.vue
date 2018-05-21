@@ -126,7 +126,7 @@
           }).then((res)=>{
             this.$store.commit("AWAITFALSE")
             if(res.success){
-              this.MessageBox.alert("提现成功，1-5个工作日到账","提现成功").then(()=>{
+              this.MessageBox.alert("提现成功，一个工作日到账","提现成功").then(()=>{
                 this.$router.push({name:"myPage"})
               })
             }else {

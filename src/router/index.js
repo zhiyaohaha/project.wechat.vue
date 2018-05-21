@@ -42,6 +42,7 @@ const customerServicePage = () => import('../pages/customerServicePage/customerS
 const authenticationPage = () => import('../pages/authenticationPage/authenticationPage.vue')//提现手机认证码
 const setPasswordPage = () => import('../pages/setPasswordPage/setPasswordPage.vue')//支付密码
 const headChoicePage = () => import('../pages/headChoicePage/headChoicePage.vue')//头像选择页面
+const explainPage = () => import('../pages/explainPage/explainPage.vue')//提现说明
 
 
 // keepAlive判断一级路由是否应该存在
@@ -262,6 +263,12 @@ const router = new Router({
       component: tieOnCardPage,
       name: "tieOnCardPage",
       meta: {keepAlive: false,isTop: true, title: '实名绑卡'},
+    },
+    {
+      path: '/explainPage',
+      component: explainPage,
+      name: "explainPage",
+      meta: {keepAlive: false,isTop: true, title: '提现说明'},
     },
   ]
 })

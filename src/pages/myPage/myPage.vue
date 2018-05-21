@@ -26,7 +26,7 @@
         </a>
         <a href="javascript:;" class="withdrawDeposit">
           <span class="describe">账户余额</span>
-          <span class="unit">￥<span class="price">{{income.balance}}元</span></span>
+          <span class="unit">￥<span class="price">{{income.withdrawBalance}}元</span></span>
         </a>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>

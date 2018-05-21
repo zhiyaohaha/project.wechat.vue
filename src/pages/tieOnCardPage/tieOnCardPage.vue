@@ -7,7 +7,7 @@
       <ul class="mform">
         <li v-for="(mformData, index) in mformDatas" :key="index">
           <span class="description">{{mformData.description}}</span>
-          <input type="text" v-model="mformData.model"
+          <input :type="mformData.type" v-model="mformData.model"
                  @blur="loseFocus"
                  @input="goodInput(mformData.reg,mformData.model,index)"
                  @focus="pullDown"
@@ -48,6 +48,7 @@ import  {mapState} from  "vuex"
             units: "",
             reg: /^[\u4e00-\u9fa5]{1,}$/,
             regular: /^[\u4e00-\u9fa5]{1,}$/,
+            type:"text"
           },
           {
             description: "身份证号：",
@@ -61,7 +62,8 @@ import  {mapState} from  "vuex"
             units: "",
             reg: /^[0-9_xX]{1,18}$/,
             regular: /^\d{17}[\d|xX]|\d{15}$/,
-            maxlength: "18"
+            maxlength: "18",
+            type:"text"
           },
           {
             description: "银行卡号：",
@@ -73,9 +75,10 @@ import  {mapState} from  "vuex"
             purposeList: false,
             sendMsg: false,
             units: "",
-            reg: /^[0-9]{1,21}$/,
-            regular: /^[0-9]{1,21}$/,
-            maxlength: "21"
+            reg: /^[0-9]{1,19}$/,
+            regular: /^([1-9]{1})(\d{14}|\d{18})$/,
+            maxlength: "19",
+            type:"number"
           },
           {
             description: "银行预留手机号：",
@@ -89,7 +92,8 @@ import  {mapState} from  "vuex"
             units: "",
             reg: /^[0-9]{1,11}$/,
             regular: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9]|17[0-9])\d{8}$/,
-            maxlength: 11
+            maxlength: 11,
+            type:"number"
           },
         ],
         mformDatasInd: 0,
@@ -101,6 +105,14 @@ import  {mapState} from  "vuex"
 
     computed: {
       ...mapState(["lastOrderInfo"])
+    },
+    watch:{
+      $route(to,from){
+        if(to.name === "tieOnCardPage"){
+          window.history.pushState(null, "", "#/myPage")
+          window.history.pushState(null, "", "#/tieOnCardPage")
+        }
+      }
     },
     created() {
       this.$store.dispatch("getLastOrderInfo").then(() => {
@@ -134,8 +146,9 @@ import  {mapState} from  "vuex"
         this.tieOnFooterIsShow = true
       },
       goodInput(reg, flag, index) {
+        let model = this.mformDatas[index].model
         if (!reg.test(flag)) {
-          this.mformDatas[index].model = flag.substring(0, flag.length - 1)
+          model = flag.substring(0, flag.length - 1)
         }
       },
       //弹窗挑起事件

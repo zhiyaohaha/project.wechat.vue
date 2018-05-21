@@ -23,7 +23,7 @@
             url:{name:"personalDataPage"}
           },
           {
-            title:"重置支付密码",
+            title:"设置密码",
             url:{name:"tieOnCardPage"}
           },
         ]

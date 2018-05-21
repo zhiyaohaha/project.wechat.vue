@@ -4,7 +4,7 @@
     <div class="WithdrawalPageContent">
       <p class="balance">
         <span class="describe">
-          账户余额 <span class="price">{{income.balance}}</span>元
+          账户余额 <span class="price">{{income.withdrawBalance}}</span>元
         </span>
       </p>
       <p class="deposit">提现金额</p>
@@ -18,6 +18,13 @@
         <button class="submit" @click="submit" :class="{changColor :money!== ''}">立即提现</button>
       </div>
     </div>
+    <footer class="WithdrawalPageFooter">
+      <p>
+        <router-link :to="{name:'customerServicePage'}">联系客服</router-link>
+        <span>|</span>
+        <router-link :to="{name:'explainPage'}">提现说明</router-link>
+      </p>
+    </footer>
     <transition name="fade">
       <keyboardMod :press="press" :letGo="letGo" v-show="keyboardShow"/>
     </transition>
@@ -227,4 +234,19 @@
           &.changColor
             z-index 11
             background-color #efca7d
+    .WithdrawalPageFooter
+      position fixed
+      bottom 0
+      left 0
+      width 100%
+      padding-bottom (40/$rem)
+      text-align center
+      p
+        overflow hidden
+        a
+          display inline-block
+          color #efca7d
+          font-size (30/$rem)
+        span
+          font-size (30/$rem)
 </style>
