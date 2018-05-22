@@ -15,31 +15,37 @@
           <img src="../static/img/homeImg/tab_icon_mine_selected.png" v-show="!$route.meta.footerShow">
         </router-link>
       </footer>
+      <transition name="disappear">
+        <redEnvelopeMod :redEnvelopeModIsShow="redEnvelopeModIsShow" v-if="redEnvelopeModShow"/>
+      </transition>
     </div>
     <div>
       <awaitMod v-if="awaitShow"/>
     </div>
+
   </div>
 </template>
 <script>
   import {mapState} from 'vuex'
   import awaitMod from "./components/awaitMod/awaitMod"
+  import redEnvelopeMod from "./components/redEnvelopeMod/redEnvelopeMod"
 
   export default {
     data() {
       return {
         footerShow: true,
-        allIsShow: false
+        allIsShow: false,
+        redEnvelopeModShow: true
       }
     },
     components: {
-      awaitMod
+      awaitMod, redEnvelopeMod
     },
     computed: {
       ...mapState(['openID', 'userinfo', 'awaitShow'])
     },
-    watch:{
-      awaitShow(val){
+    watch: {
+      awaitShow(val) {
       }
     },
     beforeCreate() {
@@ -84,11 +90,11 @@
           console.log(JSON.stringify(userinfo))
           this.$store.dispatch('postOpenid', {
             data: {
-              openId:userinfo.openid||"",
-              // openId: "16573",
+              // openId:userinfo.openid||"",
+              openId: "16573",
               thirdLoginType: 'ThirdPlatForm.WeChat',
-              nickName:userinfo.nickname||"",
-              head: userinfo.headimgurl||"",
+              nickName: userinfo.nickname || "",
+              head: userinfo.headimgurl || "",
               firstLevelId: that.getCookie("id") === "undefined" ? "" : that.getCookie("id")
             },
             cb: (va1, whether) => {
@@ -109,7 +115,11 @@
     updated() {
 
     },
-    methods: {}
+    methods: {
+      redEnvelopeModIsShow() {
+        this.redEnvelopeModShow = false
+      }
+    }
   }
 
 </script>
@@ -173,4 +183,11 @@
         color #fff
         background-color #efca7d
 
+  .disappear-enter-active, .disappear-leave-active {
+    transition: all .5s;
+  }
+
+  .disappear-enter, .disappear-leave-active {
+    transform: translate3d(0, -100%, 0)
+  }
 </style>

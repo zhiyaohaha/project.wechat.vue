@@ -11,7 +11,7 @@
       <div class="login">
         <p class="import"><span>￥</span><input name="txtUserName"
                                                @focus="gainFoucs"
-                                               :placeholder="`可提现${income.balance}元`"
+                                               :placeholder="`可提现${income.withdrawBalance}元`"
                                                type="number"
                                                v-model="money"/></p>
         <p class="hint"><span @click="withdrawDeposit">全部提现</span></p>
@@ -120,11 +120,11 @@
         }
       },
       withdrawDeposit() {
-        this.money = this.income.balance
+        this.money = this.income.withdrawBalance
       },
       //提交
       submit() {
-        let money = this.money * 1, balance = this.income.balance * 1
+        let money = this.money * 1, withdrawBalance = this.income.withdrawBalance * 1
         if (!money) {
           this.MessageBox.alert(
             "请输入金额",
@@ -132,7 +132,7 @@
           )
           return
         }
-        if (money > balance) {
+        if (money > withdrawBalance) {
           this.MessageBox.alert(
             "提现金额不能大于账户余额",
             '提现失败'
