@@ -7,7 +7,7 @@
     <div v-if="$route.meta.keepAlive&&userName">
       <header class="myPageHeader">
         <div class="headPortrait">
-          <router-link :to="{name:'personalDataPage'}">
+          <router-link :to="{name:'headChoicePage'}">
             <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
           </router-link>
         </div>
@@ -26,7 +26,7 @@
         </a>
         <a href="javascript:;" class="withdrawDeposit">
           <span class="describe">账户余额</span>
-          <span class="unit">￥<span class="price">{{income.balance}}元</span></span>
+          <span class="unit">￥<span class="price">{{income.withdrawBalance}}元</span></span>
         </a>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
@@ -97,7 +97,14 @@
     computed: {
       ...mapState(["userName", "serviceQrCodeShow","income"])
     },
-    watch: {},
+    watch: {
+      $route(to,from){
+        if(to.name === "myPage"){
+            window.history.pushState(null, "", "#/homePage")
+            window.history.pushState(null, "", "#/myPage")
+        }
+      }
+    },
     beforeCreate() {
 
     },
@@ -105,9 +112,15 @@
       this.$store.dispatch("getAccountInfo")
     },
     mounted() {
-
+      if(this.$route.name === "myPage"){
+        window.history.pushState(null, "", "#/homePage")
+        window.history.pushState(null, "", "#/myPage")
+        console.log(this.$route.name)
+      }
     },
     methods: {
+
+      //返回事件
       isShow() {
         this.$store.commit("QRCODEISSHOW", false)
       }

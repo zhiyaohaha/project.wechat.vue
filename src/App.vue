@@ -68,11 +68,6 @@
         }).then(() => {
           this.allIsShow = true
           this.$store.commit("AWAITFALSE")
-          this.$store.dispatch('getBinBankCard', {
-            cb: (whether) => {
-              this.setCookie('whether', whether, 7)
-            }
-          })
         })
       } else {
         // alert(2)
@@ -89,11 +84,11 @@
           console.log(JSON.stringify(userinfo))
           this.$store.dispatch('postOpenid', {
             data: {
-              openId: userinfo.openid,
-              // openId: "16573",
+              // openId:userinfo.openid||"",
+              openId: "oUSCj0xd_6ONno8QyarJQc59vGjY",
               thirdLoginType: 'ThirdPlatForm.WeChat',
-              nickName: userinfo.nickname,
-              head: userinfo.headimgurl,
+              nickName:userinfo.nickname||"",
+              head: userinfo.headimgurl||"",
               firstLevelId: that.getCookie("id") === "undefined" ? "" : that.getCookie("id")
             },
             cb: (va1, whether) => {

@@ -1,6 +1,8 @@
 <template>
   <div class="generalizeYiPage">
-    <router-view/>
+    <transition name="reveal">
+      <router-view/>
+    </transition>
     <scroll class="wrapper"
             :data="subordinateUserList||[]"
             :pullup="true"
@@ -86,7 +88,6 @@
     beforeCreate() {
     },
     created() {
-      console.log(this.subordinateUserList);
       this.$store.dispatch("getSubordinateNum", {
         thirdLoginType: "ThirdPlatForm.WeChat",
         userId: ""
@@ -99,7 +100,6 @@
           size: 10,//每页数量
         })
       }
-
     },
     mounted() {
       if (!this.subordinateUserList || this.subordinateUserList.length < 1) {
@@ -146,6 +146,12 @@
   .generalizeYiPage
     background-color #ffffff
     position relative
+    .reveal-enter-active {
+      transition: all .3s;
+    }
+    .reveal-enter {
+      transform: translate3d(100%, 0, 0)
+    }
     .embezzlement
       width 100%
       height (150 /$rem)

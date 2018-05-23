@@ -54,7 +54,6 @@
         let url = this.apiPrefix + "api/OfficialAccounts/ValidateCode?key="
         let src = url + this.key + this.time
         return src
-
       },
 
     },

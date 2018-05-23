@@ -9,7 +9,7 @@
     <headline :headlineData="{title:'填写个人信息',line:true}" v-if="approveShow"/>
     <headline :headlineData="{title:'个人信息',line:true}" v-if="!approveShow"/>
     <ul class="mform">
-      <li v-for="(mformData, index) in mformDatas" :key="index">
+      <li v-for="(mformData, index) in mformDatas" :key="index" v-if="!mformData.show">
         <span class="description">{{mformData.description}}</span>
         <input type="text" v-model="mformData.model"
                :readonly="mformData.readonly"
@@ -70,6 +70,16 @@
             maxlength: "11",
             readonly: true,
           },
+          {
+            message: "请正确输入手机号",
+            description: "银行卡号：",
+            placeholder: "请输入手机号",
+            name: "bankCard",
+            model: "",
+            maxlength: "11",
+            readonly: true,
+            show: true
+          },
         ],
         imgIsShow: true
       }
@@ -81,25 +91,32 @@
 
     computed: {
       ...mapState(["userName", "lastOrderInfo"]),
-      approveShow(){
-        return this.getCookie('whether')*1 < 2
+      approveShow() {
+        return this.getCookie('whether') * 1 < 2
       }
     },
-    watch:{
-    },
+    watch: {},
     created() {
       this.$store.dispatch("getLastOrderInfo").then(() => {
         if (this.lastOrderInfo) {
+          let idCard = this.lastOrderInfo.idCard, identify4AuthBank = this.lastOrderInfo.identify4AuthBank
+          //
+          idCard = idCard.substring(0, 1) +"******************"+idCard.substring(idCard.length-1, idCard.length)
+          identify4AuthBank = identify4AuthBank.substring(0, 1) + "********************"+identify4AuthBank.substring(idCard.length-1, idCard.length)
           this.__findModel("userName").model = this.lastOrderInfo.name
-          this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
+          this.__findModel("IDnumber").model = idCard
           this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
+          if (this.lastOrderInfo.identify4AuthBank) {
+            this.__findModel("bankCard").model = identify4AuthBank
+            this.__findModel("bankCard").show = false
+          }
         }
       })
     },
     mounted() {
-      if(!this.approveShow){
-        this.mformDatas.forEach((item,index)=>{
-          item.readonly  = true
+      if (!this.approveShow) {
+        this.mformDatas.forEach((item, index) => {
+          item.readonly = true
         })
       }
     },
@@ -120,32 +137,32 @@
       },
       //  提交
       approve() {
-        let that = this,url=this.apiPrefix + "api/LoanOrder/SpeedOrderRecordForApp"
-        for(let i=0 ; i<this.mformDatas.length;i++){
-          let item =this.mformDatas[i]
-          if(item.model === ""){
-            this.MessageBox.alert(item.placeholder,"提交失败")
+        let that = this, url = this.apiPrefix + "api/LoanOrder/SpeedOrderRecordForApp"
+        for (let i = 0; i < this.mformDatas.length; i++) {
+          let item = this.mformDatas[i]
+          if (item.model === "") {
+            this.MessageBox.alert(item.placeholder, "提交失败")
             return
-          }else if(!item.regular.test(item.model)){
-            this.MessageBox.alert(item.message,"提交失败")
+          } else if (!item.regular.test(item.model)) {
+            this.MessageBox.alert(item.message, "提交失败")
             return
           }
         }
         this.$store.commit("AWAITTRUE")
-        this.$store.dispatch("getIdentify2Auth",{//二要素认证
+        this.$store.dispatch("getIdentify2Auth", {//二要素认证
           realName: that.__findModel("userName").model,
           idCard: that.__findModel("IDnumber").model
-        }).then((result)=>{
-          if(result.data.isSame){
+        }).then((result) => {
+          if (result.data.isSame) {
             this.$store.dispatch("postFillUserInfo", {//个人信息补充
               data: {
                 name: that.__findModel("userName").model,
                 idCard: that.__findModel("IDnumber").model,
                 phone: that.__findModel("phoneNum").model
               },
-            }).then((res)=>{
-              if(res.success){
-                if(that.$route.params.urlIsSkip){
+            }).then((res) => {
+              if (res.success) {
+                if (that.$route.params.urlIsSkip) {
                   postSpeedOrder(url, {
                     name: that.__findModel("userName").model,
                     idCard: that.__findModel("IDnumber").model,
@@ -165,25 +182,25 @@
                       })
                     }
                   })
-                }else if(that.$route.params.name){
+                } else if (that.$route.params.name) {
                   this.$store.commit("AWAITFALSE")
                   this.setCookie('whether', 2, 7)
                   this.$router.replace({
                     name: that.$route.params.name,
                     query: {id: that.$route.query.id},
                   })
-                }else {
+                } else {
                   this.$store.commit("AWAITFALSE")
                   window.location.reload()
                 }
-              }else {
+              } else {
                 this.$store.commit("AWAITFALSE")
-                this.MessageBox.alert(res.message,"提交失败")
+                this.MessageBox.alert(res.message, "提交失败")
               }
             })
-          } else{
+          } else {
             this.$store.commit("AWAITFALSE")
-            this.MessageBox.alert(result.message,"提交失败")
+            this.MessageBox.alert(result.message, "提交失败")
           }
         })
 
@@ -215,10 +232,10 @@
       height (550 /$rem)
       text-align center
       box-sizing border-box
-      padding-top (120/$rem)
+      padding-top (120 /$rem)
       .head
-        margin-left (460/$rem)
-        margin-bottom (20/$rem)
+        margin-left (460 /$rem)
+        margin-bottom (20 /$rem)
         img
           border-radius 50%
           width (160 /$rem)
@@ -231,7 +248,7 @@
       li
         box-sizing border-box
         position relative
-        line-height (118 /$rem)
+        line-height (116 /$rem)
         width (1020 /$rem)
         height (120 /$rem)
         font-size (42 /$rem)

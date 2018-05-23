@@ -20,8 +20,6 @@ import {
   getSubordinateNum,
   getSubordinateUserList,
   postPeopleFiveReal,
-  getBanks,
-  getAdCodes,
   postFiveRealVerifyCode,
   getListScheduleForApp,
   getAccountInfo,
@@ -35,16 +33,26 @@ import {
   getDemandDetail,
   getClickRecord,
   getWithDraw,
-  getWithDrawRecord
+  getWithDrawRecord,
+  postIdentify4Auth,
+  getVerifyCode,
+  getSetPayPassword
 } from '../api'
 
 // let apiPrefix =   'http://api2.cpf360.com/' // 正式库
-let apiPrefix = 'http://211.94.137.70:8001/'//测试库
+// let apiPrefix = 'http://211.94.137.70:8001/'//测试库
 let apiVersion1 = 'http://api.cpf360.com/' //1.0的正式库
-// let apiPrefix = 'http://api4.cpf360.com/' //1.0的正式库
+let apiPrefix = 'http://api4.cpf360.com/' //2.0的测试库
 
 // let apiVersion1 = 'local.appapi.cpf360.com/'//1.0测试库
 export default {
+  //征信四要素
+  async postIdentify4Auth({commit}, data) {
+    // debugger
+    let url = apiPrefix + 'api/OfficialAccounts/Identify4Auth'
+    const result = await postIdentify4Auth(url, data)
+    return result
+  },
   //验证码
   async postSendMsg({commit}, data) {
     // debugger
@@ -67,7 +75,9 @@ export default {
       if (result.data.hasIdCard) {
         whether = 2
       }
-
+      if(result.data.identify4Auth){
+        whether = 3
+      }
     } else {
       flag = ""
       whether = 0
@@ -138,8 +148,9 @@ export default {
     let obj = data.obj
     const result = await getUserinfo(url, {code: obj.code})
     if (result) {
-      data.cb && data.cb(result.data, obj.id)
-      commit('SUBSCRIBE', {result: result.data.subscribe})
+      let res = result.data ? result.data.subscribe: {},userinfo = result.data||{name:"哈哈没有"}
+      data.cb && data.cb(userinfo, obj.id)
+      commit('SUBSCRIBE', {result: res})
     }
   },
   //产品列表
@@ -190,7 +201,7 @@ export default {
     const result = await getListBankCardDetail(url, data)
     commit('GET_LISTBANKCARDDETAIL', {result})
   },
-
+  //二维码
   async getInviteUrl({commit},) {
     let url = apiPrefix + "api/Loginer/GetInviteUrl"
     const result = await getInviteUrl(url)
@@ -292,11 +303,11 @@ export default {
     }
   },
   //银行卡列表
-  async getBanks() {
+ /* async getBanks() {
     let url = apiPrefix + "api/ThirdAPI/Fuiou/GetBanks"
     const result = await getBanks(url,)
     return result.data
-  },
+  },*/
   //城市列表
   async getAdCodes() {
     let url = apiPrefix + "api/ThirdAPI/Fuiou/GetAdCodes"
@@ -402,6 +413,16 @@ export default {
         commit("GET_DEFEATEDWITHDRAWRECORD", {result})
       }
     }
+  },
+  async getVerifyCode({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/VerifyCode"
+    const result = await getVerifyCode(url, data)
+    return result
+  },
+  async getSetPayPassword({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/SetPayPassword"
+    const result = await getSetPayPassword(url, data)
+    return result
   },
   //改变时间
   changeTime({commit}) {

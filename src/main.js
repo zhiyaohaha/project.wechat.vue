@@ -16,7 +16,8 @@ import scroll from './components/scroll/scroll.vue'
 import {
   __boxheight,
   __GetRequest,
-  __newGuid
+  __newGuid,
+  pushHistory
 } from './util/viewportWidth.js'
 import {
   getCookie,
@@ -52,9 +53,10 @@ Vue.prototype.saveTodos = storageUtil.saveTodos
 Vue.prototype.readTodos = storageUtil.readTodos
 Vue.prototype.toPercent = toPercent
 Vue.prototype.MessageBox = MessageBox
+Vue.prototype.pushHistory = pushHistory
 // Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
-Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
-// Vue.prototype.apiPrefix = 'http://api4.cpf360.com/'
+// Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
+Vue.prototype.apiPrefix = 'http://api4.cpf360.com/'
 Vue.prototype.BScroll = BScroll
 /*wx.config({
   debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看

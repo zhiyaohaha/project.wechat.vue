@@ -11,6 +11,7 @@ export const postLoginout = (apiPrefix,data) => ajax(apiPrefix, data, "post")
 export const postPeopleFiveReal = (apiPrefix,data) => ajax(apiPrefix, data, "post")
 export const postFiveRealVerifyCode = (apiPrefix,data) => ajax(apiPrefix, data, "post")
 export const postFillUserInfo = (apiPrefix,data) => ajax(apiPrefix, data, "post")
+export const postIdentify4Auth = (apiPrefix,data) => ajax(apiPrefix, data, "post")
 export const getUserinfo = (apiPrefix, data) => ajax(apiPrefix, data)
 export const getLoanAmount = (apiPrefix, data) => ajax(apiPrefix, data)
 export const getListForApp = (apiPrefix, data) => ajax(apiPrefix, data)
@@ -27,10 +28,10 @@ export const getUserRelated = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getRakeBackInfo = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getSubordinateNum = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getSubordinateUserList = (apiPrefix,data) => ajax(apiPrefix,data)
-export const getBanks = (apiPrefix) => ajax(apiPrefix)
-export const getAdCodes = (apiPrefix) => ajax(apiPrefix)
+// export const getBanks = (apiPrefix) => ajax(apiPrefix) //富友开户行
+// export const getAdCodes = (apiPrefix) => ajax(apiPrefix)  // 富友城市
 export const getListScheduleForApp = (apiPrefix,data) => ajax(apiPrefix,data)
-export const getBinBankCard = (apiPrefix) => ajax(apiPrefix)
+// export const getBinBankCard = (apiPrefix) => ajax(apiPrefix)
 export const getAccountInfo = (apiPrefix) => ajax(apiPrefix)
 export const getPosters = (apiPrefix) => ajax(apiPrefix)
 export const getLastOrderInfo = (apiPrefix) => ajax(apiPrefix)
@@ -42,5 +43,7 @@ export const getDemandDetail = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getClickRecord = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getWithDraw = (apiPrefix,data) => ajax(apiPrefix,data)
 export const getWithDrawRecord = (apiPrefix,data) => ajax(apiPrefix,data)
+export const getVerifyCode = (apiPrefix,data) => ajax(apiPrefix,data) //短信验证码
+export const getSetPayPassword = (apiPrefix,data) => ajax(apiPrefix,data) //短信验证码
 
 

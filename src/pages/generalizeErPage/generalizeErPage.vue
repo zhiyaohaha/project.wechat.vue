@@ -91,6 +91,7 @@
       loadData() {
         let that = this, time
         if (this.footlineTitle === "查看更多") {
+          this.footlineTitle = "加载中"
           this.$store.dispatch("getSubordinateUserList", {
             thirdLoginType: "ThirdPlatForm.WeChat",
             userId: that.$route.query.id,//不传则获取登录人的信息，传则获取传入人的信息
