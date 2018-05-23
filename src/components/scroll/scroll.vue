@@ -5,6 +5,8 @@
 </template>
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
+  import {mapState} from 'vuex'
+
   export default {
     props: {
       /**
@@ -82,7 +84,9 @@
         default: 20
       }
     },
-    computed: {},
+    computed: {
+      ...mapState(["generalizeYiPageY"])
+    },
     mounted() {
       this.__boxheight(this.$refs.wrapper)
       // 保证在DOM渲染完毕后初始化better-scroll
@@ -95,13 +99,17 @@
         if (!this.$refs.wrapper) {
           return
         }
-        // better-scroll的初始化
-        this.scroll = new BScroll(this.$refs.wrapper, {
+        let obj = {
           probeType: this.probeType,
           click: this.click,
           scrollX: this.scrollX,
           bounce: this.bounce,
-        })
+        }
+        /*if(this.$route.name === "generalizeYiPage"){
+          obj.startY = this.generalizeYiPageY
+        }*/
+        // better-scroll的初始化
+        this.scroll = new BScroll(this.$refs.wrapper, obj)
 
         // 是否派发滚动事件
         if (this.listenScroll) {
@@ -113,6 +121,8 @@
         // 是否派发滚动到底部事件，用于上拉加载
         if (this.pullup) {
           this.scroll.on('scrollEnd', () => {
+            let result = this.scroll && this.scroll.y
+            this.$store.commit("GENERALIZEYIPAGEY", {result})
             // 滚动到底部
             if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
               this.$emit('scrollToEnd')
@@ -158,6 +168,18 @@
         this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
       }
     },
+    updated() {
+      if(this.scroll){
+        this.scrollTo(0, this.generalizeYiPageY)
+        this.refresh()
+      }else {
+        this.__boxheight(this.$refs.wrapper)
+        // 保证在DOM渲染完毕后初始化better-scroll
+        setTimeout(() => {
+          this._initScroll()
+        }, 20)
+      }
+    },
     watch: {
       // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
       data() {
@@ -166,6 +188,9 @@
         }, this.refreshDelay)
       },
       $route(to, form) {
+        if(to.meta.keepAlive){
+          this.$store.commit("GENERALIZEYIPAGEY", {result:0})
+        }
         if (to.name === "productPage" || to.name === "creditCardPage") {
           this.refresh()
         }

@@ -16,14 +16,14 @@ import {
   __boxheight,
   __GetRequest,
   __newGuid
-} from '../static/js/viewportWidth.js'
+} from './util/viewportWidth.js'
 import {
   getCookie,
   setCookie
 } from './util/cookieUtil.js'
 import storageUtil from './util/storageUtil.js'
 import '../static/css/reset.styl'
-import '../static/js/adaptive'
+import './common/common/adaptive'
 import 'mint-ui/lib/style.css'
 
 // import 'vue-ydui/dist/ydui.base.css'

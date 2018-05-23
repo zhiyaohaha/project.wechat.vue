@@ -5,7 +5,8 @@
             :data="subordinateUserList||[]"
             :pullup="true"
             :windowHeight="false"
-            @scrollToEnd="loadData" ref="scroll" v-if="subordinateNum">
+            @scrollToEnd="loadData"
+            v-if="subordinateNum">
       <div v-show="$route.meta.isTop&&subordinateNum">
         <header class="generalizePageHeader">
           <div class="headPortrait">
@@ -88,12 +89,15 @@
         thirdLoginType: "ThirdPlatForm.WeChat",
         userId: ""
       })
-      this.$store.dispatch("getSubordinateUserList", {
-        thirdLoginType: "ThirdPlatForm.WeChat",
-        userId: "",//不传则获取登录人的信息，传则获取传入人的信息
-        id: "",//第一次不用传，以后传最后一条Id
-        size: 10,//每页数量
-      })
+      if(!this.subordinateUserList){
+        this.$store.dispatch("getSubordinateUserList", {
+          thirdLoginType: "ThirdPlatForm.WeChat",
+          userId: "",//不传则获取登录人的信息，传则获取传入人的信息
+          id: "",//第一次不用传，以后传最后一条Id
+          size: 10,//每页数量
+        })
+      }
+
     },
     mounted() {
       if (!this.subordinateUserList || this.subordinateUserList.length < 1) {
@@ -103,6 +107,11 @@
     updated() {
     },
     methods: {
+      //记录跳转
+      recordY(){
+        let result = this.$refs.scroll.scroll.y
+        this.$store.commit("GENERALIZEYIPAGEY",{result})
+      },
       loadData() {
         let that = this, time
         if (this.footerTitle === "加载中" || this.footerTitle === "没有更多数据啦") {

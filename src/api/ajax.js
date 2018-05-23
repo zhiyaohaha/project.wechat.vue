@@ -1,6 +1,6 @@
 import axios from 'axios'
 import md5 from 'js-md5'
-import {postAuth} from '../../static/js/viewportWidth'
+import {postAuth} from '../util/viewportWidth'
 import {
   getCookie,
 } from '../util/cookieUtil'
