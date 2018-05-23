@@ -1,33 +1,31 @@
 <template>
-  <div class="phoneApprove">
-    <scroll>
-      <div class="myContent">
-        <img src="./img/banner.png">
-        <ul class="mform">
-          <li v-for="(mformData, index) in mformDatas" :key="index">
-            <span class="description">{{mformData.description}}</span>
-            <input type="text" v-model="mformData.model"
-                   @blur="loseFocus"
-                   @input="goodInput(mformData.reg,mformData.model,index)"
-                   @focus="pullDown"
-                   :placeholder="mformData.placeholder"
-                   :maxlength="mformData.maxlength"
-                   :name="mformData.name">
-            <a href="javascript:;" :class="{sendMsg:mformData.sendMsg,color:!num}" @click="sendMsg(index)">
-              {{mformData.units}}
-            </a>
-          </li>
-        </ul>
-        <a href="javascript:;" class="protocol">
-          <img src="./img/xuanze.png" v-show="imgIsShow" @touchstart="notarize">
-          <img src="./img/huisekuang.png" v-show="!imgIsShow" @touchstart="notarize">
-          <span @click="openModal">我已阅读并同意 <span class="changeColor">《掌金超注册协议》</span></span>
-        </a>
-        <a href="javascript:;" class="approve" @click="approve"></a>
-      </div>
-    </scroll>
-    <verification v-show="verificationShow" :changeShow="changeShow"
-                  :verificationCancel="verificationCancel"/>
+  <div class="phoneApprove" v-if="show">
+    <div class="myContent">
+      <img src="./img/banner.png">
+      <ul class="mform">
+        <li v-for="(mformData, index) in mformDatas" :key="index">
+          <span class="description">{{mformData.description}}</span>
+          <input type="text" v-model="mformData.model"
+                 @blur="loseFocus"
+                 @input="goodInput(mformData.reg,mformData.model,index)"
+                 :placeholder="mformData.placeholder"
+                 :maxlength="mformData.maxlength"
+                 :name="mformData.name">
+          <a href="javascript:;" :class="{sendMsg:mformData.sendMsg,color:!num}" @click="sendMsg(index)">
+            {{mformData.units}}
+          </a>
+        </li>
+      </ul>
+      <a href="javascript:;" class="protocol">
+        <img src="./img/xuanze.png" v-show="imgIsShow" @touchstart="notarize">
+        <img src="./img/huisekuang.png" v-show="!imgIsShow" @touchstart="notarize">
+        <span @click="openModal">我已阅读并同意 <span class="changeColor">《掌金超平台服务协议》</span>的所有条款</span>
+      </a>
+      <a href="javascript:;" class="approve" @click="approve"></a>
+    </div>
+    <transition name="fade">
+      <verification :changeShow="changeShow" :verificationCancel="verificationCancel" v-show="verificationShow"/>
+    </transition>
     <transition name="fade">
       <agreementMod :closeModal="closeModal" v-if="!imgIsShow"/>
     </transition>
@@ -43,10 +41,10 @@
       return {
         mformDatas: [
           {
-            message: '请正确输入您的姓名',
+            message: '请正确输入您的真实姓名',
             description: '姓名：',
-            placeholder: '请输入您的姓名',
-            name: 'username',
+            placeholder: '请输入您的真实姓名',
+            name: 'userName',
             model: '',
             purposeList: false,
             sendMsg: false,
@@ -55,6 +53,20 @@
             regular: /^[\u4e00-\u9fa5]{1,}$/,
             errorColor: false,
             maxlength: "15"
+          },
+          {
+            message: "请正确输入您的身份证号",
+            description: '身份证号：',
+            placeholder: '请输入您的身份证号',
+            name: 'IDnumber',
+            model: '',
+            purposeList: false,
+            sendMsg: false,
+            units: '',
+            reg: /^[0-9xX]{1,}$/,
+            regular: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
+            errorColor: false,
+            maxlength: '18'
           },
           {
             message: '请正确输入您的手机号',
@@ -86,10 +98,10 @@
           },
         ],
         imgIsShow: true,
-        verificationShow: false,
-        isFlag: null,
         forbid: 0,
-        num: 0
+        num: 0,
+        show: 0,
+        verificationShow: false //图形验证码显示
       }
     },
     components: {
@@ -106,6 +118,29 @@
 
     },
     watch: {},
+    created() {
+      let that = this, userinfo = this.readTodos()
+      this.$store.dispatch('postOpenid', {
+        data: {
+          openId: userinfo.openid,
+          // openId: "16573",
+          thirdLoginType: 'ThirdPlatForm.WeChat',
+          nickName: userinfo.nickname,
+          head: userinfo.headimgurl,
+          firstLevelId: that.getCookie("id") === "undefined" ? "" : that.getCookie("id")
+        },
+        cb: (va1, whether) => {
+          this.setCookie('token', va1, 7)
+          //存入cookie 判断是否实名
+          this.setCookie('whether', whether, 7)
+        }
+      }).then(() => {
+        this.show = 1
+      })
+    },
+    mounted() {
+
+    },
     updated() {
     },
     methods: {
@@ -128,11 +163,9 @@
             if (this.num == 0) {
               this.__findModel('authCode').units = '获取验证码'
               clearInterval(timer)
-              this.num = null
+              this.num = 0
             } else {
-              if (this.isFlag) {
-                this.__findModel('authCode').units = this.num + 's后重发'
-              }
+              this.__findModel('authCode').units = this.num + 's后重发'
             }
           }, 1000)
         } else {
@@ -143,16 +176,41 @@
           })
         }
       },
-//      底部消失
-      pullDown() {
+//      图形验证码
+      changeShow() {
+        this.verificationShow = false
+        this.$store.dispatch("changeTime")
       },
+      verificationCancel(flag, code) {
+        this.verificationShow = false
+        let that = this
+        if (flag) {
+          //点击确定按钮
+          this.$store.commit("AWAITTRUE")
+          this.$store.dispatch('postSendMsg', {
+            code: 'SMS_123738830',
+            mobilePhone: that.__findModel("cellPhoneNum").model,
+            validateKey: that.key + that.time,
+            validateCode: code,
+            needvalidateCode: true,
+            smsSign: "掌金超"
+          }).then((res) => {
+            this.$store.commit("AWAITFALSE")
+            this.__phoneNote(res)
+          })
+        }
+        this.$store.dispatch("changeTime")
+      },
+//      获取焦点
+      /* pullDown() {
+       },*/
 //    申请逻辑
       approve() {
         let userinfo = this.readTodos()
+        console.log(userinfo)
         let that = this
-
-        if(userinfo.openid === undefined){
-          this.MessageBox.alert("请从公众号或者扫二维码进入","失败").then(()=>{
+        if (userinfo.openid === undefined) {
+          this.MessageBox.alert("请从公众号或者扫二维码进入", "失败").then(() => {
             WeixinJSBridge.call('closeWindow')
           })
           return
@@ -183,80 +241,72 @@
           })
           return
         }
-
         if (this.forbid > 0) {
           return
         }
         this.forbid++
         this.$store.commit("AWAITTRUE")
         let data = {
+          idCard: that.__findModel("IDnumber").model,
           phone: that.__findModel("cellPhoneNum").model,
           verifyCode: that.__findModel("authCode").model,
-          name: that.__findModel("username").model,
+          name: that.__findModel("userName").model,
           firstLevelId: that.getCookie('id'),
           thirdPlatFormBind: true,//第三方绑定接口
           openId: userinfo.openid, //第三方OpenId
-          // openId: "16573", //第三方OpenId
+          // openId: "16574", //第三方OpenId
           thirdLoginType: 'ThirdPlatForm.WeChat',  //第三方登录代号
           head: userinfo.headimgurl,//第三方登录头像
           nickName: userinfo.nickname,//第三方登录昵称
           source: 'OfficialAccounts',
         }
         // alert(JSON.stringify(data))
-        this.$store.dispatch('postPhone', {
-          data,
-          cb: (flag, whether) => {
-            this.setCookie('token', flag, 7)
-            this.setCookie('whether', whether, 7)
-          }
-        }).then((res) => {
-          this.$store.commit("AWAITFALSE")
-          let that = this
-          this.forbid = 0
-          if (res.success) {
-            this.$router.replace({
-              name: that.$route.params.name1,
-              query: {id: that.$route.query.id},
-              params: {name: that.$route.params.name2}
+        this.$store.dispatch("getIdentify2Auth", {
+          realName: that.__findModel("userName").model,
+          idCard: that.__findModel("IDnumber").model
+        }).then((result) => {
+          if (result.data.isSame) {
+            this.$store.dispatch('postPhone', {
+              data,
+              cb: (flag, whether) => {
+                this.setCookie('token', flag, 7)
+                this.setCookie('whether', whether, 7)
+              }
+            }).then((res) => {
+              this.$store.commit("AWAITFALSE")
+              this.forbid = 0
+              if (res.success) {
+                this.$router.replace({
+                  name: that.$route.params.name1 || "homePage",
+                  query: {id: that.$route.query.id},
+                  params: {name: that.$route.params.name2}
+                })
+                that = null
+              } else {
+                this.MessageBox.alert(
+                  res.message,
+                  '提交失败',
+                  {
+                    closeOnClickModal: true
+                  }
+                )
+              }
             })
-            that = null
           } else {
-            this.MessageBox({
-              title: '提交失败',
-              message: res.message,
-              showCancelButton: false
-            })
+            this.forbid = 0
+            this.$store.commit("AWAITFALSE")
+            this.MessageBox.alert(
+              result.message,
+              '提交失败',
+              {
+                closeOnClickModal: true
+              }
+            )
           }
         })
-      },
-//      验证码
-      changeShow() {
-        this.verificationShow = false
+
       },
 
-      //发送图片验证码核实请求
-      verificationCancel(flag, validateCode) {
-        this.isFlag = flag
-        this.verificationShow = false
-        let that = this
-        if (flag) {
-          this.$store.commit("AWAITTRUE")
-          this.$store.dispatch('postSendMsg', {
-            code: 'SMS_123738830',
-            validateKey: that.key + that.time,
-            mobilePhone: that.__findModel("cellPhoneNum").model,
-            validateCode: validateCode,
-            needvalidateCode: true,
-            smsSign: "掌金超"
-          }).then((res) => {
-            this.$store.commit("AWAITFALSE")
-            this.__phoneNote(res)
-            this.$store.dispatch("changeTime")
-          })
-        } else {
-          this.$store.dispatch("changeTime")
-        }
-      },
 //      选中切换
       notarize() {
         this.imgIsShow = !this.imgIsShow
@@ -274,12 +324,11 @@
       },
 //      验证码逻辑
       sendMsg(index) {
-        console.log(1);
         let mformData = this.mformDatas[index - 1]
         if (this.num > 0) {
           this.MessageBox({
             title: '提示',
-            message: '60s后在从新获取验证码',
+            message: '60s后在重新获取验证码',
             showCancelButton: false
           })
           return
@@ -293,6 +342,7 @@
             showCancelButton: false
           })
         }
+
       },
       openModal() {
         this.imgIsShow = false
@@ -378,7 +428,7 @@
           font-size (36 /$rem)
           color #333333
           &.changeColor
-            color #7693BE
+            color #efca7d
       .approve
         width (996 /$rem)
         height (146 /$rem)

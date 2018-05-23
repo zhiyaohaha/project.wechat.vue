@@ -6,22 +6,6 @@
     <router-view v-if="$route.meta.cache"/>
     <div class="homePageWrap" ref="homePageWrap" v-if="$route.meta.keepAlive">
       <div>
-        <!--<header class="homePageHeader">
-          <slider>
-            <div>
-              <router-link :to="{name:'productPage'}">
-                <img src="./img/renzhengbanner.png">
-              </router-link>
-            </div>
-            <div>
-              <router-link :to="{name:'generalizePage'}">
-                <img src="./img/tuiguangbanner.png">
-              </router-link>
-            </div>
-            <div class="slider-item">33</div>
-            <div class="slider-item">444</div>
-          </slider>
-        </header>-->
         <header class="homePageHeader">
           <mt-swipe :auto="2000" :showIndicators="false">
             <mt-swipe-item>
@@ -44,6 +28,11 @@
                 <img src="./img/baduyouqianhua.png">
               </router-link>
             </mt-swipe-item>
+            <mt-swipe-item>
+              <router-link :to="{name:'creditInvestigationPage'}">
+                <img src="./img/zhengxinbanner.jpg">
+              </router-link>
+            </mt-swipe-item>
           </mt-swipe>
         </header>
         <div class="homePageContent">
@@ -51,7 +40,6 @@
           <generalizeMod :generalizeModData="visaDatas"/>
           <generalizeMod :generalizeModData="generalizeModData"/>
           <headline :headlineData="{title:'热门贷款推荐',more:'更多贷款推荐',url:'/homePage/productPage'}"/>
-          <div class="inanition"></div>
           <recommendMod :recommendModDatas="recommendModDatas"/>
           <headline :headlineData="{title:'热门信用卡推荐',more:'更多信用卡推荐',url:'/homePage/creditCardPage'}"/>
           <recommendList :recommendListDatas="homeListBankCard"/>
@@ -114,7 +102,7 @@
             },
             {
               imgUrl: "../../static/img/homeImg/content_icon_tuiguangjilu.png",
-              title: "推广记录",
+              title: "推广明细",
               url: "/myPage/generalizeYiPage"
             },
           ]
@@ -258,8 +246,6 @@
     background-color #fff
     position relative
     padding-top (266 /$rem)
-    .inanition
-      height (30 /$rem)
 
   .fanyonglog
     transform translateZ(0)

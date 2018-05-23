@@ -1,227 +1,252 @@
 <template>
-  <!--<div>
-    <header class="WithdrawalHeader" v-if="binBankCard">
-      <div class="fakeBankCard">
-        <div class="BankNameWrap">
-          <img src="./img/logo.png"><span class="BankName">{{binBankCard[0]._bank}}</span>
-        </div>
-        <div class="bankCardNumWrap">
-          <span class="bankCardNum">{{binBankCard[0].number}}</span>
-        </div>
-      </div>
-    </header>
-    <div class="WithdrawalContent">
-      <ul class="mform">
-        <li v-for="(mformData, index) in mformDatas" :key="index">
-          <span class="description">{{mformData.description}}</span>
-          <input type="number" v-model="mformData.model"
-                 :placeholder="mformData.placeholder"
-                 :maxlength="mformData.maxlength" :readonly="mformData.readonly"
-                 :name="mformData.name">
-          <span :class="{purposeList:mformData.purposeList}" v-if="mformData.purposeList">
-                {{mformData.units}}
-              </span>
-        </li>
-      </ul>
-      <div class="cost">
-        提现费用 ：<span>100</span>元
-      </div>
-      <a href="javascript:;" class="affirm" @click="affirm">
-        确认
-      </a>
-      <div class="notice">
-        <img src="./img/icon.png">
-        <span>提现须知 ：</span>
-        <div>
-          <span>每日最高提现额度50000元，最低提现额度100元。1-3个工作日到账，遇到节假日顺延；具体时间以银行信息为准。</span>
-        </div>
+  <div class="WithdrawalPage" v-if="income">
+    <header class="WithdrawalPageHeader"></header>
+    <div class="WithdrawalPageContent">
+      <p class="balance">
+        <span class="describe">
+          账户余额 <span class="price">{{income.withdrawBalance}}</span>元
+        </span>
+      </p>
+      <p class="deposit">提现金额</p>
+      <div class="login">
+        <p class="import"><span>￥</span><input name="txtUserName"
+                                               @focus="gainFoucs"
+                                               :placeholder="`可提现${income.balance}元`"
+                                               type="number"
+                                               v-model="money"/></p>
+        <p class="hint"><span @click="withdrawDeposit">全部提现</span></p>
+        <button class="submit" @click="submit" :class="{changColor :money!== ''}">立即提现</button>
       </div>
     </div>
-  </div>-->
+    <footer class="WithdrawalPageFooter">
+      <p>
+        <router-link :to="{name:'customerServicePage'}">联系客服</router-link>
+        <span>|</span>
+        <router-link :to="{name:'explainPage'}">提现说明</router-link>
+      </p>
+    </footer>
+    <transition name="fade">
+      <keyboardMod :press="press" :letGo="letGo" v-show="keyboardShow"/>
+    </transition>
+    <transition name="fade">
+      <passwordMod :money="money" :passwordModIsShow ="passwordModIsShow" v-if="passwordModShow"/>
+    </transition>
+  </div>
 </template>
 
 <script>
   import {mapState} from "vuex"
+  import keyboardMod from "../../components/keyboardMod/keyboardMod"
+  import passwordMod from "../../components/passwordMod/passwordMod"
 
   export default {
     data() {
       return {
-        mformDatas: [
-          {
-            description: '可提现金额：',
-            placeholder: 'XXXXXX.XX',
-            name: 'money',
-            model: '',
-            purposeList: true,
-            sendMsg: false,
-            units: '元',
-            reg: /[\s\S]*/,
-            errorColor: false,
-            readonly: true
-          },
-          {
-            description: '提现金额：',
-            placeholder: '请输入提现金额',
-            name: 'sum',
-            model: '',
-            purposeList: true,
-            sendMsg: false,
-            units: '',
-            reg: /^[0-9]$/,
-            errorColor: false,
-          },
-        ]
+        money: "",
+        keyboardShow: false,
+        passwordModShow: false
       }
     },
     watch: {
-      $route(val) {
-        console.log(val.name);
-        if (val.name === "WithdrawalPage") {
+      money(val) {
+        if (val * 1 > 20000) {
           this.MessageBox.alert(
-            "功能正在制作中，提现请联系客服。在公众号主页回复“提现”，会收到客服联系方式，加客服即可人工提现。",
-            '提示',
-          ).then(() => {
-            this.$router.go(-1)
-          })
+            "单笔金额不能超过两万",
+            '提交失败'
+          )
+          this.money = "20000"
         }
-      },
+      }
     },
-
     beforeCreate() {
-      this.MessageBox.alert(
-        "功能正在制作中，提现请联系客服。在公众号主页回复“提现”，会收到客服联系方式，加客服即可人工提现。",
-        "提示",
-      ).then((res) => {
-        console.log(res);
-        this.$router.go(-1)
-      })
-      // }
+
     },
-    components: {},
+    components: {
+      keyboardMod, passwordMod
+    },
 
     computed: {
-      ...mapState(["binBankCard"])
+      ...mapState(["income"])
+    },
+    created() {
+      this.$store.dispatch("getAccountInfo")
     },
     mounted() {
+      window.history.pushState(null, "", "#/myPage")
+      window.history.pushState(null, "", "#/myPage/WithdrawalPage")
     },
     methods: {
-      affirm() {
-        this.MessageBox({
-          title: '提示',
-          message: "功能未开放",
-          showCancelButton: false
-        })
+      //隐藏密码键盘
+      passwordModIsShow(){
+        this.passwordModShow = false
+      },
+      //键盘触碰
+      press(it, ev) {
+        ev = ev || event
+        ev.preventDefault()
+        if (typeof it === "string") { //数字
+          //点击变色
+          ev.target.style.backgroundColor = "#ccc"
+          //判断是数字还是x
+          if (it === "x") {
+            //如果是x 则全部删除
+            this.money = ""
+          } else {
+            if (it === ".") {
+              if (this.money.indexOf(".") != -1) {
+                return
+              }
+            }
+            this.money += it
+          }
+        } else {
+          //判断是X还是完成
+          it.active = true
+          if (it.content.length > 2) {
+            this.money = this.money.substring(0, this.money.length - 1)
+          } else {
+            this.keyboardShow = false
+          }
+        }
+      },
+      //键盘松手
+      letGo(it, ev) {
+        ev = ev || event
+        ev.preventDefault()
+        if (typeof it === "string") {
+          ev.target.style.backgroundColor = "#fff"
+        } else {
+          it.active = false
+        }
+      },
+      withdrawDeposit() {
+        this.money = this.income.balance
+      },
+      //提交
+      submit() {
+        let money = this.money * 1, balance = this.income.balance * 1
+        if (!money) {
+          this.MessageBox.alert(
+            "请输入金额",
+            '提交失败'
+          )
+          return
+        }
+        if (money > balance) {
+          this.MessageBox.alert(
+            "提现金额不能大于账户余额",
+            '提现失败'
+          )
+          return
+        }
+        this.passwordModShow = true
+      },
+      gainFoucs() {
+        document.activeElement.blur()
+        this.keyboardShow = true
       }
     }
   }
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
-  .WithdrawalHeader
-    box-sizing border-box
-    height (442 /$rem)
-    width (1080 /$rem)
-    padding-top (120 /$rem)
-    .fakeBankCard
-      position relative
-      z-index 10
-      border-radius (12 /$rem) (12 /$rem) 0 0
-      width (880 /$rem)
-      height (322 /$rem)
-      background-color: #ef6355
-      margin 0 auto
+  .WithdrawalPage
+    position relative
+    .fade-enter-active, .fade-leave-active {
+      transition: all .3s
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */
+    {
+      transform translateY(100%)
+    }
+    input
+      outline: none
+      border: none
+    .WithdrawalPageHeader
+      height (600 /$rem)
+      background-color #efca7d
+    .WithdrawalPageContent
+      width (1020 /$rem)
+      height (888 /$rem)
+      position absolute
+      top (200 /$rem)
+      left (30 /$rem)
+      background-color #ffffff
+      border-radius (20 /$rem)
+      box-shadow 0 0 (70 /$rem) rgba(0, 0, 0, 0.19)
       box-sizing border-box
-      padding (40 /$rem) 0 (88 /$rem) (30 /$rem)
-      color #ffffff
-      .BankNameWrap
-        line-height (60 /$rem)
-        img
-          display inline-block
-          width (60 /$rem)
-          vertical-align middle
-          margin-right (20 /$rem)
-        .BankName
-          font-size (42 /$rem)
-      .bankCardNumWrap
-        position absolute
-        width (880 /$rem)
-        left (0)
-        bottom (88 /$rem)
-        text-align center
-        font-size (48 /$rem)
-
-  .WithdrawalContent
-    .mform
-      box-sizing border-box
-      background-color: #fff;
-      padding 0 (30 /$rem)
-      box-shadow: 0 (-30 /$rem) (60 /$rem) (10 /$rem) rgba(51, 51, 51, 0.1);
-      li: first-child
-      li
+      padding 0 (60 /$rem)
+      .balance
         box-sizing border-box
-        position relative
-        line-height (120 /$rem)
-        width (1020 /$rem)
-        height (121 /$rem)
-        font-size (42 /$rem)
-        border-bottom 1px solid #f2f2f2
-        text-align right
-        span
-          color #333333
-        .description
-          float left
-        input
-          font-size (42 /$rem)
+        padding (70 /$rem) 0 (70 /$rem)
+        font-size (36 /$rem)
+        width 100%
+        height (230 /$rem)
+        .describe
+          .price
+            font-size (60 /$rem)
+            color #efca7d
+      .deposit
+        font-size (36 /$rem)
+      .login
+        box-sizing border-box
+        .import
+          padding (70 /$rem) 0 (30 /$rem)
+          font-size (80 /$rem)
+          border-bottom (1 /$rem) solid #f2f2f2
+          input
+            margin-left (40 /$rem)
+            width (700 /$rem)
+            font-size (90 /$rem)
+            color #efca7d
+          input:
+          :-moz-placeholder
+            font-size (42 /$rem)
+            color #bbbbbb
+          input:
+          :-webkit-input-placeholder
+            font-size (42 /$rem)
+            color #bbbbbb
+          input:-ms-input-placeholder
+            font-size (42 /$rem)
+            color #bbbbbb
+        .hint
+          box-sizing border-box
+          height (156 /$rem)
+          color #efca7d
+          font-size (36 /$rem)
+          padding-top (30 /$rem)
+          span
+            position relative
+            z-index 11
+        .submit
+          position relative
+          width (900 /$rem)
+          height (146 /$rem)
+          text-align center
+          line-height (146 /$rem)
+          background-color #ccc
+          border-radius (15 /$rem)
+          color #fff
+          font-size (48 /$rem)
           outline: none
           border: none
-          text-align right
-          width (540 /$rem)
-          caret-color #000
-          color #333
-        input:
-        :-moz-placeholder
-          text-align right
-          color #bbbbbb
-        input:
-        :-webkit-input-placeholder
-          text-align right
-          color #bbbbbb
-        input:-ms-input-placeholder
-          text-align right
-          color #bbbbbb
-        .purposeList
-          font-size (42 /$rem)
-          color #bbb
-
-    .cost
-      margin-left (30 /$rem)
-      height (116 /$rem)
-      font-size (36 /$rem)
-      color #bbbbbb
-      line-height (116 /$rem)
-    .affirm
-      width (1020 /$rem)
-      height (146 /$rem)
-      background-color: #efca7d
-      font-size (48 /$rem)
-      color #fff
-      border-radius (10 /$rem)
-      margin 0 auto
-      line-height (146 /$rem)
+          &.changColor
+            z-index 11
+            background-color #efca7d
+    .WithdrawalPageFooter
+      position fixed
+      bottom 0
+      left 0
+      width 100%
+      padding-bottom (40/$rem)
       text-align center
-    .notice
-      overflow hidden
-      box-sizing border-box
-      padding (35 /$rem) (30 /$rem)
-      img
-        display inline-block
-        width (30 /$rem)
-        vertical-align bottom
-      span
-        font-size (30 /$rem)
-        color #efca7d
-      div
-        width (800 /$rem)
-        float right
-
+      p
+        overflow hidden
+        a
+          display inline-block
+          color #efca7d
+          font-size (30/$rem)
+        span
+          font-size (30/$rem)
 </style>

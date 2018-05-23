@@ -29,6 +29,9 @@
             E 客户成单，总提成100元，D客户获取70元佣金，C客户获取20元佣金，B客户获取10元佣金，A客户不再获取提成。
           </p>
         </div>
+        <div class="tableRebate">
+          <img src="./img/box.png"/>
+        </div>
         <headline :headlineData="{title:'三级分销流程图',line:true}"/>
         <div class="rule">
           <img src="./img/liuchengtu.png">
@@ -40,6 +43,7 @@
             <a href="javascript:;" @click="skip">
               获取我的推广二维码
             </a>
+
           </footer>
         </div>
       </div>
@@ -68,7 +72,7 @@
     },
     mounted() {
       // console.log(this.getCookie('whether') === '1') ? this.QRcodeShow = true : this.QRcodeShow = false
-      this.QRcodeShow = (this.getCookie('whether') === "1")
+      this.QRcodeShow = (this.getCookie('whether')*1 > 0)
       this.__boxheight(this.$refs.generalizePageWrap) //执行函数
       window.onresize = this.__boxheight(this.$refs.generalizePageWrap);
       this.$nextTick(() => {
@@ -105,6 +109,13 @@
         width 100%
         height 100%
     .generalizeContent
+      box-sizing border-box
+      padding 0 (30/$rem) 0
+      .tableRebate
+       img
+         display inline-block
+         width 100%
+         margin (60/$rem) 0 (40/$rem)
       .rule
         border-bottom 1px solid #f2f2f2
         p

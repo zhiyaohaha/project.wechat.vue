@@ -7,7 +7,9 @@
     <div v-if="$route.meta.keepAlive&&userName">
       <header class="myPageHeader">
         <div class="headPortrait">
-          <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
+          <router-link :to="{name:'headChoicePage'}">
+            <img :src="readTodos().headimgurl||'../../../static/img/myImg/touxiang.png'">
+          </router-link>
         </div>
         <div class="userDescription">
           <span class="petName">{{readTodos().nickname||userName}}</span>
@@ -19,21 +21,25 @@
       </header>
       <div class="myPageContent" v-if="income">
         <a href="javascript:;" class="generalIncome">
-          <span class="describe">总收入</span>
-          <span class="unit">￥<span class="price">{{income.balance}}元</span></span>
+          <span class="describe">累计收入</span>
+          <span class="unit">￥<span class="price">{{income.totalBalance}}元</span></span>
         </a>
         <a href="javascript:;" class="withdrawDeposit">
-          <span class="describe">可提现</span>
+          <span class="describe">账户余额</span>
           <span class="unit">￥<span class="price">{{income.withdrawBalance}}元</span></span>
         </a>
       </div>
       <myParticulars :myParticularsDatas="myParticularsDatas"/>
+      <!--<transition name="fold">
+        <serviceQrCodeMod v-if="serviceQrCodeShow" :isShow="isShow"/>
+      </transition>-->
     </div>
   </div>
 </template>
 
 <script>
   import myParticulars from '../../components/myParticulars/myParticulars.vue'
+  // import serviceQrCodeMod from '../../components/serviceQrCodeMod/serviceQrCodeMod.vue'
   import {mapState} from "vuex"
 
   export default {
@@ -45,6 +51,11 @@
             title: '推广明细',
             url: '/myPage/generalizeYiPage'
           },
+          /*{
+            imgUrl: '../../../static/img/myImg/wode_content_icon_tixianmingxi.png',
+            title: '快速贷款历史',
+            url: '/myPage/quickenLoansHistoryPage'
+          },*/
           {
             imgUrl: '../../../static/img/myImg/wode_content_icon_dingdanmingxi.png',
             title: '订单明细',
@@ -66,12 +77,11 @@
             url: '/myPage/depositPage'
           },
           {
-            /*imgUrl: '../../../static/img/myImg/wode_content_icon_tixianmingxi.png',
-            title: '快速贷款历史',
-            url: '/myPage/creditHistoryPage'*/
-          }
+            imgUrl: '../../../static/img/myImg/wode_content_icon_customer-service.png',
+            title: '客服',
+            url: '/myPage/customerServicePage'
+          },
         ],
-        income: null
       }
     },
 
@@ -80,21 +90,35 @@
     },
 
     computed: {
-      ...mapState(["userName"])
+      ...mapState(["userName", "serviceQrCodeShow","income"])
     },
-    watch: {},
+    watch: {
+      $route(to,from){
+        if(to.name === "myPage"){
+            window.history.pushState(null, "", "#/homePage")
+            window.history.pushState(null, "", "#/myPage")
+        }
+      }
+    },
     beforeCreate() {
 
     },
     created() {
-      this.$store.dispatch("getAccountInfo").then((res) => {
-        this.income = res.data
-      })
+      this.$store.dispatch("getAccountInfo")
     },
     mounted() {
-
+      if(this.$route.name === "myPage"){
+        window.history.pushState(null, "", "#/homePage")
+        window.history.pushState(null, "", "#/myPage")
+        console.log(this.$route.name)
+      }
     },
     methods: {
+
+      //返回事件
+      isShow() {
+        this.$store.commit("QRCODEISSHOW", false)
+      }
     }
   }
 
@@ -114,8 +138,11 @@
         float left
         width (140 /$rem)
         height (140 /$rem)
-        img
+        a
           width 100%
+          height 100%
+          img
+            width 100%
       .userDescription
         box-sizing border-box
         float left

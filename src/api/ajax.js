@@ -8,7 +8,6 @@ import {MessageBox} from "mint-ui"
 
 axios.defaults.withCredentials = true
 export default function ajax(url = '', data = {}, type = 'GET') {
-  console.log(url)
   return new Promise(function (resolve, reject) {
     // if (type === 'GET') {
     // 准备url query参数数据

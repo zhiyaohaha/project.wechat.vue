@@ -1,6 +1,8 @@
 <template>
   <div class="creditCard">
-    <router-view/>
+    <transition name="action">
+      <router-view/>
+    </transition>
     <scroll class="wrapper"
             :data="creditListBankCard"
             :pullup="true"
@@ -37,75 +39,6 @@
   export default {
     data() {
       return {
-        allBankListDatas: [
-          {
-            imgUrl: "../../../static/img/creditCardImg/communications.png",
-            title: "交通银行",
-            url: {path: '/homePage/creditCardPage/zhongXinCardPage', query: {name: "交通银行"}}
-          },
-
-          {
-            imgUrl: "../../../static/img/creditCardImg/industrialbank.png",
-            title: "兴业银行",
-            url: {path: '/homePage/creditCardPage/zhongXinCardPage', query: {name: "兴业银行"}}
-          },
-
-          {
-            imgUrl: "../../../static/img/creditCardImg/generalbanks.png",
-            title: "光大银行",
-            url: {path: '/homePage/creditCardPage/zhongXinCardPage', query: {name: "光大银行"}}
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/pudongdevelopmentbank.png",
-            title: "浦发银行",
-            url: {path: '/homePage/creditCardPage/zhongXinCardPage', query: {name: "浦发银行"}}
-          },
-
-        ],
-        recommendListDatas: [
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian01.png",
-            bankName: "交通银行标准信用卡",
-            logImg: "../../../static/img/creditCardImg/redu01.png",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "交通银行标准信用卡",
-            logImg: "../../../static/img/creditCardImg/redu02.png",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "交通银行标准信用卡",
-            logImg: "../../../static/img/creditCardImg/redu03.png",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "交通银行标准信用卡",
-            logImg: "",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian.png",
-            bankName: "交通银行标准信用卡",
-            logImg: "",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-          {
-            imgUrl: "../../../static/img/creditCardImg/kapian01.png",
-            bankName: "交通银行标准信用卡",
-            logImg: "",
-            url: "/homePage/creditCardPage/cardDetailsPage",
-            buttonUrl: "/homePage/creditCardPage/cardApplyForPage"
-          },
-        ],
         CardPageHeaderListDatas: [
           {
             imgUrl: "../../../static/img/creditCardImg/repayment.png",
@@ -144,9 +77,10 @@
     },
     created() {
       this.bank = ""
-      let that =this
-      if(!this.creditListBankCard){
+      let that = this
+      if (!this.creditListBankCard) {
         if (this.listBanks) {
+          console.log("经过首页")
           this.listBanks.forEach((item) => {
             this.bank += item.id + ","
           })
@@ -220,6 +154,12 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .creditCard
+    .action-enter-active, .action-leave-active {
+      transition: all .3s;
+    }
+    .action-enter, .action-leave-active {
+      transform: translateX(100%)
+    }
     .creditCardPageHeader
       width (1080 /$rem)
       height (330 /$rem)

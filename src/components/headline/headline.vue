@@ -32,7 +32,7 @@
     span
       float left
       font-family "Microsoft YaHei"
-      line-height (126 /$rem)
+      line-height (120 /$rem)
       font-size (46 /$rem)
       color #333
       margin-left (30 /$rem)

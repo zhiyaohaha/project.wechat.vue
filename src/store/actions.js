@@ -20,20 +20,38 @@ import {
   getSubordinateNum,
   getSubordinateUserList,
   postPeopleFiveReal,
-  getBanks,
-  getAdCodes,
   postFiveRealVerifyCode,
   getListScheduleForApp,
-  getBinBankCard,
   getAccountInfo,
   getPosters,
   getLastOrderInfo,
   getOrderCount,
+  getIdentify2Auth,
+  postFillUserInfo,
+  getAllArea,
+  getDemandList,
+  getDemandDetail,
+  getClickRecord,
+  getWithDraw,
+  getWithDrawRecord,
+  postIdentify4Auth,
+  getVerifyCode,
+  getSetPayPassword
 } from '../api'
 
-let apiPrefix =  'http://api2.cpf360.com/' // 正式库
-// let apiWeChat = 'http://211.94.137.70:8001/'//测试库
+let apiPrefix =   'http://api2.cpf360.com/' // 正式库
+let apiVersion1 = 'http://api.cpf360.com/' //1.0的正式库
+// let apiPrefix = 'http://api4.cpf360.com/' //1.0的正式库
+// let apiPrefix = 'http://211.94.137.70:8001/'//测试库
+// let apiVersion1 = 'local.appapi.cpf360.com/'//1.0测试库
 export default {
+  //征信四要素
+  async postIdentify4Auth({commit}, data) {
+    // debugger
+    let url = apiPrefix + 'api/OfficialAccounts/Identify4Auth'
+    const result = await postIdentify4Auth(url, data)
+    return result
+  },
   //验证码
   async postSendMsg({commit}, data) {
     // debugger
@@ -53,6 +71,12 @@ export default {
       flag = result.data.id
       whether = 1
       commit('POST_OPENID', {result})
+      if (result.data.hasIdCard) {
+        whether = 2
+      }
+      if(result.data.identify4Auth){
+        whether = 3
+      }
     } else {
       flag = ""
       whether = 0
@@ -68,7 +92,7 @@ export default {
     let flag
     if (result.success) {
       flag = result.data.id
-      whether = 1
+      whether = 2
       commit('POST_OPENID', {result})
     } else {
       flag = ""
@@ -105,9 +129,16 @@ export default {
     // debugger
     let url = apiPrefix + 'api/OfficialAccounts/FiveRealVerifyCode'
     const result = await postFiveRealVerifyCode(url, data)
-    if(result.success){
+    if (result.success) {
       commit('GET_BINBANKCARD', {result})
     }
+    return result
+  },
+  //补充用户信息
+  async postFillUserInfo({commit}, {data, cb}) {
+    // debugger
+    let url = apiPrefix + '/api/OfficialAccounts/FillUserInfo'
+    const result = await postFillUserInfo(url, data)
     return result
   },
   //获取用户信息
@@ -116,8 +147,9 @@ export default {
     let obj = data.obj
     const result = await getUserinfo(url, {code: obj.code})
     if (result) {
-      data.cb && data.cb(result.data, obj.id)
-      commit('SUBSCRIBE', {result:result.data.subscribe})
+      let res = result.data ? result.data.subscribe: {},userinfo = result.data||{name:"哈哈没有"}
+      data.cb && data.cb(userinfo, obj.id)
+      commit('SUBSCRIBE', {result: res})
     }
   },
   //产品列表
@@ -144,12 +176,9 @@ export default {
   //银行列表
   async getListBanks({commit},) {
     let url = apiPrefix + "api/CreditCard/ListBanksForApp"
-    let res = await getListBanks(url)
-    const result = res.data.filter((item) => {
-      return item.name === "交通银行" || item.name === "兴业银行" || item.name === "光大银行" || item.name === "浦发银行"
-    })
+    let result = await getListBanks(url)
     commit('GET_LISTBANKS', {result})
-    return result
+    return result.data
   },
   //信用卡列表
   async getListBankCard({commit}, {data, site}) {
@@ -171,7 +200,7 @@ export default {
     const result = await getListBankCardDetail(url, data)
     commit('GET_LISTBANKCARDDETAIL', {result})
   },
-
+  //二维码
   async getInviteUrl({commit},) {
     let url = apiPrefix + "api/Loginer/GetInviteUrl"
     const result = await getInviteUrl(url)
@@ -187,9 +216,9 @@ export default {
   async getNewsListFor({commit}, data) {
     let url = apiPrefix + "api/News/ListForApp"
     const result = await getNewsListFor(url, data)
-    if(result.success){
-      result.data.forEach((item)=>{
-        if(item.title.length > 24){
+    if (result.success) {
+      result.data.forEach((item) => {
+        if (item.title.length > 24) {
           item.title = item.title.substring(0, 24) + "..."
         }
       })
@@ -259,25 +288,25 @@ export default {
     let url = apiPrefix + "api/OfficialAccounts/GetSubordinateUserList"
     const result = await getSubordinateUserList(url, data)
     if (data.userId) {
-      if(data.id){
+      if (data.id) {
         return result.data
-      }else {
+      } else {
         commit('GET_ERSUBORDINATEUSERLIST', {result})
       }
     } else {
-      if(data.id){
+      if (data.id) {
         return result.data
-      }else {
+      } else {
         commit('GET_SUBORDINATEUSERLIST', {result})
       }
     }
   },
   //银行卡列表
-  async getBanks() {
+ /* async getBanks() {
     let url = apiPrefix + "api/ThirdAPI/Fuiou/GetBanks"
     const result = await getBanks(url,)
     return result.data
-  },
+  },*/
   //城市列表
   async getAdCodes() {
     let url = apiPrefix + "api/ThirdAPI/Fuiou/GetAdCodes"
@@ -294,19 +323,11 @@ export default {
       commit('GET_LISTSCHEDULEFORAPP', {result})
     }
   },
-  //是否实名
-  async getBinBankCard({commit},{cb}) {
-    let url = apiPrefix + "api/OfficialAccounts/BinBankCard"
-    const result = await getBinBankCard(url)
-    if(result.success){
-      cb&&cb(2)
-    }
-    commit('GET_BINBANKCARD', {result})
-  },
+  //获取账户信息
   async getAccountInfo({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetAccountInfo"
     const result = await getAccountInfo(url)
-    return result
+    commit("GET_ACCOUNTINFO", {result})
   },
   //推广海报图的地址
   async getPosters({commit}) {
@@ -314,22 +335,93 @@ export default {
     const result = await getPosters(url)
     return result
   },
+  // 获取上一次报单信息
   async getLastOrderInfo({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetLastOrderInfo"
     const result = await getLastOrderInfo(url)
-    if(result.success){
-      commit("GET_LASTORDERINFO",{result})
+    if (result.success) {
+      commit("GET_LASTORDERINFO", {result})
     }
   },
+  //获取订单的总数
   async getOrderCount({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetOrderCount"
     const result = await getOrderCount(url)
     return result.data
   },
+  // 获取分佣的总数
   async getRakeCount({commit}) {
     let url = apiPrefix + "api/OfficialAccounts/GetRakeCount"
     const result = await getOrderCount(url)
     return result.data
+  },
+  // 二要素验证
+  async getIdentify2Auth({commit}, data) {
+    let url = apiVersion1 + "OfficialAccounts/Identify2Auth"
+    const result = await getIdentify2Auth(url, data)
+    return result
+  },
+  //城市
+  async getAllArea({commit}) {
+    let url = apiPrefix + "api/Area/GetAllArea"
+    const result = await getAllArea(url)
+    return result.data
+  },
+  //需求单
+  async getDemandList({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/GeDemandList"
+    const result = await getDemandList(url, data)
+    if (data.id) {
+      return result.data.list
+    } else {
+      commit("GET_DEMANDLIST", {result})
+    }
+  },
+  //需求单详情
+  async getDemandDetail({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/GeDemandDetail"
+    const result = await getDemandDetail(url, data)
+    commit("GET_DEMANDDETAIL", {result})
+  },
+  //征信查询点击记录
+  async getClickRecord({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/ClickRecord"
+    const result = await getClickRecord(url, data)
+    return result
+  },
+  //提现
+  async getWithDraw({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/WithDraw"
+    const result = await getWithDraw(url, data)
+    return result
+  },
+  //提现明细
+  async getWithDrawRecord({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/WithDrawRecord"
+    const result = await getWithDrawRecord(url, data)
+    if (data.tradeStatus === "TradeState.Success") {
+      if (data.id) {
+        return result.data
+      } else {
+        commit("GET_SUCCEEDWITHDRAWRECORD", {result})
+      }
+    } else if (data.tradeStatus === "TradeState.Fail") {
+      if (data.id) {
+        return result.data
+      } else {
+        commit("GET_DEFEATEDWITHDRAWRECORD", {result})
+      }
+    }
+  },
+  async getVerifyCode({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/VerifyCode"
+    const result = await getVerifyCode(url, data)
+    return result
+  },
+  async getSetPayPassword({commit}, data) {
+    let url = apiPrefix + "api/OfficialAccounts/SetPayPassword"
+    const result = await getSetPayPassword(url, data)
+    return result
   },
   //改变时间
   changeTime({commit}) {

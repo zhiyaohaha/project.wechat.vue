@@ -16,6 +16,10 @@
        */
       /*
       * */
+      scrollReset: {
+        type: Boolean,
+        default: true
+      },
       probeType: {
         type: Number,
         default: 1
@@ -117,12 +121,14 @@
             this.$emit('scroll', pos)
           })
         }
-
         // 是否派发滚动到底部事件，用于上拉加载
         if (this.pullup) {
           this.scroll.on('scrollEnd', () => {
             let result = this.scroll && this.scroll.y
-            this.$store.commit("GENERALIZEYIPAGEY", {result})
+            console.log(this.$route.name)
+            if (this.$route.name !== "generalizeErPage") {
+              this.$store.commit("GENERALIZEYIPAGEY", {result})
+            }
             // 滚动到底部
             if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
               this.$emit('scrollToEnd')
@@ -169,10 +175,12 @@
       }
     },
     updated() {
-      if(this.scroll){
-        this.scrollTo(0, this.generalizeYiPageY)
+      if (this.scroll) {
+        if(this.$route.name !== "generalizeErPage"){
+          this.scrollTo(0, this.generalizeYiPageY)
+        }
         this.refresh()
-      }else {
+      } else {
         this.__boxheight(this.$refs.wrapper)
         // 保证在DOM渲染完毕后初始化better-scroll
         setTimeout(() => {
@@ -188,12 +196,15 @@
         }, this.refreshDelay)
       },
       $route(to, form) {
-        if(to.meta.keepAlive){
-          this.$store.commit("GENERALIZEYIPAGEY", {result:0})
+        if (to.meta.keepAlive) {
+          this.$store.commit("GENERALIZEYIPAGEY", {result: 0})
         }
         if (to.name === "productPage" || to.name === "creditCardPage") {
           this.refresh()
         }
+      },
+      scrollReset(val){
+        this.$store.commit("GENERALIZEYIPAGEY", {result: 0})
       }
     }
   }

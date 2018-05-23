@@ -24,6 +24,8 @@
   import {mapState} from "vuex"
 
   export default {
+    //verificationCancel 发送事件
+    //changeShow 点击隐藏事件
     props: ["changeShow", "verificationCancel"],
     data() {
       return {
@@ -52,7 +54,6 @@
         let url = this.apiPrefix + "api/OfficialAccounts/ValidateCode?key="
         let src = url + this.key + this.time
         return src
-
       },
 
     },

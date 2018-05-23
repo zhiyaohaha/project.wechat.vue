@@ -27,7 +27,14 @@ export default {
   subordinateUserList:null,
   erSubordinateUserList:null,
   listScheduleFor:null,
-  binBankCard:null,
   lastOrderInfo:null,
-  generalizeYiPageY:0
+  generalizeYiPageY:0,
+  demandList:null,
+  demandDetail:null,
+  serviceQrCodeShow:false,
+  income:null,
+  succeedWithDrawRecord:null,
+  defeatedWithDrawRecord:null,
+  mobilePhone:null,
+  hasPayPassword:null
 }

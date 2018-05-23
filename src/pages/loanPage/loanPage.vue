@@ -9,8 +9,7 @@
               <li v-for="(mformData, index) in mformDatas" :key="index">
                 <span class="description">{{mformData.description}}</span>
                 <input type="text" v-model="mformData.model"
-                       @blur="loseFocus" :readonly="mformData.purposeList"
-                       @input="goodInput(mformData.reg,mformData.model,index)"
+                       :readonly="mformData.readonly"
                        @focus="pullDown(true,index)"
                        :placeholder="mformData.placeholder"
                        :maxlength="mformData.maxlength"
@@ -19,11 +18,6 @@
                       @touchstart="pullDown(true,index)">
                 {{mformData.units}}
               </span>
-                <a href="javascript:;" :class="{sendMsg:mformData.sendMsg,color:!num}"
-                   v-if="mformData.sendMsg && mformData.units"
-                   @click="sendMsg()">
-                  {{mformData.units}}
-                </a>
               </li>
             </ul>
           </keep-alive>
@@ -36,8 +30,7 @@
         </div>
       </div>
     </scroll>
-    <mt-popup v-model="shadeIsShow" position="bottom" @change="onValuesChange" class="maskLayer"
-              showToolbar="true">
+    <mt-popup v-model="shadeIsShow" position="bottom" class="maskLayer">
       <div class="shadeIsShowHeader">
           <span @touchstart="pullDown(false,mformDatasInd,false)" class="cancel">
             取消
@@ -46,10 +39,12 @@
             确定
           </span>
       </div>
-      <pickerMod :pickerModDatas="pickerModDatas" :shadeIsShow="shadeIsShowInd" :onValuesChange="onValuesChange"/>
+      <pickerMod :pickerModDatas="pickerModDatas" :shadeIsShow="shadeIsShowInd" :onValuesChange="onValuesChange"
+                 v-show="mformDatasInd < 3"/>
+      <linkageMod :linkageModDatas="provinceAndCity" :mformDatasInd="shadeIsShowInd" :onValuesChange="ValuesChange"
+                  v-show="mformDatasInd === 3"/>
     </mt-popup>
-    <verification v-show="verificationShow" :changeShow="changeShow" :verificationCancel="verificationCancel"/>
-    <footer class="simulationSubmit" v-show="simulationSubmitIsShow" @click="submit">
+    <footer class="simulationSubmit" @click="submit">
       <a href="javascript:"></a>
     </footer>
   </div>
@@ -57,10 +52,10 @@
 
 <script>
   import propertyMod from '../../components/propertyMod/propertyMod.vue'
-  import verification from '../../components/verification/verification.vue'
+  import linkageMod from '../../components/linkageMod/linkageMod.vue'
   import {getLoanAmount, postLoanDemand} from '../../api'
   import {mapState, mapGetters} from "vuex"
-
+  import provinceAndCity from "../../common/js/city"
   export default {
     data() {
       return {
@@ -89,6 +84,7 @@
         mformDatas: [
           {
             description: '贷款金额：',
+            readonly: true,
             placeholder: '请选择贷款金额',
             name: 'money',
             model: '',
@@ -100,18 +96,6 @@
             errorColor: false,
           },
           {
-            description: '贷款用途：',
-            placeholder: '请选择贷款用途',
-            name: 'purpose',
-            model: '',
-            purposeList: true,
-            sendMsg: false,
-            units: '',
-            reg: /[\s\S]*/,
-            regular: /[\s\S]/,
-            errorColor: false
-          },
-          {
             description: '贷款期限：',
             placeholder: '请选择贷款期限',
             name: 'timeLimit',
@@ -121,13 +105,40 @@
             units: '',
             reg: /[\s\S]*/,
             regular: /[\s\S]/,
-            errorColor: false
+            errorColor: false,
+            readonly: true,
+          },
+          {
+            description: '贷款用途：',
+            placeholder: '请选择贷款用途',
+            name: 'purpose',
+            model: '',
+            purposeList: true,
+            sendMsg: false,
+            units: '',
+            reg: /[\s\S]*/,
+            regular: /[\s\S]/,
+            errorColor: false,
+            readonly: true,
+          },
+          {
+            description: '所在城市：',
+            placeholder: '请选择所在城市',
+            name: 'city',
+            model: '',
+            purposeList: true,
+            sendMsg: false,
+            units: '',
+            reg: /[\s\S]*/,
+            regular: /[\s\S]/,
+            errorColor: false,
+            readonly: true,
           },
           {
             message: "请正确输入您的姓名",
             description: '姓名：',
             placeholder: '请输入您的姓名',
-            name: 'username',
+            name: 'userName',
             model: '',
             purposeList: false,
             sendMsg: false,
@@ -135,7 +146,8 @@
             reg: /^[\u4e00-\u9fa5]{1,15}$/,
             regular: /^[\u4e00-\u9fa5]{1,15}$/,
             errorColor: false,
-            maxlength: '15'
+            maxlength: '15',
+            readonly: true,
           },
           {
             message: "请正确输入您的身份证号",
@@ -149,7 +161,8 @@
             reg: /^[0-9xX]{1,}$/,
             regular: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
             errorColor: false,
-            maxlength: '18'
+            maxlength: '18',
+            readonly: true,
           },
           {
             message: "请正确输入您的手机号",
@@ -163,104 +176,69 @@
             reg: /^[0-9]{1,}$/,
             regular: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9]|17[0-9])\d{8}$/,
             errorColor: false,
-            maxlength: '11'
-          },
-          {
-            message: "请正确输入您的验证码",
-            description: '验证码：',
-            placeholder: '请输入验证码',
-            name: 'authCode',
-            model: '',
-            purposeList: false,
-            sendMsg: true,
-            units: '获取验证码',
-            reg: /^\d{1,}$/,
-            regular: /^\d{4}$/,
-            errorColor: false,
-            maxlength: 4
+            maxlength: '11',
+            readonly: true,
           },
         ],
+
         shadeIsShow: false,
         mformDatasInd: 0,
         pickerModDatas: [],
-        simulationSubmitIsShow: true,
-        verificationShow: false,
-        num: null,
+        cityValue:null,
         reveal: false,
-        windowChange: 0
       }
     },
-
     components: {
-      propertyMod, verification
+      propertyMod, linkageMod
     },
     watch: {
-      num(val) {
-        if (val) {
-          let timer = setInterval(() => {
-            val--
-            if (val == 0) {
-              this.mformDatas[6].units = '获取验证码'
-              clearInterval(timer)
-              this.num = null
-            } else {
-              this.mformDatas[6].units = val + 's后重发'
-            }
-          }, 1000)
-        }
-      },
+      //判断
       shadeIsShow(val) {
         if (!val && !this.reveal) {
           this.mformDatas[this.mformDatasInd].model = ""
         }
       },
-      windowChange(val) {
-        if (val > 140) {
-          this.simulationSubmitIsShow = false
-        } else {
-          this.simulationSubmitIsShow = true
-        }
-      }
     },
     computed: {
       ...mapState(["time", "lastOrderInfo"]),
       ...mapGetters(["key"]),
       shadeIsShowInd() {
-        return this.shadeIsShow ? 3 : null
+        return this.shadeIsShow ?
+          this.mformDatasInd < 3 ?
+            3
+            : 4
+          : null
+      },
+      provinceAndCity(){
+        return provinceAndCity
       }
     },
     beforeCreate() {
 
     },
     created() {
-      if (this.getCookie("whether") * 1 > 0) {
+      let num=this.getCookie("whether") * 1
+      if (num > 1) {
         this.getLoanAmount("LoanAmount").then((res) => {
           this.moneyArr = res
         })
-
         this.getLoanAmount("LoanTerm").then((res) => {
           this.deadlineArr = res
         })
         this.getLoanAmount("LoanUse").then((res) => {
           this.consumeArr = res
         })
+        this.$store.dispatch("getLastOrderInfo").then(() => {
+          if (this.lastOrderInfo) {
+            this.__findModel("userName").model = this.lastOrderInfo.name
+            this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
+            this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
+          }
+        })
       }
-      this.$store.dispatch("getLastOrderInfo").then(() => {
-        if (this.lastOrderInfo) {
-          this.__findModel("username").model = this.lastOrderInfo.name
-          this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
-          this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
-        }
-      })
+
     },
-    // 滑动事件
     mounted() {
-      let that = this
-      let winHeight = document.body.clientHeight
-      window.onresize = function (e) {
-        let thisHeight = document.body.clientHeight
-        that.windowChange = winHeight - thisHeight
-      }
     }
     ,
     updated() {
@@ -268,49 +246,39 @@
     }
     ,
     methods: {
+      //ValuesChange 二级联动
+      ValuesChange(select, pitchOn) {
+        let city = this.provinceAndCity[select]
+        this.mformDatas[this.mformDatasInd].model = city.text + " " + city.childrens[pitchOn].text
+        this.cityValue = city.childrens[pitchOn].value
+      },
+//      输入框值
+      onValuesChange(index) {
+//        debugger
+        this.mformDatas[this.mformDatasInd].model = this.pickerModDatas[index].name
+        switch (this.mformDatasInd) {
+          case 0:
+            this.applyAmount = this.moneyArr[index].code
+            break
+          case 1:
+            this.consume = this.consumeArr[index].code
+            break
+          case 2:
+            this.applyTerm = this.deadlineArr[index].code
+            break
+          default:
+            break
+        }
+      },
       //获取用户输入的内容
       __findModel(value) {
         let mformDatas = this.mformDatas
         return mformDatas.find(val => val.name == value)
       },
-      //发送图形验证码检查
-      __SendVerifyCode(validateCode) {
-        this.$store.commit("AWAITTRUE")
-        let that = this
-        this.$store.dispatch('postSendMsg', {
-          code: 'SMS_127153204',
-          validateKey: that.key + that.time,
-          mobilePhone: that.__findModel("phoneNum").model,
-          validateCode: validateCode,
-          smsSign: "掌金超",
-          needvalidateCode: true
-        }).then((res) => {
-          this.$store.commit("AWAITFALSE")
-          if (res.success) {
-            this.num = 60
-            this.MessageBox.alert(
-              '短信验证码已发送，有效时间5分钟',
-              '提示',
-              {
-                closeOnClickModal: true
-              }
-            )
-          } else {
-            this.MessageBox.alert(
-              res.message,
-              '提交失败',
-              {
-                closeOnClickModal: true
-              }
-            )
-          }
-        })
-      },
       //下拉列表数据
       async getLoanAmount(codes) {
         let url = this.apiPrefix + '/api/Values/GetSelectDataSourceLogin'
-        this.Arr = await
-          getLoanAmount(url, {codes: codes})
+        this.Arr = await getLoanAmount(url, {codes: codes})
         let Arr = []
         Arr = this.Arr.data.map((item) => {
           return item.childrens
@@ -333,7 +301,6 @@
                 closeOnClickModal: true
               }
             )
-            console.log("这里是看看为空循环几次");
             return
           } else if (!item.regular.test(item.model)) {
             this.MessageBox.alert(
@@ -343,43 +310,59 @@
                 closeOnClickModal: true
               }
             )
-            console.log("这里是看看输错循环几次");
             return
           }
         }
         this.$store.commit("AWAITTRUE")
         let that = this
         let url = this.apiPrefix + "api/OfficialAccounts/InsertLoanDemand"
-        postLoanDemand(url, {
-          loanDemand: {
-            applyAmount: that.applyAmount, //贷款金额编码
-            purpose: that.consume,//贷款用途编码
-            applyTerm: that.applyTerm, //贷款期限编码
-            name: that.__findModel("username").model,  //贷款人
-            idCard: that.__findModel("IDnumber").model,  //身份证
-            telphone: that.__findModel("phoneNum").model,  //手机
-            house: propertyModDatas[0].imgUrlIsShow, //有房
-            car: propertyModDatas[1].imgUrlIsShow,  //有车
-            creditCard: propertyModDatas[2].imgUrlIsShow,//有信用卡
-            providentFund: propertyModDatas[3].imgUrlIsShow, //有公积金
-            socialSecurity: propertyModDatas[4].imgUrlIsShow //有社保
-          },
-          phone: that.__findModel("phoneNum").model,  //手机
-          verifyCode: that.__findModel("authCode").model, //验证码
-          source: "OfficialAccounts"
-        }).then(res => {
-          this.$store.commit("AWAITFALSE")
-          if (res.success) {
-            this.MessageBox.alert(
-              '您的申请已提交,我们会立刻开始处理',
-              '提示',
-              {
-                closeOnClickModal: true
+        this.$store.dispatch("getIdentify2Auth", {
+          realName: that.__findModel("userName").model,
+          idCard: that.__findModel("IDnumber").model
+        }).then((res) => {
+          if (res.data.isSame) {
+            postLoanDemand(url, {
+              loanDemand: {
+                applyAmount: that.applyAmount, //贷款金额编码
+                purpose: that.consume,//贷款用途编码
+                applyTerm: that.applyTerm, //贷款期限编码
+                name: that.__findModel("userName").model,  //贷款人
+                idCard: that.__findModel("IDnumber").model,  //身份证
+                telphone: that.__findModel("phoneNum").model,  //手机
+                city:that.cityValue,//城市
+                house: propertyModDatas[0].imgUrlIsShow, //有房
+                car: propertyModDatas[1].imgUrlIsShow,  //有车
+                creditCard: propertyModDatas[2].imgUrlIsShow,//有信用卡
+                providentFund: propertyModDatas[3].imgUrlIsShow, //有公积金
+                socialSecurity: propertyModDatas[4].imgUrlIsShow //有社保
+              },
+              phone: that.__findModel("phoneNum").model,  //手机
+              verifyCode: "0000", //验证码
+              source: "OfficialAccounts"
+            }).then(res => {
+              this.$store.commit("AWAITFALSE")
+              if (res.success) {
+                this.MessageBox.alert(
+                  "您的贷款需求已提交，请等待业务经理跟您联系。",
+                  '申请成功',
+                  {
+                    closeOnClickModal: true
+                  }
+                ).then(()=>{
+                  this.$router.push({name:"homePage"})
+                })
+              } else {
+                this.MessageBox.alert(
+                  res.message,
+                  '提交失败',
+                  {
+                    closeOnClickModal: true
+                  }
+                )
               }
-            ).then(() => {
-              this.$router.replace("/homePage")
             })
           } else {
+            this.$store.commit("AWAITFALSE")
             this.MessageBox.alert(
               res.message,
               '提交失败',
@@ -389,84 +372,23 @@
             )
           }
         })
+      },
 
-      },
-//      输入框焦点时底部消失
-      isFooter() {
-        this.simulationSubmitIsShow = false
-      },
-//      错误变色
-      loseFocus() {
-        this.simulationSubmitIsShow = true
-      },
-//      输入框值
-      onValuesChange(index) {
-//        debugger
-        this.mformDatas[this.mformDatasInd].model = this.pickerModDatas[index].name
-        switch (this.mformDatasInd) {
-          case 0:
-            this.applyAmount = this.moneyArr[index].code
-            break
-          case 1:
-            this.consume = this.consumeArr[index].code
-            break
-          case 2:
-            this.applyTerm = this.deadlineArr[index].code
-            break
-          default:
-            break
-        }
-      },
-//      输入正确变色
-      goodInput(reg, flag, index) {
-        if (index < 3) {
-          this.mformDatas[index].model = ''
-        }
-        if (!reg.test(flag)) {
-          this.mformDatas[index].model = flag.substring(0, flag.length - 1)
-        }
-      },
-//      验证码逻辑
-      sendMsg() {
-        let mformData = this.mformDatas[5]
-        if (mformData.model !== '' && mformData.model.length == 11) {
-          this.verificationShow = true
-        } else {
-          this.MessageBox.alert(
-            '请正确输入手机号',
-            '提示',
-            {
-              closeOnClickModal: true
-            }
-          )
-        }
-        if (this.num > 0) {
-          this.verificationShow = false
-          this.MessageBox.alert(
-            '请60秒后在请求验证码',
-            '提示',
-            {
-              closeOnClickModal: true
-            }
-          )
-        }
-      }
-      ,
 //      三角点击
       pullDown(flag, index, inputValue) {
-
         this.mformDatasInd = index
-        if (index < 3) {
+        if (this.mformDatas[index].purposeList) {
           this.reveal = inputValue
           switch (index) {
             case 0:
               this.pickerModDatas = this.moneyArr
               break
             case 1:
-              this.pickerModDatas = this.consumeArr
+
+              this.pickerModDatas = this.deadlineArr
               break
             case 2:
-              this.pickerModDatas = this.deadlineArr
+              this.pickerModDatas = this.consumeArr
               break
             default:
               this.pickerModDatas = []
@@ -474,25 +396,8 @@
           }
           this.shadeIsShow = flag
           !inputValue ? this.mformDatas[index].model = '' : null
-        } else {
-          this.simulationSubmitIsShow = false
         }
 
-      }
-      ,
-//     图片验证码
-      changeShow() {
-        this.verificationShow = false
-      },
-      //倒计时
-      verificationCancel(flag, validateCode) {
-        this.verificationShow = false
-        if (flag) {
-          this.__SendVerifyCode(validateCode)
-          this.$store.dispatch("changeTime")
-        } else {
-          this.$store.dispatch("changeTime")
-        }
       },
     }
   }

@@ -39,10 +39,10 @@
       display flex
       padding 0 (150/$rem)
       justify-content: space-between
-      flex-wrap: wrap;
+      flex-wrap: wrap
       li
         position relative
-        width (200/$rem)
+        width (240/$rem)
         height (248 /$rem)
         text-align center
         a
@@ -53,10 +53,12 @@
           left 0
           width 100%
           img
-            margin-left (32/$rem)
+            display inline-block
             width (136 /$rem)
             height (136/$rem)
           span
+            display block
+            margin-top (30/$rem)
             font-size (40 /$rem)
             color #515151
 </style>

@@ -23,16 +23,15 @@
         <li v-for="(mformData, index) in mformDatas" :key="index">
           <span class="description">{{mformData.description}}</span>
           <input type="text" v-model="mformData.model"
-                 @blur="loseFocus(mformData.reg,mformData.model,index)"
-                 @input="goodInput(mformData.reg,mformData.model,index)"
-                 @focus="isFooter"
+                 :readonly="mformData.readonly"
                  :placeholder="mformData.placeholder"
                  :maxlength="mformData.maxlength"
                  :name="mformData.name">
         </li>
       </ul>
+
     </div>
-    <footer class="applyForFooter" v-show="applyForFooterShow" @click="applyFor">
+    <footer class="applyForFooter" @click="applyFor">
       <a href="javascript:;">立即提交</a>
     </footer>
   </div>
@@ -40,6 +39,7 @@
 
 <script>
   import {mapState} from "vuex"
+
   export default {
     data() {
       return {
@@ -50,6 +50,7 @@
             placeholder: "请输入姓名",
             name: "userName",
             model: "",
+            readonly: true,
             reg: /^[\u4e00-\u9fa5]{1,}$/,
             regular: /^[\u4e00-\u9fa5]{1,}$/,
             maxlength: "15"
@@ -59,6 +60,7 @@
             description: "身份证号：",
             placeholder: "请输入身份证号",
             name: "IDnumber",
+            readonly: true,
             model: "",
             reg: /^[0-9xX]{0,18}$/,
             regular: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
@@ -72,11 +74,10 @@
             model: "",
             reg: /^[0-9]{0,11}$/,
             regular: /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
-            maxlength: "11"
+            maxlength: "11",
+            readonly: true,
           },
         ],
-        applyForFooterShow: true,
-        winHeight:document.body.clientHeight
       }
     },
 
@@ -88,9 +89,9 @@
     beforeCreate() {
 
     },
-    created(){
-      this.$store.dispatch("getLastOrderInfo").then(()=>{
-        if(this.lastOrderInfo){
+    created() {
+      this.$store.dispatch("getLastOrderInfo").then(() => {
+        if (this.lastOrderInfo) {
           this.__findModel("userName").model = this.lastOrderInfo.name
           this.__findModel("IDnumber").model = this.lastOrderInfo.idCard
           this.__findModel("phoneNum").model = this.lastOrderInfo.mobilePhone
@@ -101,15 +102,14 @@
 
     },
     updated() {
-      let that = this
-      window.onresize = function (e) {
+      /*window.onresize = function (e) {
         let thisHeight = document.body.clientHeight
         if(that.winHeight - thisHeight > 140) {
           that.applyForFooterShow = false
         } else {
           that.applyForFooterShow = true
         }
-      }
+      }*/
     },
     methods: {
       //input的model
@@ -119,24 +119,6 @@
       },
       //提交逻辑
       applyFor() {
-        for (let i = 0; i < this.mformDatas.length; i++) {
-          let item = this.mformDatas[i]
-          if (item.model === "") {
-            this.MessageBox({
-              title: '提交失败',
-              message: item.placeholder,
-              showCancelButton: false
-            })
-            return
-          } else if (!item.regular.test(item.model)) {
-            this.MessageBox({
-              title: '提交失败',
-              message: item.message,
-              showCancelButton: false
-            })
-            return
-          }
-        }
         this.$store.commit("AWAITTRUE")
         let that = this
         this.$store.dispatch("postRecordForApp", {
@@ -156,38 +138,22 @@
             },
           ],
           source: 'OfficialAccounts'//来源
-        }).then((res) => {
+        }).then((result) => {
           this.$store.commit("AWAITFALSE")
-          if (res.success) {
-            window.location.href = res.data.url
+          if (result.success) {
+            window.location.href = result.data.url
           } else {
-            this.MessageBox({
-              title: '提示',
-              message: res.message,
-              showCancelButton: false
-            })
+            this.MessageBox.alert(
+              result.message,
+              "提示",
+              {
+                closeOnClickModal: true
+              }
+            )
           }
         })
-
-      },
-      //      输入框焦点时底部消失
-      isFooter() {
-        this.applyForFooterShow = false
-      },
-//      错误变色
-      loseFocus(reg, flag, index) {
-        this.applyForFooterShow = true
-      },
-//      输入正确变色
-      goodInput(reg, flag, index) {
-//        this.mformDatas[0].model >= 20000000 ? this.mformDatas[0].model = 20000000 : this.mformDatas[0].model
-        if (!reg.test(flag)) {
-          for (let i = 0; i < this.mformDatas.length; i++) {
-            this.mformDatas[index].model = ""
-          }
-        }
-      },
-    }
+      }
+    },
   }
 
 </script>
@@ -250,6 +216,7 @@
       background-image url("../../../static/img/creditCardImg/huangxian.png")
       background-repeat no-repeat
       background-size 100%
+
   .applyForContent
     width (1080 /$rem)
     .firstTrialHeader
@@ -294,6 +261,4 @@
         input:-ms-input-placeholder
           text-align right
           color #bbbbbb
-
-
 </style>
