@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-  import {mapState} from "vuex"
+  import   {mapState} from "vuex"
   import agreementMod from '../../components/agreementMod/agreementMod.vue'
   import {postSpeedOrder} from "../../api"
 
@@ -209,7 +209,6 @@
       closeModal() {
         this.imgIsShow = true
       }
-
     }
   }
 
@@ -218,7 +217,6 @@
   .fade-enter-active, .fade-leave-active {
     transition: all .5s;
   }
-
   .fade-enter, .fade-leave-active {
     transform: translate3d(0, -150%, 0)
   }
