@@ -125,7 +125,6 @@
         if (this.pullup) {
           this.scroll.on('scrollEnd', () => {
             let result = this.scroll && this.scroll.y
-            console.log(this.$route.name)
             if (this.$route.name !== "generalizeErPage") {
               this.$store.commit("GENERALIZEYIPAGEY", {result})
             }

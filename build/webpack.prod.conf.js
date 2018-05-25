@@ -38,8 +38,13 @@ const webpackConfig = merge(baseWebpackConfig, {
       uglifyOptions: {
         compress: {
           warnings: false,
+<<<<<<< HEAD
           /*drop_debugger: true,
           drop_console: true*/
+=======
+          drop_debugger: true,//错误输出打包后取消
+          drop_console: true//打印输出打包后取消
+>>>>>>> 01c7974a198a538a419802d034a54ac6f2587f43
         },
         mangle: {
           safari10: true

@@ -39,10 +39,17 @@ import {
   getSetPayPassword
 } from '../api'
 
+<<<<<<< HEAD
 // let apiPrefix =   'http://api2.cpf360.com/' // 正式库
 let apiVersion1 = 'http://api.cpf360.com/' //1.0的正式库
 let apiPrefix = 'http://api4.cpf360.com/' //1.0的正式库
+=======
+let apiPrefix =   'http://api2.cpf360.com/' // 正式库
+// let apiPrefix = 'http://api4.cpf360.com/' //2.0的测试库
+>>>>>>> 01c7974a198a538a419802d034a54ac6f2587f43
 // let apiPrefix = 'http://211.94.137.70:8001/'//测试库
+let apiVersion1 = 'http://api.cpf360.com/' //1.0的正式库
+
 // let apiVersion1 = 'local.appapi.cpf360.com/'//1.0测试库
 export default {
   //征信四要素
@@ -278,7 +285,11 @@ export default {
     let url = apiPrefix + "api/OfficialAccounts/GetSubordinateNum"
     const result = await getSubordinateNum(url, data)
     if (data.userId) {
-      commit('GET_ERSUBORDINATENUM', {result})
+      if(data.san){
+        commit('GET_SANSUBORDINATENUM', {result})
+      }else {
+        commit('GET_ERSUBORDINATENUM', {result})
+      }
     } else {
       commit('GET_SUBORDINATENUM', {result})
     }
@@ -288,10 +299,18 @@ export default {
     let url = apiPrefix + "api/OfficialAccounts/GetSubordinateUserList"
     const result = await getSubordinateUserList(url, data)
     if (data.userId) {
-      if (data.id) {
-        return result.data
-      } else {
-        commit('GET_ERSUBORDINATEUSERLIST', {result})
+      if(data.san){
+        if (data.id) {
+          return result.data
+        } else {
+          commit('GET_SANSUBORDINATEUSERLIST', {result})
+        }
+      }else {
+        if (data.id) {
+          return result.data
+        } else {
+          commit('GET_ERSUBORDINATEUSERLIST', {result})
+        }
       }
     } else {
       if (data.id) {

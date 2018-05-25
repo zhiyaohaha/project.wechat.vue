@@ -56,29 +56,13 @@
     },
 
     watch:{
-     /* $route(to,from){
-        let that = this
-        if(to.name === "authenticationPage"){
-          window.history.replaceState(null,null,"#")
-          window.addEventListener('popstate', that.__goBack, false)
-        }else {
-          window.removeEventListener("popstate", that.__goBack, false)
-        }
-      }*/
     },
     mounted() {
-      /*let that = this
-      this.pushHistory()
-      window.addEventListener('popstate', that.__goBack, false)*/
       window.history.pushState(null, "title", "#/myPage")
       window.history.pushState(null, "title", "#/authenticationPage")
     },
 
     methods: {
-     /* //返回事件
-      __goBack(){
-        this.$router.replace({name:"myPage"})
-      },*/
       //定时器
       __countDown(){
         this.num = 60

@@ -4,7 +4,7 @@
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
-        {{orderFormTapData.title}}<span class="manNumber">({{orderFormTapData.manNumber}})</span>
+        {{orderFormTapData.title}}<!--<span class="manNumber">({{orderFormTapData.manNumber}})</span>-->
       </a>
     </header>
     <scroll class="wrapper"
@@ -13,7 +13,7 @@
             @scrollToEnd="loadData">
       <div>
         <header class="orderFormListHeader">
-          <span class="font">订单列表</span>
+          <span class="font">共有{{orderListFor1.total}}条</span>
           <a href="javascript:;" @click="screenIsShow(false)">
             <img src="../../../static/img/myImg/content_icon_shaixuan_normal.png"><span>筛选</span>
           </a>
@@ -66,6 +66,10 @@
             title: "二级代理",
             manNumber: null
           },
+          {
+            title: "三级代理",
+            manNumber: null
+          },
         ],
         orderFormInd: 0,
         footlineTitle: "查看更多",
@@ -110,6 +114,7 @@
         this.orderFormTapDatas[0].manNumber = res.myTotal
         this.orderFormTapDatas[1].manNumber = res.level1Total
         this.orderFormTapDatas[2].manNumber = res.level2Total
+        this.orderFormTapDatas[3].manNumber = res.level3Total
       })
       this.$store.dispatch("getOrderListFor", {
         status: "Apply,Auditing,Loan,UserGiveUp,Refuse",
@@ -131,7 +136,12 @@
         })
       },
       orderListFor1(val) {
-        let a = val ? val.data.length === 0 : true
+        let a = false
+        if(val){
+          if(val.data.length<1){
+            a = true
+          }
+        }
         if (a) {
           this.footlineTitle = '暂无数据'
         } else {
@@ -226,17 +236,21 @@
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
   .orderFormHeader
+    box-sizing border-box
     height (110 /$rem)
     width (1080 /$rem)
     background-color #ffffff
+    display flex
+    justify-content space-between
+    flex-wrap wrap
+    padding 0 (50/$rem)
     a
       box-sizing border-box
       border-bottom 1px solid #f2f2f2
       height 100%
-      width (360 /$rem)
       background-color #ffffff
       float left
-      font-size (46 /$rem)
+      font-size (40 /$rem)
       text-align center
       line-height (110 /$rem)
       transition all 0.5s

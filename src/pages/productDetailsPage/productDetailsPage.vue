@@ -8,6 +8,9 @@
           </div>
           <div class="describe">
             <div class="productTitle">{{productDetailsPageData.basic.name}}</div>
+           <!-- <div class="interest">
+              月利率: <span class="price">0.78%-1.89%</span>
+            </div>-->
             <div class="limit">
               额度范围:{{productDetailsPageData.filter.amount_min+'-'+productDetailsPageData.filter.amount_max}}
             </div>
@@ -36,8 +39,6 @@
       </a>
     </footer>
   </div>
-
-
 </template>
 
 <script>
@@ -115,9 +116,8 @@
 
   .productDetailsHeader
     box-sizing border-box
-    width (1080 /$rem)
-    height (261 /$rem)
-    padding (40 /$rem) 0 (40 /$rem) (30 /$rem)
+    height (264 /$rem)
+    padding (50 /$rem) 0 (50 /$rem) (30 /$rem)
     border-bottom 1px solid #f2f2f2
     & > div
       float left
@@ -125,7 +125,6 @@
         font-size (40 /$rem)
         width (180 /$rem)
         height (180 /$rem)
-        box-sizing border-box
         img
           width 100%
           height 100%
@@ -136,6 +135,9 @@
         margin-left (30 /$rem)
         .productTitle
           font-size (42 /$rem)
+        .interest
+          margin-top (30/$rem)
+          color #bbbbbb
         .limit
           color #bbbbbb
           margin-top (30 /$rem)
