@@ -11,8 +11,10 @@
             :data="rakeBackInfo? rakeBackInfo.result :[]"
             :pullup="true"
             @scrollToEnd="loadData">
-      <rebateList :rebateListDatas="rakeBackInfo"/>
-      <footline :title="footlineTitle"/>
+      <div>
+        <rebateList :rebateListDatas="rakeBackInfo"/>
+        <footline :title="footlineTitle"/>
+      </div>
     </scroll>
   </div>
 </template>

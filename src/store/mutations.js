@@ -115,6 +115,11 @@ export default {
     //我的二级推广头部列表
     state.erSubordinateNum = result.data
   },
+  GET_SANSUBORDINATENUM(state, {result}) {
+    console.log(result)
+    //我的二级推广头部列表
+    state.sanSubordinateNum = result.data
+  },
   GET_SUBORDINATEUSERLIST(state, {result}) {
     console.log(result)
     //我的推广列表
@@ -129,6 +134,11 @@ export default {
     console.log(result)
     //我的二级推广列表
     state.erSubordinateUserList = result.data
+  },
+  GET_SANSUBORDINATEUSERLIST(state, {result}) {
+    console.log(result)
+    //我的三级推广列表
+    state.sanSubordinateUserList = result.data
   },
   //时间戳
   CHANGETIME(state) {

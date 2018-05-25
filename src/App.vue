@@ -84,8 +84,8 @@
           console.log(JSON.stringify(userinfo))
           this.$store.dispatch('postOpenid', {
             data: {
-              // openId:userinfo.openid||"",
-              openId: "oUSCj0xd_6ONno8QyarJQc59vGjY",
+              openId:userinfo.openid||"",
+              // openId: "oUSCj0xd_6ONno8QyarJQc59vGjY",
               thirdLoginType: 'ThirdPlatForm.WeChat',
               nickName:userinfo.nickname||"",
               head: userinfo.headimgurl||"",

@@ -20,27 +20,32 @@
             <span class="unit">人</span>
           </div>
         </header>
-        <usersListMod :usersListDatas="erSubordinateUserList" :icon="true"/>
+        <usersListMod :usersListDatas="erSubordinateUserList" :generalizeSanModIsShow="generalizeSanModIsShow" :icon="true"/>
         <footline :title="footlineTitle"/>
       </div>
     </scroll>
-
+    <transition name="change">
+      <generalizeSanMod :generalizeSanModIsShow="generalizeSanModIsShow" :userId="userId" v-if="generalizeSanModShow"/>
+    </transition>
   </div>
 </template>
 
 <script>
   import usersListMod from "../../components/usersListMod/usersListMod.vue"
+  import generalizeSanMod from "../../components/generalizeSanMod/generalizeSanMod.vue"
   import {mapState} from "vuex"
 
   export default {
     data() {
       return {
         footlineTitle: "查看更多",
+        generalizeSanModShow: false,
+        userId:null
       }
     },
 
     components: {
-      usersListMod
+      usersListMod, generalizeSanMod
     },
 
     computed: {
@@ -56,11 +61,6 @@
 
     },
     watch: {
-      $route(val){
-        if(val.name === "generalizeErPage"){
-
-        }
-      },
       erSubordinateUserList(val) {
         if (val.length > 0) {
           this.footlineTitle = "查看更多"
@@ -81,6 +81,7 @@
       })
     },
     mounted() {
+
       if (!this.erSubordinateUserList || this.erSubordinateUserList < 1) {
         this.footlineTitle = "暂无数据"
       }
@@ -88,6 +89,16 @@
     updated() {
     },
     methods: {
+      //三级列表显示
+      generalizeSanModIsShow(flag,it){
+       this.generalizeSanModShow = flag
+        if(flag){
+          this.userId = it.id
+          document.title = "我的三级代理"
+        }else {
+          document.title = "我的二级代理"
+        }
+      },
       loadData() {
         let that = this, time
         if (this.footlineTitle === "查看更多") {
@@ -95,7 +106,7 @@
           this.$store.dispatch("getSubordinateUserList", {
             thirdLoginType: "ThirdPlatForm.WeChat",
             userId: that.$route.query.id,//不传则获取登录人的信息，传则获取传入人的信息
-            id: that.erSubordinateUserList[that.erSubordinateUserList.length-1].id,//第一次不用传，以后传最后一条Id
+            id: that.erSubordinateUserList[that.erSubordinateUserList.length - 1].id,//第一次不用传，以后传最后一条Id
             size: 10,//每页数量
           }).then((res) => {
             if (res.length > 0) {
@@ -118,6 +129,12 @@
 
 </script>
 <style lang='stylus' rel="stylesheet/stylus">
+  .change-enter-active ,.change-leave-to{
+    transition: all .3s;
+  }
+  .change-enter ,.change-leave-to{
+    transform: translate3d(100%, 0, 0)
+  }
   .generalizeErPageHeader
     box-sizing border-box
     background-image url("../../../static/img/generalizeImg/wodde_banner.png")

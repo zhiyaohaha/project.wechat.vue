@@ -3,15 +3,11 @@
     <div class="orderFormListConttent">
       <ul class="orderFormList">
         <li v-for="(orderFormListData, index) in orderFormListDatas.data" :key="index"
-            :class="{active : orderFormListDatasInd===index}"
-            @touchstart="touchStart(index)"
-            @touchmove="scrollX(index)"
-            @touchend="touchEnd"
         >
           <img :src="orderFormListData.head||'../../../static/img/myImg/touxiang.gif'">
           <div class="orderFormListDescribe">
             <div class="up">
-              <span class="userName">{{orderFormListData.name}}</span>
+              <span class="userName">{{orderFormListData.name.length>13?orderFormListData.name.substring(0,12)+"...":orderFormListData.name}}</span>
             </div>
             <div class="down">
               <span class="applyForTime">{{orderFormListData._createdDate}}</span>
@@ -24,7 +20,7 @@
             <span class="stateDescribe"
                   v-if="orderFormListData._rakeBack === '已返佣'">{{orderFormListData._rakeBack}}</span>
           </div>
-          <div class="delete"></div>
+          <!--<div class="delete"></div>-->
         </li>
       </ul>
     </div>
@@ -37,13 +33,13 @@
     data() {
       return {
         isShow: false,
-        startX: 0,//开始触摸的位置
+        /*startX: 0,//开始触摸的位置
         startY: 0,//开始触摸的位置
         moveX: 0,//滑动时的位置
         moveY: 0,//滑动时的位置
         endX: 0,//结束触摸的位置
         disX: 0,//移动距离
-        disY: 0,//移动距离
+        disY: 0,//移动距离*/
         orderFormListDatasInd: null
       }
     },
@@ -57,7 +53,7 @@
 
     methods: {
       //手指开始
-      touchStart(index, ev) {
+      /*touchStart(index, ev) {
         ev = ev || event;
         ev.preventDefault();
 //                      console.log(ev.targetTouches);
@@ -67,9 +63,9 @@
           this.startY = ev.touches[0].clientY; // 记录开始位置
         }
         console.log();
-      },
+      },*/
       //手指一动
-      scrollX(index, ev) {
+      /*scrollX(index, ev) {
         ev = ev || event;
         ev.preventDefault();
         if (ev.touches.length == 1) {
@@ -93,10 +89,10 @@
           }
 
         }
-      },
+      },*/
       //手指结束
-      touchEnd(ev) {
-      }
+      /*touchEnd(ev) {
+      }*/
     }
   }
 
@@ -113,17 +109,17 @@
         height (200 /$rem)
         border-bottom 1px solid #f2f2f2
         padding (35 /$rem) 0 (35 /$rem) (30 /$rem)
-        transition all 0.3s
+        /*transition all 0.3s
         transform translateZ(0)
         &.active
-          transform: translate3d(-(180/$rem),0,0)
-        .delete
+          transform: translate3d(-(180/$rem),0,0)*/
+        /*.delete
           position absolute
           width (180 /$rem)
           height (130 /$rem)
           background-color #DF4343
           right (-180 /$rem)
-          top (35/$rem)
+          top (35/$rem)*/
         img
           float left
           width (130 /$rem)

@@ -37,7 +37,7 @@
           </a>
           <a href="javascript:;" class="withdrawDeposit">
             <span class="describe">三级代理</span>
-            <span class="price">{{subordinateNum.supersubordinateNum}}</span>
+            <span class="price">{{subordinateNum.thirdLevelNum}}</span>
             <span class="unit">人</span>
           </a>
         </div>
@@ -195,12 +195,12 @@
       background-color #ffffff
       top (460 /$rem)
       left (50%)
-      width (888 /$rem)
+      width (790 /$rem)
       height (230 /$rem)
       box-sizing border-box
       padding 0 (80 /$rem)
       border-radius (10 /$rem)
-      margin-left (-444 /$rem)
+      margin-left (-395 /$rem)
       display flex
       flex-wrap wrap
       justify-content space-between

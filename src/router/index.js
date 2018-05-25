@@ -325,7 +325,6 @@ router.beforeEach((to, from, next) => {
   if (to.meta.register && (getCookie('whether') * 1 < 1)) {
     next({name: "phoneApprove", params: {name1: to.name, name2: ""}, query: {id: to.query.id}})
   }
-
   /* 路由发生变化修改页面title */
   if (to.name == "zhongXinCardPage" || to.name == "strategyListPage") {
     to.meta.title = to.query.name

@@ -4,7 +4,7 @@
       <a href="javascript:;" :class="{active:orderFormInd === index}"
          v-for="(orderFormTapData, index) in orderFormTapDatas" :key="index"
          @click="changeColor(index)">
-        {{orderFormTapData.title}}<span class="manNumber">({{orderFormTapData.manNumber}})</span>
+        {{orderFormTapData.title}}<!--<span class="manNumber">({{orderFormTapData.manNumber}})</span>-->
       </a>
     </header>
     <scroll class="wrapper"
@@ -13,7 +13,7 @@
             @scrollToEnd="loadData">
       <div>
         <header class="orderFormListHeader">
-          <span class="font">订单列表</span>
+          <span class="font">共有{{orderListFor1.total}}条</span>
           <a href="javascript:;" @click="screenIsShow(false)">
             <img src="../../../static/img/myImg/content_icon_shaixuan_normal.png"><span>筛选</span>
           </a>
@@ -114,6 +114,7 @@
         this.orderFormTapDatas[0].manNumber = res.myTotal
         this.orderFormTapDatas[1].manNumber = res.level1Total
         this.orderFormTapDatas[2].manNumber = res.level2Total
+        this.orderFormTapDatas[3].manNumber = res.level3Total
       })
       this.$store.dispatch("getOrderListFor", {
         status: "Apply,Auditing,Loan,UserGiveUp,Refuse",
@@ -249,7 +250,7 @@
       height 100%
       background-color #ffffff
       float left
-      font-size (46 /$rem)
+      font-size (40 /$rem)
       text-align center
       line-height (110 /$rem)
       transition all 0.5s
