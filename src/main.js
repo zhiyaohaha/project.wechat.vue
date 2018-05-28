@@ -54,15 +54,9 @@ Vue.prototype.readTodos = storageUtil.readTodos
 Vue.prototype.toPercent = toPercent
 Vue.prototype.MessageBox = MessageBox
 Vue.prototype.pushHistory = pushHistory
-<<<<<<< HEAD
-// Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
-// Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
-Vue.prototype.apiPrefix = 'http://api4.cpf360.com/'
-=======
 Vue.prototype.apiPrefix = 'http://api2.cpf360.com/'
 // Vue.prototype.apiPrefix = 'http://api4.cpf360.com/'
 // Vue.prototype.apiPrefix = 'http://211.94.137.70:8001/'
->>>>>>> 01c7974a198a538a419802d034a54ac6f2587f43
 Vue.prototype.BScroll = BScroll
 /*wx.config({
   debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看

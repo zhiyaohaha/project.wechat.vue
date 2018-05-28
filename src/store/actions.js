@@ -39,14 +39,8 @@ import {
   getSetPayPassword
 } from '../api'
 
-<<<<<<< HEAD
-// let apiPrefix =   'http://api2.cpf360.com/' // 正式库
-let apiVersion1 = 'http://api.cpf360.com/' //1.0的正式库
-let apiPrefix = 'http://api4.cpf360.com/' //1.0的正式库
-=======
 let apiPrefix =   'http://api2.cpf360.com/' // 正式库
 // let apiPrefix = 'http://api4.cpf360.com/' //2.0的测试库
->>>>>>> 01c7974a198a538a419802d034a54ac6f2587f43
 // let apiPrefix = 'http://211.94.137.70:8001/'//测试库
 let apiVersion1 = 'http://api.cpf360.com/' //1.0的正式库
 
